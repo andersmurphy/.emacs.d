@@ -10,8 +10,10 @@
 ;; Sets theme
 (load-theme 'zenburn t)
 
-;; Removes menu bar
+;; Removes menu scroll and tool bar
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; Enables ido mode for fuzzy matching
 (setq ido-enable-flex-matching t)
