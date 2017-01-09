@@ -1,0 +1,39 @@
+* Theme
+** Zenburn 
+
+[[https://github.com/bbatsov/zenburn-emacs][Zenburn]] is a nice low contrast theme.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package zenburn-theme
+               :ensure t)
+#+END_SRC
+
+* Completion Framework
+** Ivy
+
+[[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework. Set some basic settings 
+particularly useful for new Ivy users.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+               :ensure t
+               :init
+               (setq ivy-use-virtual-buffers t)
+               (setq ivy-count-format "(%d/%d) ")
+               (ivy-mode 1))
+#+END_SRC
+
+* Git Source Control
+** Magit
+
+A great interface for git projects. It’s much more pleasant to use than the git 
+interface on the command line. Use an easy keybinding to access magit.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+               :ensure t
+               :defer t
+               :bind ("C-x g" . magit-status)
+               :config
+               (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+#+END_SRC
