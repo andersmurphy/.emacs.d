@@ -15,10 +15,13 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-;; Enables ido mode for fuzzy matching
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
+;; Ivy completion configuration
+(setq ivy-use-virtual-buffers t)
+(setq ivy-count-format "(%d/%d) ")
+(ivy-mode 1)
+
+;; Magit configuration
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Disables start up messages
 (setq inhibit-startup-message t
@@ -32,7 +35,7 @@ inhibit-startup-echo-area-message t)
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (parinfer zenburn-theme))))
+ '(package-selected-packages (quote (magit ivy parinfer zenburn-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
