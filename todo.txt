@@ -1,0 +1,6 @@
+Todo:
+
+-Set up use-package
+-Set up parinfer
+-Set up org mode
+-Set up magit
