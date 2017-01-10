@@ -3,5 +3,5 @@ custom.el
 elpa/
 ido.last
 auto-save-list/
-*~
+backups/
 recentf
