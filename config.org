@@ -26,10 +26,10 @@ by spotlight.
 osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/local/opt/emacs/Emacs.app" at POSIX file "/Applications"'
 #+END_SRC
 * Defaults
-** Don't beep at me
+** Turn off alarms completly
 
 #+BEGIN_SRC emacs-lisp
-  (setq visible-bell t)
+  (setq ring-bell-function 'ignore)
 #+END_SRC
 
 ** Answering 'y' or 'no'
