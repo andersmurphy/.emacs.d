@@ -66,8 +66,7 @@ particularly useful for new Ivy users.
 * Source Control
 ** Magit
 
-A great interface for git projects. It’s much more pleasant to use than the git 
-interface on the command line. Use an easy keybinding to access magit.
+[[https://magit.vc/][Magit]] is a great interface for git projects.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -130,16 +129,3 @@ window stay within the same window.
       (add-hook 'scheme-mode-hook #'parinfer-mode)
       (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+END_SRC
-
-** Modes
-Has two modes indent mode and paren mode. Mode
-can be toggled with C-,
-
-*** Indent Mode
-Indent Mode gives you full control of indentation, 
-while Parinfer corrects parens.
-
-*** Paren Mode
-Paren Mode gives you full control of parens, 
-while Parinfer corrects indentation.
-
