@@ -1,3 +1,16 @@
+* Defaults
+** Don't beep at me
+
+#+BEGIN_SRC emacs-lisp
+  (setq visible-bell t)
+#+END_SRC
+
+** Answering 'y' or 'no'
+
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+   
 * Theme
 ** Zenburn 
 
@@ -23,7 +36,7 @@ particularly useful for new Ivy users.
                (ivy-mode 1))
 #+END_SRC
 
-* Git Source Control
+* Source Control
 ** Magit
 
 A great interface for git projects. It’s much more pleasant to use than the git 
@@ -38,33 +51,8 @@ interface on the command line. Use an easy keybinding to access magit.
                (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
 #+END_SRC
 * Parinfer
-
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation. 
 
-** Modes
-Has two modes indent mode and paren mode. Mode
-can be toggled with C-,
-
-*** Indent Mode
-Indent Mode gives you full control of indentation, 
-while Parinfer corrects parens.
-
-*** Paren Mode
-Paren Mode gives you full control of parens, 
-while Parinfer corrects indentation.
-
-** pretty-parens 
-Changes parens based on mode.
-
-** paredit 
-Adds some paredit commands.
-
-** smart-tab 
-C-b & C-f jump positions and smart shift 
-with tab & S-tab.
-
-** smart-yank
-Yank behavior depends on mode.
 #+BEGIN_SRC emacs-lisp
   (use-package parinfer
     :ensure t
@@ -84,3 +72,16 @@ Yank behavior depends on mode.
       (add-hook 'scheme-mode-hook #'parinfer-mode)
       (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+END_SRC
+
+** Modes
+Has two modes indent mode and paren mode. Mode
+can be toggled with C-,
+
+*** Indent Mode
+Indent Mode gives you full control of indentation, 
+while Parinfer corrects parens.
+
+*** Paren Mode
+Paren Mode gives you full control of parens, 
+while Parinfer corrects indentation.
+
