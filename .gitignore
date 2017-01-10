@@ -1,4 +1,5 @@
 config.el
+custom.el
 elpa/
 ido.last
 auto-save-list/

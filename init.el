@@ -16,7 +16,7 @@
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-;;; Bootstrap use-package
+;; Bootstrap use-package
 ;; Install use-package if it's not already installed.
 ;; use-package is used to configure the rest of the packages.
 (unless (package-installed-p 'use-package)
@@ -28,5 +28,10 @@
   (require 'use-package))
 (require 'bind-key)
 
-;;; Load the config
+;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))
+
+;; Forces Custom to save all customizations in a seperate file
+(setq custom-file "~/.emacs.d/custom.el")
+;; Prevents error if the custom.el file doesn't exist 
+(load custom-file 'noerror)
