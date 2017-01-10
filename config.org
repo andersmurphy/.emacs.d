@@ -1,3 +1,30 @@
+* Installing Emacs
+** OSX
+
+Install emacs using homebrew.
+
+#+BEGIN_SRC sh
+brew install emacs --with-cocoa
+#+END_SRC
+
+Symlink Emacs.app to application folder (isn't supported by spotlight).
+
+#+BEGIN_SRC sh
+brew linkapps emacs
+#+END_SRC 
+
+Remove the symlink.
+
+#+BEGIN_SRC sh
+rm /Applications/Emacs.app
+#+END_SRC 
+
+Create an alias for emacs and move it to the application folder, this is supported
+by spotlight.
+
+#+BEGIN_SRC sh 
+osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/local/opt/emacs/Emacs.app" at POSIX file "/Applications"'
+#+END_SRC
 * Defaults
 ** Don't beep at me
 
