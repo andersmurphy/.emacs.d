@@ -50,6 +50,37 @@ interface on the command line. Use an easy keybinding to access magit.
                :config
                (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
 #+END_SRC
+
+*** Fullscreen magit
+The following code makes magit-status run alone in the frame, and then 
+restores the old window configuration when you quit out of magit.
+
+#+BEGIN_SRC emacs-lisp
+(defadvice magit-status (around magit-fullscreen activate)
+  (window-configuration-to-register :magit-fullscreen)
+  ad-do-it
+  (delete-other-windows))
+
+(defun magit-quit-session ()
+  "Restores the previous window configuration and kills the magit buffer"
+  (interactive)
+  (kill-buffer)
+  (jump-to-register :magit-fullscreen)) 
+#+END_SRC
+
+* Org Mode
+** Org babel/source blocks
+Enables source blocks syntax highlights and makes the editing popup 
+window stay within the same window.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t
+        org-src-window-setup 'current-window
+        org-src-strip-leading-and-trailing-blank-lines t
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t)
+#+END_SRC
+
 * Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation. 
 
