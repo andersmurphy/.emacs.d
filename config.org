@@ -49,7 +49,7 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 #+END_SRC
 * Shell
 ** exec-path-from-shell
-[[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behaves like local shell.
+[[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behave like local shell.
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
     :ensure t)
@@ -129,7 +129,8 @@ window stay within the same window.
         org-src-tab-acts-natively t)
 #+END_SRC
 
-* Parinfer
+* Lisps
+** Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation. 
 
 #+BEGIN_SRC emacs-lisp
