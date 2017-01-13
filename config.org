@@ -47,6 +47,19 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 #+BEGIN_SRC emacs-lisp
 (global-linum-mode)
 #+END_SRC
+* Shell
+** exec-path-from-shell
+[[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behaves like local shell.
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t)
+#+END_SRC
+
+Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
+#+BEGIN_SRC emacs-lisp
+  (when (memq window-system '(mac ns))
+        (exec-path-from-shell-initialize))
+#+END_SRC
 * Theme
 ** Zenburn 
 
