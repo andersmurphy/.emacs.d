@@ -43,10 +43,6 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 #+END_SRC
-** Show line numbers
-#+BEGIN_SRC emacs-lisp
-(global-linum-mode)
-#+END_SRC
 * Shell
 ** exec-path-from-shell
 [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behave like local shell.
@@ -153,6 +149,11 @@ window stay within the same window.
       (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+END_SRC
 * Ruby
+** Show line numbers in ruby mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'ruby-mode-hook (lambda () (linum-mode t)))
+#+END_SRC
+
 ** Ruby Electric
 
 [[https://github.com/qoobaa/ruby-electric][ruby-electric]] autoclosea paired syntax elements like parens, quotes, etc
