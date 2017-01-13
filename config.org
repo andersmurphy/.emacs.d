@@ -43,6 +43,10 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 #+END_SRC
+** Show line numbers
+#+BEGIN_SRC emacs-lisp
+(global-linum-mode)
+#+END_SRC
 * Theme
 ** Zenburn 
 
