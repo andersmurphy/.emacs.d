@@ -45,6 +45,12 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
 #+END_SRC
+** Kill current buffer rather than bringing up list
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+#+END_SRC
+
 * Theme
 ** Zenburn 
 
