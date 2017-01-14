@@ -153,6 +153,12 @@ window stay within the same window.
 #+END_SRC
 
 * Programming Languages
+** General
+*** Electric Pair Mode
+Automatically pairs parens, brackets, quotest, etc...
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode 1)
+#+END_SRC
 ** Lisps
 *** Show line numbers in lisp modes
 
@@ -201,17 +207,6 @@ window stay within the same window.
              '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist
              '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
-#+END_SRC
-
-*** Ruby Electric
-
-[[https://github.com/qoobaa/ruby-electric][ruby-electric]] autoclosea paired syntax elements like parens, quotes, etc
-
-#+BEGIN_SRC emacs-lisp
-(use-package ruby-electric 
-  :ensure t
-  :init
-  (add-hook 'ruby-mode-hook 'ruby-electric-mode))
 #+END_SRC
 
 *** Flymake Ruby
