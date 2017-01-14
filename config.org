@@ -108,7 +108,7 @@ particularly useful for new Ivy users.
   (use-package magit
                :ensure t
                :defer t
-               :bind ("C-x g" . magit-status)
+               :bind ("C-c g" . magit-status)
                :config
                (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
 #+END_SRC
