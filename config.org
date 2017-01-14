@@ -25,7 +25,6 @@ by spotlight.
 #+BEGIN_SRC sh 
 osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/local/opt/emacs/Emacs.app" at POSIX file "/Applications"'
 #+END_SRC
-
 * Defaults
 ** Turn off alarms completly
 
@@ -55,7 +54,6 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   (use-package zenburn-theme
                :ensure t)
 #+END_SRC
-
 * Shell
 ** exec-path-from-shell
 
@@ -71,7 +69,6 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
   (when (memq window-system '(mac ns))
         (exec-path-from-shell-initialize))
 #+END_SRC
-
 * Navigation
 ** Ivy
 
@@ -98,7 +95,6 @@ particularly useful for new Ivy users.
 	     (projectile-global-mode)
 	     (setq projectile-completion-system 'ivy))
 #+END_SRC
-
 * Project Management
 ** Magit
 
@@ -132,6 +128,12 @@ restores the old window configuration when you quit out of magit.
 #+END_SRC
 
 ** Org Mode
+*** Enable Speed Keys
+
+#+BEGIN_SRC emacs-lisp
+(setq org-use-speed-commands t)
+#+END_SRC
+
 *** Org babel/source blocks
 Enables source blocks syntax highlights and makes the editing popup 
 window stay within the same window.
