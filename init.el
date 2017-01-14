@@ -10,8 +10,10 @@
       inhibit-startup-echo-area-message t)
 (setq initial-scratch-message "")
 
-;; Set up package and adds MELPA
+;; Set up package and adds ELPA and MELPA
 (require 'package)
+(add-to-list 'package-archives
+             '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
