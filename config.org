@@ -25,6 +25,7 @@ by spotlight.
 #+BEGIN_SRC sh 
 osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/local/opt/emacs/Emacs.app" at POSIX file "/Applications"'
 #+END_SRC
+
 * Defaults
 ** Turn off alarms completly
 
@@ -39,9 +40,11 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 #+END_SRC
    
 ** Keep all backup and auto-save files in one directory
+
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
 #+END_SRC
 * Theme
 ** Zenburn 
@@ -55,7 +58,9 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 
 * Shell
 ** exec-path-from-shell
+
 [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behave like local shell.
+
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
     :ensure t)
@@ -68,8 +73,7 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
 #+END_SRC
 
 * Navigation
-** Completion Framework
-*** Ivy
+** Ivy
 
 [[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework. Set some basic settings 
 particularly useful for new Ivy users.
@@ -84,8 +88,7 @@ particularly useful for new Ivy users.
 #+END_SRC
 
 * Project Management
-** Source Control
-*** Magit
+** Magit
 
 [[https://magit.vc/][Magit]] is a great interface for git projects.
 
@@ -98,7 +101,8 @@ particularly useful for new Ivy users.
                (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
 #+END_SRC
 
-**** Fullscreen magit
+*** Fullscreen magit
+
 The following code makes magit-status run alone in the frame, and then 
 restores the old window configuration when you quit out of magit.
 
@@ -152,13 +156,16 @@ window stay within the same window.
       (add-hook 'scheme-mode-hook #'parinfer-mode)
       (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+END_SRC
+
 ** Ruby
 *** Show line numbers in ruby mode
+
 #+BEGIN_SRC emacs-lisp
 (add-hook 'ruby-mode-hook (lambda () (linum-mode t)))
 #+END_SRC
 
 *** Other files that should be treated as ruby code 
+
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist
              '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
@@ -167,7 +174,9 @@ window stay within the same window.
 #+END_SRC
 
 *** Ruby Electric
+
 [[https://github.com/qoobaa/ruby-electric][ruby-electric]] autoclosea paired syntax elements like parens, quotes, etc
+
 #+BEGIN_SRC emacs-lisp
 (use-package ruby-electric 
   :ensure t
@@ -176,7 +185,9 @@ window stay within the same window.
 #+END_SRC
 
 *** Flymake Ruby
+
 Adds syntax checking for ruby.
+
 #+BEGIN_SRC emacs-lisp
  (use-package flymake-ruby
    :ensure t
