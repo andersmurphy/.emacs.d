@@ -32,7 +32,7 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   (setq ring-bell-function 'ignore)
 #+END_SRC
 
-** Answering 'y' or 'no'
+** Answering 'y' or 'n'
 
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -43,6 +43,16 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 #+END_SRC
+* Theme
+** Zenburn 
+
+[[https://github.com/bbatsov/zenburn-emacs][Zenburn]] is a nice low contrast theme.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package zenburn-theme
+               :ensure t)
+#+END_SRC
+
 * Shell
 ** exec-path-from-shell
 [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behave like local shell.
@@ -56,18 +66,10 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
   (when (memq window-system '(mac ns))
         (exec-path-from-shell-initialize))
 #+END_SRC
-* Theme
-** Zenburn 
 
-[[https://github.com/bbatsov/zenburn-emacs][Zenburn]] is a nice low contrast theme.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package zenburn-theme
-               :ensure t)
-#+END_SRC
-
-* Completion Framework
-** Ivy
+* Navigation
+** Completion Framework
+*** Ivy
 
 [[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework. Set some basic settings 
 particularly useful for new Ivy users.
@@ -81,8 +83,9 @@ particularly useful for new Ivy users.
                (ivy-mode 1))
 #+END_SRC
 
-* Source Control
-** Magit
+* Project Management
+** Source Control
+*** Magit
 
 [[https://magit.vc/][Magit]] is a great interface for git projects.
 
@@ -95,7 +98,7 @@ particularly useful for new Ivy users.
                (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
 #+END_SRC
 
-*** Fullscreen magit
+**** Fullscreen magit
 The following code makes magit-status run alone in the frame, and then 
 restores the old window configuration when you quit out of magit.
 
@@ -112,8 +115,8 @@ restores the old window configuration when you quit out of magit.
   (jump-to-register :magit-fullscreen)) 
 #+END_SRC
 
-* Org Mode
-** Org babel/source blocks
+** Org Mode
+*** Org babel/source blocks
 Enables source blocks syntax highlights and makes the editing popup 
 window stay within the same window.
 
@@ -125,8 +128,9 @@ window stay within the same window.
         org-src-tab-acts-natively t)
 #+END_SRC
 
-* Lisps
-** Parinfer
+* Programming Languages
+** Lisps
+*** Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation. 
 
 #+BEGIN_SRC emacs-lisp
@@ -148,13 +152,13 @@ window stay within the same window.
       (add-hook 'scheme-mode-hook #'parinfer-mode)
       (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+END_SRC
-* Ruby
-** Show line numbers in ruby mode
+** Ruby
+*** Show line numbers in ruby mode
 #+BEGIN_SRC emacs-lisp
 (add-hook 'ruby-mode-hook (lambda () (linum-mode t)))
 #+END_SRC
 
-** Other files that should be treated as ruby code 
+*** Other files that should be treated as ruby code 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist
              '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
@@ -162,7 +166,7 @@ window stay within the same window.
              '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 #+END_SRC
 
-** Ruby Electric
+*** Ruby Electric
 [[https://github.com/qoobaa/ruby-electric][ruby-electric]] autoclosea paired syntax elements like parens, quotes, etc
 #+BEGIN_SRC emacs-lisp
 (use-package ruby-electric 
@@ -171,7 +175,7 @@ window stay within the same window.
   (add-hook 'ruby-mode-hook 'ruby-electric-mode))
 #+END_SRC
 
-** Flymake Ruby
+*** Flymake Ruby
 Adds syntax checking for ruby.
 #+BEGIN_SRC emacs-lisp
  (use-package flymake-ruby
