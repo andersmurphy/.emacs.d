@@ -87,6 +87,18 @@ particularly useful for new Ivy users.
                (ivy-mode 1))
 #+END_SRC
 
+** Projectile
+
+[[https://github.com/bbatsov/projectile][Projectile]] is a project interaction library for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+             :ensure t
+	     :init
+	     (projectile-global-mode)
+	     (setq projectile-completion-system 'ivy))
+#+END_SRC
+
 * Project Management
 ** Magit
 
