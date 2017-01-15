@@ -231,3 +231,25 @@ Adds syntax checking for ruby.
    (add-hook 'ruby-mode-hook 'flymake-ruby-load))
 #+END_SRC
 
+** Javascript
+*** Web Mode
+Handles files that mix html and js like jsx.
+
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :ensure t)
+#+END_SRC
+
+*** Show line numbers in js/web mode
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'js-mode-hook (lambda () (linum-mode t)))
+(add-hook 'web-mode-hook (lambda () (linum-mode t)))
+#+END_SRC
+
+*** Other files that should be treated as javascript code
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
+#+END_SRC
+
