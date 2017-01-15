@@ -97,10 +97,34 @@ particularly useful for new Ivy users.
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
              :ensure t
+	     :config
+	     (setq projectile-completion-system 'ivy)
 	     :init
-	     (projectile-global-mode)
-	     (setq projectile-completion-system 'ivy))
+	     (projectile-global-mode))
 #+END_SRC
+
+** Dumb Jump
+
+[[https://github.com/jacktasia/dumb-jump][Dumb Jump]] is an Emacs "jump to definition" package with support for multiple 
+programming languages that favors "just working". This means minimal -- and 
+ideally zero -- configuration with absolutely no stored indexes (TAGS) or 
+persistent background processes.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+   :ensure t
+   :bind (("C-c j g" . dumb-jump-go)
+         ("C-c j b" . dumb-jump-back))
+   :config
+   (setq dumb-jump-selector 'ivy))
+#+END_SRC
+
+Dumb jump depends on [[https://github.com/BurntSushi/ripgrep#installation][ripgrep]].
+ 
+#+BEGIN_SRC sh
+brew install ripgrep
+#+END_SRC
+ 
 * Project Management
 ** Magit
 
