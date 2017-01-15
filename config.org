@@ -76,6 +76,14 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
         (exec-path-from-shell-initialize))
 #+END_SRC
 * Navigation
+** Recent Files
+
+[[https://www.emacswiki.org/emacs/RecentFiles][Recentf]] is a minor mode that builds a list of recently opened files.
+
+#+BEGIN_SRC emacs-lisp
+(recentf-mode t)
+#+END_SRC
+
 ** Ivy
 
 [[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework. Set some basic settings 
@@ -137,7 +145,8 @@ brew install ripgrep
                :defer t
                :bind ("C-c g" . magit-status)
                :config
-               (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+               (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+	       (setq magit-completing-read-function 'ivy-completing-read))
 #+END_SRC
 
 *** Fullscreen magit
