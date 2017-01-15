@@ -84,10 +84,11 @@ particularly useful for new Ivy users.
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
                :ensure t
-               :init
+               :config
                (setq ivy-use-virtual-buffers t)
                (setq ivy-count-format "(%d/%d) ")
-               (ivy-mode 1))
+               :init
+	       (ivy-mode t))
 #+END_SRC
 
 ** Projectile
@@ -183,7 +184,7 @@ window stay within the same window.
 Automatically pair parens, brackets, quotes, etc...
 
 #+BEGIN_SRC emacs-lisp
-(electric-pair-mode 1)
+(electric-pair-mode t)
 #+END_SRC
 
 *** Show Paren Mode
@@ -191,7 +192,7 @@ Automatically pair parens, brackets, quotes, etc...
 Show matching Parens.
 
 #+BEGIN_SRC emacs-lisp
-(show-paren-mode 1)
+(show-paren-mode t)
 #+END_SRC
 
 ** Lisps
