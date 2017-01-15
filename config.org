@@ -155,10 +155,21 @@ window stay within the same window.
 * Programming Languages
 ** General
 *** Electric Pair Mode
-Automatically pairs parens, brackets, quotest, etc...
+
+Automatically pair parens, brackets, quotes, etc...
+
 #+BEGIN_SRC emacs-lisp
 (electric-pair-mode 1)
 #+END_SRC
+
+*** Show Paren Mode
+
+Show matching Parens.
+
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+#+END_SRC
+
 ** Lisps
 *** Show line numbers in lisp modes
 
