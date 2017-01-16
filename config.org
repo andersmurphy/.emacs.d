@@ -11,18 +11,18 @@ Symlink Emacs.app to application folder (isn't supported by spotlight).
 
 #+BEGIN_SRC sh
 brew linkapps emacs
-#+END_SRC 
+#+END_SRC
 
 Remove the symlink.
 
 #+BEGIN_SRC sh
 rm /Applications/Emacs.app
-#+END_SRC 
+#+END_SRC
 
 Create an alias for emacs and move it to the application folder, this is supported
 by spotlight.
 
-#+BEGIN_SRC sh 
+#+BEGIN_SRC sh
 osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/local/opt/emacs/Emacs.app" at POSIX file "/Applications"'
 #+END_SRC
 * Defaults
@@ -37,7 +37,7 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
-   
+
 ** Keep all backup and auto-save files in one directory
 
 #+BEGIN_SRC emacs-lisp
@@ -52,13 +52,13 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 #+END_SRC
 
 * Theme
-** Zenburn 
+** Zenburn
 
 [[https://github.com/bbatsov/zenburn-emacs][Zenburn]] is a nice low contrast theme.
 
 #+BEGIN_SRC emacs-lisp
   (use-package zenburn-theme
-               :ensure t)
+	       :ensure t)
 #+END_SRC
 * Shell
 ** Exec path from shell
@@ -73,7 +73,7 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
 #+BEGIN_SRC emacs-lisp
   (when (memq window-system '(mac ns))
-        (exec-path-from-shell-initialize))
+	(exec-path-from-shell-initialize))
 #+END_SRC
 * Navigation
 ** Recent files
@@ -86,16 +86,16 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
 
 ** Ivy
 
-[[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework. Set some basic settings 
+[[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework. Set some basic settings
 particularly useful for new Ivy users.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-               :ensure t
-               :config
-               (setq ivy-use-virtual-buffers t)
-               (setq ivy-count-format "(%d/%d) ")
-               :init
+	       :ensure t
+	       :config
+	       (setq ivy-use-virtual-buffers t)
+	       (setq ivy-count-format "(%d/%d) ")
+	       :init
 	       (ivy-mode t))
 #+END_SRC
 
@@ -105,7 +105,7 @@ particularly useful for new Ivy users.
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
-             :ensure t
+	     :ensure t
 	     :config
 	     (setq projectile-completion-system 'ivy)
 	     :init
@@ -114,26 +114,26 @@ particularly useful for new Ivy users.
 
 ** Dumb jump
 
-[[https://github.com/jacktasia/dumb-jump][Dumb Jump]] is an Emacs "jump to definition" package with support for multiple 
-programming languages that favors "just working". This means minimal -- and 
-ideally zero -- configuration with absolutely no stored indexes (TAGS) or 
+[[https://github.com/jacktasia/dumb-jump][Dumb Jump]] is an Emacs "jump to definition" package with support for multiple
+programming languages that favors "just working". This means minimal -- and
+ideally zero -- configuration with absolutely no stored indexes (TAGS) or
 persistent background processes.
 
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
    :ensure t
    :bind (("C-c j g" . dumb-jump-go)
-         ("C-c j b" . dumb-jump-back))
+	 ("C-c j b" . dumb-jump-back))
    :config
    (setq dumb-jump-selector 'ivy))
 #+END_SRC
 
 Dumb jump depends on [[https://github.com/BurntSushi/ripgrep#installation][ripgrep]].
- 
+
 #+BEGIN_SRC sh
 brew install ripgrep
 #+END_SRC
- 
+
 * Project Management
 ** Magit
 
@@ -141,17 +141,17 @@ brew install ripgrep
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-               :ensure t
-               :defer t
-               :bind ("C-c g" . magit-status)
-               :config
-               (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+	       :ensure t
+	       :defer t
+	       :bind ("C-c g" . magit-status)
+	       :config
+	       (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
 	       (setq magit-completing-read-function 'ivy-completing-read))
 #+END_SRC
 
 *** Fullscreen magit
 
-The following code makes magit-status run alone in the frame, and then 
+The following code makes magit-status run alone in the frame, and then
 restores the old window configuration when you quit out of magit.
 
 #+BEGIN_SRC emacs-lisp
@@ -164,7 +164,7 @@ restores the old window configuration when you quit out of magit.
   "Restores the previous window configuration and kills the magit buffer"
   (interactive)
   (kill-buffer)
-  (jump-to-register :magit-fullscreen)) 
+  (jump-to-register :magit-fullscreen))
 #+END_SRC
 
 ** Org mode
@@ -175,15 +175,15 @@ restores the old window configuration when you quit out of magit.
 #+END_SRC
 
 *** Org babel/source blocks
-Enables source blocks syntax highlights and makes the editing popup 
+Enables source blocks syntax highlights and makes the editing popup
 window stay within the same window.
 
 #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t
-        org-src-tab-acts-natively t)
+	org-src-window-setup 'current-window
+	org-src-strip-leading-and-trailing-blank-lines t
+	org-src-preserve-indentation t
+	org-src-tab-acts-natively t)
 #+END_SRC
 
 * Programming Languages
@@ -212,8 +212,8 @@ Show matching Parens.
 
 *** Company mode
 
-[[https://github.com/company-mode/company-mode][Company]] is a text completion framework for Emacs. The name stands 
-for "complete anything". It uses pluggable back-ends and front-ends 
+[[https://github.com/company-mode/company-mode][Company]] is a text completion framework for Emacs. The name stands
+for "complete anything". It uses pluggable back-ends and front-ends
 to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
@@ -223,9 +223,18 @@ to retrieve and display completion candidates.
   (global-company-mode))
 #+END_SRC
 
+*** White space clean up
+
+Add whitespace-cleanup to your before-save-hook so that every
+buffer is cleaned up before it’s saved.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'before-save-hook 'whitespace-cleanup)
+#+END_SRC
+
 ** Lisps
 *** Parinfer
-[[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation. 
+[[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation.
 
 #+BEGIN_SRC emacs-lisp
   (use-package parinfer
@@ -235,11 +244,11 @@ to retrieve and display completion candidates.
     :init
     (progn
       (setq parinfer-extensions
-            '(defaults   
-              pretty-parens  
-              paredit      
-              smart-tab     
-              smart-yank)) 
+	    '(defaults
+	      pretty-parens
+	      paredit
+	      smart-tab
+	      smart-yank))
       (add-hook 'clojure-mode-hook #'parinfer-mode)
       (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
       (add-hook 'common-lisp-mode-hook #'parinfer-mode)
@@ -248,13 +257,13 @@ to retrieve and display completion candidates.
 #+END_SRC
 
 ** Ruby
-*** Other files that should be treated as ruby code 
+*** Other files that should be treated as ruby code
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist
-             '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
+	     '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist
-             '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
+	     '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 #+END_SRC
 
 *** Flymake ruby
@@ -282,4 +291,3 @@ Handles files that mix html and js like jsx.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
 #+END_SRC
-
