@@ -188,6 +188,12 @@ window stay within the same window.
 
 * Programming Languages
 ** General
+*** Show line numbers
+
+#+BEGIN_SRC emacs-lisp
+ (add-hook 'prog-mode-hook (lambda () (linum-mode t)))
+#+END_SRC
+
 *** Electric Pair Mode
 
 Automatically pair parens, brackets, quotes, etc...
@@ -218,16 +224,6 @@ to retrieve and display completion candidates.
 #+END_SRC
 
 ** Lisps
-*** Show line numbers in lisp modes
-
-#+BEGIN_SRC emacs-lisp
- (add-hook 'clojure-mode-hook (lambda () (linum-mode t)))
- (add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode t)))
- (add-hook 'common-lisp-mode-hook (lambda () (linum-mode t)))
- (add-hook 'scheme-mode-hook (lambda () (linum-mode t)))
- (add-hook 'lisp-mode-hook (lambda () (linum-mode t)))
-#+END_SRC
-
 *** Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation. 
 
@@ -252,12 +248,6 @@ to retrieve and display completion candidates.
 #+END_SRC
 
 ** Ruby
-*** Show line numbers in ruby mode
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'ruby-mode-hook (lambda () (linum-mode t)))
-#+END_SRC
-
 *** Other files that should be treated as ruby code 
 
 #+BEGIN_SRC emacs-lisp
@@ -285,13 +275,6 @@ Handles files that mix html and js like jsx.
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
   :ensure t)
-#+END_SRC
-
-*** Show line numbers in js/web mode
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'js-mode-hook (lambda () (linum-mode t)))
-(add-hook 'web-mode-hook (lambda () (linum-mode t)))
 #+END_SRC
 
 *** Other files that should be treated as javascript code
