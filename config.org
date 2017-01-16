@@ -204,6 +204,19 @@ Show matching Parens.
 (show-paren-mode t)
 #+END_SRC
 
+*** Company Mode
+
+[[https://github.com/company-mode/company-mode][Company]] is a text completion framework for Emacs. The name stands 
+for "complete anything". It uses pluggable back-ends and front-ends 
+to retrieve and display completion candidates.
+
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode))
+#+END_SRC
+
 ** Lisps
 *** Show line numbers in lisp modes
 
