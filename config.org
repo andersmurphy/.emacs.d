@@ -75,6 +75,20 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
   (when (memq window-system '(mac ns))
 	(exec-path-from-shell-initialize))
 #+END_SRC
+* Text Manipulation
+** Move Text
+
+[[https://github.com/emacsfodder/move-text][MoveText]] is extracted from Basic edit toolkit. It allows you to move the
+current line using M-up / M-down if a region is marked, it will move the
+region instead.
+
+#+BEGIN_SRC emacs-lisp
+(use-package move-text
+  :ensure t
+  :init
+  (move-text-default-bindings))
+#+END_SRC
+
 * Navigation
 ** Recent files
 
@@ -133,7 +147,6 @@ Dumb jump depends on [[https://github.com/BurntSushi/ripgrep#installation][ripgr
 #+BEGIN_SRC sh
 brew install ripgrep
 #+END_SRC
-
 * Project Management
 ** Magit
 
@@ -185,7 +198,6 @@ window stay within the same window.
 	org-src-preserve-indentation t
 	org-src-tab-acts-natively t)
 #+END_SRC
-
 * Programming Languages
 ** General
 *** Show line numbers
