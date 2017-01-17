@@ -25,6 +25,7 @@ by spotlight.
 #+BEGIN_SRC sh
 osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/local/opt/emacs/Emacs.app" at POSIX file "/Applications"'
 #+END_SRC
+
 * Defaults
 ** Turn off alarms completly
 
@@ -62,7 +63,7 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   :ensure t
   :defer t
   :init
-  (load-theme 'spacemacs-dark t))
+  (load-theme 'spacemacs-light t))
 #+END_SRC
 
 ** Initial frame
@@ -99,6 +100,7 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
   (when (memq window-system '(mac ns))
 	(exec-path-from-shell-initialize))
 #+END_SRC
+
 * Text Manipulation
 ** Move Text
 
