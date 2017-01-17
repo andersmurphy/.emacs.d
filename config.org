@@ -51,8 +51,9 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+END_SRC
 
-* Theme
-** Zenburn
+* Appearance
+** Theme
+*** Zenburn
 
 [[https://github.com/bbatsov/zenburn-emacs][Zenburn]] is a nice low contrast theme.
 
@@ -60,6 +61,25 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
   (use-package zenburn-theme
 	       :ensure t)
 #+END_SRC
+** Initial frame
+
+*** Size
+
+Sets the initial frame to fill the height of the screen.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'initial-frame-alist '(fullscreen . fullheight))
+#+END_SRC
+
+*** Position
+
+Sets the initial frame to be flush with the top left corner of the screen.
+
+#+BEGIN_SRC emasc-lisp
+(add-to-list 'initial-frame-alist '(left . 0))
+(add-to-list 'initial-frame-alist '(top . 0))
+#+END_SRC
+
 * Shell
 ** Exec path from shell
 
