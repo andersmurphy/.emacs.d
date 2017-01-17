@@ -1,0 +1,25 @@
+* Useful Shortcuts
+
+** Files
+Open File                  C-x C-f
+Open Recent File           C-x b
+
+** Projects
+Open Projects              C-c p p
+Open Project File          C-c p f
+
+** Navigation
+Next buffer                C-x right
+Previous buffer            C-x left
+Jump to Definition         C-c j g
+Back from Definition       C-c j b
+
+** Text Manipulation
+Move line/region up        M-up
+Move line/region down      M-down
+
+** Git
+Open Magit                 C-c g
+
+
+#+STARTUP: showeverything

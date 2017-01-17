@@ -5,17 +5,12 @@
   (scroll-bar-mode -1)
   (tool-bar-mode -1))
 
-;; Disables start up messages
-(setq inhibit-startup-message t
-      inhibit-startup-echo-area-message t)
-(setq initial-scratch-message "")
-
 ;; Set up package and adds ELPA and MELPA
 (require 'package)
 (add-to-list 'package-archives
-             '("gnu" . "https://elpa.gnu.org/packages/") t)
+	     '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+	     '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 ;; Bootstrap use-package
@@ -35,5 +30,5 @@
 
 ;; Forces Custom to save all customizations in a seperate file
 (setq custom-file "~/.emacs.d/custom.el")
-;; Prevents error if the custom.el file doesn't exist 
+;; Prevents error if the custom.el file doesn't exist
 (load custom-file 'noerror)
