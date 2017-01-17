@@ -53,14 +53,17 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 
 * Appearance
 ** Theme
-*** Zenburn
+*** Solarized
 
-[[https://github.com/bbatsov/zenburn-emacs][Zenburn]] is a nice low contrast theme.
+[[https://github.com/bbatsov/solarized-emacs][Solarized]] is a nice theme with both light/dark variants.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package zenburn-theme
-	       :ensure t)
+(use-package solarized-theme
+  :ensure t
+  :init
+  (load-theme 'solarized-dark t))
 #+END_SRC
+
 ** Initial frame
 
 *** Size
