@@ -53,15 +53,16 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 
 * Appearance
 ** Theme
-*** Solarized
+*** Spacemacs
 
-[[https://github.com/bbatsov/solarized-emacs][Solarized]] is a nice theme with both light/dark variants.
+[[https://github.com/nashamri/spacemacs-theme][Spacemacs-theme]] is a nice theme with both light/dark variants.
 
 #+BEGIN_SRC emacs-lisp
-(use-package solarized-theme
+(use-package spacemacs-theme
   :ensure t
+  :defer t
   :init
-  (load-theme 'solarized-dark t))
+  (load-theme 'spacemacs-dark t))
 #+END_SRC
 
 ** Initial frame
