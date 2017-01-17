@@ -244,6 +244,22 @@ buffer is cleaned up before it’s saved.
 (add-hook 'before-save-hook 'whitespace-cleanup)
 #+END_SRC
 
+*** YASnippet
+
+[[https://github.com/joaotavora/yasnippet][YASnippet]] is a template system for Emacs. It allows you to type an
+abbreviation and automatically expand it into function templates.
+
+Snippets are stored in the /.emacs.d/snippets/ directory in directories
+that match the mode they should be available in.
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :config
+  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+  (yas-global-mode))
+#+END_SRC
+
 ** Lisps
 *** Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation.
