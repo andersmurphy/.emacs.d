@@ -1,3 +1,5 @@
+-*- buffer-read-only: t -*-
+
 * Useful Shortcuts
 
 ** Files
@@ -22,4 +24,6 @@ Move line/region down      M-down
 Open Magit                 C-c g
 
 
+
 #+STARTUP: showeverything
+Press C-x C-q to edit this file.
