@@ -13,12 +13,14 @@ Open Project File          C-c p f
 ** Navigation
 Next buffer                C-x right
 Previous buffer            C-x left
+Search in buffer           C-s
 Jump to Definition         C-c j g
 Back from Definition       C-c j b
 
 ** Text Manipulation
 Move line/region up        M-up
 Move line/region down      M-down
+Replace search with        M-q
 
 ** Git
 Open Magit                 C-c g

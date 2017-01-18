@@ -152,8 +152,7 @@ region instead.
 
 ** Ivy
 
-[[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework. Set some basic settings
-particularly useful for new Ivy users.
+[[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
@@ -163,6 +162,16 @@ particularly useful for new Ivy users.
 	       (setq ivy-count-format "(%d/%d) ")
 	       :init
 	       (ivy-mode t))
+#+END_SRC
+
+** Swiper
+
+[[https://github.com/abo-abo/swiper][Swiper]] an Ivy-enhanced alternative to isearch.
+
+#+BEGIN_SRC emacs-lisp
+(use-package swiper
+  :ensure t
+  :bind ("C-s" . swiper))
 #+END_SRC
 
 ** Projectile
