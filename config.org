@@ -52,6 +52,12 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+END_SRC
 
+** Delete selected region when typing
+
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode t)
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
