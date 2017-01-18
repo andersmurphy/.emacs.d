@@ -312,6 +312,16 @@ that match the mode they should be available in.
   (yas-global-mode))
 #+END_SRC
 
+*** Flycheck
+
+[[https://github.com/flycheck/flycheck][Flycheck]] on-the-fly syntax checking extension.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+#+END_SRC
+
 ** Lisps
 *** Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation.
@@ -346,16 +356,10 @@ that match the mode they should be available in.
 	     '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 #+END_SRC
 
-*** Flymake ruby
+*** Flycheck
 
-Adds syntax checking for ruby.
-
-#+BEGIN_SRC emacs-lisp
- (use-package flymake-ruby
-   :ensure t
-   :init
-   (add-hook 'ruby-mode-hook 'flymake-ruby-load))
-#+END_SRC
+Flycheck checks Ruby with ruby-rubocop and ruby-rubylint, falling back to
+ruby or ruby-jruby for basic syntax checking if those are not available.
 
 ** Javascript
 *** Web mode
@@ -371,3 +375,22 @@ Handles files that mix html and js like jsx.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
 #+END_SRC
+
+*** Flycheck
+
+Flycheck checks Javascript with one of javascript-eslint, javascript-jshint
+or javascript-gjslint, and then with javascript-jscs.
+
+** Json
+*** Json mode
+
+[[Major mode for editing JSON file][Json Mode]] is a major mode for editing JSON file.
+
+#+BEGIN_SRC emacs-lisp
+(use-package json-mode
+  :ensure t)
+#+END_SRC
+
+*** Flycheck
+
+Flycheck checks JSON with json-jsonlint or json-python-json.
