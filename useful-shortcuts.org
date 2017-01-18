@@ -3,19 +3,19 @@
 * Useful Shortcuts
 
 ** Files
-Open File                  C-x C-f
-Open Recent File           C-x b
+Open file                  C-x C-f
+Open recent file           C-x b
 
 ** Projects
-Open Projects              C-c p p
-Open Project File          C-c p f
+Open projects              C-c p p
+Open project file          C-c p f
 
 ** Navigation
 Next buffer                C-x right
 Previous buffer            C-x left
 Search in buffer           C-s
-Jump to Definition         C-c j g
-Back from Definition       C-c j b
+Jump to definition         C-c j g
+Back from definition       C-c j b
 
 ** Text Manipulation
 Move line/region up        M-up
