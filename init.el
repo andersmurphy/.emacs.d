@@ -1,10 +1,3 @@
-;; Removes menu scroll and tool bar
-(menu-bar-mode -1)
-
-(when (display-graphic-p)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1))
-
 ;; Set up package and adds ELPA and MELPA
 (require 'package)
 (add-to-list 'package-archives

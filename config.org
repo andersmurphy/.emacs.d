@@ -53,7 +53,23 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 #+END_SRC
 
 * Appearance
-** Splash Screen
+** Menu, tool and scroll bars
+
+Hide menu bar.
+
+#+BEGIN_SRC emacs-lisp
+(menu-bar-mode -1)
+#+END_SRC
+
+Hide scroll and tool bar when not in terminal mode.
+
+#+BEGIN_SRC emacs-lisp
+(when (display-graphic-p)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1))
+#+END_SRC
+
+** Splash screen
 
 Disables default splash screen, and sets it to show useful shortcuts.
 
