@@ -23,8 +23,8 @@ Move line/region down      M-down
 Replace search with        M-q
 
 ** Git
-Open Magit                 C-c g
-
+Open magit status          C-c g s
+Show magit blame           C-c g b
 
 
 #+STARTUP: showeverything
