@@ -100,12 +100,12 @@ Hide scroll and tool bar when not in terminal mode.
 
 ** Splash screen
 
-Disables default splash screen, and sets it to show useful shortcuts.
+Disables default splash screen.
 
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t
+(setq inhibit-startup-screen t
+	  inhibit-startup-message t
 	  inhibit-startup-echo-area-message t)
-(setq initial-buffer-choice "~/.emacs.d/useful-shortcuts.org")
 #+END_SRC
 
 ** Theme
