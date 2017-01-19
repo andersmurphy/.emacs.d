@@ -77,6 +77,14 @@ Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
 #+END_SRC
 
+** Mode line settings
+
+#+BEGIN_SRC emacs-lisp
+(line-number-mode t)
+(column-number-mode t)
+(size-indication-mode t)
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
