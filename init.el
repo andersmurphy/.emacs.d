@@ -3,7 +3,7 @@
 ;;; Commentary:
 
 ;; This is a minimal init.el set up, almost all configuration is
-;; in config.org
+;; in config.org.
 
 ;;; Code:
 
