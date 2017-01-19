@@ -95,6 +95,14 @@ Set tab width.
 (setq-default tab-width 4)
 #+END_SRC
 
+** Smart tab
+
+Tab will now contextually indent or complete.
+
+#+BEGIN_SRC emacs-lisp
+(setq tab-always-indent 'complete)
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
