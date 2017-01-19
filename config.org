@@ -192,6 +192,25 @@ region instead.
   (move-text-default-bindings))
 #+END_SRC
 
+** Flyspell
+
+Install aspell.
+
+#+BEGIN_SRC sh
+brew install aspell
+#+END_SRC
+
+Turn spellcheck on, sets it to use aspell and british spelling.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell
+  :config
+  (setq ispell-program-name "aspell"
+		ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
+#+END_SRC
+
 * Navigation
 ** Recent files
 
