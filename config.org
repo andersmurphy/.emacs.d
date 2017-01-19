@@ -279,9 +279,9 @@ Dumb jump depends on [[https://github.com/BurntSushi/ripgrep#installation][ripgr
 brew install ripgrep
 #+END_SRC
 
-** Hydra
+** Hail Hydra
 
-Once you summon the Hydra through the prefixed binding (the body +
+Once you summon the [[https://github.com/abo-abo/hydra][Hydra]] through the prefixed binding (the body +
 any one head), all heads can be called in succession with only a
 short extension.
 
@@ -293,6 +293,92 @@ command.
 #+BEGIN_SRC emacs-lisp
 (use-package hydra
 			 :ensure t)
+#+END_SRC
+
+Hail Hydra, a hydra for navigating emacs.
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hail-hydra ()
+  "Hail Hydra"
+  ("b" hydra-buffers/body "buffers" :exit t)
+  ("f" hydra-find/body "find" :exit t)
+  ("g" hydra-git/body "git" :exit t)
+  ("j" hydra-jump/body "jump" :exit t)
+  ("o" hydra-open/body "open" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
+that should be pressed together or consecutively (with little time
+between the keystrokes - by default 0.3 seconds).
+
+In this case we use it to activate hail hydra.
+
+#+BEGIN_SRC emacs-lisp
+(use-package key-chord
+			 :ensure t
+			 :config
+			 (key-chord-define-global "hh" 'hail-hydra/body)
+			 (key-chord-mode t))
+#+END_SRC
+
+*** Buffers hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-buffers ()
+  "Buffers"
+  ("s" ivy-switch-buffer "switch")
+  ("n" next-buffer "next")
+  ("p" previous-buffer "previous")
+  ("k" kill-this-buffer "kill")
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** Git hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-git ()
+  "Git"
+  ("s" magit-status "status")
+  ("b" magit-blame "blame")
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** Open hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-open ()
+  "Open"
+  ("f" find-file "file" :exit t)
+  ("p" projectile-switch-project "file in project" :exit t)
+  ("r" ivy-switch-buffer "recent file" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** Find hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-find ()
+  "Find"
+  ("b" swiper "in buffer")
+  ("f" projectile-find-file "file in project")
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** Jump hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-jump ()
+  "Jump"
+  ("g" dumb-jump-go "got to definition")
+  ("b" dumb-jump-back "back from definition")
+  ("q" nil "quit")
+)
 #+END_SRC
 
 * Project Management
