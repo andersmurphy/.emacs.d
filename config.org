@@ -53,22 +53,6 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+END_SRC
 
-** Delete selected region when typing
-
-#+BEGIN_SRC emacs-lisp
-(delete-selection-mode t)
-#+END_SRC
-
-** Use Utf-8 encoding
-
-#+BEGIN_SRC emacs-lisp
-(setq locale-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-#+END_SRC
-
 ** Warn when opening large files
 
 Warn when opening files bigger than 100MB.
@@ -87,20 +71,14 @@ Add line and column number as well as file size to mode line.
 (size-indication-mode t)
 #+END_SRC
 
-** Tab width
-
-Set tab width.
+** Use Utf-8 encoding
 
 #+BEGIN_SRC emacs-lisp
-(setq-default tab-width 4)
-#+END_SRC
-
-** Smart tab
-
-Tab will now contextually indent or complete.
-
-#+BEGIN_SRC emacs-lisp
-(setq tab-always-indent 'complete)
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 #+END_SRC
 
 * Appearance
@@ -179,6 +157,28 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
 #+END_SRC
 
 * Text Manipulation
+** Delete selected region when typing
+
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode t)
+#+END_SRC
+
+** Tab width
+
+Set tab width.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-width 4)
+#+END_SRC
+
+** Smart tab
+
+Tab will now contextually indent or complete.
+
+#+BEGIN_SRC emacs-lisp
+(setq tab-always-indent 'complete)
+#+END_SRC
+
 ** Move Text
 
 [[https://github.com/emacsfodder/move-text][MoveText]] is extracted from Basic edit toolkit. It allows you to move the
