@@ -122,7 +122,6 @@ Disables default splash screen.
 #+END_SRC
 
 ** Initial frame
-
 *** Size
 
 Sets the initial frame to fill the height of the screen.
@@ -310,20 +309,6 @@ Hail Hydra, a hydra for navigating emacs.
 )
 #+END_SRC
 
-[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
-that should be pressed together or consecutively (with little time
-between the keystrokes - by default 0.3 seconds).
-
-In this case we use it to activate hail hydra.
-
-#+BEGIN_SRC emacs-lisp
-(use-package key-chord
-			 :ensure t
-			 :config
-			 (key-chord-define-global "hh" 'hail-hydra/body)
-			 (key-chord-mode t))
-#+END_SRC
-
 *** Buffers hydra
 
 #+BEGIN_SRC emacs-lisp
@@ -391,6 +376,20 @@ In this case we use it to activate hail hydra.
   ("k" describe-key "describe key")
   ("q" nil "quit")
 )
+#+END_SRC
+
+** Key Chord
+
+[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
+that should be pressed together or consecutively (with little time
+between the keystrokes - by default 0.3 seconds).
+
+#+BEGIN_SRC emacs-lisp
+(use-package key-chord
+			 :ensure t
+			 :config
+			 (key-chord-define-global "hh" 'hail-hydra/body)
+			 (key-chord-mode t))
 #+END_SRC
 
 * Project Management
