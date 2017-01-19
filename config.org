@@ -126,7 +126,7 @@ Disables default splash screen, and sets it to show useful shortcuts.
 
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t
-      inhibit-startup-echo-area-message t)
+	  inhibit-startup-echo-area-message t)
 (setq initial-buffer-choice "~/.emacs.d/useful-shortcuts.org")
 #+END_SRC
 
@@ -169,7 +169,7 @@ Sets the initial frame to be flush with the top left corner of the screen.
 
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
-    :ensure t)
+	:ensure t)
 #+END_SRC
 
 Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
@@ -207,12 +207,12 @@ region instead.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-	       :ensure t
-	       :config
-	       (setq ivy-use-virtual-buffers t)
-	       (setq ivy-count-format "(%d/%d) ")
-	       :init
-	       (ivy-mode t))
+		   :ensure t
+		   :config
+		   (setq ivy-use-virtual-buffers t)
+		   (setq ivy-count-format "(%d/%d) ")
+		   :init
+		   (ivy-mode t))
 #+END_SRC
 
 ** Swiper
@@ -231,11 +231,11 @@ region instead.
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
-	     :ensure t
-	     :config
-	     (setq projectile-completion-system 'ivy)
-	     :init
-	     (projectile-global-mode))
+		 :ensure t
+		 :config
+		 (setq projectile-completion-system 'ivy)
+		 :init
+		 (projectile-global-mode))
 #+END_SRC
 
 ** Dumb jump
@@ -266,13 +266,13 @@ brew install ripgrep
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-	       :ensure t
-	       :defer t
-	       :bind (("C-c g s" . magit-status)
-		      ("C-c g b" . magit-blame))
-	       :config
-	       (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
-	       (setq magit-completing-read-function 'ivy-completing-read))
+		   :ensure t
+		   :defer t
+		   :bind (("C-c g s" . magit-status)
+			  ("C-c g b" . magit-blame))
+		   :config
+		   (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+		   (setq magit-completing-read-function 'ivy-completing-read))
 #+END_SRC
 
 *** Fullscreen magit
@@ -311,6 +311,7 @@ window stay within the same window.
 	org-src-preserve-indentation t
 	org-src-tab-acts-natively t)
 #+END_SRC
+
 * Programming Languages
 ** General
 *** Show line numbers
@@ -389,22 +390,22 @@ that match the mode they should be available in.
 
 #+BEGIN_SRC emacs-lisp
   (use-package parinfer
-    :ensure t
-    :bind
-    (("C-," . parinfer-toggle-mode))
-    :init
-    (progn
-      (setq parinfer-extensions
-	    '(defaults
-	      pretty-parens
-	      paredit
-	      smart-tab
-	      smart-yank))
-      (add-hook 'clojure-mode-hook #'parinfer-mode)
-      (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-      (add-hook 'common-lisp-mode-hook #'parinfer-mode)
-      (add-hook 'scheme-mode-hook #'parinfer-mode)
-      (add-hook 'lisp-mode-hook #'parinfer-mode)))
+	:ensure t
+	:bind
+	(("C-," . parinfer-toggle-mode))
+	:init
+	(progn
+	  (setq parinfer-extensions
+		'(defaults
+		  pretty-parens
+		  paredit
+		  smart-tab
+		  smart-yank))
+	  (add-hook 'clojure-mode-hook #'parinfer-mode)
+	  (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+	  (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+	  (add-hook 'scheme-mode-hook #'parinfer-mode)
+	  (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+END_SRC
 
 ** Ruby
@@ -412,9 +413,9 @@ that match the mode they should be available in.
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist
-	     '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
+		 '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist
-	     '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
+		 '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 #+END_SRC
 
 *** Flycheck
