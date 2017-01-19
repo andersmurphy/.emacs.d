@@ -278,6 +278,19 @@ Dumb jump depends on [[https://github.com/BurntSushi/ripgrep#installation][ripgr
 #+BEGIN_SRC sh
 brew install ripgrep
 #+END_SRC
+
+** Which key
+
+[[https://github.com/justbur/emacs-which-key][Which-key]] is a minor mode for Emacs that displays the key bindings following
+your currently entered incomplete command (a prefix) in a pop-up.
+
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+#+END_SRC
+
 * Project Management
 ** Magit
 
