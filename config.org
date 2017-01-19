@@ -79,10 +79,20 @@ Warn when opening files bigger than 100MB.
 
 ** Mode line settings
 
+Add line and column number as well as file size to mode line.
+
 #+BEGIN_SRC emacs-lisp
 (line-number-mode t)
 (column-number-mode t)
 (size-indication-mode t)
+#+END_SRC
+
+** Tab width
+
+Set tab width.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-width 4)
 #+END_SRC
 
 * Appearance
