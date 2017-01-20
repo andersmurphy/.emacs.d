@@ -327,8 +327,8 @@ Hail Hydra, a hydra for navigating emacs.
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-git ()
   "Git"
-  ("s" magit-status "status")
-  ("b" magit-blame "blame")
+  ("s" magit-status "status" :exit t)
+  ("b" magit-blame "blame" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
