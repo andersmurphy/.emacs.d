@@ -210,6 +210,15 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   (add-hook 'prog-mode-hook #'flyspell-prog-mode))
 #+END_SRC
 
+** Expand Region
+
+[[https://github.com/magnars/expand-region.el][Expand-region]]  increases the selected region by semantic units.
+
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+			 :ensure t)
+#+END_SRC
+
 * Navigation
 ** Recent files
 
