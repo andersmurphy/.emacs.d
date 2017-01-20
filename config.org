@@ -380,11 +380,17 @@ Hail Hydra, a hydra for navigating emacs.
 *** Help hydra
 
 #+BEGIN_SRC emacs-lisp
+(defun close-help-window-if-present ()
+  (interactive)
+  (when (get-buffer "*Help*")
+	(kill-buffer "*Help*")
+	(delete-window)))
+
 (defhydra hydra-help (:foreign-keys warn)
   "Help"
   ("f" describe-function "describe function")
   ("k" describe-key "describe key")
-  ("q" nil "quit")
+  ("q" close-help-window-if-present "quit" :exit t)
 )
 #+END_SRC
 
