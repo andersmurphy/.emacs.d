@@ -314,6 +314,7 @@ Hail Hydra, a hydra for navigating emacs.
   ("h" hydra-help/body "help" :exit t)
   ("j" hydra-jump/body "jump" :exit t)
   ("o" hydra-open/body "open" :exit t)
+  ("t" hydra-text/body "text" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
@@ -383,6 +384,19 @@ Hail Hydra, a hydra for navigating emacs.
   "Help"
   ("f" describe-function "describe function")
   ("k" describe-key "describe key")
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** Text hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-text (:foreign-keys warn)
+  "Text"
+  ("e" er/expand-region "expand region")
+  ("c" er/contract-region "contract region")
+  ("n" move-text-up "move region up")
+  ("p" move-text-down "move region down")
   ("q" nil "quit")
 )
 #+END_SRC
