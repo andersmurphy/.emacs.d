@@ -324,7 +324,7 @@ Hail Hydra, a hydra for navigating emacs.
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-buffers (:foreign-keys warn)
   "Buffers"
-  ("s" ivy-switch-buffer "switch")
+  ("s" ivy-switch-buffer "switch" :exit t)
   ("n" next-buffer "next")
   ("p" previous-buffer "previous")
   ("k" kill-this-buffer "kill")
