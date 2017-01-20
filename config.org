@@ -322,7 +322,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Buffers hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffers ()
+(defhydra hydra-buffers (:foreign-keys warn)
   "Buffers"
   ("s" ivy-switch-buffer "switch")
   ("n" next-buffer "next")
@@ -335,7 +335,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Git hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-git ()
+(defhydra hydra-git (:foreign-keys warn)
   "Git"
   ("s" magit-status "status" :exit t)
   ("b" magit-blame "blame" :exit t)
@@ -346,7 +346,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Open hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-open ()
+(defhydra hydra-open (:foreign-keys warn)
   "Open"
   ("f" find-file "file" :exit t)
   ("p" projectile-switch-project "file in project" :exit t)
@@ -358,7 +358,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Find hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-find ()
+(defhydra hydra-find (:foreign-keys warn)
   "Find"
   ("b" swiper "in buffer")
   ("f" projectile-find-file "file in project")
@@ -369,7 +369,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Jump hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-jump ()
+(defhydra hydra-jump (:foreign-keys warn)
   "Jump"
   ("g" dumb-jump-go "got to definition")
   ("b" dumb-jump-back "back from definition")
@@ -380,7 +380,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Help hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-help ()
+(defhydra hydra-help (:foreign-keys warn)
   "Help"
   ("f" describe-function "describe function")
   ("k" describe-key "describe key")
