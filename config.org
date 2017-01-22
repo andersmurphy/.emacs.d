@@ -116,9 +116,35 @@ Disables default splash screen.
 #+BEGIN_SRC emacs-lisp
 (use-package spacemacs-theme
   :ensure t
-  :defer t
-  :init
-  (load-theme 'spacemacs-light t))
+  :defer t)
+#+END_SRC
+
+*** Set light/dark themes
+
+Sets light/dark themes, and loads initial theme.
+
+#+BEGIN_SRC emacs-lisp
+(setq dark-theme 'spacemacs-dark)
+(setq light-theme 'spacemacs-light)
+
+(setq active-theme dark-theme)
+
+(load-theme active-theme t)
+#+END_SRC
+
+*** Toggle light/dark
+
+Function for toggling between light and dark themes.
+
+#+BEGIN_SRC emacs-lisp
+
+(defun toggle-dark-light-theme ()
+  (interactive)
+  (disable-theme active-theme)
+  (if (eq active-theme light-theme)
+	  (setq active-theme dark-theme)
+	  (setq active-theme light-theme))
+  (load-theme active-theme t))
 #+END_SRC
 
 ** Initial frame
@@ -315,6 +341,7 @@ Hail Hydra, a hydra for navigating emacs.
   ("j" hydra-jump/body "jump" :exit t)
   ("o" hydra-open/body "open" :exit t)
   ("t" hydra-text/body "text" :exit t)
+  ("+" toggle-dark-light-theme "toggle themes")
   ("q" nil "quit")
 )
 #+END_SRC
