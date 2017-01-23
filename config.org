@@ -350,7 +350,7 @@ command.
 Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hail-hydra ()
+(defhydra hail-hydra (:foreign-keys warn)
   "Hail Hydra"
   ("b" hydra-buffers/body "buffers" :exit t)
   ("e" hydra-edit/body "edit" :exit t)
