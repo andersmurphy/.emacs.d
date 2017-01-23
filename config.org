@@ -458,9 +458,7 @@ Hail Hydra, a hydra for navigating emacs.
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-test (:foreign-keys warn)
   "Test"
-  ("a" ruby-test-run "run all test in file" :exit t)
-  ("r" ruby-test-run-at-point "run test at pointer" :exit t)
-  ("s" ruby-test-toggle-implementation-and-specification "switch between test and implementation")
+  ("s" projectile-toggle-between-implementation-and-test  "switch between test and implementation")
   ("q" nil "quit")
 )
 #+END_SRC
@@ -660,30 +658,6 @@ Binds a key to comment/uncomment a line or region if selected.
 
 Flycheck checks Ruby with ruby-rubocop and ruby-rubylint, falling back to
 ruby or ruby-jruby for basic syntax checking if those are not available.
-
-*** Ruby test mode
-
-[[https://github.com/r0man/ruby-test-mode][Ruby-test-mode]] is a  minor mode for Behaviour and Test Driven Development
-in Ruby.
-
-#+BEGIN_SRC emacs-lisp
-(use-package ruby-test-mode
-			 :ensure t
-			 :init (add-hook 'ruby-mode-hook 'ruby-test-mode))
-#+END_SRC
-
-When ruby-test-mode finishes tests, automatically jump to the test buffer
-and scroll to the bottom.
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'compilation-finish-functions
-		  (lambda (buf strg)
-			(switch-to-buffer-other-window "*compilation*")
-			(read-only-mode)
-			(goto-char (point-max))
-			(local-set-key (kbd "q")
-						   (lambda () (interactive) (quit-restore-window)))))
-#+END_SRC
 
 ** Javascript
 *** Web mode
