@@ -292,7 +292,8 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :ensure t
-  :bind ("C-s" . swiper))
+  :bind ("C-s" . swiper)
+		("s-f" . swiper))
 #+END_SRC
 
 ** Projectile
