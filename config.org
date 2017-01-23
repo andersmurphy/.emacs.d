@@ -91,6 +91,13 @@ Make scrolling in buffers less jumpy.
 	  scroll-preserve-screen-position 1)
 #+END_SRC
 
+** Display Help in same window
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'display-buffer-alist
+			 '("*Help*" display-buffer-same-window))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
@@ -417,17 +424,11 @@ Hail Hydra, a hydra for navigating emacs.
 *** Help hydra
 
 #+BEGIN_SRC emacs-lisp
-(defun close-help-window-if-present ()
-  (interactive)
-  (when (get-buffer "*Help*")
-	(kill-buffer "*Help*")
-	(delete-window)))
-
 (defhydra hydra-help (:foreign-keys warn)
   "Help"
-  ("f" describe-function "describe function")
-  ("k" describe-key "describe key")
-  ("q" close-help-window-if-present "quit" :exit t)
+  ("f" describe-function "describe function" :exit t)
+  ("k" describe-key "describe key" :exit t)
+  ("q" nil "quit" :exit t)
 )
 #+END_SRC
 
