@@ -91,6 +91,12 @@ Make scrolling in buffers less jumpy.
 	  scroll-preserve-screen-position 1)
 #+END_SRC
 
+** Truncate lines
+
+#+BEGIN_SRC emacs-lisp
+(setq-default truncate-lines t)
+#+END_SRC
+
 ** Display Help in same window
 
 #+BEGIN_SRC emacs-lisp
