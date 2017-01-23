@@ -315,6 +315,12 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 		 (projectile-global-mode))
 #+END_SRC
 
+You can discover projects in a folder with the command:
+
+#+BEGIN_SRC
+M-x projectile-discover-projects-in-directory
+#+END_SRC
+
 ** Dumb jump
 
 [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] is an Emacs "jump to definition" package with support for multiple
