@@ -377,6 +377,7 @@ Hail Hydra, a hydra for navigating emacs.
   ("h" hydra-help/body "help" :exit t)
   ("j" hydra-jump/body "jump" :exit t)
   ("o" hydra-open/body "open" :exit t)
+  ("s" shell "shell" :exit t)
   ("t" hydra-test/body "test" :exit t)
   ("+" toggle-dark-light-theme "toggle themes")
   ("q" nil "quit")
