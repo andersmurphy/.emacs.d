@@ -26,6 +26,24 @@ by spotlight.
 osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/local/opt/emacs/Emacs.app" at POSIX file "/Applications"'
 #+END_SRC
 
+* External Dependencies
+** The Silver Searcher
+
+The search functionality of some packages (dumb-jump and projectile) depends
+on the silver search for speed.
+
+#+BEGIN_SRC sh
+brew install the_silver_searcher
+#+END_SRC
+
+** Aspell
+
+Spellcheck depends on aspell.
+
+#+BEGIN_SRC sh
+brew install aspell
+#+END_SRC
+
 * Defaults
 ** Turn off alarms completly
 
@@ -242,12 +260,6 @@ region instead.
 
 ** Flyspell
 
-Install aspell.
-
-#+BEGIN_SRC sh
-brew install aspell
-#+END_SRC
-
 Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
@@ -335,12 +347,6 @@ persistent background processes.
 	 ("C-c j b" . dumb-jump-back))
    :config
    (setq dumb-jump-selector 'ivy))
-#+END_SRC
-
-Dumb jump depends on [[https://github.com/BurntSushi/ripgrep#installation][ripgrep]].
-
-#+BEGIN_SRC sh
-brew install ripgrep
 #+END_SRC
 
 ** Hail Hydra
