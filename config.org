@@ -585,6 +585,24 @@ that match the mode they should be available in.
   :init (global-flycheck-mode))
 #+END_SRC
 
+*** Comment/uncomment a line/region
+
+Binds a key to comment/uncomment a line or region if selected.
+
+#+BEGIN_SRC emacs-lisp
+(defun comment-or-uncomment-region-or-line ()
+	"Comments or uncomments the region or the current line
+	 if there's no active region."
+	(interactive)
+	(let (beg end)
+		(if (region-active-p)
+			(setq beg (region-beginning) end (region-end))
+			(setq beg (line-beginning-position) end (line-end-position)))
+		(comment-or-uncomment-region beg end)))
+
+(global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
+#+END_SRC
+
 ** Lisps
 *** Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation.
