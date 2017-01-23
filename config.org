@@ -672,6 +672,19 @@ in Ruby.
 			 :init (add-hook 'ruby-mode-hook 'ruby-test-mode))
 #+END_SRC
 
+When ruby-test-mode finishes tests, automatically jump to the test buffer
+and scroll to the bottom.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'compilation-finish-functions
+		  (lambda (buf strg)
+			(switch-to-buffer-other-window "*compilation*")
+			(read-only-mode)
+			(goto-char (point-max))
+			(local-set-key (kbd "q")
+						   (lambda () (interactive) (quit-restore-window)))))
+#+END_SRC
+
 ** Javascript
 *** Web mode
 Handles files that mix html and js like jsx.
