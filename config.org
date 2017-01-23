@@ -345,12 +345,12 @@ Hail Hydra, a hydra for navigating emacs.
 (defhydra hail-hydra ()
   "Hail Hydra"
   ("b" hydra-buffers/body "buffers" :exit t)
+  ("e" hydra-edit/body "edit" :exit t)
   ("f" hydra-find/body "find" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
   ("j" hydra-jump/body "jump" :exit t)
   ("o" hydra-open/body "open" :exit t)
-  ("t" hydra-text/body "text" :exit t)
   ("+" toggle-dark-light-theme "toggle themes")
   ("q" nil "quit")
 )
@@ -431,10 +431,10 @@ Hail Hydra, a hydra for navigating emacs.
 )
 #+END_SRC
 
-*** Text hydra
+*** Edit hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-text (:foreign-keys warn)
+(defhydra hydra-edit (:foreign-keys warn)
   "Text"
   ("e" er/expand-region "expand region")
   ("c" er/contract-region "contract region")
