@@ -622,6 +622,17 @@ that match the mode they should be available in.
 Flycheck checks Ruby with ruby-rubocop and ruby-rubylint, falling back to
 ruby or ruby-jruby for basic syntax checking if those are not available.
 
+*** Ruby test mode
+
+[[https://github.com/r0man/ruby-test-mode][Ruby-test-mode]] is a  minor mode for Behaviour and Test Driven Development
+in Ruby.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ruby-test-mode
+			 :ensure t
+			 :init (add-hook 'ruby-mode-hook 'ruby-test-mode))
+#+END_SRC
+
 ** Javascript
 *** Web mode
 Handles files that mix html and js like jsx.
