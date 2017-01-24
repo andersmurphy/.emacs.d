@@ -206,7 +206,7 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
 
-* Key Bindings
+* Global Key Bindings
 ** Contextual Open
 
 If in project use find in file, otherwise use find file.
@@ -221,6 +221,18 @@ If in project use find in file, otherwise use find file.
 	(call-interactively 'find-file)))
 
 (global-set-key (kbd "s-o") 'contextual-open)
+#+END_SRC
+
+** Recent buffers/files
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-e") 'ivy-switch-buffer)
+#+END_SRC
+
+** Close window
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-w") 'delete-window)
 #+END_SRC
 
 ** Key Chord
@@ -374,8 +386,7 @@ persistent background processes.
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
    :ensure t
-   :bind (("C-c j g" . dumb-jump-go)
-	 ("C-c j b" . dumb-jump-back))
+   :bind ("s-b" . dumb-jump-go)
    :config
    (setq dumb-jump-selector 'ivy))
 #+END_SRC
