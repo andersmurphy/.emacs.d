@@ -634,6 +634,17 @@ Binds a key to comment/uncomment a line or region if selected.
 (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
 #+END_SRC
 
+*** Compilation buffers display ANSI
+
+#+BEGIN_SRC emacs-lisp
+(ignore-errors
+  (require 'ansi-color)
+  (defun colorize-compilation-buffer ()
+	(when (eq major-mode 'compilation-mode)
+	  (ansi-color-apply-on-region compilation-filter-start (point-max))))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+#+END_SRC
+
 ** Lisps
 *** Parinfer
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation.
