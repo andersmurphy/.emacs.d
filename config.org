@@ -369,29 +369,37 @@ Hail Hydra, a hydra for navigating emacs.
 #+BEGIN_SRC emacs-lisp
 (defhydra hail-hydra (:foreign-keys warn)
   "Hail Hydra"
-  ("b" hydra-buffers/body "buffers" :exit t)
-  ("e" hydra-edit/body "edit" :exit t)
-  ("f" hydra-find/body "find" :exit t)
+  ("b" hydra-buffer/body "buffer" :exit t)
+  ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
-  ("j" hydra-jump/body "jump" :exit t)
-  ("o" hydra-open/body "open" :exit t)
-  ("s" shell "shell" :exit t)
-  ("t" hydra-test/body "test" :exit t)
+  ("p" hydra-project/body "project" :exit t)
   ("+" toggle-dark-light-theme "toggle themes")
   ("q" nil "quit")
 )
 #+END_SRC
 
-*** Buffers hydra
+*** Buffer hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffers (:foreign-keys warn)
-  "Buffers"
+(defhydra hydra-buffer (:foreign-keys warn)
+  "Buffer"
   ("s" ivy-switch-buffer "switch" :exit t)
   ("n" next-buffer "next")
   ("p" previous-buffer "previous")
   ("k" kill-this-buffer "kill")
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** File hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-file (:foreign-keys warn)
+  "File"
+  ("o" find-file "open file" :exit t)
+  ("r" ivy-switch-buffer "recent file" :exit t)
+  ("s" save-buffer "save file" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
@@ -407,40 +415,6 @@ Hail Hydra, a hydra for navigating emacs.
 )
 #+END_SRC
 
-*** Open hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-open (:foreign-keys warn)
-  "Open"
-  ("f" find-file "file" :exit t)
-  ("p" projectile-switch-project "file in project" :exit t)
-  ("r" ivy-switch-buffer "recent file" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Find hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-find (:foreign-keys warn)
-  "Find"
-  ("b" swiper "in buffer")
-  ("f" projectile-find-file "file in project")
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Jump hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-jump (:foreign-keys warn)
-  "Jump"
-  ("g" dumb-jump-go "got to definition")
-  ("b" dumb-jump-back "back from definition")
-  ("q" nil "quit")
-)
-#+END_SRC
-
 *** Help hydra
 
 #+BEGIN_SRC emacs-lisp
@@ -452,26 +426,16 @@ Hail Hydra, a hydra for navigating emacs.
 )
 #+END_SRC
 
-*** Edit hydra
+*** Project hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-edit (:foreign-keys warn)
-  "Edit"
-  ("e" er/expand-region "expand region")
-  ("c" er/contract-region "contract region")
-  ("n" move-text-up "move region up")
-  ("p" move-text-down "move region down")
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Test hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-test (:foreign-keys warn)
-  "Test"
-  ("s" projectile-toggle-between-implementation-and-test  "switch between test and implementation")
-  ("p" projectile-test-project "runs all tests in project" :exit t)
+(defhydra hydra-project (:foreign-keys warn)
+  "Project"
+  ("o" projectile-switch-project "open project" :exit t)
+  ("f" projectile-find-file "find file in project" :exit t)
+  ("s" projectile-ag "search project")
+  ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation")
+  ("T" projectile-test-project "runs all tests" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
