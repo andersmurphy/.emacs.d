@@ -376,7 +376,7 @@ You can discover projects in a folder with the command:
 M-x projectile-discover-projects-in-directory
 #+END_SRC
 
-** Dumb jump
+** Dumb Jump
 
 [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] is an Emacs "jump to definition" package with support for multiple
 programming languages that favors "just working". This means minimal -- and
@@ -517,6 +517,16 @@ Hail Hydra, a hydra for navigating emacs.
   ("p" projectile-test-project "runs all tests in project" :exit t)
   ("q" nil "quit")
 )
+#+END_SRC
+
+** Ag (Silver Searcher)
+
+[[https://github.com/Wilfred/ag.el][Ag]] allows you to search using ag from inside Emacs. You can filter
+by file type, edit results inline, or find files.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ag
+  :ensure t)
 #+END_SRC
 
 * Project Management
