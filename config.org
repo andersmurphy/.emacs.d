@@ -206,6 +206,37 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
 
+* Key Bindings
+** Contextual Open
+
+If in project use find in file, otherwise use find file.
+
+#+BEGIN_SRC emacs-lisp
+(defun contextual-open ()
+  "Call `projectile-switch-project' if `projectile-project-p', otherwise
+   fallback to `find-file'."
+  (interactive)
+  (if (projectile-project-p)
+	  (projectile-find-file)
+	(call-interactively 'find-file)))
+
+(global-set-key (kbd "s-o") 'contextual-open)
+#+END_SRC
+
+** Key Chord
+
+[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
+that should be pressed together or consecutively (with little time
+between the keystrokes - by default 0.3 seconds).
+
+#+BEGIN_SRC emacs-lisp
+(use-package key-chord
+			 :ensure t
+			 :config
+			 (key-chord-define-global "hh" 'hail-hydra/body)
+			 (key-chord-mode t))
+#+END_SRC
+
 * Shell
 ** Exec path from shell
 
@@ -475,20 +506,6 @@ Hail Hydra, a hydra for navigating emacs.
   ("p" projectile-test-project "runs all tests in project" :exit t)
   ("q" nil "quit")
 )
-#+END_SRC
-
-** Key Chord
-
-[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
-that should be pressed together or consecutively (with little time
-between the keystrokes - by default 0.3 seconds).
-
-#+BEGIN_SRC emacs-lisp
-(use-package key-chord
-			 :ensure t
-			 :config
-			 (key-chord-define-global "hh" 'hail-hydra/body)
-			 (key-chord-mode t))
 #+END_SRC
 
 * Project Management
