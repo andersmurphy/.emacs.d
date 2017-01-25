@@ -388,7 +388,7 @@ Hail Hydra, a hydra for navigating emacs.
   ("s" ivy-switch-buffer "switch" :exit t)
   ("n" next-buffer "next")
   ("p" previous-buffer "previous")
-  ("k" kill-this-buffer "kill")
+  ("k" kill-this-buffer "kill" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
