@@ -383,7 +383,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Buffer hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffer (:foreign-keys warn)
+(defhydra hydra-buffer (:foreign-keys warn :columns 3)
   "Buffer"
   ("s" ivy-switch-buffer "switch" :exit t)
   ("n" next-buffer "next")
@@ -396,7 +396,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** File hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-file (:foreign-keys warn)
+(defhydra hydra-file (:foreign-keys warn :columns 3)
   "File"
   ("o" find-file "open file" :exit t)
   ("r" ivy-switch-buffer "recent file" :exit t)
@@ -408,7 +408,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Git hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-git (:foreign-keys warn)
+(defhydra hydra-git (:foreign-keys warn :columns 3)
   "Git"
   ("s" magit-status "status" :exit t)
   ("b" magit-blame "blame" :exit t)
@@ -419,7 +419,7 @@ Hail Hydra, a hydra for navigating emacs.
 *** Help hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-help (:foreign-keys warn)
+(defhydra hydra-help (:foreign-keys warn :columns 3)
   "Help"
   ("f" describe-function "describe function" :exit t)
   ("k" describe-key "describe key" :exit t)
@@ -430,10 +430,12 @@ Hail Hydra, a hydra for navigating emacs.
 *** Project hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-project (:foreign-keys warn)
+(defhydra hydra-project (:foreign-keys warn :columns 3)
   "Project"
   ("o" projectile-switch-project "open project" :exit t)
   ("f" projectile-find-file "find file in project" :exit t)
+  ("j" dumb-jump-go "jump to definition")
+  ("r" dumb-jump-back "return from definition")
   ("s" projectile-ag "search project")
   ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation")
   ("T" projectile-test-project "runs all tests" :exit t)
