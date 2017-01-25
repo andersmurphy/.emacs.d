@@ -222,6 +222,19 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
 	(exec-path-from-shell-initialize))
 #+END_SRC
 
+
+** Toggle Shell
+If shell window is open close it otherwise open it.
+
+#+BEGIN_SRC emacs-lisp
+(defun toggle-shell ()
+   "If shell window is open close it otherwise open it."
+   (interactive)
+   (if (get-buffer-window "*shell*")
+	  (delete-window (get-buffer-window "*shell*"))
+	(shell)))
+#+END_SRC
+
 * Text Manipulation
 ** Delete selected region when typing
 
@@ -374,7 +387,7 @@ Hail Hydra, a hydra for navigating emacs.
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
   ("p" hydra-project/body "project" :exit t)
-  ("s" shell "shell" :exit t)
+  ("s" toggle-shell "shell" :exit t)
   ("+" toggle-dark-light-theme "light/dark")
   ("q" nil "quit")
 )
