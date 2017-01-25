@@ -367,14 +367,15 @@ command.
 Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hail-hydra (:foreign-keys warn)
+(defhydra hail-hydra (:foreign-keys warn :columns 3)
   "Hail Hydra"
   ("b" hydra-buffer/body "buffer" :exit t)
   ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
   ("p" hydra-project/body "project" :exit t)
-  ("+" toggle-dark-light-theme "toggle themes")
+  ("s" shell "shell" :exit t)
+  ("+" toggle-dark-light-theme "light/dark")
   ("q" nil "quit")
 )
 #+END_SRC
