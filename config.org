@@ -388,6 +388,7 @@ Hail Hydra, a hydra for navigating emacs.
   ("h" hydra-help/body "help" :exit t)
   ("p" hydra-project/body "project" :exit t)
   ("s" toggle-shell "shell" :exit t)
+  ("w" hydra-window/body "window" :exit t)
   ("+" toggle-dark-light-theme "light/dark")
   ("q" nil "quit")
 )
@@ -452,6 +453,19 @@ Hail Hydra, a hydra for navigating emacs.
   ("s" projectile-ag "search project")
   ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation")
   ("T" projectile-test-project "runs all tests" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** Window hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-window (:foreign-keys warn :columns 3)
+  "Window"
+  ("h" split-window-below "horizontal split" :exit t)
+  ("k" delete-window "kill window" :exit t)
+  ("s" other-window "switch window")
+  ("v" split-window-right "vertical split" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
