@@ -395,6 +395,7 @@ Hail Hydra, a hydra for navigating emacs.
 (defhydra hail-hydra (:foreign-keys warn :columns 3)
   "Hail Hydra"
   ("b" hydra-buffer/body "buffer" :exit t)
+  ("c" hydra-config/body "config" :exit t)
   ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
@@ -415,6 +416,17 @@ Hail Hydra, a hydra for navigating emacs.
   ("n" next-buffer "next")
   ("p" previous-buffer "previous")
   ("k" kill-this-buffer "kill" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+*** Config hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-config (:foreign-keys warn :columns 3)
+  "Config"
+  ("o" (find-file  "~/.emacs.d/config.org") "open emacs config" :exit t)
+  ("r" (load-file  "~/.emacs.d/init.el") "reload emacs config" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
