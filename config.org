@@ -504,9 +504,9 @@ Hail Hydra, a hydra for navigating emacs.
 (defhydra hydra-window (:foreign-keys warn :columns 3)
   "Window"
   ("h" split-window-below "horizontal split")
-  ("k" delete-window "kill window")
+  ("k" delete-window "kill window" :exit t)
   ("s" other-window "switch window")
-  ("v" split-window-right "vertical split" :exit t)
+  ("v" split-window-right "vertical split")
   ("q" nil "quit")
 )
 #+END_SRC
