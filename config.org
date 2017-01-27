@@ -305,6 +305,21 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 			 :ensure t)
 #+END_SRC
 
+** Undo tree
+
+[[https://www.emacswiki.org/emacs/UndoTree][Undo-tree]] enables conventional undo-redo behaviour.
+
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :ensure t
+  :bind (("s-Z" . undo-tree-redo)
+		 ("s-z" . undo-tree-undo))
+  :config
+  (setq undo-tree-history-directory-alist
+		`((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t))
+#+END_SRC
+
 * Navigation
 ** Recent files
 
