@@ -122,6 +122,18 @@ Make scrolling in buffers less jumpy.
 			 '("*Help*" display-buffer-same-window))
 #+END_SRC
 
+** Super save
+
+[[https://github.com/bbatsov/super-save][Super-save]] auto-saves your buffers, when certain events happen - e.g. you
+switch between buffers, an Emacs frame loses focus, etc.
+
+#+BEGIN_SRC emacs-lisp
+(use-package super-save
+  :ensure t
+  :config
+  (super-save-mode +1))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
