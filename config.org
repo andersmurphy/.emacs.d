@@ -426,7 +426,7 @@ Hail Hydra, a hydra for navigating emacs.
   "File"
   ("o" find-file "open file" :exit t)
   ("r" ivy-switch-buffer "recent file" :exit t)
-  ("s" save-buffer "save file" :exit t)
+  ("s" swiper "search file" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
