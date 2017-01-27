@@ -461,6 +461,8 @@ Hail Hydra, a hydra for navigating emacs.
   "Help"
   ("f" describe-function "describe function" :exit t)
   ("k" describe-key "describe key" :exit t)
+  ("m" describe-mode "describe mode" :exit t)
+  ("v" describe-variable "describe variable" :exit t)
   ("q" nil "quit" :exit t)
 )
 #+END_SRC
