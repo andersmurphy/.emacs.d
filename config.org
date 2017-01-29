@@ -521,6 +521,7 @@ Hail Hydra, a hydra for navigating emacs.
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-window (:foreign-keys warn :columns 3)
   "Window"
+  ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
   ("h" split-window-below "horizontal split" :exit t)
   ("k" delete-window "kill window" :exit t)
   ("s" other-window "switch window")
