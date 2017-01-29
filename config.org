@@ -510,7 +510,7 @@ Hail Hydra, a hydra for navigating emacs.
   ("j" dumb-jump-go "jump to definition")
   ("r" dumb-jump-back "return from definition")
   ("s" projectile-ag "search project")
-  ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation")
+  ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
   ("T" projectile-test-project "runs all tests" :exit t)
   ("q" nil "quit")
 )
