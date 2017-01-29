@@ -521,10 +521,10 @@ Hail Hydra, a hydra for navigating emacs.
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-window (:foreign-keys warn :columns 3)
   "Window"
-  ("h" split-window-below "horizontal split")
+  ("h" split-window-below "horizontal split" :exit t)
   ("k" delete-window "kill window" :exit t)
   ("s" other-window "switch window")
-  ("v" split-window-right "vertical split")
+  ("v" split-window-right "vertical split" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
