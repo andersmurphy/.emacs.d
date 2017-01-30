@@ -452,7 +452,8 @@ Hail Hydra, a hydra for navigating emacs.
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
   ("p" hydra-project/body "project" :exit t)
-  ("s" toggle-shell "shell" :exit t)
+  ("s" hydra-snippet/body "snippet" :exit t)
+  ("t" toggle-shell "terminal" :exit t)
   ("w" hydra-window/body "window" :exit t)
   ("+" toggle-dark-light-theme "light/dark" :exit t)
   ("q" nil "quit")
@@ -532,6 +533,17 @@ Hail Hydra, a hydra for navigating emacs.
   ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
   ("T" projectile-test-project "runs all tests" :exit t)
   ("q" nil "quit")
+)
+#+END_SRC
+
+*** Snippet hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-snippet (:foreign-keys warn :columns 3)
+  "Snippet"
+  ("n" open-new-snippet-below "new snippet" :exit t)
+  ("e" yas-visit-snippet-file "edit snippet" :exit t)
+  ("q" nil "quit" :exit t)
 )
 #+END_SRC
 
@@ -683,6 +695,16 @@ that match the mode they should be available in.
   :config
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode))
+#+END_SRC
+
+Opens yas-new-snippet in a window below the current one.
+
+#+BEGIN_SRC emacs-lisp
+(defun open-new-snippet-below ()
+  (interactive)
+  (split-window-below)
+  (other-window 1)
+  (yas-new-snippet))
 #+END_SRC
 
 *** Flycheck
