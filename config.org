@@ -48,20 +48,20 @@ brew install aspell
 ** Turn off alarms completly
 
 #+BEGIN_SRC emacs-lisp
-	(setq ring-bell-function 'ignore)
+  (setq ring-bell-function 'ignore)
 #+END_SRC
 
 ** Answering 'y' or 'n'
 
 #+BEGIN_SRC emacs-lisp
-	(defalias 'yes-or-no-p 'y-or-n-p)
+  (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 ** Keep all backup and auto-save files in one directory
 
 #+BEGIN_SRC emacs-lisp
-	(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-	(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
 #+END_SRC
 
@@ -105,8 +105,8 @@ Make scrolling in buffers less jumpy.
 
 #+BEGIN_SRC emacs-lisp
 (setq scroll-margin 0
-		scroll-conservatively 100000
-		scroll-preserve-screen-position 1)
+    scroll-conservatively 100000
+    scroll-preserve-screen-position 1)
 #+END_SRC
 
 ** Truncate lines
@@ -119,7 +119,7 @@ Make scrolling in buffers less jumpy.
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'display-buffer-alist
-			 '("*Help*" display-buffer-same-window))
+       '("*Help*" display-buffer-same-window))
 #+END_SRC
 
 ** Super save
@@ -129,9 +129,9 @@ switch between buffers, an Emacs frame loses focus, etc.
 
 #+BEGIN_SRC emacs-lisp
 (use-package super-save
-	:ensure t
-	:config
-	(super-save-mode +1))
+  :ensure t
+  :config
+  (super-save-mode +1))
 #+END_SRC
 
 * Appearance
@@ -147,8 +147,8 @@ Hide scroll and tool bar when not in terminal mode.
 
 #+BEGIN_SRC emacs-lisp
 (when (display-graphic-p)
-	(scroll-bar-mode -1)
-	(tool-bar-mode -1))
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1))
 #+END_SRC
 
 ** Splash screen
@@ -157,8 +157,8 @@ Disables default splash screen.
 
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-screen t
-		inhibit-startup-message t
-		inhibit-startup-echo-area-message t)
+    inhibit-startup-message t
+    inhibit-startup-echo-area-message t)
 #+END_SRC
 
 ** Theme
@@ -168,8 +168,8 @@ Disables default splash screen.
 
 #+BEGIN_SRC emacs-lisp
 (use-package spacemacs-theme
-	:ensure t
-	:defer t)
+  :ensure t
+  :defer t)
 #+END_SRC
 
 *** Set light/dark themes
@@ -192,12 +192,12 @@ Function for toggling between light and dark themes.
 #+BEGIN_SRC emacs-lisp
 
 (defun toggle-dark-light-theme ()
-	(interactive)
-	(disable-theme active-theme)
-	(if (eq active-theme light-theme)
-		(setq active-theme dark-theme)
-		(setq active-theme light-theme))
-	(load-theme active-theme t))
+  (interactive)
+  (disable-theme active-theme)
+  (if (eq active-theme light-theme)
+    (setq active-theme dark-theme)
+    (setq active-theme light-theme))
+  (load-theme active-theme t))
 #+END_SRC
 
 ** Initial frame
@@ -224,27 +224,26 @@ Sets the initial frame to be flush with the top left corner of the screen.
 [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behave like local shell.
 
 #+BEGIN_SRC emacs-lisp
-	(use-package exec-path-from-shell
-	:ensure t)
+  (use-package exec-path-from-shell
+  :ensure t)
 #+END_SRC
 
 Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
 #+BEGIN_SRC emacs-lisp
-	(when (memq window-system '(mac ns))
-	(exec-path-from-shell-initialize))
+  (when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 #+END_SRC
-
 
 ** Toggle Shell
 If shell window is open close it otherwise open it.
 
 #+BEGIN_SRC emacs-lisp
 (defun toggle-shell ()
-	 "If shell window is open close it otherwise open it."
-	 (interactive)
-	 (if (get-buffer-window "*shell*")
-		(delete-window (get-buffer-window "*shell*"))
-	(shell)))
+   "If shell window is open close it otherwise open it."
+   (interactive)
+   (if (get-buffer-window "*shell*")
+    (delete-window (get-buffer-window "*shell*"))
+  (shell)))
 #+END_SRC
 
 * Text Manipulation
@@ -252,6 +251,12 @@ If shell window is open close it otherwise open it.
 
 #+BEGIN_SRC emacs-lisp
 (delete-selection-mode t)
+#+END_SRC
+
+** Only use spaces
+
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
 #+END_SRC
 
 ** Tab width
@@ -262,7 +267,7 @@ Set tab width.
 (setq-default tab-width 2)
 #+END_SRC
 
-** Smart tab
+** Contextual tab
 
 Tab will now contextually indent or complete.
 
@@ -278,9 +283,9 @@ region instead.
 
 #+BEGIN_SRC emacs-lisp
 (use-package move-text
-	:ensure t
-	:init
-	(move-text-default-bindings))
+  :ensure t
+  :init
+  (move-text-default-bindings))
 #+END_SRC
 
 ** Flyspell
@@ -289,11 +294,12 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell
-	:config
-	(setq ispell-program-name "aspell"
-		ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
-	(add-hook 'text-mode-hook #'flyspell-mode)
-	(add-hook 'prog-mode-hook #'flyspell-prog-mode))
+  :ensure t
+  :config
+  (setq ispell-program-name "aspell"
+    ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
 #+END_SRC
 
 ** Expand Region
@@ -302,7 +308,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package expand-region
-			 :ensure t)
+       :ensure t)
 #+END_SRC
 
 ** Undo tree
@@ -311,13 +317,28 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
-	:ensure t
-	:bind (("s-Z" . undo-tree-redo)
-		 ("s-z" . undo-tree-undo))
-	:config
-	(setq undo-tree-history-directory-alist
-		`((".*" . ,temporary-file-directory)))
-	(setq undo-tree-auto-save-history t))
+  :ensure t
+  :bind (("s-Z" . undo-tree-redo)
+     ("s-z" . undo-tree-undo))
+  :config
+  (setq undo-tree-history-directory-alist
+    `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t))
+#+END_SRC
+
+** White space
+
+[[https://www.emacswiki.org/emacs/WhiteSpace][whitespace]] helps visualise white space.
+
+#+BEGIN_SRC emacs-lisp
+(use-package whitespace
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook #'whitespace-mode))
+  (add-hook 'before-save-hook #'whitespace-cleanup)
+  :config
+  (setq whitespace-line-column 80) ;; limit line length
+  (setq whitespace-style '(face tabs empty trailing lines-tail)))
 #+END_SRC
 
 * Navigation
@@ -334,13 +355,13 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 [[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework.
 
 #+BEGIN_SRC emacs-lisp
-	(use-package ivy
-			 :ensure t
-			 :config
-			 (setq ivy-use-virtual-buffers t)
-			 (setq ivy-count-format "(%d/%d) ")
-			 :init
-			 (ivy-mode t))
+  (use-package ivy
+       :ensure t
+       :config
+       (setq ivy-use-virtual-buffers t)
+       (setq ivy-count-format "(%d/%d) ")
+       :init
+       (ivy-mode t))
 #+END_SRC
 
 ** Swiper
@@ -349,9 +370,9 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
-	:ensure t
-	:bind ("C-s" . swiper)
-		("s-f" . swiper))
+  :ensure t
+  :bind ("C-s" . swiper)
+    ("s-f" . swiper))
 #+END_SRC
 
 ** Projectile
@@ -360,11 +381,11 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
-		 :ensure t
-		 :config
-		 (setq projectile-completion-system 'ivy)
-		 :init
-		 (projectile-global-mode))
+     :ensure t
+     :config
+     (setq projectile-completion-system 'ivy)
+     :init
+     (projectile-global-mode))
 #+END_SRC
 
 You can discover projects in a folder with the command:
@@ -382,11 +403,11 @@ M-x projectile-discover-projects-in-directory
 (setq projectile-test-suffix-function 'custome-projectile-test-suffix)
 
 (defun custome-projectile-test-suffix (project-type)
-	"Find default test files suffix based on PROJECT-TYPE."
-	(cond
-	 ((member project-type '(emacs-cask)) "-test")
-	 ((member project-type '(rails-rspec ruby-rspec npm)) "_spec")
-	 ((member project-type '(rails-test ruby-test lein-test boot-clj go elixir)) "_test")
+  "Find default test files suffix based on PROJECT-TYPE."
+  (cond
+   ((member project-type '(emacs-cask)) "-test")
+   ((member project-type '(rails-rspec ruby-rspec npm)) "_spec")
+   ((member project-type '(rails-test ruby-test lein-test boot-clj go elixir)) "_test")
 ))
 
 #+END_SRC
@@ -400,10 +421,10 @@ persistent background processes.
 
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
-	 :ensure t
-	 :bind ("s-b" . dumb-jump-go)
-	 :config
-	 (setq dumb-jump-selector 'ivy))
+   :ensure t
+   :bind ("s-b" . dumb-jump-go)
+   :config
+   (setq dumb-jump-selector 'ivy))
 #+END_SRC
 
 ** Hail Hydra
@@ -419,24 +440,24 @@ command.
 
 #+BEGIN_SRC emacs-lisp
 (use-package hydra
-			 :ensure t)
+       :ensure t)
 #+END_SRC
 
 Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hail-hydra (:foreign-keys warn :columns 3)
-	"Hail Hydra"
-	("b" hydra-buffer/body "buffer" :exit t)
-	("c" hydra-config/body "config" :exit t)
-	("f" hydra-file/body "file" :exit t)
-	("g" hydra-git/body "git" :exit t)
-	("h" hydra-help/body "help" :exit t)
-	("p" hydra-project/body "project" :exit t)
-	("s" toggle-shell "shell" :exit t)
-	("w" hydra-window/body "window" :exit t)
-	("+" toggle-dark-light-theme "light/dark")
-	("q" nil "quit")
+  "Hail Hydra"
+  ("b" hydra-buffer/body "buffer" :exit t)
+  ("c" hydra-config/body "config" :exit t)
+  ("f" hydra-file/body "file" :exit t)
+  ("g" hydra-git/body "git" :exit t)
+  ("h" hydra-help/body "help" :exit t)
+  ("p" hydra-project/body "project" :exit t)
+  ("s" toggle-shell "shell" :exit t)
+  ("w" hydra-window/body "window" :exit t)
+  ("+" toggle-dark-light-theme "light/dark" :exit t)
+  ("q" nil "quit")
 )
 #+END_SRC
 
@@ -444,12 +465,12 @@ Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-buffer (:foreign-keys warn :columns 3)
-	"Buffer"
-	("s" ivy-switch-buffer "switch" :exit t)
-	("n" next-buffer "next")
-	("p" previous-buffer "previous")
-	("k" kill-this-buffer "kill" :exit t)
-	("q" nil "quit")
+  "Buffer"
+  ("s" ivy-switch-buffer "switch" :exit t)
+  ("n" next-buffer "next")
+  ("p" previous-buffer "previous")
+  ("k" kill-this-buffer "kill" :exit t)
+  ("q" nil "quit")
 )
 #+END_SRC
 
@@ -457,10 +478,10 @@ Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-config (:foreign-keys warn :columns 3)
-	"Config"
-	("o" (find-file  "~/.emacs.d/config.org") "open emacs config" :exit t)
-	("r" (load-file  "~/.emacs.d/init.el") "reload emacs config" :exit t)
-	("q" nil "quit")
+  "Config"
+  ("o" (find-file  "~/.emacs.d/config.org") "open emacs config" :exit t)
+  ("r" (load-file  "~/.emacs.d/init.el") "reload emacs config" :exit t)
+  ("q" nil "quit")
 )
 #+END_SRC
 
@@ -468,11 +489,11 @@ Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-file (:foreign-keys warn :columns 3)
-	"File"
-	("o" find-file "open file" :exit t)
-	("r" ivy-switch-buffer "recent file" :exit t)
-	("s" swiper "search file" :exit t)
-	("q" nil "quit")
+  "File"
+  ("o" find-file "open file" :exit t)
+  ("r" ivy-switch-buffer "recent file" :exit t)
+  ("s" swiper "search file" :exit t)
+  ("q" nil "quit")
 )
 #+END_SRC
 
@@ -480,10 +501,10 @@ Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-git (:foreign-keys warn :columns 3)
-	"Git"
-	("s" magit-status "status" :exit t)
-	("b" magit-blame "blame" :exit t)
-	("q" nil "quit")
+  "Git"
+  ("s" magit-status "status" :exit t)
+  ("b" magit-blame "blame" :exit t)
+  ("q" nil "quit")
 )
 #+END_SRC
 
@@ -491,12 +512,12 @@ Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-help (:foreign-keys warn :columns 3)
-	"Help"
-	("f" describe-function "describe function" :exit t)
-	("k" describe-key "describe key" :exit t)
-	("m" describe-mode "describe mode" :exit t)
-	("v" describe-variable "describe variable" :exit t)
-	("q" nil "quit" :exit t)
+  "Help"
+  ("f" describe-function "describe function" :exit t)
+  ("k" describe-key "describe key" :exit t)
+  ("m" describe-mode "describe mode" :exit t)
+  ("v" describe-variable "describe variable" :exit t)
+  ("q" nil "quit" :exit t)
 )
 #+END_SRC
 
@@ -504,15 +525,15 @@ Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-project (:foreign-keys warn :columns 3)
-	"Project"
-	("o" projectile-switch-project "open project" :exit t)
-	("f" projectile-find-file "find file in project" :exit t)
-	("j" dumb-jump-go "jump to definition")
-	("r" dumb-jump-back "return from definition")
-	("s" projectile-ag "search project")
-	("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
-	("T" projectile-test-project "runs all tests" :exit t)
-	("q" nil "quit")
+  "Project"
+  ("o" projectile-switch-project "open project" :exit t)
+  ("f" projectile-find-file "find file in project" :exit t)
+  ("j" dumb-jump-go "jump to definition")
+  ("r" dumb-jump-back "return from definition")
+  ("s" projectile-ag "search project")
+  ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
+  ("T" projectile-test-project "runs all tests" :exit t)
+  ("q" nil "quit")
 )
 #+END_SRC
 
@@ -520,13 +541,13 @@ Hail Hydra, a hydra for navigating emacs.
 
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-window (:foreign-keys warn :columns 3)
-	"Window"
-	("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
-	("h" split-window-below "horizontal split" :exit t)
-	("k" delete-window "kill window" :exit t)
-	("s" other-window "switch window")
-	("v" split-window-right "vertical split" :exit t)
-	("q" nil "quit")
+  "Window"
+  ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
+  ("h" split-window-below "horizontal split" :exit t)
+  ("k" delete-window "kill window" :exit t)
+  ("s" other-window "switch window")
+  ("v" split-window-right "vertical split" :exit t)
+  ("q" nil "quit")
 )
 #+END_SRC
 
@@ -538,10 +559,10 @@ between the keystrokes - by default 0.3 seconds).
 
 #+BEGIN_SRC emacs-lisp
 (use-package key-chord
-			 :ensure t
-			 :config
-			 (key-chord-define-global "hh" 'hail-hydra/body)
-			 (key-chord-mode t))
+       :ensure t
+       :config
+       (key-chord-define-global "hh" 'hail-hydra/body)
+       (key-chord-mode t))
 #+END_SRC
 
 ** Ag (Silver Searcher)
@@ -551,7 +572,7 @@ by file type, edit results inline, or find files.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ag
-	:ensure t)
+  :ensure t)
 #+END_SRC
 
 * Project Management
@@ -560,14 +581,14 @@ by file type, edit results inline, or find files.
 [[https://magit.vc/][Magit]] is a great interface for git projects.
 
 #+BEGIN_SRC emacs-lisp
-	(use-package magit
-			 :ensure t
-			 :defer t
-			 :bind (("C-c g s" . magit-status)
-				("C-c g b" . magit-blame))
-			 :config
-			 (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
-			 (setq magit-completing-read-function 'ivy-completing-read))
+  (use-package magit
+       :ensure t
+       :defer t
+       :bind (("C-c g s" . magit-status)
+        ("C-c g b" . magit-blame))
+       :config
+       (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+       (setq magit-completing-read-function 'ivy-completing-read))
 #+END_SRC
 
 *** Fullscreen magit
@@ -577,34 +598,28 @@ restores the old window configuration when you quit out of magit.
 
 #+BEGIN_SRC emacs-lisp
 (defadvice magit-status (around magit-fullscreen activate)
-	(window-configuration-to-register :magit-fullscreen)
-	ad-do-it
-	(delete-other-windows))
+  (window-configuration-to-register :magit-fullscreen)
+  ad-do-it
+  (delete-other-windows))
 
 (defun magit-quit-session ()
-	"Restores the previous window configuration and kills the magit buffer"
-	(interactive)
-	(kill-buffer)
-	(jump-to-register :magit-fullscreen))
+  "Restores the previous window configuration and kills the magit buffer"
+  (interactive)
+  (kill-buffer)
+  (jump-to-register :magit-fullscreen))
 #+END_SRC
 
 ** Org mode
-*** Enable Speed Keys
-
-#+BEGIN_SRC emacs-lisp
-(setq org-use-speed-commands t)
-#+END_SRC
-
 *** Org babel/source blocks
 Enables source blocks syntax highlights and makes the editing popup
 window stay within the same window.
 
 #+BEGIN_SRC emacs-lisp
-	(setq org-src-fontify-natively t
-	org-src-window-setup 'current-window
-	org-src-strip-leading-and-trailing-blank-lines t
-	org-src-preserve-indentation t
-	org-src-tab-acts-natively t)
+  (setq org-src-fontify-natively t
+  org-src-window-setup 'current-window
+  org-src-strip-leading-and-trailing-blank-lines t
+  org-src-preserve-indentation t
+  org-src-tab-acts-natively t)
 #+END_SRC
 
 * Programming Languages
@@ -639,18 +654,9 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package company
-	:ensure t
-	:config
-	(global-company-mode))
-#+END_SRC
-
-*** White space clean up
-
-Add whitespace-cleanup to your before-save-hook so that every
-buffer is cleaned up before it’s saved.
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'before-save-hook 'whitespace-cleanup)
+  :ensure t
+  :config
+  (global-company-mode))
 #+END_SRC
 
 *** YASnippet
@@ -663,10 +669,10 @@ that match the mode they should be available in.
 
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
-	:ensure t
-	:config
-	(setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
-	(yas-global-mode))
+  :ensure t
+  :config
+  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
+  (yas-global-mode))
 #+END_SRC
 
 *** Flycheck
@@ -675,8 +681,8 @@ that match the mode they should be available in.
 
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-	:ensure t
-	:init (global-flycheck-mode))
+  :ensure t
+  :init (global-flycheck-mode))
 #+END_SRC
 
 *** Comment/uncomment a line/region
@@ -685,14 +691,14 @@ Binds a key to comment/uncomment a line or region if selected.
 
 #+BEGIN_SRC emacs-lisp
 (defun comment-or-uncomment-region-or-line ()
-	"Comments or uncomments the region or the current line
-	 if there's no active region."
-	(interactive)
-	(let (beg end)
-		(if (region-active-p)
-			(setq beg (region-beginning) end (region-end))
-			(setq beg (line-beginning-position) end (line-end-position)))
-		(comment-or-uncomment-region beg end)))
+  "Comments or uncomments the region or the current line
+   if there's no active region."
+  (interactive)
+  (let (beg end)
+    (if (region-active-p)
+      (setq beg (region-beginning) end (region-end))
+      (setq beg (line-beginning-position) end (line-end-position)))
+    (comment-or-uncomment-region beg end)))
 
 (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
 #+END_SRC
@@ -701,11 +707,11 @@ Binds a key to comment/uncomment a line or region if selected.
 
 #+BEGIN_SRC emacs-lisp
 (ignore-errors
-	(require 'ansi-color)
-	(defun colorize-compilation-buffer ()
-	(when (eq major-mode 'compilation-mode)
-		(ansi-color-apply-on-region compilation-filter-start (point-max))))
-	(add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+  (require 'ansi-color)
+  (defun colorize-compilation-buffer ()
+  (when (eq major-mode 'compilation-mode)
+    (ansi-color-apply-on-region compilation-filter-start (point-max))))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 #+END_SRC
 
 ** Lisps
@@ -713,23 +719,23 @@ Binds a key to comment/uncomment a line or region if selected.
 [[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation.
 
 #+BEGIN_SRC emacs-lisp
-	(use-package parinfer
-	:ensure t
-	:bind
-	(("C-," . parinfer-toggle-mode))
-	:init
-	(progn
-		(setq parinfer-extensions
-		'(defaults
-			pretty-parens
-			paredit
-			smart-tab
-			smart-yank))
-		(add-hook 'clojure-mode-hook #'parinfer-mode)
-		(add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-		(add-hook 'common-lisp-mode-hook #'parinfer-mode)
-		(add-hook 'scheme-mode-hook #'parinfer-mode)
-		(add-hook 'lisp-mode-hook #'parinfer-mode)))
+  (use-package parinfer
+  :ensure t
+  :bind
+  (("C-," . parinfer-toggle-mode))
+  :init
+  (progn
+    (setq parinfer-extensions
+    '(defaults
+      pretty-parens
+      paredit
+      smart-tab
+      smart-yank))
+    (add-hook 'clojure-mode-hook #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook #'parinfer-mode)
+    (add-hook 'lisp-mode-hook #'parinfer-mode)))
 #+END_SRC
 
 ** Ruby
@@ -737,9 +743,9 @@ Binds a key to comment/uncomment a line or region if selected.
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist
-		 '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
+     '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist
-		 '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
+     '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 #+END_SRC
 
 *** Flycheck
@@ -753,9 +759,9 @@ Handles files that mix html and js like jsx.
 
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
-	:ensure t
-	:config
-	(web-mode-use-tabs))
+  :ensure t
+  :config
+  (web-mode-use-tabs))
 #+END_SRC
 
 *** Other files that should be treated as javascript code
@@ -776,7 +782,7 @@ or javascript-gjslint, and then with javascript-jscs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package json-mode
-	:ensure t)
+  :ensure t)
 #+END_SRC
 
 *** Flycheck
