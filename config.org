@@ -130,8 +130,9 @@ switch between buffers, an Emacs frame loses focus, etc.
 #+BEGIN_SRC emacs-lisp
 (use-package super-save
   :ensure t
+  :diminish super-save-mode
   :config
-  (super-save-mode +1))
+  (super-save-mode t))
 #+END_SRC
 
 * Appearance
@@ -353,6 +354,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
        :ensure t
+       :diminish ivy-mode
        :config
        (setq ivy-use-virtual-buffers t)
        (setq ivy-count-format "(%d/%d) ")
