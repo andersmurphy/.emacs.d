@@ -607,6 +607,15 @@ by file type, edit results inline, or find files.
   :ensure t)
 #+END_SRC
 
+** Avy
+
+[[https://github.com/abo-abo/avy][Avy]] is a package for jumping to visible text using a char-based decision tree.
+
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+  :ensure t)
+#+END_SRC
+
 * Project Management
 ** Magit
 
