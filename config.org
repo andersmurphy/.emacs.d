@@ -558,10 +558,20 @@ Hail Hydra, a hydra for navigating emacs.
 #+BEGIN_SRC emacs-lisp
 (defhydra hydra-snippet (:foreign-keys warn :columns 3)
   "Snippet"
-  ("n" open-new-snippet-below "new snippet" :exit t)
   ("e" yas-visit-snippet-file "edit snippet" :exit t)
+  ("n" open-new-snippet-below "new snippet" :exit t)
+  ("s" save-and-close-window  "save snippet" :exit t)
   ("q" nil "quit" :exit t)
 )
+#+END_SRC
+
+Save and close window.
+
+#+BEGIN_SRC emacs-lisp
+(defun save-and-close-window ()
+       (interactive)
+       (save-buffer)
+       (delete-window))
 #+END_SRC
 
 *** Window hydra
