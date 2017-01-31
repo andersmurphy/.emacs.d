@@ -62,7 +62,6 @@ brew install aspell
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-
 #+END_SRC
 
 ** Kill current buffer rather than bringing up list
@@ -257,7 +256,6 @@ If shell window is open close it otherwise open it.
 
 #+BEGIN_SRC emacs-lisp
 (defun toggle-shell ()
-   "If shell window is open close it otherwise open it."
    (interactive)
    (if (get-buffer-window "*shell*")
     (delete-window (get-buffer-window "*shell*"))
@@ -301,9 +299,7 @@ region instead.
 
 #+BEGIN_SRC emacs-lisp
 (use-package move-text
-  :ensure t
-  :init
-  (move-text-default-bindings))
+  :ensure t)
 #+END_SRC
 
 ** Flyspell
@@ -437,7 +433,6 @@ persistent background processes.
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
    :ensure t
-   :bind ("s-b" . dumb-jump-go)
    :config
    (setq dumb-jump-selector 'ivy))
 #+END_SRC
@@ -621,8 +616,6 @@ by file type, edit results inline, or find files.
   (use-package magit
        :ensure t
        :defer t
-       :bind (("C-c g s" . magit-status)
-        ("C-c g b" . magit-blame))
        :config
        (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
        (setq magit-completing-read-function 'ivy-completing-read))
