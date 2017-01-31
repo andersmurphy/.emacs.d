@@ -122,6 +122,23 @@ Make scrolling in buffers less jumpy.
        '("*Help*" display-buffer-same-window))
 #+END_SRC
 
+** Disable all arrow keys
+
+#+BEGIN_SRC emacs-lisp
+(global-unset-key (kbd "<left>"))
+(global-unset-key (kbd "<right>"))
+(global-unset-key (kbd "<up>"))
+(global-unset-key (kbd "<down>"))
+(global-unset-key (kbd "<C-left>"))
+(global-unset-key (kbd "<C-right>"))
+(global-unset-key (kbd "<C-up>"))
+(global-unset-key (kbd "<C-down>"))
+(global-unset-key (kbd "<M-left>"))
+(global-unset-key (kbd "<M-right>"))
+(global-unset-key (kbd "<M-up>"))
+(global-unset-key (kbd "<M-down>"))
+#+END_SRC
+
 ** Super save
 
 [[https://github.com/bbatsov/super-save][Super-save]] auto-saves your buffers, when certain events happen - e.g. you
