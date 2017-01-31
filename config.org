@@ -235,6 +235,153 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
 
+* Key Bindings
+** Key Chord
+
+[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
+that should be pressed together or consecutively (with little time
+between the keystrokes - by default 0.3 seconds).
+
+#+BEGIN_SRC emacs-lisp
+(use-package key-chord
+       :ensure t
+       :config
+       (key-chord-define-global "hh" 'hail-hydra/body)
+       (key-chord-mode t))
+#+END_SRC
+
+** Hail Hydra
+
+Hail Hydra, a hydra for managing other hydras.
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hail-hydra (:foreign-keys warn :columns 3)
+  "Hail Hydra"
+  ("b" hydra-buffer/body "buffer" :exit t)
+  ("c" hydra-config/body "config" :exit t)
+  ("f" hydra-file/body "file" :exit t)
+  ("g" hydra-git/body "git" :exit t)
+  ("h" hydra-help/body "help" :exit t)
+  ("p" hydra-project/body "project" :exit t)
+  ("s" hydra-snippet/body "snippet" :exit t)
+  ("t" toggle-shell "terminal" :exit t)
+  ("w" hydra-window/body "window" :exit t)
+  ("+" toggle-dark-light-theme "light/dark" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+** Buffer hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-buffer (:foreign-keys warn :columns 3)
+  "Buffer"
+  ("s" ivy-switch-buffer "switch" :exit t)
+  ("n" next-buffer "next")
+  ("p" previous-buffer "previous")
+  ("k" kill-this-buffer "kill" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+** Config hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-config (:foreign-keys warn :columns 3)
+  "Config"
+  ("o" (find-file  "~/.emacs.d/config.org") "open emacs config" :exit t)
+  ("r" (load-file  "~/.emacs.d/init.el") "reload emacs config" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+** File hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-file (:foreign-keys warn :columns 3)
+  "File"
+  ("o" find-file "open file" :exit t)
+  ("r" ivy-switch-buffer "recent file" :exit t)
+  ("s" swiper "search file" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+** Git hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-git (:foreign-keys warn :columns 3)
+  "Git"
+  ("s" magit-status "status" :exit t)
+  ("b" magit-blame "blame" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+** Help hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-help (:foreign-keys warn :columns 3)
+  "Help"
+  ("f" describe-function "describe function" :exit t)
+  ("k" describe-key "describe key" :exit t)
+  ("m" describe-mode "describe mode" :exit t)
+  ("v" describe-variable "describe variable" :exit t)
+  ("q" nil "quit" :exit t)
+)
+#+END_SRC
+
+** Project hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-project (:foreign-keys warn :columns 3)
+  "Project"
+  ("o" projectile-switch-project "open project" :exit t)
+  ("f" projectile-find-file "find file in project" :exit t)
+  ("j" dumb-jump-go "jump to definition")
+  ("r" dumb-jump-back "return from definition")
+  ("s" projectile-ag "search project")
+  ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
+  ("T" projectile-test-project "runs all tests" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
+** Snippet hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-snippet (:foreign-keys warn :columns 3)
+  "Snippet"
+  ("e" yas-visit-snippet-file "edit snippet" :exit t)
+  ("n" open-new-snippet-below "new snippet" :exit t)
+  ("s" save-and-close-window  "save snippet" :exit t)
+  ("q" nil "quit" :exit t)
+)
+#+END_SRC
+
+Save and close window.
+
+#+BEGIN_SRC emacs-lisp
+(defun save-and-close-window ()
+       (interactive)
+       (save-buffer)
+       (delete-window))
+#+END_SRC
+
+** Window hydra
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-window (:foreign-keys warn :columns 3)
+  "Window"
+  ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
+  ("h" split-window-below "horizontal split" :exit t)
+  ("k" delete-window "kill window" :exit t)
+  ("s" other-window "switch window")
+  ("v" split-window-right "vertical split" :exit t)
+  ("q" nil "quit")
+)
+#+END_SRC
+
 * Shell
 ** Exec path from shell
 
@@ -437,164 +584,14 @@ persistent background processes.
    (setq dumb-jump-selector 'ivy))
 #+END_SRC
 
-** Hail Hydra
+** Hydra
 
-Once you summon the [[https://github.com/abo-abo/hydra][Hydra]] through the prefixed binding (the body +
-any one head), all heads can be called in succession with only a
-short extension.
-
-The Hydra is vanquished once Hercules, any binding that isn't the
-Hydra's head, arrives. Note that Hercules, besides vanquishing the
-Hydra, will still serve his original purpose, calling his proper
-command.
+[[https://github.com/abo-abo/hydra][Hydra]] is a package that can be used to tie related commands into a family of
+short bindings with a common prefix - a Hydra.
 
 #+BEGIN_SRC emacs-lisp
 (use-package hydra
        :ensure t)
-#+END_SRC
-
-Hail Hydra, a hydra for navigating emacs.
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hail-hydra (:foreign-keys warn :columns 3)
-  "Hail Hydra"
-  ("b" hydra-buffer/body "buffer" :exit t)
-  ("c" hydra-config/body "config" :exit t)
-  ("f" hydra-file/body "file" :exit t)
-  ("g" hydra-git/body "git" :exit t)
-  ("h" hydra-help/body "help" :exit t)
-  ("p" hydra-project/body "project" :exit t)
-  ("s" hydra-snippet/body "snippet" :exit t)
-  ("t" toggle-shell "terminal" :exit t)
-  ("w" hydra-window/body "window" :exit t)
-  ("+" toggle-dark-light-theme "light/dark" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Buffer hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffer (:foreign-keys warn :columns 3)
-  "Buffer"
-  ("s" ivy-switch-buffer "switch" :exit t)
-  ("n" next-buffer "next")
-  ("p" previous-buffer "previous")
-  ("k" kill-this-buffer "kill" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Config hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-config (:foreign-keys warn :columns 3)
-  "Config"
-  ("o" (find-file  "~/.emacs.d/config.org") "open emacs config" :exit t)
-  ("r" (load-file  "~/.emacs.d/init.el") "reload emacs config" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** File hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-file (:foreign-keys warn :columns 3)
-  "File"
-  ("o" find-file "open file" :exit t)
-  ("r" ivy-switch-buffer "recent file" :exit t)
-  ("s" swiper "search file" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Git hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-git (:foreign-keys warn :columns 3)
-  "Git"
-  ("s" magit-status "status" :exit t)
-  ("b" magit-blame "blame" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Help hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-help (:foreign-keys warn :columns 3)
-  "Help"
-  ("f" describe-function "describe function" :exit t)
-  ("k" describe-key "describe key" :exit t)
-  ("m" describe-mode "describe mode" :exit t)
-  ("v" describe-variable "describe variable" :exit t)
-  ("q" nil "quit" :exit t)
-)
-#+END_SRC
-
-*** Project hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-project (:foreign-keys warn :columns 3)
-  "Project"
-  ("o" projectile-switch-project "open project" :exit t)
-  ("f" projectile-find-file "find file in project" :exit t)
-  ("j" dumb-jump-go "jump to definition")
-  ("r" dumb-jump-back "return from definition")
-  ("s" projectile-ag "search project")
-  ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
-  ("T" projectile-test-project "runs all tests" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Snippet hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-snippet (:foreign-keys warn :columns 3)
-  "Snippet"
-  ("e" yas-visit-snippet-file "edit snippet" :exit t)
-  ("n" open-new-snippet-below "new snippet" :exit t)
-  ("s" save-and-close-window  "save snippet" :exit t)
-  ("q" nil "quit" :exit t)
-)
-#+END_SRC
-
-Save and close window.
-
-#+BEGIN_SRC emacs-lisp
-(defun save-and-close-window ()
-       (interactive)
-       (save-buffer)
-       (delete-window))
-#+END_SRC
-
-*** Window hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-window (:foreign-keys warn :columns 3)
-  "Window"
-  ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
-  ("h" split-window-below "horizontal split" :exit t)
-  ("k" delete-window "kill window" :exit t)
-  ("s" other-window "switch window")
-  ("v" split-window-right "vertical split" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-** Key Chord
-
-[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
-that should be pressed together or consecutively (with little time
-between the keystrokes - by default 0.3 seconds).
-
-#+BEGIN_SRC emacs-lisp
-(use-package key-chord
-       :ensure t
-       :config
-       (key-chord-define-global "hh" 'hail-hydra/body)
-       (key-chord-mode t))
 #+END_SRC
 
 ** Ag (Silver Searcher)
