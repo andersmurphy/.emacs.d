@@ -259,6 +259,7 @@ between the keystrokes - by default 0.3 seconds).
        :config
        (key-chord-define-global "hh" 'hail-hydra/body)
        (key-chord-define-global "jj" 'avy-goto-word-1)
+       (key-chord-define-global "qq" 'keyboard-escape-quit)
        (key-chord-mode t))
 #+END_SRC
 
