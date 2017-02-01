@@ -236,6 +236,17 @@ Sets the initial frame to be flush with the top left corner of the screen.
 #+END_SRC
 
 * Key Bindings
+** Evil Escape
+
+[[https://github.com/syl20bnr/evil-escape][Evil Escape]] is a customisable key sequence to escape from insert state and
+everything else in Emacs. By default it is set to fd.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-escape
+             :ensure t
+             :config (evil-escape-mode t))
+#+END_SRC
+
 ** Key Chord
 
 [[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
