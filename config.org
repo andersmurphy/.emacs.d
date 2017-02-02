@@ -668,12 +668,17 @@ window stay within the same window.
  (add-hook 'prog-mode-hook (lambda () (linum-mode t)))
 #+END_SRC
 
-*** Electric pair mode
+*** Smartparens
 
-Automatically pair parens, brackets, quotes, etc...
+[[https://github.com/Fuco1/smartparens][Smartparens]] is a minor mode for dealing with pairs.
 
 #+BEGIN_SRC emacs-lisp
-(electric-pair-mode t)
+(use-package smartparens
+             :ensure t
+             :diminish smartparens-mode
+             :config
+             (require 'smartparens-config)
+             (smartparens-global-mode 1))
 #+END_SRC
 
 *** Show paren mode
