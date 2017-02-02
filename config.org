@@ -500,6 +500,18 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   (add-hook 'before-save-hook #'whitespace-cleanup))
 #+END_SRC
 
+** Hungry Delete
+
+[[https://github.com/nflath/hungry-delete][Hungry delete]] deletes all the contiguous whitespace either before point
+or after point in a single operation.
+
+#+BEGIN_SRC emacs-lisp
+(use-package hungry-delete :ensure t
+  :diminish ""
+  :config
+  (global-hungry-delete-mode))
+#+END_SRC
+
 * Navigation
 ** Recent files
 
