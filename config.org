@@ -1,4 +1,4 @@
-p* Installing Emacs
+* Installing Emacs
 ** OSX
 
 Install emacs using homebrew.
