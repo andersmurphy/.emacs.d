@@ -1,4 +1,4 @@
-* Installing Emacs
+p* Installing Emacs
 ** OSX
 
 Install emacs using homebrew.
@@ -653,11 +653,11 @@ Enables source blocks syntax highlights and makes the editing popup
 window stay within the same window.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-src-fontify-natively t
-  org-src-window-setup 'current-window
-  org-src-strip-leading-and-trailing-blank-lines t
-  org-src-preserve-indentation t
-  org-src-tab-acts-natively t)
+(setq org-src-fontify-natively t
+      org-src-window-setup 'current-window
+      org-src-strip-leading-and-trailing-blank-lines t
+      org-src-preserve-indentation t
+      org-src-tab-acts-natively t)
 #+END_SRC
 
 * Programming Languages
@@ -780,29 +780,6 @@ Binds a key to comment/uncomment a line or region if selected.
 #+END_SRC
 
 ** Lisps
-*** Parinfer
-[[https://github.com/DogLooksGood/parinfer-mode/blob/master/README.org][Parinfer]] infers lisp parentheses based on indentation.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package parinfer
-  :ensure t
-  :bind
-  (("C-," . parinfer-toggle-mode))
-  :init
-  (progn
-    (setq parinfer-extensions
-    '(defaults
-      pretty-parens
-      paredit
-      smart-tab
-      smart-yank))
-    (add-hook 'clojure-mode-hook #'parinfer-mode)
-    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'scheme-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-mode-hook #'parinfer-mode)))
-#+END_SRC
-
 ** Ruby
 *** Other files that should be treated as ruby code
 
