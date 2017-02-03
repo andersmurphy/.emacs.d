@@ -265,6 +265,7 @@ Hail Hydra, a hydra for managing other hydras.
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
   ("p" hydra-project/body "project" :exit t)
+  ("r" hydra-region/body "region" :exit t)
   ("s" hydra-snippet/body "snippet" :exit t)
   ("t" toggle-shell "terminal" :exit t)
   ("w" hydra-window/body "window" :exit t)
@@ -347,6 +348,29 @@ Hail Hydra, a hydra for managing other hydras.
   ("T" projectile-test-project "runs all tests" :exit t)
   ("q" nil "quit")
 )
+#+END_SRC
+
+** Region hydra
+
+Contextual hydra if a region is active act on region, if no region is active
+act on line.
+
+#+BEGIN_SRC emacs-lisp
+(defun duplicate-line()
+  (interactive)
+  (call-interactively 'whole-line-or-region-copy-region-as-kill)
+  (call-interactively 'whole-line-or-region-yank))
+
+(defhydra hydra-region (:foreign-keys warn :columns 3)
+  "Region"
+  ("c" whole-line-or-region-copy-region-as-kill "copy line/region" :exit t)
+  ("d" duplicate-line "duplicate line/region" :exit t)
+  ("g" er/expand-region "grow region")
+  ("j" move-text-down "move line/region down")
+  ("k" move-text-up "move line/region up")
+  ("s" er/contract-region "shrink region")
+  ("x" whole-line-or-region-kill-region "cut line/region" :exit t)
+  ("q" nil "quit" :exit t))
 #+END_SRC
 
 ** Snippet hydra
@@ -510,6 +534,16 @@ or after point in a single operation.
   :diminish ""
   :config
   (global-hungry-delete-mode))
+#+END_SRC
+
+** Whole line or region
+
+[[https://github.com/purcell/whole-line-or-region][Whole line or region]] makes text manipulation act on whole line if region
+not active.
+
+#+BEGIN_SRC emacs-lisp
+(use-package whole-line-or-region
+             :ensure t)
 #+END_SRC
 
 * Navigation
