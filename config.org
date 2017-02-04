@@ -234,24 +234,7 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(left . 0))
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
-
-* Key Bindings
-** Key Chord
-
-[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
-that should be pressed together or consecutively (with little time
-between the keystrokes - by default 0.3 seconds).
-
-#+BEGIN_SRC emacs-lisp
-(use-package key-chord
-       :ensure t
-       :config
-       (key-chord-define-global "hh" 'hail-hydra/body)
-       (key-chord-define-global "jj" 'avy-goto-word-1)
-       (key-chord-define-global "qq" 'keyboard-escape-quit)
-       (key-chord-mode t))
-#+END_SRC
-
+* Hydras
 ** Hail Hydra
 
 Hail Hydra, a hydra for managing other hydras.
@@ -264,6 +247,7 @@ Hail Hydra, a hydra for managing other hydras.
   ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
+  ("j" avy-goto-word-1 "avy jump" :exit t)
   ("p" hydra-project/body "project" :exit t)
   ("r" hydra-region/body "region" :exit t)
   ("s" hydra-snippet/body "snippet" :exit t)
@@ -408,6 +392,68 @@ Save and close window.
   ("v" split-window-right "vertical split" :exit t)
   ("q" nil "quit")
 )
+#+END_SRC
+
+* Evil
+** Evil Mode
+
+[[https://github.com/emacs-evil/evil][Evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+  :ensure t
+  :init (evil-mode t))
+#+END_SRC
+
+** Evil Escape
+
+[[https://github.com/syl20bnr/evil-escape][Evil ecaspe]] is a customisable key sequence to escape from insert state and
+everything else in Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-escape
+  :ensure t
+  :init (evil-escape-mode t))
+
+#+END_SRC
+
+** Evil Tutor
+
+[[https://github.com/syl20bnr/evil-tutor][Evil Tutor]] is a vim tutor adapted for Evil and wrapped in a major mode.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-tutor
+  :ensure t)
+#+END_SRC
+
+** Evil Surround
+
+[[https://github.com/timcharper/evil-surround][Evil surround]] adds verb for surrounding things.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-surround
+  :ensure t
+  :init (global-evil-surround-mode 1))
+#+END_SRC
+
+** Evil Magit
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-magit
+  :ensure t)
+#+END_SRC
+
+** Leader key
+
+#+BEGIN_SRC emacs-lisp
+(define-key evil-normal-state-map (kbd "SPC") 'hail-hydra/body)
+#+END_SRC
+
+** Cursor Colour By State
+
+#+BEGIN_SRC emacs-lisp
+(setq evil-normal-state-cursor  '("#EEAD0E" box) ;; orange
+      evil-insert-state-cursor '("#66CD00" hbar)) ;; green
 #+END_SRC
 
 * Shell
