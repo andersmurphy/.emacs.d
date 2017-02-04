@@ -254,6 +254,7 @@ Hail Hydra, a hydra for managing other hydras.
   ("t" toggle-shell "terminal" :exit t)
   ("w" hydra-window/body "window" :exit t)
   ("+" toggle-dark-light-theme "light/dark" :exit t)
+  ("<SPC>" execute-extended-command "execute command" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
