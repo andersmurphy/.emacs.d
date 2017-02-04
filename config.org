@@ -277,7 +277,7 @@ Hail Hydra, a hydra for managing other hydras.
 ** Buffer hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffer (:foreign-keys warn :columns 3)
+(defhydra hydra-buffer (:foreign-keys warn :columns 2)
   "Buffer"
   ("s" ivy-switch-buffer "switch" :exit t)
   ("n" next-buffer "next")
@@ -301,7 +301,7 @@ Hail Hydra, a hydra for managing other hydras.
 ** File hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-file (:foreign-keys warn :columns 3)
+(defhydra hydra-file (:foreign-keys warn :columns 2)
   "File"
   ("o" find-file "open file" :exit t)
   ("r" ivy-switch-buffer "recent file" :exit t)
@@ -324,7 +324,7 @@ Hail Hydra, a hydra for managing other hydras.
 ** Help hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-help (:foreign-keys warn :columns 3)
+(defhydra hydra-help (:foreign-keys warn :columns 2)
   "Help"
   ("f" describe-function "describe function" :exit t)
   ("k" describe-key "describe key" :exit t)
@@ -337,12 +337,14 @@ Hail Hydra, a hydra for managing other hydras.
 ** Project hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-project (:foreign-keys warn :columns 3)
+(defhydra hydra-project (:foreign-keys warn :columns 2)
   "Project"
-  ("o" projectile-switch-project "open project" :exit t)
+  ("a" projectile-discover-projects-in-directory "add projects in directory" :exit t)
+  ("b" dumb-jump-back "back from definition")
   ("f" projectile-find-file "find file in project" :exit t)
   ("j" dumb-jump-go "jump to definition")
-  ("r" dumb-jump-back "return from definition")
+  ("o" projectile-switch-project "open project" :exit t)
+  ("r" projectile-remove-known-project "remove known project" :exit t)
   ("s" projectile-ag "search project")
   ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
   ("T" projectile-test-project "runs all tests" :exit t)
@@ -361,7 +363,7 @@ act on line.
   (call-interactively 'whole-line-or-region-copy-region-as-kill)
   (call-interactively 'whole-line-or-region-yank))
 
-(defhydra hydra-region (:foreign-keys warn :columns 3)
+(defhydra hydra-region (:foreign-keys warn :columns 2)
   "Region"
   ("c" whole-line-or-region-copy-region-as-kill "copy line/region" :exit t)
   ("d" duplicate-line "duplicate line/region" :exit t)
@@ -376,7 +378,7 @@ act on line.
 ** Snippet hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-snippet (:foreign-keys warn :columns 3)
+(defhydra hydra-snippet (:foreign-keys warn :columns 2)
   "Snippet"
   ("e" yas-visit-snippet-file "edit snippet" :exit t)
   ("n" open-new-snippet-below "new snippet" :exit t)
@@ -397,7 +399,7 @@ Save and close window.
 ** Window hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-window (:foreign-keys warn :columns 3)
+(defhydra hydra-window (:foreign-keys warn :columns 2)
   "Window"
   ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
   ("h" split-window-below "horizontal split" :exit t)
