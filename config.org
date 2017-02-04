@@ -358,7 +358,7 @@ Contextual hydra if a region is active act on region, if no region is active
 act on line.
 
 #+BEGIN_SRC emacs-lisp
-(defun duplicate-line()
+(defun duplicate-line-or-region()
   (interactive)
   (call-interactively 'whole-line-or-region-copy-region-as-kill)
   (call-interactively 'whole-line-or-region-yank))
