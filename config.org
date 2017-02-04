@@ -367,7 +367,7 @@ act on line.
   "Region"
   ("c" whole-line-or-region-copy-region-as-kill "copy line/region" :exit t)
   ("d" duplicate-line "duplicate line/region" :exit t)
-  ("g" er/expand-region "grow region")
+  ("e" er/expand-region "expand region")
   ("j" move-text-down "move line/region down")
   ("k" move-text-up "move line/region up")
   ("s" er/contract-region "shrink region")
