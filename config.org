@@ -348,11 +348,17 @@ act on line.
   (call-interactively 'whole-line-or-region-copy-region-as-kill)
   (call-interactively 'whole-line-or-region-yank))
 
+(defun indent-line-or-region (prefix)
+       (interactive "*p")
+       (whole-line-or-region-call-with-region 'indent-region prefix t))
+
 (defhydra hydra-region (:foreign-keys warn :columns 2)
   "Region"
+  ("a" mark-whole-buffer "select all")
   ("c" whole-line-or-region-copy-region-as-kill "copy line/region" :exit t)
   ("d" duplicate-line "duplicate line/region" :exit t)
   ("e" er/expand-region "expand region")
+  ("i" indent-line-or-region "indent line/region" :exit t)
   ("j" move-text-down "move line/region down")
   ("k" move-text-up "move line/region up")
   ("s" er/contract-region "shrink region")
