@@ -235,6 +235,21 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
 * Hydras
+** Key Chord
+
+[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
+that should be pressed together or consecutively (with little time
+between the keystrokes - by default 0.3 seconds).
+
+#+BEGIN_SRC emacs-lisp
+(use-package key-chord
+       :ensure t
+       :config
+       (key-chord-define-global "fd" 'hydra-navigation/body)
+       (key-chord-define-global "qq" 'keyboard-escape-quit)
+       (key-chord-mode t))
+#+END_SRC
+
 ** Hail Hydra
 
 Hail Hydra, a hydra for managing other hydras.
@@ -247,15 +262,13 @@ Hail Hydra, a hydra for managing other hydras.
   ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
-  ("j" avy-goto-word-1 "avy jump" :exit t)
   ("p" hydra-project/body "project" :exit t)
-  ("r" hydra-region/body "region" :exit t)
   ("s" hydra-snippet/body "snippet" :exit t)
   ("t" toggle-shell "terminal" :exit t)
   ("w" hydra-window/body "window" :exit t)
   ("+" toggle-dark-light-theme "light/dark" :exit t)
   ("<SPC>" execute-extended-command "execute command" :exit t)
-  ("q" nil "quit")
+  ("q" hydra-navigation/body "quit" :exit t)
 )
 #+END_SRC
 
@@ -320,6 +333,21 @@ Hail Hydra, a hydra for managing other hydras.
 )
 #+END_SRC
 
+** Navigation hydra
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-navigation (:foreign-keys run :columns 3)
+  "Navigation"
+  ("a" avy-goto-word-1 "avy goto word")
+  ("h" backward-char "move left")
+  ("j" next-line "move down")
+  ("k" previous-line "move up")
+  ("l" forward-char "move right")
+  ("r" hydra-region/body "region mode" :exit t)
+  ("i" nil "insert mode" :exit t)
+  ("<SPC>" hail-hydra/body "hail hydra" :exit t)
+)
+#+END_SRC
+
 ** Project hydra
 
 #+BEGIN_SRC emacs-lisp
@@ -357,7 +385,7 @@ act on line.
   "Region"
   ("a" mark-whole-buffer "select all")
   ("c" whole-line-or-region-copy-region-as-kill "copy line/region" :exit t)
-  ("d" duplicate-line "duplicate line/region" :exit t)
+  ("d" duplicate-line-or-region "duplicate line/region" :exit t)
   ("e" er/expand-region "expand region")
   ("i" indent-line-or-region "indent line/region" :exit t)
   ("j" move-text-down "move line/region down")
@@ -400,80 +428,6 @@ Save and close window.
   ("v" split-window-right "vertical split" :exit t)
   ("q" nil "quit")
 )
-#+END_SRC
-
-* Evil
-** Evil Mode
-
-[[https://github.com/emacs-evil/evil][Evil]] is an extensible vi layer for Emacs. It emulates the main features of Vim.
-
-#+BEGIN_SRC emacs-lisp
-(use-package evil
-  :ensure t
-  :init (evil-mode t))
-#+END_SRC
-
-** Evil Escape
-
-[[https://github.com/syl20bnr/evil-escape][Evil ecaspe]] is a customisable key sequence to escape from insert state and
-everything else in Emacs.
-
-#+BEGIN_SRC emacs-lisp
-(use-package evil-escape
-  :ensure t
-  :init (evil-escape-mode t))
-
-#+END_SRC
-
-** Evil Tutor
-
-[[https://github.com/syl20bnr/evil-tutor][Evil Tutor]] is a vim tutor adapted for Evil and wrapped in a major mode.
-
-#+BEGIN_SRC emacs-lisp
-(use-package evil-tutor
-  :ensure t)
-#+END_SRC
-
-** Evil Surround
-
-[[https://github.com/timcharper/evil-surround][Evil surround]] adds verb for surrounding things.
-
-#+BEGIN_SRC emacs-lisp
-(use-package evil-surround
-  :ensure t
-  :init (global-evil-surround-mode 1))
-#+END_SRC
-
-** Evil Magit
-
-[[https://github.com/justbur/evil-magit][Evil Magit]] configures Magit and Evil to play well with each other.
-
-#+BEGIN_SRC emacs-lisp
-(use-package evil-magit
-  :ensure t)
-#+END_SRC
-
-** Evil Snipe
-
-[[https://github.com/hlissner/evil-snipe][Evil-snipe]] emulates vim-seek and/or vim-sneak in evil-mode.
-
-#+BEGIN_SRC emacs-lisp
-(use-package evil-snipe
-  :ensure t
-  :init (evil-snipe-mode 1))
-#+END_SRC
-
-** Leader key
-
-#+BEGIN_SRC emacs-lisp
-(define-key evil-normal-state-map (kbd "SPC") 'hail-hydra/body)
-#+END_SRC
-
-** Cursor Colour By State
-
-#+BEGIN_SRC emacs-lisp
-(setq evil-normal-state-cursor  '("#EEAD0E" box) ;; orange
-      evil-insert-state-cursor '("#66CD00" hbar)) ;; green
 #+END_SRC
 
 * Shell
@@ -739,7 +693,9 @@ by file type, edit results inline, or find files.
        :ensure t
        :defer t
        :config
-       (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+       (define-key magit-status-mode-map (kbd "k") #'previous-line)
+       (define-key magit-status-mode-map (kbd "x") #'magit-discard)
+       (define-key magit-status-mode-map (kbd "j") #'next-line)
        (setq magit-completing-read-function 'ivy-completing-read))
 #+END_SRC
 
