@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: hydra
+# key: defhydra
+# --
+(defhydra hydra-${1:name} (:foreign-keys warn :columns 3)
+  "${2:name}"
+  ("${3:key}" ${4:function} "${5:description}"$0)
+  ("q" nil "quit")
+)
