@@ -345,6 +345,13 @@ Hail Hydra, a hydra for managing other hydras.
 ** Navigation hydra
 
 #+BEGIN_SRC emacs-lisp
+(defun open-and-insert ()
+  (interactive)
+  (call-interactively 'end-of-line)
+  (call-interactively 'newline-and-indent))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-navigation (:foreign-keys run
                             :columns 3
                             :pre  (progn
@@ -359,7 +366,8 @@ Hail Hydra, a hydra for managing other hydras.
   ("j" next-line "move down")
   ("k" previous-line "move up")
   ("l" forward-char "move right")
-  ("r" hydra-region/body "region mode" :exit t)
+  ("o" open-and-insert "open and insert" :exit t)
+  ("r" hydra-region/body "region" :exit t)
   ("i" nil "insert" :exit t)
 )
 #+END_SRC
