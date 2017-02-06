@@ -11,12 +11,17 @@
 ;; each 50MB of allocated data (the default is on every 0.76MB).
 (setq gc-cons-threshold 50000000)
 
-;; Set up package and adds ELPA and MELPA
+;; Set up package
 (require 'package)
+
+;; Don't load any packages before starting up
+(setq package-enable-at-startup nil)
+
+;; Enable Elpa and Melpa
 (add-to-list 'package-archives
-	   '("gnu" . "https://elpa.gnu.org/packages/") t)
+     '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
-	   '("melpa" . "https://melpa.org/packages/") t)
+     '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 ;; Update the package metadata if the local cache is missing
