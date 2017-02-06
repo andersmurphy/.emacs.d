@@ -245,7 +245,7 @@ between the keystrokes - by default 0.3 seconds).
 (use-package key-chord
        :ensure t
        :config
-       (key-chord-define-global "fd" 'hydra-navigation/body)
+       (key-chord-define-global "fd" 'hydra-normal-mode/body)
        (key-chord-define-global "qq" 'keyboard-escape-quit)
        (key-chord-mode t))
 #+END_SRC
@@ -268,7 +268,7 @@ Hail Hydra, a hydra for managing other hydras.
   ("w" hydra-window/body "window" :exit t)
   ("+" toggle-dark-light-theme "light/dark" :exit t)
   ("<SPC>" execute-extended-command "execute command" :exit t)
-  ("q" hydra-navigation/body "quit" :exit t)
+  ("q" hydra-normal-mode/body "quit" :exit t)
 )
 #+END_SRC
 
@@ -288,7 +288,8 @@ Hail Hydra, a hydra for managing other hydras.
 ** Config hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-config (:foreign-keys warn :columns 3)
+(defhydra hydra-config (:foreign-keys warn
+                        :columns 3)
   "Config"
   ("o" (find-file  "~/.emacs.d/config.org") "open emacs config" :exit t)
   ("r" (load-file  "~/.emacs.d/init.el") "reload emacs config" :exit t)
@@ -333,9 +334,21 @@ Hail Hydra, a hydra for managing other hydras.
 )
 #+END_SRC
 
-** Navigation hydra
+** Modal hydra
+
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-navigation (:foreign-keys run :columns 3)
+(defun insert-mode ()
+    (interactive)
+    (set-cursor-color "#66CD00")
+    (setq-default cursor-type 'bar))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-normal-mode (:foreign-keys run
+                            :columns 3
+                            :pre  (progn
+                                    (set-cursor-color "#EEAD0E")
+                                    (setq-default cursor-type 'box)))
   "Navigation"
   ("a" avy-goto-word-1 "avy goto word")
   ("h" backward-char "move left")
@@ -343,7 +356,7 @@ Hail Hydra, a hydra for managing other hydras.
   ("k" previous-line "move up")
   ("l" forward-char "move right")
   ("r" hydra-region/body "region mode" :exit t)
-  ("i" nil "insert mode" :exit t)
+  ("i" insert-mode "insert mode" :exit t)
   ("<SPC>" hail-hydra/body "hail hydra" :exit t)
 )
 #+END_SRC
