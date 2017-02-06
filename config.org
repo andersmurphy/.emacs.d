@@ -367,7 +367,9 @@ Hail Hydra, a hydra for managing other hydras.
   ("k" previous-line "move up")
   ("l" forward-char "move right")
   ("o" open-and-insert "open and insert" :exit t)
+  ("p" yank "paste")
   ("r" hydra-region/body "region" :exit t)
+  ("u" undo-tree-undo "undo")
   ("i" nil "insert" :exit t)
 )
 #+END_SRC
