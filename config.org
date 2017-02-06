@@ -70,6 +70,24 @@ brew install aspell
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+END_SRC
 
+** Delete excess backup versions silently
+
+#+BEGIN_SRC emacs-lisp
+(setq delete-old-versions -1 )
+#+END_SRC
+
+** Use version control
+
+#+BEGIN_SRC emacs-lisp
+(setq version-control t )
+#+END_SRC
+
+** Don't ask for confirmation when opening symlinked file
+
+#+BEGIN_SRC emacs-lisp
+(setq vc-follow-symlinks t )
+#+END_SRC
+
 ** Warn when opening large files
 
 Warn when opening files bigger than 100MB.
@@ -592,6 +610,12 @@ not active.
 #+BEGIN_SRC emacs-lisp
 (use-package whole-line-or-region
              :ensure t)
+#+END_SRC
+
+** Sentence should end with only a full stop
+
+#+BEGIN_SRC emacs-lisp
+(setq sentence-end-double-space nil)
 #+END_SRC
 
 * Navigation
