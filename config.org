@@ -234,6 +234,13 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(left . 0))
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
+** Cursor colour and shape
+
+#+BEGIN_SRC emacs-lisp
+(set-cursor-color "#66CD00")
+(setq-default cursor-type 'bar)
+#+END_SRC
+
 * Hydras
 ** Key Chord
 
@@ -245,7 +252,7 @@ between the keystrokes - by default 0.3 seconds).
 (use-package key-chord
        :ensure t
        :config
-       (key-chord-define-global "fd" 'hydra-normal-mode/body)
+       (key-chord-define-global "fd" 'hail-hydra/body)
        (key-chord-define-global "qq" 'keyboard-escape-quit)
        (key-chord-mode t))
 #+END_SRC
@@ -262,6 +269,7 @@ Hail Hydra, a hydra for managing other hydras.
   ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
+  ("n" hydra-navigation/body "navigation" :exit t)
   ("p" hydra-project/body "project" :exit t)
   ("s" hydra-snippet/body "snippet" :exit t)
   ("t" toggle-shell "terminal" :exit t)
@@ -334,21 +342,17 @@ Hail Hydra, a hydra for managing other hydras.
 )
 #+END_SRC
 
-** Modal hydra
+** Navigation hydra
 
 #+BEGIN_SRC emacs-lisp
-(defun insert-mode ()
-    (interactive)
-    (set-cursor-color "#66CD00")
-    (setq-default cursor-type 'bar))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-normal-mode (:foreign-keys run
+(defhydra hydra-navigation (:foreign-keys run
                             :columns 3
                             :pre  (progn
                                     (set-cursor-color "#EEAD0E")
-                                    (setq-default cursor-type 'box)))
+                                    (setq-default cursor-type 'box))
+                            :post  (progn
+                                    (set-cursor-color "#66CD00")
+                                    (setq-default cursor-type 'bar)))
   "Navigation"
   ("a" avy-goto-word-1 "avy goto word")
   ("h" backward-char "move left")
@@ -356,8 +360,7 @@ Hail Hydra, a hydra for managing other hydras.
   ("k" previous-line "move up")
   ("l" forward-char "move right")
   ("r" hydra-region/body "region mode" :exit t)
-  ("i" insert-mode "insert mode" :exit t)
-  ("<SPC>" hail-hydra/body "hail hydra" :exit t)
+  ("i" nil "insert" :exit t)
 )
 #+END_SRC
 
