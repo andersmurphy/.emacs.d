@@ -785,7 +785,11 @@ window stay within the same window.
 *** Show line numbers
 
 #+BEGIN_SRC emacs-lisp
- (add-hook 'prog-mode-hook (lambda () (linum-mode t)))
+(use-package nlinum
+             :ensure t
+             :init
+             (add-hook 'prog-mode-hook (lambda () (nlinum-mode t))))
+
 #+END_SRC
 
 *** Electric pair mode
