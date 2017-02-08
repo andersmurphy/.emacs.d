@@ -260,41 +260,25 @@ Sets the initial frame to be flush with the top left corner of the screen.
 #+END_SRC
 
 * Hydras
-** Key Chord
+** Leader Hydra
 
-[[https://www.emacswiki.org/emacs/key-chord.el][Key-chord]] is a minor mode which allows you to bind commands to keys
-that should be pressed together or consecutively (with little time
-between the keystrokes - by default 0.3 seconds).
+A hydra for managing other hydras.
 
 #+BEGIN_SRC emacs-lisp
-(use-package key-chord
-       :ensure t
-       :config
-       (key-chord-define-global "fd" 'hail-hydra/body)
-       (key-chord-define-global "qq" 'keyboard-escape-quit)
-       (key-chord-mode t))
-#+END_SRC
-
-** Hail Hydra
-
-Hail Hydra, a hydra for managing other hydras.
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hail-hydra (:foreign-keys warn :columns 3)
-  "Hail Hydra"
+(defhydra hydra-leader (:foreign-keys warn :columns 3)
+  "LEADER"
   ("b" hydra-buffer/body "buffer" :exit t)
   ("c" hydra-config/body "config" :exit t)
   ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
-  ("n" hydra-navigation/body "navigation" :exit t)
   ("p" hydra-project/body "project" :exit t)
   ("s" hydra-snippet/body "snippet" :exit t)
   ("t" toggle-shell "terminal" :exit t)
   ("w" hydra-window/body "window" :exit t)
   ("+" toggle-dark-light-theme "light/dark" :exit t)
   ("<SPC>" execute-extended-command "execute command" :exit t)
-  ("q" hydra-normal-mode/body "quit" :exit t)
+  ("q" kraken/body "quit" :exit t)
 )
 #+END_SRC
 
@@ -357,38 +341,6 @@ Hail Hydra, a hydra for managing other hydras.
   ("m" describe-mode "describe mode" :exit t)
   ("v" describe-variable "describe variable" :exit t)
   ("q" nil "quit" :exit t)
-)
-#+END_SRC
-
-** Navigation hydra
-
-#+BEGIN_SRC emacs-lisp
-(defun open-and-insert ()
-  (interactive)
-  (call-interactively 'end-of-line)
-  (call-interactively 'newline-and-indent))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-navigation (:foreign-keys run
-                            :columns 3
-                            :pre  (progn
-                                    (set-cursor-color "#EEAD0E")
-                                    (setq-default cursor-type 'box))
-                            :post  (progn
-                                    (set-cursor-color "#66CD00")
-                                    (setq-default cursor-type 'bar)))
-  "Navigation"
-  ("a" avy-goto-word-1 "avy goto word")
-  ("h" backward-char "move left")
-  ("j" next-line "move down")
-  ("k" previous-line "move up")
-  ("l" forward-char "move right")
-  ("o" open-and-insert "open and insert" :exit t)
-  ("p" yank "paste")
-  ("r" hydra-region/body "region" :exit t)
-  ("u" undo-tree-undo "undo")
-  ("i" nil "insert" :exit t)
 )
 #+END_SRC
 
@@ -935,3 +887,11 @@ or javascript-gjslint, and then with javascript-jscs.
 *** Flycheck
 
 Flycheck checks JSON with json-jsonlint or json-python-json.
+* Kraken
+
+Loads Kraken and set leader function.
+
+#+BEGIN_SRC emacs-lisp
+(load-file "~/.emacs.d/kraken.el")
+(setq kraken-leader-function 'hydra-leader/body)
+#+END_SRC
