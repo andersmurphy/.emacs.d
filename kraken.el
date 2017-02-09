@@ -14,7 +14,7 @@
   :group 'kraken
   :type 'function)
 
-(defhydra kraken-change-mode (:color blue
+(defhydra kraken-change-state (:color blue
                               :body-pre (insert "f")
                               :timeout 0.4
                               :idle 0.5)
@@ -22,7 +22,7 @@
          (delete-char -1)
          (kraken/body))))
 
-(global-set-key (kbd "f") 'kraken-change-mode/body)
+(global-set-key (kbd "f") 'kraken-change-state/body)
 
 (defhydra kraken
   (:foreign-keys warn
@@ -30,17 +30,17 @@
    :body-pre   (progn
                  (set-cursor-color "#EEAD0E")
                  (setq-default cursor-type 'box)
-                 (highlight-next-character))
+                 (region-next-character))
    :post  (progn
             (set-cursor-color "#66CD00")
             (setq-default cursor-type 'bar)))
   "NORMAL"
-  ("h" highlight-previous-character "move left")
-  ("j" highlight-below-character "move down")
-  ("k" highlight-above-character "move up")
-  ("l" highlight-next-character "move right")
-  ("a" highlight-until-beginning-of-line "beginning of line")
-  ("e" highlight-until-end-of-line "end of line")
+  ("h" region-previous-character "move left")
+  ("j" region-below-character "move down")
+  ("k" region-above-character "move up")
+  ("l" region-next-character "move right")
+  ("a" region-until-beginning-of-line "beginning of line")
+  ("e" region-until-end-of-line "end of line")
   ("g" avy-goto-word-1 "avy goto word")
   ("o" open-and-insert "open and insert" :exit t)
   ("p" yank "paste")
@@ -58,45 +58,56 @@
   ("<SPC>" (funcall kraken-leader-function) "leader" :exit t))
 
 (defun open-and-insert ()
+  "Opens a new line and enters insert state."
   (interactive)
   (call-interactively 'end-of-line)
   (call-interactively 'newline-and-indent))
 
-(defun highlight-until-end-of-line ()
+(defun region-until-end-of-line ()
+  "Create a region from the current point to the end of the current line."
   (interactive)
   (call-interactively 'set-mark-command)
   (call-interactively 'end-of-line))
 
-(defun highlight-until-beginning-of-line ()
+(defun region-until-beginning-of-line ()
+  "Create a region from the current point to the start of the current line."
   (interactive)
   (call-interactively 'set-mark-command)
   (call-interactively 'beginning-of-line))
 
-(defun highlight-previous-character ()
+(defun region-previous-character ()
+  "Create a region on the character behind the current point.
+Does nothing if the point is at the beginning of the buffer"
   (interactive)
-  (call-interactively 'set-mark-command)
-  (call-interactively 'backward-char))
+  (when (not (bobp))
+    (call-interactively 'set-mark-command)
+    (call-interactively 'backward-char)))
 
-(defun highlight-next-character ()
+(defun region-next-character ()
+  "Create a region on the character in front of the current point.
+Does nothing if the point is at the end of the buffer."
   (interactive)
   (when (not (eobp))
-      (call-interactively 'forward-char)
-      (call-interactively 'forward-char)
-      (call-interactively 'highlight-previous-character)))
+    (call-interactively 'forward-char)
+    (call-interactively 'forward-char)
+    (call-interactively 'region-previous-character)))
 
-(defun highlight-above-character ()
+(defun region-above-character ()
+  "Create a region on the character above and in front of the current point."
   (interactive)
   (call-interactively 'previous-line)
   (call-interactively 'forward-char)
-  (call-interactively 'highlight-previous-character))
+  (call-interactively 'region-previous-character))
 
-(defun highlight-below-character ()
+(defun region-below-character ()
+  "Create a region on the character below and in front of the current point."
   (interactive)
   (call-interactively 'next-line)
   (call-interactively 'forward-char)
-  (call-interactively 'highlight-previous-character))
+  (call-interactively 'region-previous-character))
 
 (defun surround-with (opening closing)
+  "Surround the current region with the OPENING and CLOSING strings."
   (interactive)
   (if (region-active-p)
       (insert-pair 1 opening closing)
@@ -104,15 +115,17 @@
     (backward-char)))
 
 (defun deactivate-mark-then-undo ()
+  "Deactivate the mark and then perform and undo action."
   (interactive)
   (deactivate-mark t)
   (call-interactively 'undo-tree-undo))
 
 (defun delete-region ()
+  "Kill the region and then create a region on the next character."
   (interactive)
   (call-interactively 'kill-region)
   (call-interactively 'forward-char)
-  (call-interactively 'highlight-previous-character))
+  (call-interactively 'region-previous-character))
 
 (defun show-no-leader-function-set-message ()
   "Message to be shown when the kraken-leader-function variable hasn't been set."
