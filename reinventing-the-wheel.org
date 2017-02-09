@@ -1,15 +1,15 @@
-** Composable text editing
+* Composable text editing
 
 Object -> movement -> number -> verb
 
-*** DONE Actions (non composable)
+** DONE Actions (non composable)
 Undo - u
 Paste - p
 avy-goto - g
 insert - i
 open line and insert - o
 
-*** Movements (can be used to move or grow regions)
+** Movements (can be used to move or grow regions)
 left - h -> set-mark-command + backward-char
 down - j backward-char + next-line + set-mark + forward-char
 up - k   backward-char + previous-line + set-mark + forward-char
@@ -17,19 +17,19 @@ right - l -> set-mark-command + forward-char
 end of - e -> set-mark-command + end-of-line
 beginning of - a -> set-mark-command + beginning of line
 
-*** Verbs (all verbs are applied to a region)
+** Verbs (all verbs are applied to a region)
 Change - c -> kill-region + exit hydra
 Delete - d -> kill-region
 Yank - y -> yank
 Move - m -> hydra-move-text
 Format - f -> indent-region
 
-*** Objects (objects define regions)
+** Objects (objects define regions)
 word - w
 line - ;
 block - b
 
-*** Examples
+** Examples
 
 
 word forward delete  -> wld

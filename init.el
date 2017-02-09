@@ -14,9 +14,6 @@
 ;; Set up package
 (require 'package)
 
-;; Don't load any packages before starting up
-(setq package-enable-at-startup nil)
-
 ;; Enable Elpa and Melpa
 (add-to-list 'package-archives
      '("gnu" . "https://elpa.gnu.org/packages/") t)
