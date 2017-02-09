@@ -415,13 +415,23 @@ Save and close window.
 ** Window hydra
 
 #+BEGIN_SRC emacs-lisp
+(defun split-window-below-and-switch-to-new-window ()
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+
+(defun split-window-right-and-switch-to-new-window ()
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+
 (defhydra hydra-window (:foreign-keys warn :columns 2)
   "Window"
   ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
-  ("h" split-window-below "horizontal split" :exit t)
+  ("h" split-window-below-and-switch-to-new-window "horizontal split" :exit t)
   ("k" delete-window "kill window" :exit t)
   ("s" other-window "switch window")
-  ("v" split-window-right "vertical split" :exit t)
+  ("v" split-window-right-and-switch-to-new-window "vertical split" :exit t)
   ("q" nil "quit")
 )
 #+END_SRC
