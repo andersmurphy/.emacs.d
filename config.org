@@ -887,6 +887,33 @@ or javascript-gjslint, and then with javascript-jscs.
 *** Flycheck
 
 Flycheck checks JSON with json-jsonlint or json-python-json.
+
+* Emacs Development
+** Cask
+
+[[https://github.com/cask/cask][Cask]] is an Emacs Lisp project management tool, similar to Maven or Leiningen. 
+
+Install it with homebrew.
+
+#+BEGIN_SRC sh
+brew install cask
+#+END_SRC
+
+Add Cask to your .bash_profile.
+
+#+BEGIN_SRC sh
+export PATH="$HOME/.cask/bin:$PATH"
+#+END_SRC
+
+Start by creating a file named Cask in the project root. Use *cask init* command 
+to create a Cask-file automatically, containing boilerplate code:
+
+#+BEGIN_SRC sh
+cask init [--dev]
+#+END_SRC
+
+Use cask init --dev, if the project is for package development!
+
 * Kraken
 
 Loads Kraken and set leader function.
