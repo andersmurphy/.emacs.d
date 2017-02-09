@@ -30,7 +30,7 @@
    :body-pre   (progn
                  (set-cursor-color "#EEAD0E")
                  (setq-default cursor-type 'box)
-                 (region-next-character))
+                 (region-current-character))
    :post  (progn
             (set-cursor-color "#66CD00")
             (setq-default cursor-type 'bar)))
@@ -83,8 +83,16 @@ Does nothing if the point is at the beginning of the buffer"
     (call-interactively 'set-mark-command)
     (call-interactively 'backward-char)))
 
-(defun region-next-character ()
+(defun region-current-character ()
   "Create a region on the character in front of the current point.
+Does nothing if the point is at the end of the buffer."
+  (interactive)
+  (when (not (eobp))
+    (call-interactively 'forward-char)
+    (call-interactively 'region-previous-character)))
+
+(defun region-next-character ()
+  "Create a region on the character two spaces in front of the current point.
 Does nothing if the point is at the end of the buffer."
   (interactive)
   (when (not (eobp))
