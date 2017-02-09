@@ -593,43 +593,6 @@ not active.
     ("s-f" . swiper))
 #+END_SRC
 
-** Projectile
-
-[[https://github.com/bbatsov/projectile][Projectile]] is a project interaction library for Emacs.
-
-#+BEGIN_SRC emacs-lisp
-(use-package projectile
-     :ensure t
-     :config
-     (setq projectile-completion-system 'ivy)
-     :init
-     (projectile-global-mode))
-#+END_SRC
-
-You can discover projects in a folder with the command:
-
-#+BEGIN_SRC
-M-x projectile-discover-projects-in-directory
-#+END_SRC
-
- Add custom project type and test suffix function.
-
-#+BEGIN_SRC emacs-lisp
-
-(projectile-register-project-type 'npm '("package.json" "src" "test") "npm start" "npm test")
-
-(setq projectile-test-suffix-function 'custome-projectile-test-suffix)
-
-(defun custome-projectile-test-suffix (project-type)
-  "Find default test files suffix based on PROJECT-TYPE."
-  (cond
-   ((member project-type '(emacs-cask)) "-test")
-   ((member project-type '(rails-rspec ruby-rspec npm)) "_spec")
-   ((member project-type '(rails-test ruby-test lein-test boot-clj go elixir)) "_test")
-))
-
-#+END_SRC
-
 ** Dumb Jump
 
 [[https://github.com/jacktasia/dumb-jump][Dumb Jump]] is an Emacs "jump to definition" package with support for multiple
@@ -718,6 +681,43 @@ window stay within the same window.
       org-src-strip-leading-and-trailing-blank-lines t
       org-src-preserve-indentation t
       org-src-tab-acts-natively t)
+#+END_SRC
+
+** Projectile
+
+[[https://github.com/bbatsov/projectile][Projectile]] is a project interaction library for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+     :ensure t
+     :config
+     (setq projectile-completion-system 'ivy)
+     :init
+     (projectile-global-mode))
+#+END_SRC
+
+You can discover projects in a folder with the command:
+
+#+BEGIN_SRC
+M-x projectile-discover-projects-in-directory
+#+END_SRC
+
+ Add custom project type and test suffix function.
+
+#+BEGIN_SRC emacs-lisp
+
+(projectile-register-project-type 'npm '("package.json" "src" "test") "npm start" "npm test")
+
+(setq projectile-test-suffix-function 'custome-projectile-test-suffix)
+
+(defun custome-projectile-test-suffix (project-type)
+  "Find default test files suffix based on PROJECT-TYPE."
+  (cond
+   ((member project-type '(emacs-cask)) "-test")
+   ((member project-type '(rails-rspec ruby-rspec npm)) "_spec")
+   ((member project-type '(rails-test ruby-test lein-test boot-clj go elixir)) "_test")
+))
+
 #+END_SRC
 
 * Programming Languages
