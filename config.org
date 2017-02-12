@@ -169,6 +169,29 @@ switch between buffers, an Emacs frame loses focus, etc.
   (super-save-mode t))
 #+END_SRC
 
+** Compilation Buffers
+
+This functions switches to compilation buffers, makes them read only and
+navigable with hjkl.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'compilation-finish-functions
+          (lambda (buf strg)
+            (switch-to-buffer-other-window "*compilation*")
+            (read-only-mode)
+            (goto-char (point-max))
+            (local-set-key (kbd "q")
+                           (lambda () (interactive) (quit-restore-window)))
+            (local-set-key (kbd "h")
+                           (lambda () (interactive) (backward-char)))
+            (local-set-key (kbd "j")
+                           (lambda () (interactive) (next-line)))
+            (local-set-key (kbd "k")
+                           (lambda () (interactive) (previous-line)))
+            (local-set-key (kbd "l")
+                           (lambda () (interactive) (forward-char)))))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
