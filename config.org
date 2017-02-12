@@ -901,7 +901,7 @@ Flycheck checks JSON with json-jsonlint or json-python-json.
 * Emacs Development
 ** Cask
 
-[[https://github.com/cask/cask][Cask]] is an Emacs Lisp project management tool, similar to Maven or Leiningen. 
+[[https://github.com/cask/cask][Cask]] is an Emacs Lisp project management tool, similar to Maven or Leiningen.
 
 Install it with homebrew.
 
@@ -915,7 +915,7 @@ Add Cask to your .bash_profile.
 export PATH="$HOME/.cask/bin:$PATH"
 #+END_SRC
 
-Start by creating a file named Cask in the project root. Use *cask init* command 
+Start by creating a file named Cask in the project root. Use *cask init* command
 to create a Cask-file automatically, containing boilerplate code:
 
 #+BEGIN_SRC sh
@@ -924,11 +924,11 @@ cask init [--dev]
 
 Use cask init --dev, if the project is for package development!
 
-* Kraken
+* Chimera
 
-Loads Kraken and set leader function.
+Loads Chimera and set leader function.
 
 #+BEGIN_SRC emacs-lisp
-(load-file "~/.emacs.d/kraken.el")
-(setq kraken-leader-function 'hydra-leader/body)
+(load-file "~/projects/chimera/chimera.el")
+(setq chimera-leader-function 'hydra-leader/body)
 #+END_SRC
