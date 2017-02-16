@@ -301,14 +301,15 @@ A hydra for managing other hydras.
   ("w" hydra-window/body "window" :exit t)
   ("+" toggle-dark-light-theme "light/dark" :exit t)
   ("<SPC>" execute-extended-command "execute command" :exit t)
-  ("q" kraken/body "quit" :exit t)
+  ("q" chimera/body "quit" :exit t)
 )
 #+END_SRC
 
 ** Buffer hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffer (:foreign-keys warn :columns 2)
+(defhydra hydra-buffer (:foreign-keys warn
+                        :columns 2)
   "Buffer"
   ("s" ivy-switch-buffer "switch" :exit t)
   ("n" next-buffer "next")
@@ -333,7 +334,8 @@ A hydra for managing other hydras.
 ** File hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-file (:foreign-keys warn :columns 2)
+(defhydra hydra-file (:foreign-keys warn
+                      :columns 2)
   "File"
   ("o" find-file "open file" :exit t)
   ("D" vc-delete-file "delete file" :exit t)
@@ -346,7 +348,8 @@ A hydra for managing other hydras.
 ** Git hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-git (:foreign-keys warn :columns 3)
+(defhydra hydra-git (:foreign-keys warn
+                     :columns 3)
   "Git"
   ("s" magit-status "status" :exit t)
   ("b" magit-blame "blame" :exit t)
@@ -357,7 +360,8 @@ A hydra for managing other hydras.
 ** Help hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-help (:foreign-keys warn :columns 2)
+(defhydra hydra-help (:foreign-keys warn
+                      :columns 2)
   "Help"
   ("f" describe-function "describe function" :exit t)
   ("k" describe-key "describe key" :exit t)
@@ -370,7 +374,8 @@ A hydra for managing other hydras.
 ** Project hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-project (:foreign-keys warn :columns 2)
+(defhydra hydra-project (:foreign-keys warn
+                         :columns 2)
   "Project"
   ("a" projectile-discover-projects-in-directory "add projects in directory" :exit t)
   ("b" dumb-jump-back "back from definition")
@@ -417,7 +422,8 @@ act on line.
 ** Snippet hydra
 
 #+BEGIN_SRC emacs-lisp
-(defhydra hydra-snippet (:foreign-keys warn :columns 2)
+(defhydra hydra-snippet (:foreign-keys warn
+                         :columns 2)
   "Snippet"
   ("e" yas-visit-snippet-file "edit snippet" :exit t)
   ("n" open-new-snippet-below "new snippet" :exit t)
@@ -448,7 +454,8 @@ Save and close window.
   (split-window-right)
   (other-window 1))
 
-(defhydra hydra-window (:foreign-keys warn :columns 2)
+(defhydra hydra-window (:foreign-keys warn
+                        :columns 2)
   "Window"
   ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
   ("h" split-window-below-and-switch-to-new-window "horizontal split" :exit t)
