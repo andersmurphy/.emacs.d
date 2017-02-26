@@ -502,9 +502,6 @@ by file type, edit results inline, or find files.
        :ensure t
        :defer t
        :config
-       (define-key magit-status-mode-map (kbd "k") #'previous-line)
-       (define-key magit-status-mode-map (kbd "x") #'magit-discard)
-       (define-key magit-status-mode-map (kbd "j") #'next-line)
        (setq magit-completing-read-function 'ivy-completing-read))
 #+END_SRC
 
@@ -580,6 +577,11 @@ M-x projectile-discover-projects-in-directory
 #+END_SRC
 
 * Key Bindings
+** Leader key
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-SPC") 'hydra-leader/body)
+#+END_SRC
+
 ** Hydras
 *** Leader Hydra
 
@@ -593,6 +595,7 @@ A hydra for managing other hydras.
   ("f" hydra-file/body "file" :exit t)
   ("g" hydra-git/body "git" :exit t)
   ("h" hydra-help/body "help" :exit t)
+  ("j" avy-goto-word-1 "jump to" :exit t)
   ("p" hydra-project/body "project" :exit t)
   ("s" hydra-snippet/body "snippet" :exit t)
   ("t" toggle-shell "terminal" :exit t)
@@ -957,12 +960,3 @@ cask init [--dev]
 #+END_SRC
 
 Use cask init --dev, if the project is for package development!
-
-* Chimera
-
-Loads Chimera and set leader function.
-
-#+BEGIN_SRC emacs-lisp
-(load-file "~/Documents/projects/chimera/chimera.el")
-(setq chimera-leader-function 'hydra-leader/body)
-#+END_SRC
