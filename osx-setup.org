@@ -1,0 +1,27 @@
+* Show hidden files
+
+#+BEGIN_SRC sh
+defaults write com.apple.finder AppleShowAllFiles -boolean true ; killall Finder
+#+END_SRC
+
+* Xcode command line tools
+
+Install command line tools.
+
+#+BEGIN_SRC sh
+xcode-select --install
+#+END_SRC
+
+* Homebrew
+
+Install.
+
+#+BEGIN_SRC sh
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+#+END_SRC
+
+Update.
+
+#+BEGIN_SRC sh
+brew update
+#+END_SRC
