@@ -903,6 +903,62 @@ Binds a key to comment/uncomment a line or region if selected.
 
 ** Lisps
 ** Ruby
+*** Ruby install
+
+Package for managing for installing ruby versions.
+
+#+BEGIN_SRC sh
+brew install ruby-install
+#+END_SRC
+
+Install the current stable version of Ruby.
+
+#+BEGIN_SRC sh
+ruby-install ruby
+#+END_SRC
+
+Install ruby 2.3.3.
+
+#+BEGIN_SRC sh
+ruby-install ruby-2.3.3
+#+END_SRC
+
+*** Chruby
+
+Package for changing ruby versions.
+
+#+BEGIN_SRC sh
+brew install chruby
+#+END_SRC
+
+When chruby is first loaded by the shell, it will auto-detect Rubies installed
+in /opt/rubies/ and ~/.rubies/. After installing new Rubies, you must restart
+the shell before chruby can recognize them.
+
+#+BEGIN_SRC sh
+echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
+#+END_SRC
+
+Source file.
+
+#+BEGIN_SRC sh
+. ~/.bashrc
+#+END_SRC
+
+Set ruby version.
+
+#+BEGIN_SRC sh
+chruby ruby-2.3.3
+#+END_SRC
+
+*** Bundler
+
+Install bundler.
+
+#+BEGIN_SRC sh
+gem install bundler
+#+END_SRC
+
 *** Other files that should be treated as ruby code
 
 #+BEGIN_SRC emacs-lisp
