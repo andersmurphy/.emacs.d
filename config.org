@@ -956,6 +956,7 @@ chruby ruby-2.3.3
 Install bundler.
 
 #+BEGIN_SRC sh
+chruby 2.3.3
 gem install bundler
 #+END_SRC
 
