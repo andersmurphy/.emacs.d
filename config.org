@@ -937,6 +937,7 @@ the shell before chruby can recognize them.
 
 #+BEGIN_SRC sh
 echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
+echo "source /usr/local/share/chruby/auto.sh" >> ~/.bashrc
 #+END_SRC
 
 Source file.
@@ -948,7 +949,7 @@ Source file.
 Set ruby version.
 
 #+BEGIN_SRC sh
-chruby ruby-2.3.3
+echo "ruby-2.3.3" > ~/.ruby-version
 #+END_SRC
 
 *** Bundler
