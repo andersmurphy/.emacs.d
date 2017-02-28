@@ -571,7 +571,7 @@ You can discover projects in a folder with the command:
 M-x projectile-discover-projects-in-directory
 #+END_SRC
 
- Add custom project type and test suffix function.
+Add custom project type and test suffix function.
 
 #+BEGIN_SRC emacs-lisp
 
@@ -934,10 +934,55 @@ Handles files that mix html and js like jsx.
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
 #+END_SRC
 
+*** npm
+
+Install npm.
+
+#+BEGIN_SRC sh
+brew install npm
+#+END_SRC
+
+*** Add node modules path
+
+[[https://github.com/codesuki/add-node-modules-path][add-node-modules-path]] allows Emacs to find project based installs of
+e.g. eslint.
+
+#+BEGIN_SRC emacs-lisp
+(use-package add-node-modules-path
+             :ensure t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'web-mode
+  '(add-hook 'web-mode-hook #'add-node-modules-path))
+#+END_SRC
+
+*** Eslint
+
+Install Eslint.
+
+#+BEGIN_SRC sh
+npm install -g eslint babel-eslint eslint-plugin-react
+#+END_SRC
+
 *** Flycheck
 
 Flycheck checks Javascript with one of javascript-eslint, javascript-jshint
 or javascript-gjslint, and then with javascript-jscs.
+
+Disable jshint.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+#+END_SRC
+
+Use eslint in web-mode.
+
+#+BEGIN_SRC emacs-lisp
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+#+END_SRC
 
 ** Json
 *** Json mode
