@@ -493,22 +493,6 @@ by file type, edit results inline, or find files.
 #+END_SRC
 
 * Project Management
-** Git
-*** Global Git Ignore
-
-Create global git ignore file.
-
-#+BEGIN_SRC sh
-echo '.projectile
-.DS_Store' > .gitignore
-#+END_SRC
-
-Set as global ignore file.
-
-#+BEGIN_SRC sh
-git config --global core.excludesfile '~/.gitignore'
-#+END_SRC
-
 ** Magit
 
 [[https://magit.vc/][Magit]] is a great interface for git projects.
@@ -903,63 +887,6 @@ Binds a key to comment/uncomment a line or region if selected.
 
 ** Lisps
 ** Ruby
-*** Ruby install
-
-Package for managing for installing ruby versions.
-
-#+BEGIN_SRC sh
-brew install ruby-install
-#+END_SRC
-
-Install the current stable version of Ruby.
-
-#+BEGIN_SRC sh
-ruby-install ruby
-#+END_SRC
-
-Install ruby 2.3.3.
-
-#+BEGIN_SRC sh
-ruby-install ruby-2.3.3
-#+END_SRC
-
-*** Chruby
-
-Package for changing ruby versions.
-
-#+BEGIN_SRC sh
-brew install chruby
-#+END_SRC
-
-When chruby is first loaded by the shell, it will auto-detect Rubies installed
-in /opt/rubies/ and ~/.rubies/. After installing new Rubies, you must restart
-the shell before chruby can recognize them.
-
-#+BEGIN_SRC sh
-echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
-echo "source /usr/local/share/chruby/auto.sh" >> ~/.bashrc
-#+END_SRC
-
-Source file.
-
-#+BEGIN_SRC sh
-. ~/.bashrc
-#+END_SRC
-
-Set ruby version.
-
-#+BEGIN_SRC sh
-echo "ruby-2.3.3" > ~/.ruby-version
-#+END_SRC
-
-*** Bundler
-
-Install bundler.
-
-#+BEGIN_SRC sh
-gem install bundler
-#+END_SRC
-
 *** Other files that should be treated as ruby code
 
 #+BEGIN_SRC emacs-lisp
@@ -991,14 +918,6 @@ Handles files that mix html and js like jsx.
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
 #+END_SRC
 
-*** npm
-
-Install npm.
-
-#+BEGIN_SRC sh
-brew install npm
-#+END_SRC
-
 *** Add node modules path
 
 [[https://github.com/codesuki/add-node-modules-path][add-node-modules-path]] allows Emacs to find project based installs of
@@ -1012,14 +931,6 @@ e.g. eslint.
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'web-mode
   '(add-hook 'web-mode-hook #'add-node-modules-path))
-#+END_SRC
-
-*** Eslint
-
-Install Eslint.
-
-#+BEGIN_SRC sh
-npm install -g eslint babel-eslint eslint-plugin-react
 #+END_SRC
 
 *** Flycheck
