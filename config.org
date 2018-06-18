@@ -7,18 +7,6 @@ Install emacs using homebrew.
 brew install emacs --with-cocoa
 #+END_SRC
 
-Symlink Emacs.app to application folder (isn't supported by spotlight).
-
-#+BEGIN_SRC sh
-brew linkapps emacs
-#+END_SRC
-
-Remove the symlink.
-
-#+BEGIN_SRC sh
-rm /Applications/Emacs.app
-#+END_SRC
-
 Create an alias for emacs and move it to the application folder, this is supported
 by spotlight.
 
@@ -45,7 +33,7 @@ brew install aspell
 #+END_SRC
 
 * Defaults
-** Turn off alarms completly
+** Turn off alarms completely
 
 #+BEGIN_SRC emacs-lisp
   (setq ring-bell-function 'ignore)
@@ -238,7 +226,7 @@ Sets light/dark themes, and loads initial theme.
 (setq dark-theme 'spacemacs-dark)
 (setq light-theme 'spacemacs-light)
 
-(setq active-theme dark-theme)
+(setq active-theme light-theme)
 
 (load-theme active-theme t)
 #+END_SRC
@@ -449,30 +437,6 @@ not active.
     ("s-f" . swiper))
 #+END_SRC
 
-** Dumb Jump
-
-[[https://github.com/jacktasia/dumb-jump][Dumb Jump]] is an Emacs "jump to definition" package with support for multiple
-programming languages that favors "just working". This means minimal -- and
-ideally zero -- configuration with absolutely no stored indexes (TAGS) or
-persistent background processes.
-
-#+BEGIN_SRC emacs-lisp
-(use-package dumb-jump
-   :ensure t
-   :config
-   (setq dumb-jump-selector 'ivy))
-#+END_SRC
-
-** Hydra
-
-[[https://github.com/abo-abo/hydra][Hydra]] is a package that can be used to tie related commands into a family of
-short bindings with a common prefix - a Hydra.
-
-#+BEGIN_SRC emacs-lisp
-(use-package hydra
-       :ensure t)
-#+END_SRC
-
 ** Ag (Silver Searcher)
 
 [[https://github.com/Wilfred/ag.el][Ag]] allows you to search using ag from inside Emacs. You can filter
@@ -555,220 +519,6 @@ You can discover projects in a folder with the command:
 M-x projectile-discover-projects-in-directory
 #+END_SRC
 
-Add custom project type and test suffix function.
-
-#+BEGIN_SRC emacs-lisp
-
-(projectile-register-project-type 'npm1 '("package.json" "src" "test") "npm start" "npm test")
-(projectile-register-project-type 'npm2 '("package.json" "src" "spec") "npm start" "npm test")
-(projectile-register-project-type 'emacs-cask '("Cask") "cask install" "cask exec ert-runner")
-
-
-(setq projectile-test-suffix-function 'custome-projectile-test-suffix)
-
-
-(defun custome-projectile-test-suffix (project-type)
-  "Find default test files suffix based on PROJECT-TYPE."
-  (cond
-   ((member project-type '(emacs-cask)) "-test")
-   ((member project-type '(rails-rspec ruby-rspec npm1)) "_spec")
-   ((member project-type '(npm2)) "Spec")
-   ((member project-type '(rails-test ruby-test lein-test boot-clj go elixir)) "_test")
-))
-
-#+END_SRC
-
-* Key Bindings
-** Leader key
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-SPC") 'hydra-leader/body)
-#+END_SRC
-
-** Hydras
-*** Leader Hydra
-
-A hydra for managing other hydras.
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-leader (:foreign-keys warn :columns 3)
-  "LEADER"
-  ("b" hydra-buffer/body "buffer" :exit t)
-  ("c" hydra-config/body "config" :exit t)
-  ("f" hydra-file/body "file" :exit t)
-  ("g" hydra-git/body "git" :exit t)
-  ("h" hydra-help/body "help" :exit t)
-  ("j" avy-goto-word-1 "jump to" :exit t)
-  ("p" hydra-project/body "project" :exit t)
-  ("s" hydra-snippet/body "snippet" :exit t)
-  ("t" toggle-shell "terminal" :exit t)
-  ("w" hydra-window/body "window" :exit t)
-  ("+" toggle-dark-light-theme "light/dark" :exit t)
-  ("<SPC>" execute-extended-command "execute command" :exit t)
-  ("q" nil "quit" :exit t)
-)
-#+END_SRC
-
-*** Buffer hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffer (:foreign-keys warn
-                        :columns 2)
-  "Buffer"
-  ("s" ivy-switch-buffer "switch" :exit t)
-  ("n" next-buffer "next")
-  ("p" previous-buffer "previous")
-  ("k" kill-this-buffer "kill" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Config hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-config (:foreign-keys warn
-                        :columns 3)
-  "Config"
-  ("o" (find-file  "~/.emacs.d/config.org") "open emacs config" :exit t)
-  ("r" (load-file  "~/.emacs.d/init.el") "reload emacs config" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** File hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-file (:foreign-keys warn
-                      :columns 2)
-  "File"
-  ("o" find-file "open file" :exit t)
-  ("D" vc-delete-file "delete file" :exit t)
-  ("r" ivy-switch-buffer "recent file" :exit t)
-  ("s" swiper "search file" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Git hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-git (:foreign-keys warn
-                     :columns 3)
-  "Git"
-  ("s" magit-status "status" :exit t)
-  ("b" magit-blame "blame" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Help hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-help (:foreign-keys warn
-                      :columns 2)
-  "Help"
-  ("f" describe-function "describe function" :exit t)
-  ("k" describe-key "describe key" :exit t)
-  ("m" describe-mode "describe mode" :exit t)
-  ("v" describe-variable "describe variable" :exit t)
-  ("q" nil "quit" :exit t)
-)
-#+END_SRC
-
-*** Project hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-project (:foreign-keys warn
-                         :columns 2)
-  "Project"
-  ("a" projectile-discover-projects-in-directory "add projects in directory" :exit t)
-  ("b" dumb-jump-back "back from definition")
-  ("f" projectile-find-file "find file in project" :exit t)
-  ("j" dumb-jump-go "jump to definition")
-  ("o" projectile-switch-project "open project" :exit t)
-  ("r" projectile-remove-known-project "remove known project" :exit t)
-  ("s" projectile-ag "search project")
-  ("t" projectile-toggle-between-implementation-and-test  "toggle test/implementation" :exit t)
-  ("T" projectile-test-project "runs all tests" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
-*** Region hydra
-
-Contextual hydra if a region is active act on region, if no region is active
-act on line.
-
-#+BEGIN_SRC emacs-lisp
-(defun duplicate-line-or-region()
-  (interactive)
-  (call-interactively 'whole-line-or-region-copy-region-as-kill)
-  (call-interactively 'whole-line-or-region-yank))
-
-(defun indent-line-or-region (prefix)
-       (interactive "*p")
-       (whole-line-or-region-call-with-region 'indent-region prefix t))
-
-(defhydra hydra-region (:foreign-keys warn :columns 2)
-  "Region"
-  ("a" mark-whole-buffer "select all")
-  ("c" whole-line-or-region-copy-region-as-kill "copy line/region" :exit t)
-  ("d" duplicate-line-or-region "duplicate line/region" :exit t)
-  ("e" er/expand-region "expand region")
-  ("i" indent-line-or-region "indent line/region" :exit t)
-  ("j" move-text-down "move line/region down")
-  ("k" move-text-up "move line/region up")
-  ("s" er/contract-region "shrink region")
-  ("x" whole-line-or-region-kill-region "cut line/region" :exit t)
-  ("q" nil "quit" :exit t))
-#+END_SRC
-
-*** Snippet hydra
-
-#+BEGIN_SRC emacs-lisp
-(defhydra hydra-snippet (:foreign-keys warn
-                         :columns 2)
-  "Snippet"
-  ("e" yas-visit-snippet-file "edit snippet" :exit t)
-  ("n" open-new-snippet-below "new snippet" :exit t)
-  ("s" save-and-close-window  "save snippet" :exit t)
-  ("q" nil "quit" :exit t)
-)
-#+END_SRC
-
-Save and close window.
-
-#+BEGIN_SRC emacs-lisp
-(defun save-and-close-window ()
-       (interactive)
-       (save-buffer)
-       (delete-window))
-#+END_SRC
-
-*** Window hydra
-
-#+BEGIN_SRC emacs-lisp
-(defun split-window-below-and-switch-to-new-window ()
-  (interactive)
-  (split-window-below)
-  (other-window 1))
-
-(defun split-window-right-and-switch-to-new-window ()
-  (interactive)
-  (split-window-right)
-  (other-window 1))
-
-(defhydra hydra-window (:foreign-keys warn
-                        :columns 2)
-  "Window"
-  ("f" toggle-frame-fullscreen "toggle fullscreen" :exit t)
-  ("h" split-window-below-and-switch-to-new-window "horizontal split" :exit t)
-  ("k" delete-window "kill window" :exit t)
-  ("s" other-window "switch window")
-  ("v" split-window-right-and-switch-to-new-window "vertical split" :exit t)
-  ("q" nil "quit")
-)
-#+END_SRC
-
 * Programming Languages
 ** General
 *** Show line numbers
@@ -806,44 +556,6 @@ to retrieve and display completion candidates.
   :ensure t
   :config
   (global-company-mode))
-#+END_SRC
-
-Get Company to show suggestions for Yasnippet names.
-
-#+BEGIN_SRC emacs-lisp
-(defun backend-with-yas (backend)
-  (if (and (listp backend) (member 'company-yasnippet backend))
-      backend
-    (append (if (consp backend) backend (list backend))
-            '(:with company-yasnippet))))
-
-(setq company-backends (mapcar #'backend-with-yas company-backends))
-#+END_SRC
-
-*** YASnippet
-
-[[https://github.com/joaotavora/yasnippet][YASnippet]] is a template system for Emacs. It allows you to type an
-abbreviation and automatically expand it into function templates.
-
-Snippets are stored in the /.emacs.d/snippets/ directory in directories
-that match the mode they should be available in.
-
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :ensure t
-  :config
-  (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
-  (yas-global-mode))
-#+END_SRC
-
-Opens yas-new-snippet in a window below the current one.
-
-#+BEGIN_SRC emacs-lisp
-(defun open-new-snippet-below ()
-  (interactive)
-  (split-window-below)
-  (other-window 1)
-  (yas-new-snippet))
 #+END_SRC
 
 *** Flycheck
@@ -884,110 +596,3 @@ Binds a key to comment/uncomment a line or region if selected.
     (ansi-color-apply-on-region compilation-filter-start (point-max))))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 #+END_SRC
-
-** Lisps
-** Ruby
-*** Other files that should be treated as ruby code
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist
-     '("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist
-     '("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
-#+END_SRC
-
-*** Flycheck
-
-Flycheck checks Ruby with ruby-rubocop and ruby-rubylint, falling back to
-ruby or ruby-jruby for basic syntax checking if those are not available.
-
-** Javascript
-*** Web mode
-Handles files that mix html and js like jsx.
-
-#+BEGIN_SRC emacs-lisp
-(use-package web-mode
-  :ensure t
-  :config
-  (web-mode-use-tabs))
-#+END_SRC
-
-*** Other files that should be treated as javascript code
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
-#+END_SRC
-
-*** Add node modules path
-
-[[https://github.com/codesuki/add-node-modules-path][add-node-modules-path]] allows Emacs to find project based installs of
-e.g. eslint.
-
-#+BEGIN_SRC emacs-lisp
-(use-package add-node-modules-path
-             :ensure t)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'web-mode
-  '(add-hook 'web-mode-hook #'add-node-modules-path))
-#+END_SRC
-
-*** Flycheck
-
-Flycheck checks Javascript with one of javascript-eslint, javascript-jshint
-or javascript-gjslint, and then with javascript-jscs.
-
-Disable jshint.
-
-#+BEGIN_SRC emacs-lisp
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(javascript-jshint)))
-#+END_SRC
-
-Use eslint in web-mode.
-
-#+BEGIN_SRC emacs-lisp
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-#+END_SRC
-
-** Json
-*** Json mode
-
-[[Major mode for editing JSON file][Json Mode]] is a major mode for editing JSON file.
-
-#+BEGIN_SRC emacs-lisp
-(use-package json-mode
-  :ensure t)
-#+END_SRC
-
-*** Flycheck
-
-Flycheck checks JSON with json-jsonlint or json-python-json.
-
-* Emacs Development
-** Cask
-
-[[https://github.com/cask/cask][Cask]] is an Emacs Lisp project management tool, similar to Maven or Leiningen.
-
-Install it with homebrew.
-
-#+BEGIN_SRC sh
-brew install cask
-#+END_SRC
-
-Add Cask to your .bash_profile.
-
-#+BEGIN_SRC sh
-export PATH="$HOME/.cask/bin:$PATH"
-#+END_SRC
-
-Start by creating a file named Cask in the project root. Use *cask init* command
-to create a Cask-file automatically, containing boilerplate code:
-
-#+BEGIN_SRC sh
-cask init [--dev]
-#+END_SRC
-
-Use cask init --dev, if the project is for package development!
