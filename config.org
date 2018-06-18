@@ -588,6 +588,7 @@ Binds a key to comment/uncomment a line or region if selected.
 
 *** Compilation buffers display ANSI
 
+
 #+BEGIN_SRC emacs-lisp
 (ignore-errors
   (require 'ansi-color)
@@ -596,3 +597,15 @@ Binds a key to comment/uncomment a line or region if selected.
     (ansi-color-apply-on-region compilation-filter-start (point-max))))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 #+END_SRC
+*** Aggressive Indent
+
+Automatically keeps things indented.
+
+#+BEGIN_SRC emacs-lisp
+(use-package aggressive-indent
+  :ensure t
+  :config
+  (global-aggressive-indent-mode))
+#+END_SRC
+** Lisp
+***
