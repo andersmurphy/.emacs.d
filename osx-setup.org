@@ -53,64 +53,6 @@ Set as global ignore file.
 git config --global core.excludesfile '~/.gitignore'
 #+END_SRC
 
-* Ruby
-*** Ruby install
-
-Package for managing for installing ruby versions.
-
-#+BEGIN_SRC sh
-brew install ruby-install
-#+END_SRC
-
-Install the current stable version of Ruby.
-
-#+BEGIN_SRC sh
-ruby-install ruby
-#+END_SRC
-
-Install ruby 2.3.3.
-
-#+BEGIN_SRC sh
-ruby-install ruby-2.3.3
-#+END_SRC
-
-*** Chruby
-
-Package for changing ruby versions.
-
-#+BEGIN_SRC sh
-brew install chruby
-#+END_SRC
-
-When chruby is first loaded by the shell, it will auto-detect Rubies installed
-in /opt/rubies/ and ~/.rubies/. After installing new Rubies, you must restart
-the shell before chruby can recognize them.
-
-#+BEGIN_SRC sh
-echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
-echo "source /usr/local/share/chruby/auto.sh" >> ~/.bashrc
-#+END_SRC
-
-Source file.
-
-#+BEGIN_SRC sh
-. ~/.bashrc
-#+END_SRC
-
-Set ruby version.
-
-#+BEGIN_SRC sh
-echo "ruby-2.3.3" > ~/.ruby-version
-#+END_SRC
-
-*** Bundler
-
-Install bundler.
-
-#+BEGIN_SRC sh
-gem install bundler
-#+END_SRC
-
 * Javascript
 *** npm
 
@@ -126,25 +68,6 @@ Install Eslint.
 
 #+BEGIN_SRC sh
 npm install -g eslint babel-eslint eslint-plugin-react
-#+END_SRC
-
-* Rails
-
-#+BEGIN_SRC sh
-gem install rails -v 4.2.7.1
-#+END_SRC
-
-* Databases
-** Redis
-
-#+BEGIN_SRC sh
-brew install redis
-#+END_SRC
-
-** MySQL
-
-#+BEGIN_SRC sh
-brew install mysql
 #+END_SRC
 
 ** PostgreSQL
