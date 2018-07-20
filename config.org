@@ -608,13 +608,13 @@ Automatically keeps things indented.
   (global-aggressive-indent-mode))
 #+END_SRC
 ** Lisp
-*** Lispy
+*** Paredit
 
-Reimagined Paredit.
+Structural editing.
 
 #+BEGIN_SRC emacs-lisp
-(use-package lispy
+(use-package paredit
   :ensure t
   :config
-  (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode 1))))
 #+END_SRC
