@@ -12,7 +12,8 @@ Split Horizontally         C-x 2
 Close Window               C-x 0
 
 ** Projects
-Open Project File          C-c p f
+Open Project               C-c p p
+Open File in Project       C-c p f
 
 ** Git
 Open Magit                 C-c g
