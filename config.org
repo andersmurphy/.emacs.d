@@ -550,6 +550,7 @@ Binds a key to comment/uncomment a line or region if selected.
     (ansi-color-apply-on-region compilation-filter-start (point-max))))
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 #+END_SRC
+
 *** Aggressive Indent
 
 Automatically keeps things indented.
