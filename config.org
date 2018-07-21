@@ -340,7 +340,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 ** White space
 
-[[https://www.emacswiki.org/emacs/WhiteSpace][whitespace]] cleans white space on save .
+[[https://www.emacswiki.org/emacs/WhiteSpace][whitespace]] cleans white space on save.
 
 #+BEGIN_SRC emacs-lisp
 (use-package whitespace
