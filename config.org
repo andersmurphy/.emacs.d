@@ -349,16 +349,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   (add-hook 'before-save-hook #'whitespace-cleanup))
 #+END_SRC
 
-** Whole line or region
-
-[[https://github.com/purcell/whole-line-or-region][Whole line or region]] makes text manipulation act on whole line if region
-not active.
-
-#+BEGIN_SRC emacs-lisp
-(use-package whole-line-or-region
-             :ensure t)
-#+END_SRC
-
 ** Sentence should end with only a full stop
 
 #+BEGIN_SRC emacs-lisp
