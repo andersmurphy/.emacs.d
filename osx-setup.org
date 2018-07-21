@@ -29,11 +29,6 @@ brew update
 * Git
 ** Set colour ui
 
-#+BEGIN_SRC
-
-#+END_SRC
-
-
 #+BEGIN_SRC sh
 git config --global color.ui true
 #+END_SRC
@@ -51,27 +46,4 @@ Set as global ignore file.
 
 #+BEGIN_SRC sh
 git config --global core.excludesfile '~/.gitignore'
-#+END_SRC
-
-* Javascript
-*** npm
-
-Install npm.
-
-#+BEGIN_SRC sh
-brew install npm
-#+END_SRC
-
-*** Eslint
-
-Install Eslint.
-
-#+BEGIN_SRC sh
-npm install -g eslint babel-eslint eslint-plugin-react
-#+END_SRC
-
-** PostgreSQL
-
-#+BEGIN_SRC sh
-brew install postgresql
 #+END_SRC
