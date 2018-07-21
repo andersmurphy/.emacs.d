@@ -280,17 +280,6 @@ Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
   (exec-path-from-shell-initialize))
 #+END_SRC
 
-** Toggle Shell
-If shell window is open close it otherwise open it.
-
-#+BEGIN_SRC emacs-lisp
-(defun toggle-shell ()
-   (interactive)
-   (if (get-buffer-window "*shell*")
-    (delete-window (get-buffer-window "*shell*"))
-  (shell)))
-#+END_SRC
-
 * Text Manipulation
 ** Delete selected region when typing
 
