@@ -561,7 +561,8 @@ Automatically keeps things indented.
   :config
   (global-aggressive-indent-mode))
 #+END_SRC
-** Lisp
+
+** Clojure
 *** Paredit
 
 Structural editing.
@@ -570,5 +571,16 @@ Structural editing.
 (use-package paredit
   :ensure t
   :config
-  (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode 1))))
+  (add-hook 'clojure-mode-hook (lambda () (paredit-mode 1))))
+#+END_SRC
+
+*** Inf-Clojure
+
+Minimalist repl integration.
+
+#+BEGIN_SRC emacs-lisp
+(use-package inf-clojure
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook (lambda () (inf-clojure-minor-mode 1))))
 #+END_SRC
