@@ -485,12 +485,6 @@ M-x projectile-discover-projects-in-directory
 
 #+END_SRC
 
-*** Electric pair mode
-
-#+BEGIN_SRC emacs-lisp
-(electric-pair-mode t)
-#+END_SRC
-
 *** Show paren mode
 
 Show matching Parens.
