@@ -535,7 +535,9 @@ to retrieve and display completion candidates.
 (use-package company
   :ensure t
   :config
-  (global-company-mode))
+  (global-company-mode)
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous))
 #+END_SRC
 
 *** Flycheck
