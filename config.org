@@ -287,6 +287,14 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (setq-default cursor-type 'bar)
 #+END_SRC
 
+** Font
+
+Sets font and font size.
+
+#+BEGIN_SRC emacs-lisp
+(set-default-font "Monaco 14")
+#+END_SRC
+
 * Shell
 ** Exec path from shell
 
