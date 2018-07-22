@@ -610,13 +610,13 @@ Structural editing.
   (add-hook 'clojure-mode-hook (lambda () (paredit-mode 1))))
 #+END_SRC
 
-*** Cider
+*** Inf-Clojure
 
 Minimalist repl integration.
 
 #+BEGIN_SRC emacs-lisp
-(use-package cider
+(use-package inf-clojure
   :ensure t
   :config
-  (add-hook 'clojure-mode-hook (lambda () (cider-mode 1))))
+  (add-hook 'clojure-mode-hook (lambda () (inf-clojure-minor-mode 1))))
 #+END_SRC
