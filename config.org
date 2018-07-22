@@ -284,7 +284,6 @@ Sets the initial frame to be flush with the top left corner of the screen.
 ** Cursor colour and shape
 
 #+BEGIN_SRC emacs-lisp
-(set-cursor-color "#66CD00")
 (setq-default cursor-type 'bar)
 #+END_SRC
 
