@@ -226,16 +226,6 @@ Sets light/dark themes, and loads initial theme.
 (load-theme active-theme t)
 #+END_SRC
 
-*** Title Bar
-
-Title bar matches theme.
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'default-frame-alist
-             '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist
-             '(ns-appearance . dark))
-#+END_SRC
 *** Toggle light/dark
 
 Function for toggling between light and dark themes.
@@ -273,6 +263,24 @@ Requires all-the-icons.
 You will need to run the command below once:
 
 M-x all-the-icons-install-fonts
+
+** Title bar
+
+Title bar matches theme.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'default-frame-alist
+             '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist
+             '(ns-appearance . dark))
+#+END_SRC
+
+Remove title bar icon and file name.
+
+#+BEGIN_SRC emacs-lisp
+(setq ns-use-proxy-icon nil)
+(setq frame-title-format nil)
+#+END_SRC
 
 ** Initial frame
 *** Size
