@@ -295,22 +295,6 @@ Sets font and font size.
 (set-default-font "Monaco 14")
 #+END_SRC
 
-* Shell
-** Exec path from shell
-
-[[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] makes emacs shell behave like local shell.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
-  :ensure t)
-#+END_SRC
-
-Sets $MANPATH, $PATH and exec-path from your shell, but only on OS X.
-#+BEGIN_SRC emacs-lisp
-  (when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-#+END_SRC
-
 * Text Manipulation
 ** Delete selected region when typing
 
