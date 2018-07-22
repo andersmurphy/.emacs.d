@@ -203,12 +203,12 @@ Disables default splash screen, and sets it to show useful shortcuts.
 #+END_SRC
 
 ** Theme
-*** Spacemacs
+*** Doom
 
-[[https://github.com/nashamri/spacemacs-theme][Spacemacs-theme]] is a nice theme with both light/dark variants.
+Doom theme is a nice theme collection.
 
 #+BEGIN_SRC emacs-lisp
-(use-package spacemacs-theme
+(use-package doom-themes
   :ensure t
   :defer t)
 #+END_SRC
@@ -218,10 +218,10 @@ Disables default splash screen, and sets it to show useful shortcuts.
 Sets light/dark themes, and loads initial theme.
 
 #+BEGIN_SRC emacs-lisp
-(setq dark-theme 'spacemacs-dark)
-(setq light-theme 'spacemacs-light)
+(setq dark-theme 'doom-one)
+(setq light-theme 'doom-one-light)
 
-(setq active-theme light-theme)
+(setq active-theme dark-theme)
 
 (load-theme active-theme t)
 #+END_SRC
