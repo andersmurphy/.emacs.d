@@ -11,3 +11,5 @@ projectile-bookmarks.eld
 .cask/
 projectile.cache
 /.DS_Store
+/.emacs.desktop.lock
+/.emacs.desktop
