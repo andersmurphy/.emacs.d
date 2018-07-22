@@ -226,6 +226,16 @@ Sets light/dark themes, and loads initial theme.
 (load-theme active-theme t)
 #+END_SRC
 
+*** Title Bar
+
+Title bar matches theme.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'default-frame-alist
+             '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist
+             '(ns-appearance . dark))
+#+END_SRC
 *** Toggle light/dark
 
 Function for toggling between light and dark themes.
