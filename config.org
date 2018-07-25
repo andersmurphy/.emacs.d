@@ -269,10 +269,10 @@ Remove title bar icon and file name.
 ** Initial frame
 *** Size
 
-Sets the initial frame to fill the height of the screen.
+Sets the initial frame to fill the screen.
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'initial-frame-alist '(fullscreen . fullheight))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 #+END_SRC
 
 *** Position
