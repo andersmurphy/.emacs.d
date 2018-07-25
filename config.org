@@ -555,6 +555,20 @@ Automatically keeps things indented.
   (global-aggressive-indent-mode))
 #+END_SRC
 
+*** Smartparens
+
+Smartparens paredit for all the things.
+
+#+BEGIN_SRC emacs-lisp
+(use-package smartparens
+    :ensure t
+    :config
+    (progn
+      (show-smartparens-global-mode t))
+    :init
+    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode))
+#+END_SRC
+
 ** Clojure
 *** Clojure Mode
 
@@ -563,17 +577,6 @@ Font locking for clojure.
 #+BEGIN_SRC emacs-lisp
 (use-package clojure-mode
   :ensure t)
-#+END_SRC
-
-*** Paredit
-
-Structural editing.
-
-#+BEGIN_SRC emacs-lisp
-(use-package paredit
-  :ensure t
-  :config
-  (add-hook 'clojure-mode-hook (lambda () (paredit-mode 1))))
 #+END_SRC
 
 *** Inf-Clojure
