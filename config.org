@@ -283,7 +283,7 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(left . 0))
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
-** Cursor colour and shape
+** Cursor shape
 
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-type 'bar)
@@ -485,12 +485,6 @@ window stay within the same window.
      (projectile-global-mode))
 #+END_SRC
 
-You can discover projects in a folder with the command:
-
-#+BEGIN_SRC
-M-x projectile-discover-projects-in-directory
-#+END_SRC
-
 * Programming Languages
 ** General
 *** Show line numbers
@@ -525,7 +519,6 @@ to retrieve and display completion candidates.
 #+END_SRC
 
 *** Compilation buffers display ANSI
-
 
 #+BEGIN_SRC emacs-lisp
 (ignore-errors
@@ -584,5 +577,5 @@ Minimalist repl integration.
 (use-package inf-clojure
   :ensure t
   :config
-  (add-hook 'clojure-mode-hook (lambda () (inf-clojure-minor-mode 1))))
+  (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 #+END_SRC
