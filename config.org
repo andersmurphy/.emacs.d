@@ -570,7 +570,8 @@ Font locking for clojure.
 
 #+BEGIN_SRC emacs-lisp
 (use-package clojure-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 #+END_SRC
 
 *** Inf-Clojure
