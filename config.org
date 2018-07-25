@@ -558,7 +558,12 @@ Smartparens paredit for all the things.
     (progn
       (show-smartparens-global-mode t))
     :init
-    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode))
+    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+    :bind (:map smartparens-mode-map
+          ("C-(" . sp-backward-slurp-sexp)
+          ("C-{" . sp-backward-barf-sexp)
+          ("C-)" . sp-forward-slurp-sexp)
+          ("C-}" . sp-forward-barf-sexp)))
 #+END_SRC
 
 ** Clojure
