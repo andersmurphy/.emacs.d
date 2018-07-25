@@ -499,14 +499,6 @@ M-x projectile-discover-projects-in-directory
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
-*** Show paren mode
-
-Show matching Parens.
-
-#+BEGIN_SRC emacs-lisp
-(show-paren-mode t)
-#+END_SRC
-
 *** Company mode
 
 [[https://github.com/company-mode/company-mode][Company]] is a text completion framework for Emacs. The name stands
