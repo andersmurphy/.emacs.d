@@ -496,11 +496,7 @@ M-x projectile-discover-projects-in-directory
 *** Show line numbers
 
 #+BEGIN_SRC emacs-lisp
-(use-package nlinum
-             :ensure t
-             :init
-             (add-hook 'prog-mode-hook (lambda () (nlinum-mode t))))
-
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
 *** Show paren mode
