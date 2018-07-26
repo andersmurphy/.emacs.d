@@ -205,7 +205,7 @@ Sets light/dark themes, and loads initial theme.
 (setq dark-theme 'doom-one)
 (setq light-theme 'doom-one-light)
 
-(setq active-theme dark-theme)
+(setq active-theme light-theme)
 
 (load-theme active-theme t)
 #+END_SRC
