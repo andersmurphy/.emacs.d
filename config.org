@@ -159,6 +159,16 @@ Saves buffers between sessions.
 (desktop-save-mode 1)
 #+END_SRC
 
+** Function for reloading config
+
+Function for reloading config.
+
+#+BEGIN_SRC emacs-lisp
+(defun reload-config ()
+  (interactive)
+    (load-file  "~/.emacs.d/init.el"))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
@@ -215,7 +225,6 @@ Sets light/dark themes, and loads initial theme.
 Function for toggling between light and dark themes.
 
 #+BEGIN_SRC emacs-lisp
-
 (defun toggle-dark-light-theme ()
   (interactive)
   (disable-theme active-theme)
