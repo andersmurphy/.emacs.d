@@ -562,6 +562,8 @@ Smartparens paredit for all the things.
     :ensure t
     :config
     (progn
+      (use-package smartparens-config)
+      (sp-use-smartparens-bindings)
       (show-smartparens-global-mode t))
     :init
     (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
