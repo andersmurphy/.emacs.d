@@ -590,6 +590,7 @@ Minimalist repl integration.
 #+BEGIN_SRC emacs-lisp
 (use-package inf-clojure
   :ensure t
-  :config
+  :defer t
+  :init
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 #+END_SRC
