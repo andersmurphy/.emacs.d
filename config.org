@@ -169,6 +169,17 @@ Function for reloading config.
     (load-file  "~/.emacs.d/init.el"))
 #+END_SRC
 
+** Switch window focus on split
+
+Switch window focus on split.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x 2")
+                (lambda () (interactive)(split-window-below) (other-window 1)))
+(global-set-key (kbd "C-x 3")
+                (lambda () (interactive)(split-window-right) (other-window 1)))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
