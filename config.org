@@ -151,14 +151,6 @@ switch between buffers, an Emacs frame loses focus, etc.
   (super-save-mode t))
 #+END_SRC
 
-** Reopen with recent buffers
-
-Saves buffers between sessions.
-
-#+BEGIN_SRC emacs-lisp
-(desktop-save-mode 1)
-#+END_SRC
-
 ** Function for reloading config
 
 Function for reloading config.
