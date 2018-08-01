@@ -607,3 +607,14 @@ Minimalist repl integration.
   :init
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
 #+END_SRC
+
+** Http
+
+Tool for manually exploring and testing HTTP REST webservices.
+
+#+BEGIN_SRC emacs-lisp
+(use-package restclient
+  :ensure t
+  :defer t
+  :mode ("\\.\\(http\\|rest\\)$" . restclient-mode))
+#+END_SRC
