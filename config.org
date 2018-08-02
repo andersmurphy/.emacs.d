@@ -497,7 +497,8 @@ window stay within the same window.
      :config
      (setq projectile-completion-system 'ivy)
      :init
-     (projectile-global-mode))
+     (projectile-global-mode)
+     :bind ("C-x p" . projectile-find-file))
 #+END_SRC
 
 * Programming Languages
