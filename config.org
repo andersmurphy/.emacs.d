@@ -452,7 +452,6 @@ by file type, edit results inline, or find files.
   (use-package magit
        :ensure t
        :defer t
-       :bind ("C-c g" . magit-status)
        :config
        (setq magit-completing-read-function 'ivy-completing-read))
 #+END_SRC
