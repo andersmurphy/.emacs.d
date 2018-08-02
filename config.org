@@ -453,7 +453,8 @@ by file type, edit results inline, or find files.
        :ensure t
        :defer t
        :config
-       (setq magit-completing-read-function 'ivy-completing-read))
+       (setq magit-completing-read-function 'ivy-completing-read)
+       :bind ("C-x g" . magit-status))
 #+END_SRC
 
 *** Fullscreen magit
