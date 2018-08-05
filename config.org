@@ -645,7 +645,6 @@ nov.el an epub reader for emacs.
   :ensure t
   :defer t
   :config
-  (setq nov-variable-pitch nil)
-  (setq nov-text-width 80))
+  (setq nov-variable-pitch nil))
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 #+END_SRC
