@@ -322,7 +322,15 @@ Sets the initial frame to be flush with the top left corner of the screen.
 Sets font and font size.
 
 #+BEGIN_SRC emacs-lisp
-(set-default-font "Monaco 14")
+(set-default-font "Hack 14")
+#+END_SRC
+
+** Enable visual line mode
+
+Sets font and font size.
+
+#+BEGIN_SRC emacs-lisp
+(global-visual-line-mode)
 #+END_SRC
 
 * Text Manipulation
