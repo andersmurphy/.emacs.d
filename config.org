@@ -172,13 +172,20 @@ Switch window focus on split.
                 (lambda () (interactive)(split-window-right) (other-window 1)))
 #+END_SRC
 
-** Dired auto-revert
+** Dired
+*** Dired auto-revert
 
 Ensures Dired file lists are refreshed when files are created/deleted/renamed.
 Also hides auto revert message.
 
 #+BEGIN_SRC emacs-lisp
 (setq dired-auto-revert-buffer t)
+#+END_SRC
+
+*** Dired hide details by default
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
 #+END_SRC
 
 * Appearance
