@@ -627,3 +627,17 @@ Tool for manually exploring and testing HTTP REST webservices.
   :defer t
   :mode ("\\.\\(http\\|rest\\)$" . restclient-mode))
 #+END_SRC
+* Misc
+** Epub Reader
+
+nov.el an epub reader for emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package nov
+  :ensure t
+  :defer t
+  :config
+  (setq nov-variable-pitch nil)
+  (setq nov-text-width 80))
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+#+END_SRC
