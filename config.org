@@ -457,6 +457,19 @@ Turn spellcheck on, sets it to use aspell and british spelling.
     ("s-f" . swiper))
 #+END_SRC
 
+** Counsel
+
+Provides versions of common Emacs commands that are customised to make the best use of ivy.
+
+#+BEGIN_SRC emacs-lisp
+(use-package counsel
+  :ensure t
+  :init
+  (counsel-mode t)
+  :bind
+  ("C-x p" . counsel-git))
+#+END_SRC
+
 * Project Management
 ** Magit
 
