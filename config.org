@@ -15,15 +15,6 @@ osascript -e 'tell application "Finder" to make alias file to POSIX file "/usr/l
 #+END_SRC
 
 * External Dependencies
-** The Silver Searcher
-
-The search functionality of some packages (dumb-jump and projectile) depends
-on the silver search for speed.
-
-#+BEGIN_SRC sh
-brew install the_silver_searcher
-#+END_SRC
-
 ** Aspell
 
 Spellcheck depends on aspell.
