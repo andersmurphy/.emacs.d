@@ -457,16 +457,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
     ("s-f" . swiper))
 #+END_SRC
 
-** Ag (Silver Searcher)
-
-[[https://github.com/Wilfred/ag.el][Ag]] allows you to search using ag from inside Emacs. You can filter
-by file type, edit results inline, or find files.
-
-#+BEGIN_SRC emacs-lisp
-(use-package ag
-  :ensure t)
-#+END_SRC
-
 * Project Management
 ** Magit
 
