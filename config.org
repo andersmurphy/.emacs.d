@@ -631,10 +631,13 @@ nov.el an epub reader for emacs.
 
 ** Music
 
-Bongo a simple directory based music player.
+Music player.
 
 #+BEGIN_SRC emacs-lisp
-(use-package bongo
+(use-package emms
   :ensure t
-  :defer t)
+  :defer t
+  :config
+  (emms-standard)
+  (emms-default-players))
 #+END_SRC
