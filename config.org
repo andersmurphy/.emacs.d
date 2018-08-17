@@ -222,8 +222,8 @@ Doom theme is a nice theme collection.
 Sets light/dark themes, and loads initial theme.
 
 #+BEGIN_SRC emacs-lisp
-(setq dark-theme 'doom-nord)
-(setq light-theme 'doom-nord-light)
+(setq dark-theme 'doom-one)
+(setq light-theme 'doom-one-light)
 
 (setq active-theme light-theme)
 
