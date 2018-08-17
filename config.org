@@ -636,8 +636,8 @@ Music player.
 #+BEGIN_SRC emacs-lisp
 (use-package emms
   :ensure t
-  :defer t
   :config
   (emms-standard)
-  (emms-default-players))
+  (emms-default-players)
+  (emms-mode-line-disable))
 #+END_SRC
