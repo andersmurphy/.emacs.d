@@ -603,14 +603,15 @@ Font locking for clojure.
 
 *** Inf-Clojure
 
-Minimalist repl integration.
+[[https://github.com/clojure-emacs/inf-clojure][Inf-clojure]] a minimalist repl integration. Configured to use a socket repl.
 
 #+BEGIN_SRC emacs-lisp
 (use-package inf-clojure
   :ensure t
   :defer t
   :init
-  (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode))
+  (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode)
+  (setf inf-clojure-lein-cmd '("localhost" . 5555)))
 #+END_SRC
 
 ** Http
