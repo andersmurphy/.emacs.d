@@ -23,6 +23,14 @@ Spellcheck depends on aspell.
 brew install aspell
 #+END_SRC
 
+** Mpv
+
+Emms depends on mpv to play music.
+
+#+BEGIN_SRC sh
+brew install mpv
+#+END_SRC
+
 * Defaults
 ** Turn off alarms completely
 
