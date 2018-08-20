@@ -619,7 +619,20 @@ Font locking for clojure.
   :defer t
   :init
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode)
-  (setf inf-clojure-lein-cmd '("localhost" . 5555)))
+  (setf inf-clojure-lein-cmd '("localhost" . 5555))
+  :bind (:map inf-clojure-minor-mode-map
+          ("C-c C-t" . inf-clojure-run-tests-in-namespace)))
+#+END_SRC
+
+Send (run-tests) to running clojure repl.
+
+#+BEGIN_SRC emacs-lisp
+(defun inf-clojure-run-tests-in-namespace ()
+  (interactive)
+  (comint-redirect-send-command-to-process "(run-tests)"
+                                           "*inf-clojure*"
+                                           "*inf-clojure*"
+                                           "*inf-clojure*"))
 #+END_SRC
 
 ** Http
