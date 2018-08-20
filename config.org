@@ -621,7 +621,8 @@ Font locking for clojure.
   (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode)
   (setf inf-clojure-lein-cmd '("localhost" . 5555))
   :bind (:map inf-clojure-minor-mode-map
-          ("C-c C-t" . inf-clojure-run-tests-in-namespace)))
+          ("C-c C-t" . inf-clojure-run-tests-in-namespace)
+          ("C-c C-z" . inf-clojure-open-repl-without-switching-buffer)))
 #+END_SRC
 
 Send (run-tests) to running clojure repl.
@@ -633,6 +634,15 @@ Send (run-tests) to running clojure repl.
                                            "*inf-clojure*"
                                            "*inf-clojure*"
                                            "*inf-clojure*"))
+#+END_SRC
+
+Don't switch to repl buffer when opening/toggling.
+
+#+BEGIN_SRC emacs-lisp
+(defun inf-clojure-open-repl-without-switching-buffer ()
+  (interactive)
+  (inf-clojure-switch-to-repl 1)
+  (other-window 1))
 #+END_SRC
 
 ** Http
