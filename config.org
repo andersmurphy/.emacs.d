@@ -620,40 +620,26 @@ Font locking for clojure.
   :defer t)
 #+END_SRC
 
-*** Inf-Clojure
+*** Cider
 
-[[https://github.com/clojure-emacs/inf-clojure][Inf-clojure]] a minimalist repl integration. Configured to use a socket repl.
+Clojure IDE.
 
 #+BEGIN_SRC emacs-lisp
-(use-package inf-clojure
+(use-package cider
   :ensure t
-  :defer t
-  :init
-  (add-hook 'clojure-mode-hook 'inf-clojure-minor-mode)
-  (setf inf-clojure-lein-cmd '("localhost" . 5555))
-  :bind (:map inf-clojure-minor-mode-map
-          ("C-c C-t" . inf-clojure-run-tests-in-namespace)
-          ("C-c C-z" . inf-clojure-open-repl-without-switching-buffer)))
+  :config
+  (setq cider-repl-display-help-banner nil))
 #+END_SRC
 
-Send (run-tests) to running clojure repl.
+*** Clj Refactor
+
+Adds refactor commands for clojure.
 
 #+BEGIN_SRC emacs-lisp
-(defun inf-clojure-run-tests-in-namespace ()
-  (interactive)
-  (comint-redirect-send-command-to-process "(run-tests)"
-                                           "*inf-clojure*"
-                                           "*inf-clojure*"
-                                           "*inf-clojure*"))
-#+END_SRC
-
-Don't switch to repl buffer when opening/toggling.
-
-#+BEGIN_SRC emacs-lisp
-(defun inf-clojure-open-repl-without-switching-buffer ()
-  (interactive)
-  (inf-clojure-switch-to-repl 1)
-  (other-window 1))
+(use-package clj-refactor
+  :ensure t
+  :config
+  (setq cljr-warn-on-eval nil))
 #+END_SRC
 
 ** Http
