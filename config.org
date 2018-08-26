@@ -195,6 +195,17 @@ Ask for confirmation when closing emacs.
 (setq confirm-kill-emacs 'y-or-n-p)
 #+END_SRC
 
+** Disable mouse input
+
+Disable mouse.
+
+#+BEGIN_SRC emacs-lisp
+(use-package disable-mouse
+  :ensure
+  :config
+  (global-disable-mouse-mode))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
