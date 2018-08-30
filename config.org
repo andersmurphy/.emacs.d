@@ -83,16 +83,6 @@ Warn when opening files bigger than 100MB.
 (setq large-file-warning-threshold 100000000)
 #+END_SRC
 
-** Mode line settings
-
-Add line and column number as well as file size to mode line.
-
-#+BEGIN_SRC emacs-lisp
-(line-number-mode t)
-(column-number-mode t)
-(size-indication-mode t)
-#+END_SRC
-
 ** Use Utf-8 encoding
 
 #+BEGIN_SRC emacs-lisp
@@ -273,26 +263,14 @@ Function for toggling between light and dark themes.
 
 ** Modeline
 
-Doom modeline
+Hide modeline
 
 #+BEGIN_SRC emacs-lisp
-(use-package doom-modeline
-      :ensure t
-      :defer t
-      :hook (after-init . doom-modeline-init))
+(setq-default mode-line-format nil)
+(setq window-divider-default-bottom-width 1)
+(setq window-divider-default-places 'bottom-only)
+(window-divider-mode 1)
 #+END_SRC
-
-Requires all-the-icons.
-
-#+BEGIN_SRC emacs-lisp
-(use-package all-the-icons
-      :ensure t
-      :defer t)
-#+END_SRC
-
-You will need to run the command below once:
-
-M-x all-the-icons-install-fonts
 
 ** Title bar
 
