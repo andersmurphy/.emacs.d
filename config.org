@@ -44,11 +44,16 @@ brew install mpv
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
-** Keep all backup and auto-save files in one directory
+** Disable emacs backup files
 
 #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+(setq make-backup-files nil)
+#+END_SRC
+
+** Keep all auto-save files in one directory
+
+#+BEGIN_SRC emacs-lisp
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 #+END_SRC
 
 ** Kill current buffer rather than bringing up list
