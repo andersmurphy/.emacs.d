@@ -62,12 +62,6 @@ brew install mpv
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+END_SRC
 
-** Delete excess backup versions silently
-
-#+BEGIN_SRC emacs-lisp
-(setq delete-old-versions -1 )
-#+END_SRC
-
 ** Don't ask for confirmation when opening symlinked file
 
 #+BEGIN_SRC emacs-lisp
