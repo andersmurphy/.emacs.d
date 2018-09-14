@@ -516,16 +516,6 @@ to retrieve and display completion candidates.
   (define-key company-active-map (kbd "C-p") 'company-select-previous))
 #+END_SRC
 
-*** Flycheck
-
-[[https://github.com/flycheck/flycheck][Flycheck]] on-the-fly syntax checking extension.
-
-#+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
-#+END_SRC
-
 *** Compilation buffers display ANSI
 
 #+BEGIN_SRC emacs-lisp
