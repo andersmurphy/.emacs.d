@@ -178,6 +178,10 @@ Ask for confirmation when closing emacs.
 (setq confirm-kill-emacs 'y-or-n-p)
 #+END_SRC
 
+** Show keystrokes ASAP
+#+BEGIN_SRC emacs-lisp
+(setq echo-keystrokes 0.1)
+#+END_SRC
 * Appearance
 ** Menu, tool and scroll bars
 
