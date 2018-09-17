@@ -538,8 +538,8 @@ Automatically keeps things indented.
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
   :ensure t
-  :config
-  (global-aggressive-indent-mode))
+  :init
+  (add-hook 'prog-mode-hook 'aggressive-indent-mode))
 #+END_SRC
 
 *** Smartparens
