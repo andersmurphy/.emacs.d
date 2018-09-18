@@ -564,36 +564,48 @@ Smartparens paredit for all the things.
 #+END_SRC
 
 ** Clojure
-*** Clojure Mode
-
-Font locking for clojure.
+*** Clojure Mode & Inferior Lisp
 
 #+BEGIN_SRC emacs-lisp
+(defun lein-repl ()
+  (interactive)
+  (setq inferior-lisp-program "lein repl"))
+
+(defun clojure-repl ()
+  (interactive)
+  (setq inferior-lisp-program "clojure"))
+
+(defun enable-repl-pprint ()
+ (interactive)
+ (lisp-eval-string "(clojure.main/repl :print clojure.pprint/pprint)"))
+
+(defun open-repl ()
+  (interactive)
+  (if (one-window-p)
+      (progn (split-window-right)
+             (other-window 1))
+      (other-window 1))
+  (lein-repl)
+  (inferior-lisp inferior-lisp-program)
+  (enable-repl-pprint)
+  (other-window 1))
+
+(defun doc-for-symbol ()
+  (interactive)`
+  (lisp-eval-string (format "(clojure.repl/doc %s)" (symbol-at-point))))
+
+(defun source-for-symbol ()
+  (interactive)
+  (lisp-eval-string (format "(clojure.repl/source %s)" (symbol-at-point))))
+
 (use-package clojure-mode
   :ensure t
-  :defer t)
-#+END_SRC
-
-*** Cider
-
-Clojure IDE.
-
-#+BEGIN_SRC emacs-lisp
-(use-package cider
-  :ensure t
-  :config
-  (setq cider-repl-display-help-banner nil))
-#+END_SRC
-
-*** Clj Refactor
-
-Adds refactor commands for clojure.
-
-#+BEGIN_SRC emacs-lisp
-(use-package clj-refactor
-  :ensure t
-  :config
-  (setq cljr-warn-on-eval nil))
+  :defer t
+  :bind (:map clojure-mode-map
+          ("C-c C-z" . open-repl)
+          ("C-c C-d" . doc-for-symbol)
+          ("C-c C-s" . source-for-symbol)
+          ("C-x C-e" . lisp-eval-last-sexp)))
 #+END_SRC
 
 ** Http
