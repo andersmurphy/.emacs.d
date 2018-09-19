@@ -577,7 +577,8 @@ Smartparens paredit for all the things.
 
 (defun enable-repl-pprint ()
  (interactive)
- (lisp-eval-string "(clojure.main/repl :print clojure.pprint/pprint)"))
+ (lisp-eval-string
+  (format "%s" '(clojure.main/repl :print clojure.pprint/pprint))))
 
 (defun open-repl ()
   (interactive)
@@ -591,7 +592,7 @@ Smartparens paredit for all the things.
   (other-window 1))
 
 (defun doc-for-symbol ()
-  (interactive)`
+  (interactive)
   (lisp-eval-string (format "(clojure.repl/doc %s)" (symbol-at-point))))
 
 (defun source-for-symbol ()
