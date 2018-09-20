@@ -643,5 +643,6 @@ Music player.
   :config
   (emms-standard)
   (emms-default-players)
-  (emms-mode-line-disable))
+  (emms-mode-line-disable)
+  (setq emms-source-file-default-directory "~/Documents/music"))
 #+END_SRC
