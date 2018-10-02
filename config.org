@@ -576,6 +576,8 @@ Smartparens paredit for all the things.
   (interactive)
   (setq inferior-lisp-program "clojure"))
 
+(lein-repl)
+
 (defun enable-repl-pprint ()
  (interactive)
  (lisp-eval-string
@@ -587,7 +589,6 @@ Smartparens paredit for all the things.
       (progn (split-window-right)
              (other-window 1))
       (other-window 1))
-  (lein-repl)
   (inferior-lisp inferior-lisp-program)
   (enable-repl-pprint)
   (other-window 1))
