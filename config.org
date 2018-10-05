@@ -450,7 +450,7 @@ Provides versions of common Emacs commands that are customised to make the best 
   (counsel-mode t)
   :bind
   ("C-x p" . counsel-git)
-  ("C-S" . counsel-git-grep))
+  ("C-S-s" . counsel-git-grep))
 #+END_SRC
 
 * Project Management
