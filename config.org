@@ -583,6 +583,11 @@ Smartparens paredit for all the things.
  (lisp-eval-string
   (format "%s" '(clojure.main/repl :print clojure.pprint/pprint))))
 
+(defun enable-refresh ()
+ (interactive)
+ (lisp-eval-string
+  (format "%s" '(require '[clojure.tools.namespace.repl]))))
+
 (defun open-repl ()
   (interactive)
   (if (one-window-p)
@@ -591,6 +596,7 @@ Smartparens paredit for all the things.
       (other-window 1))
   (inferior-lisp inferior-lisp-program)
   (enable-repl-pprint)
+  (enable-refresh)
   (other-window 1))
 
 (defun doc-for-symbol ()
@@ -601,6 +607,10 @@ Smartparens paredit for all the things.
   (interactive)
   (lisp-eval-string (format "(clojure.repl/source %s)" (symbol-at-point))))
 
+(defun refresh-repl ()
+  (interactive)
+  (lisp-eval-string "(clojure.tools.namespace.repl/refresh)"))
+
 (use-package clojure-mode
   :ensure t
   :defer t
@@ -608,6 +618,7 @@ Smartparens paredit for all the things.
           ("C-c C-z" . open-repl)
           ("C-c C-d" . doc-for-symbol)
           ("C-c C-s" . source-for-symbol)
+          ("C-c C-f" . refresh-repl)
           ("C-x C-e" . lisp-eval-last-sexp)))
 #+END_SRC
 
