@@ -581,7 +581,9 @@ Smartparens paredit for all the things.
 (defun enable-repl-pprint ()
  (interactive)
  (lisp-eval-string
-  (format "%s" '(clojure.main/repl :print clojure.pprint/pprint))))
+  (format "%s"
+          '(clojure.main/repl :print (fn [x] (newline)
+                                             (clojure.pprint/pprint x))))))
 
 (defun enable-refresh ()
  (interactive)
