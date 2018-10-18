@@ -603,15 +603,15 @@ Smartparens paredit for all the things.
 
 (defun doc-for-symbol ()
   (interactive)
-  (lisp-eval-string (format "(clojure.repl/doc %s)" (symbol-at-point))))
+  (lisp-eval-string (format ":----Doc------<> (clojure.repl/doc %s)" (symbol-at-point))))
 
 (defun source-for-symbol ()
   (interactive)
-  (lisp-eval-string (format "(clojure.repl/source %s)" (symbol-at-point))))
+  (lisp-eval-string (format ":----Source---<> (clojure.repl/source %s)" (symbol-at-point))))
 
 (defun refresh-repl ()
   (interactive)
-  (lisp-eval-string "(clojure.tools.namespace.repl/refresh)"))
+  (lisp-eval-string ":----Refresh--<> (clojure.tools.namespace.repl/refresh)"))
 
 (use-package clojure-mode
   :ensure t
