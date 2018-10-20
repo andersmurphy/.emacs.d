@@ -614,6 +614,19 @@ Smartparens paredit for all the things.
   (save-buffer)
   (lisp-eval-string ":----Refresh--<> (clojure.tools.namespace.repl/refresh)"))
 
+(defun load-current-clj-ns ()
+  (interactive)
+  (save-buffer)
+  (let ((current-point (point)))
+    (goto-char (point-min))
+    (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
+      (when ns-idx
+        (goto-char ns-idx)
+        (let ((sym (symbol-at-point)))
+          (lisp-eval-string (format "(require '%s :reload)" sym))
+          (lisp-eval-string (format "(in-ns '%s)" sym)))))
+    (goto-char current-point)))
+
 (use-package clojure-mode
   :ensure t
   :defer t
@@ -622,6 +635,7 @@ Smartparens paredit for all the things.
           ("C-c C-d" . doc-for-symbol)
           ("C-c C-s" . source-for-symbol)
           ("C-c C-f" . refresh-repl)
+          ("C-c C-l" . load-current-clj-ns)
           ("C-x C-e" . lisp-eval-last-sexp)))
 #+END_SRC
 
