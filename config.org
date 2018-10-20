@@ -611,6 +611,7 @@ Smartparens paredit for all the things.
 
 (defun refresh-repl ()
   (interactive)
+  (save-buffer)
   (lisp-eval-string ":----Refresh--<> (clojure.tools.namespace.repl/refresh)"))
 
 (use-package clojure-mode
