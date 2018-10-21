@@ -637,6 +637,10 @@ Smartparens paredit for all the things.
           ("C-c C-f" . refresh-repl)
           ("C-c C-l" . load-current-clj-ns)
           ("C-x C-e" . lisp-eval-last-sexp)))
+
+(add-hook 'inferior-lisp-mode-hook (lambda()
+          (font-lock-add-keywords 'inferior-lisp-mode
+                                  clojure-font-lock-keywords 'end)))
 #+END_SRC
 
 ** Http
