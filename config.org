@@ -624,6 +624,7 @@ Smartparens paredit for all the things.
       (when ns-idx
         (goto-char ns-idx)
         (let ((sym (symbol-at-point)))
+          (lisp-eval-string ":----Reload-Namespace--<>")
           (lisp-eval-string (format "(require '%s :reload)" sym))
           (lisp-eval-string (format "(in-ns '%s)" sym)))))
     (goto-char current-point)))
