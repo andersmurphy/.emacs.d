@@ -569,13 +569,25 @@ Smartparens paredit for all the things.
 *** Clojure Mode & Inferior Lisp
 
 #+BEGIN_SRC emacs-lisp
+(defun clojure-repl ()
+  (interactive)
+  (setq inferior-lisp-program "clojure"))
+
 (defun lein-repl ()
   (interactive)
   (setq inferior-lisp-program "lein repl"))
 
-(defun clojure-repl ()
+(defun heroku-repl ()
+ (interactive)
+ (setq inferior-lisp-program "heroku run lein repl"))
+
+(defun heroku-production-repl ()
   (interactive)
-  (setq inferior-lisp-program "clojure"))
+  (setq inferior-lisp-program "heroku run lein repl --remote production"))
+
+(defun heorku-staging-repl ()
+  (interactive)
+  (setq inferior-lisp-program "heroku run lein repl --remote staging"))
 
 (lein-repl)
 
@@ -590,7 +602,6 @@ Smartparens paredit for all the things.
  (interactive)
  (lisp-eval-string
   (format "%s" '(require '[clojure.tools.namespace.repl]))))
-
 
 (defun on-first-prompt (output)
  (when (string-match "^[^=>]*[=>] *" output)
