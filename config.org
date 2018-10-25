@@ -593,7 +593,7 @@ Smartparens paredit for all the things.
   (interactive)
   (setq inferior-lisp-program "heroku run lein repl --remote production"))
 
-(defun heorku-staging-repl ()
+(defun heroku-staging-repl ()
   (interactive)
   (setq inferior-lisp-program "heroku run lein repl --remote staging"))
 
