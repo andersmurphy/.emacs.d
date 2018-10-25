@@ -591,15 +591,23 @@ Smartparens paredit for all the things.
  (lisp-eval-string
   (format "%s" '(require '[clojure.tools.namespace.repl]))))
 
+
+(defun on-first-prompt (output)
+ (when (string-match "^[^=>]*[=>] *" output)
+       (enable-repl-pprint)
+       (enable-refresh)
+       (remove-hook 'comint-output-filter-functions
+                    'on-first-prompt)))
+
 (defun open-repl ()
   (interactive)
+  (add-hook 'comint-output-filter-functions
+            'on-first-prompt)
   (if (one-window-p)
       (progn (split-window-right)
              (other-window 1))
       (other-window 1))
   (inferior-lisp inferior-lisp-program)
-  (enable-repl-pprint)
-  (enable-refresh)
   (other-window 1))
 
 (defun doc-for-symbol ()
