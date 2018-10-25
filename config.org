@@ -170,6 +170,14 @@ Also hides auto revert message.
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 #+END_SRC
 
+*** Enable find alternate file
+
+Allows "a" to be used to reused the same dired buffer.
+
+#+BEGIN_SRC emacs-lisp
+(put 'dired-find-alternate-file 'disabled nil)
+#+END_SRC
+
 ** Ask for confirmation when closing emacs
 
 Ask for confirmation when closing emacs.
