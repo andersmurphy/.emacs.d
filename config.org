@@ -577,7 +577,7 @@ Smartparens paredit for all the things.
 *** Clojure Mode & Inferior Lisp
 
 #+BEGIN_SRC emacs-lisp
-(defun clojure-repl ()
+(defun clj-repl ()
   (interactive)
   (setq inferior-lisp-program "clojure"))
 
@@ -670,6 +670,19 @@ Smartparens paredit for all the things.
 (add-hook 'inferior-lisp-mode-hook (lambda()
           (font-lock-add-keywords 'inferior-lisp-mode
                                   clojure-font-lock-keywords 'end)))
+
+(defun buffer-contains-substring (string)
+  (save-excursion
+    (save-match-data
+      (goto-char (point-min))
+      (search-forward string 10 t))))
+
+(defun clj-insert-ns-form-when-opening-clj-file ()
+ (when (not (buffer-contains-substring "(ns "))
+  (clojure-insert-ns-form)))
+
+(add-hook 'clojure-mode-hook 'clj-insert-ns-form-when-opening-clj-file)
+
 #+END_SRC
 
 ** Http
