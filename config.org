@@ -671,14 +671,15 @@ Smartparens paredit for all the things.
           (font-lock-add-keywords 'inferior-lisp-mode
                                   clojure-font-lock-keywords 'end)))
 
-(defun buffer-contains-substring (string)
+(defun contains-substring (string number-of-chars)
   (save-excursion
     (save-match-data
       (goto-char (point-min))
-      (search-forward string 10 t))))
+      (search-forward string number-of-chars t))))
 
 (defun clj-insert-ns-form-when-opening-clj-file ()
- (when (not (buffer-contains-substring "(ns "))
+ (when (and (not (contains-substring "(ns " 10))
+            (not (contains-substring "{" 3))
   (clojure-insert-ns-form)))
 
 (add-hook 'clojure-mode-hook 'clj-insert-ns-form-when-opening-clj-file)
