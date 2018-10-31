@@ -681,11 +681,15 @@ Smartparens paredit for all the things.
       (eobp))))
 
 (defun clj-insert-ns-form-when-opening-clj-file ()
- (when (empty-file)
-  (clojure-insert-ns-form)))
+  (when (empty-file)
+    (clojure-insert-ns-form)))
+
+(defun clj-before-save ()
+  (when (eq major-mode 'clojure-mode)
+    (clojure-align (point-min) (point-max))))
 
 (add-hook 'clojure-mode-hook 'clj-insert-ns-form-when-opening-clj-file)
-
+(add-hook 'before-save-hook 'clj-before-save)
 #+END_SRC
 
 ** Http
