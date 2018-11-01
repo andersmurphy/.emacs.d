@@ -615,11 +615,15 @@ Smartparens paredit for all the things.
   (format "%s" '(require '[clojure.tools.namespace.repl]))))
 
 (defun on-first-prompt (output)
- (when (string-match "^[^=>]*[=>] *" output)
-       (enable-repl-pprint)
-       (enable-refresh)
-       (remove-hook 'comint-output-filter-functions
-                    'on-first-prompt)))
+  (when (string-match "^[^=>]*[=>] *" output)
+    (enable-repl-pprint)
+    (enable-refresh)
+    (remove-hook 'comint-output-filter-functions
+                 'on-first-prompt)))
+
+(defun switch-to-previous-buffer ()
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (defun open-repl ()
   (interactive)
@@ -627,9 +631,12 @@ Smartparens paredit for all the things.
             'on-first-prompt)
   (if (one-window-p)
       (progn (split-window-right)
-             (other-window 1))
-      (other-window 1))
-  (inferior-lisp inferior-lisp-program)
+             (other-window 1)
+             (inferior-lisp inferior-lisp-program))
+    (progn (inferior-lisp inferior-lisp-program)
+           (switch-to-previous-buffer)
+           (other-window 1)
+           (inferior-lisp inferior-lisp-program)))
   (other-window 1))
 
 (defun doc-for-symbol ()
