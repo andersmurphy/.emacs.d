@@ -666,16 +666,25 @@ Smartparens paredit for all the things.
           (lisp-eval-string (format "(in-ns '%s)" sym)))))
     (goto-char current-point)))
 
+(defun clj-comment-form ()
+  (interactive)
+  (let ((bounds (bounds-of-thing-at-point 'sexp)))
+    (if bounds
+        (goto-char (car bounds))
+      (clojure-backward-logical-sexp))
+    (insert "#_")))
+
 (use-package clojure-mode
   :ensure t
   :defer t
   :bind (:map clojure-mode-map
-          ("C-c C-z" . open-repl)
-          ("C-c C-d" . doc-for-symbol)
-          ("C-c C-s" . source-for-symbol)
-          ("C-c C-f" . refresh-repl)
-          ("C-c C-l" . load-current-clj-ns)
-          ("C-x C-e" . lisp-eval-last-sexp)))
+              ("C-c C-z" . open-repl)
+              ("C-c C-d" . doc-for-symbol)
+              ("C-c C-s" . source-for-symbol)
+              ("C-c C-f" . refresh-repl)
+              ("C-c C-l" . load-current-clj-ns)
+              ("C-x C-e" . lisp-eval-last-sexp)
+              ("M-;"     . clj-comment-form)))
 
 (add-hook 'inferior-lisp-mode-hook (lambda()
           (font-lock-add-keywords 'inferior-lisp-mode
