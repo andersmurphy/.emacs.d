@@ -231,7 +231,7 @@ Disables default splash screen.
 ** Theme
 *** Doom
 
-Doom theme is a nice theme collection.
+[[https://github.com/hlissner/emacs-doom-themes][Doom]] theme is a nice theme collection.
 
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
@@ -268,7 +268,7 @@ Function for toggling between light and dark themes.
 
 ** Modeline
 
-Hide modeline
+Hide modeline.
 
 #+BEGIN_SRC emacs-lisp
 (setq-default mode-line-format nil)
@@ -308,7 +308,7 @@ Sets the initial frame to fill the screen.
 
 Sets the initial frame to be flush with the top left corner of the screen.
 
-#+BEGIN_SRC emasc-lisp
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'initial-frame-alist '(left . 0))
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
@@ -327,8 +327,6 @@ Sets font and font size.
 #+END_SRC
 
 ** Enable visual line mode
-
-Sets font and font size.
 
 #+BEGIN_SRC emacs-lisp
 (global-visual-line-mode)
@@ -460,7 +458,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 ** Counsel
 
-Provides versions of common Emacs commands that are customised to make the best use of ivy.
+[[https://github.com/abo-abo/swiper][Counsel]] provides versions of common Emacs commands that are customised to make the best use of ivy.
 
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
@@ -554,7 +552,7 @@ to retrieve and display completion candidates.
 
 *** Aggressive Indent
 
-Automatically keeps things indented.
+[[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] automatically keeps things indented.
 
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
@@ -565,7 +563,7 @@ Automatically keeps things indented.
 
 *** Smartparens
 
-Smartparens paredit for all the things.
+[[https://github.com/Fuco1/smartparens][Smartparens]] paredit for all the things.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
@@ -718,7 +716,7 @@ Smartparens paredit for all the things.
 
 ** Http
 
-Tool for manually exploring and testing HTTP REST webservices.
+[[https://github.com/pashky/restclient.el][restclient]] a tool for manually exploring and testing HTTP REST webservices.
 
 #+BEGIN_SRC emacs-lisp
 (use-package restclient
@@ -729,7 +727,7 @@ Tool for manually exploring and testing HTTP REST webservices.
 * Misc
 ** Epub Reader
 
-nov.el an epub reader for emacs.
+[[https://github.com/wasamasa/nov.el][nov.el]] an epub reader for emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package nov
@@ -742,7 +740,7 @@ nov.el an epub reader for emacs.
 
 ** Music
 
-Music player.
+[[https://www.gnu.org/software/emms/][emms]] music player.
 
 #+BEGIN_SRC emacs-lisp
 (use-package emms
