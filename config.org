@@ -34,6 +34,14 @@ Emms depends on mpv to play music.
 brew install mpv
 #+END_SRC
 
+** Multimarkdown
+
+Markdown mode depends on multimarkdown to preview markdown.
+
+#+BEGIN_SRC sh
+brew install multimarkdown
+#+END_SRC
+
 * Defaults
 ** Turn off alarms completely
 
@@ -744,4 +752,18 @@ Music player.
   (emms-default-players)
   (emms-mode-line-disable)
   (setq emms-source-file-default-directory "~/Documents/music"))
+#+END_SRC
+
+** Markdown Mode
+
+[[https://github.com/jrblevin/markdown-mode][Markdown mode]] for rendering markdown.
+
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
 #+END_SRC
