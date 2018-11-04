@@ -189,6 +189,12 @@ Allows "a" to be used to reused the same dired buffer.
 (put 'dired-find-alternate-file 'disabled nil)
 #+END_SRC
 
+Bind return to alternate file, so that dired reuses same buffer.
+
+#+BEGIN_SRC emacs-lisp
+(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+#+END_SRC
+
 ** Ask for confirmation when closing emacs
 
 Ask for confirmation when closing emacs.
