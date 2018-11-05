@@ -371,6 +371,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell
   :ensure t
+  :defer t
   :config
   (setq ispell-program-name "aspell"
     ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
@@ -507,6 +508,16 @@ restores the old window configuration when you quit out of magit.
 #+END_SRC
 
 ** Org mode
+
+*** Defer Org
+
+Defer org to speed up load time (if config hasn't changed).
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+    :defer t)
+#+END_SRC
+
 *** Org babel/source blocks
 Enables source blocks syntax highlights and makes the editing popup
 window stay within the same window.
@@ -748,6 +759,7 @@ to retrieve and display completion candidates.
 #+BEGIN_SRC emacs-lisp
 (use-package emms
   :ensure t
+  :defer t
   :config
   (emms-standard)
   (emms-default-players)
@@ -762,6 +774,7 @@ to retrieve and display completion candidates.
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
   :ensure t
+  :defer t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
