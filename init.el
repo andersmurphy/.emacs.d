@@ -35,8 +35,13 @@
   (package-install 'use-package))
 (require 'use-package)
 
-;; Load the config
-(org-babel-load-file (concat user-emacs-directory "config.org"))
+;; Only use org to load the config if it has changed or doesn't exist
+(let ((org-file (concat user-emacs-directory "config.org"))
+      (el-file  (concat user-emacs-directory "config.el")))
+  (when (or (not (file-exists-p el-file))
+            (file-newer-than-file-p org-file el-file))
+    (org-babel-load-file org-file))
+  (load-file el-file))
 
 ;; Forces Custom to save all customizations in a seperate file
 (setq custom-file "~/.emacs.d/custom.el")
