@@ -691,12 +691,13 @@ to retrieve and display completion candidates.
   (interactive)
   (let ((bounds (bounds-of-thing-at-point 'sexp)))
     (if bounds
-        (goto-char (car bounds))
+        (progn (goto-char (car bounds))
+               (search-backward "\"" (- (point) 1) t))
       (clojure-backward-logical-sexp))
     (if (search-forward "#_" (+ (point) 2) t)
         (delete-char -2)
       (insert "#_")
-      (goto-char (- (point) 2)))))
+      (backward-char 2))))
 
 (use-package clojure-mode
   :ensure t
