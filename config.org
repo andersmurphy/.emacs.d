@@ -144,13 +144,14 @@ switch between buffers, an Emacs frame loses focus, etc.
   (super-save-mode t))
 #+END_SRC
 
-** Function for reloading config
+** Reloading config
 
 Function for reloading config.
 
 #+BEGIN_SRC emacs-lisp
 (defun reload-config ()
   (interactive)
+    (save-buffer)
     (load-file  "~/.emacs.d/init.el"))
 #+END_SRC
 
