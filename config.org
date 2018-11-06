@@ -692,7 +692,10 @@ to retrieve and display completion candidates.
     (if bounds
         (goto-char (car bounds))
       (clojure-backward-logical-sexp))
-    (insert "#_")))
+    (if (search-forward "#_" (+ (point) 2) t)
+        (delete-char -2)
+      (insert "#_")
+      (goto-char (- (point) 2)))))
 
 (use-package clojure-mode
   :ensure t
