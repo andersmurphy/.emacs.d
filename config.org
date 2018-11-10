@@ -193,6 +193,16 @@ Bind return to alternate file, so that dired reuses same buffer.
  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
 #+END_SRC
 
+*** WDired
+
+WDired (writable dired) can be accessed by making the dired buffer writable with the binding C-x C-q. Any change you make to the buffer will remain unchanged until you commit them by typing C-c C-c. To cancel the changes and revert to the original state you can type C-c k.
+
+The feature bellow force confirmation in the case of potential overwrites caused by rename.
+
+#+BEGIN_SRC emacs-lisp
+(setq wdired-confirm-overwrite t)
+#+END_SRC
+
 ** Ask for confirmation when closing emacs
 
 Ask for confirmation when closing emacs.
