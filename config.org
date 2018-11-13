@@ -599,6 +599,7 @@ to retrieve and display completion candidates.
       (show-smartparens-global-mode t))
     :init
     (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+    (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
     :bind (:map smartparens-mode-map
           ("C-(" . sp-backward-slurp-sexp)
           ("C-{" . sp-backward-barf-sexp)
