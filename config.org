@@ -215,6 +215,14 @@ Ask for confirmation when closing emacs.
 #+BEGIN_SRC emacs-lisp
 (setq echo-keystrokes 0.1)
 #+END_SRC
+** Start emacs server
+
+Open file in existing emacs window (rather than a new session) when clicking on a file in finder.
+
+#+BEGIN_SRC emacs-lisp
+(server-start)
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
