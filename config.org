@@ -683,6 +683,10 @@ to retrieve and display completion candidates.
   (save-buffer)
   (lisp-eval-string ":----Refresh--<> (clojure.tools.namespace.repl/refresh)"))
 
+(defun javadoc-for-symbol ()
+  (interactive)
+  (lisp-eval-string (format ":----Javadoc--<> (clojure.java.javadoc/javadoc %s)" (symbol-at-point))))
+
 (defun load-current-clj-ns ()
   (interactive)
   (save-buffer)
@@ -716,6 +720,7 @@ to retrieve and display completion candidates.
               ("C-c C-z" . open-repl)
               ("C-c C-d" . doc-for-symbol)
               ("C-c C-s" . source-for-symbol)
+              ("C-c C-j" . javadoc-for-symbol)
               ("C-c C-f" . refresh-repl)
               ("C-c C-l" . load-current-clj-ns)
               ("C-x C-e" . lisp-eval-last-sexp)
