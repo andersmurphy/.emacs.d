@@ -223,6 +223,17 @@ Open file in existing emacs window (rather than a new session) when clicking on 
 (server-start)
 #+END_SRC
 
+** Disable mouse
+
+Disables mouse.
+
+#+BEGIN_SRC emacs-lisp
+(use-package disable-mouse
+  :ensure t
+  :config
+  (global-disable-mouse-mode))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
