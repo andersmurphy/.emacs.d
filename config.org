@@ -55,10 +55,15 @@ brew install multimarkdown
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
-** Disable emacs backup files
+** Disable all backups
+
+That's what git is for.
 
 #+BEGIN_SRC emacs-lisp
-(setq make-backup-files nil)
+(setq-default  auto-save-default nil
+               create-lockfiles nil
+               history-length 500
+               make-backup-files nil)
 #+END_SRC
 
 ** Keep all auto-save files in one directory
