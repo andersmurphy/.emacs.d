@@ -66,12 +66,6 @@ That's what git is for.
                make-backup-files nil)
 #+END_SRC
 
-** Keep all auto-save files in one directory
-
-#+BEGIN_SRC emacs-lisp
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-#+END_SRC
-
 ** Kill current buffer rather than bringing up list
 
 #+BEGIN_SRC emacs-lisp
