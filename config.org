@@ -699,11 +699,6 @@ to retrieve and display completion candidates.
   (interactive)
   (lisp-eval-string (format ":----Source---<> (clojure.repl/source %s)" (symbol-at-point))))
 
-(defun refresh-repl ()
-  (interactive)
-  (save-buffer)
-  (lisp-eval-string ":----Refresh--<> (clojure.tools.namespace.repl/refresh)"))
-
 (defun javadoc-for-symbol ()
   (interactive)
   (lisp-eval-string (format ":----Javadoc--<> (clojure.java.javadoc/javadoc %s)" (symbol-at-point))))
