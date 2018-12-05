@@ -264,12 +264,12 @@ Disables default splash screen.
 #+END_SRC
 
 ** Theme
-*** Doom
+*** Gruvbox
 
-[[https://github.com/hlissner/emacs-doom-themes][Doom]] theme is a nice theme collection.
+[[https://github.com/greduan/emacs-theme-gruvbox][Gruvbox]] theme.
 
 #+BEGIN_SRC emacs-lisp
-(use-package doom-themes
+(use-package gruvbox-theme
   :ensure t
   :defer t)
 #+END_SRC
@@ -279,8 +279,8 @@ Disables default splash screen.
 Sets light/dark themes, and loads initial theme.
 
 #+BEGIN_SRC emacs-lisp
-(setq dark-theme 'doom-one)
-(setq light-theme 'doom-one-light)
+(setq dark-theme 'gruvbox-dark-medium)
+(setq light-theme 'gruvbox-light-medium)
 
 (setq active-theme light-theme)
 
