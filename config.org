@@ -353,6 +353,12 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (setq-default cursor-type 'bar)
 #+END_SRC
 
+** Remove cursor only appears in current buffer
+
+#+BEGIN_SRC emacs-lisp
+(setq-default cursor-in-non-selected-windows nil)
+#+END_SRC
+
 ** Font
 
 Sets font and font size.
