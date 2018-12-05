@@ -667,15 +667,9 @@ to retrieve and display completion candidates.
           '(clojure.main/repl :print (fn [x] (newline)
                                              (clojure.pprint/pprint x))))))
 
-(defun enable-refresh ()
- (interactive)
- (lisp-eval-string
-  (format "%s" '(require '[clojure.tools.namespace.repl]))))
-
 (defun on-first-prompt (output)
   (when (string-match "^[^=>]*[=>] *" output)
     (enable-repl-pprint)
-    (enable-refresh)
     (remove-hook 'comint-output-filter-functions
                  'on-first-prompt)))
 
