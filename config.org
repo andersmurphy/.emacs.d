@@ -282,7 +282,7 @@ Sets light/dark themes, and loads initial theme.
 (setq dark-theme 'gruvbox-dark-medium)
 (setq light-theme 'gruvbox-light-medium)
 
-(setq active-theme light-theme)
+(setq active-theme dark-theme)
 
 (load-theme active-theme t)
 #+END_SRC
