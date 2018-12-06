@@ -729,10 +729,17 @@ to retrieve and display completion candidates.
       (insert "#_")
       (backward-char 2))))
 
+(defun clj-apropos ()
+  (interactive)
+  (lisp-eval-string
+   (format ":----Apropos--<> (clojure.repl/apropos #\"%s\")"
+           (read-string "Apropos:"))))
+
 (use-package clojure-mode
   :ensure t
   :defer t
   :bind (:map clojure-mode-map
+              ("C-c C-a" . clj-apropos)
               ("C-c C-z" . open-repl)
               ("C-c C-d" . doc-for-symbol)
               ("C-c C-s" . source-for-symbol)
