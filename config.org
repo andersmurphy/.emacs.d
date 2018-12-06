@@ -733,7 +733,13 @@ to retrieve and display completion candidates.
   (interactive)
   (lisp-eval-string
    (format ":----Apropos--<> (clojure.repl/apropos #\"%s\")"
-           (read-string "Apropos:"))))
+           (read-string "Apropos (regex):"))))
+
+(defun clj-find-doc ()
+  (interactive)
+  (lisp-eval-string
+   (format ":----Find-Doc--<> (clojure.repl/find-doc #\"%s\")"
+           (read-string "Find Doc (regex):"))))
 
 (use-package clojure-mode
   :ensure t
@@ -744,7 +750,7 @@ to retrieve and display completion candidates.
               ("C-c C-d" . doc-for-symbol)
               ("C-c C-s" . source-for-symbol)
               ("C-c C-j" . javadoc-for-symbol)
-              ("C-c C-f" . refresh-repl)
+              ("C-c C-f" . clj-find-doc)
               ("C-c C-l" . load-current-clj-ns)
               ("C-x C-e" . lisp-eval-last-sexp)
               ("M-;"     . clj-comment-form)))
