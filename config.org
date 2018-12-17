@@ -741,6 +741,18 @@ to retrieve and display completion candidates.
    (format ":----Find-Doc--<> (clojure.repl/find-doc #\"%s\")"
            (read-string "Find Doc (regex):"))))
 
+(defun clj-find-implementation-or-test (file-name)
+  (unless file-name (error "The current buffer is not visiting a file"))
+  (if (string-suffix-p "test" (file-name-sans-extension (file-name-nondirectory file-name)))
+      (replace-regexp-in-string
+       "_test" "" (replace-regexp-in-string
+                   "test/" "src/" file-name))
+    (replace-regexp-in-string "src/" "test/" (replace-regexp-in-string ".clj" "_test.clj" file-name))))
+
+(defun clj-toggle-between-implementation-and-test ()
+  (interactive)
+  (find-file (clj-find-implementation-or-test (buffer-file-name))))
+
 (use-package clojure-mode
   :ensure t
   :defer t
@@ -752,6 +764,7 @@ to retrieve and display completion candidates.
               ("C-c C-j" . clj-javadoc-for-symbol)
               ("C-c C-f" . clj-find-doc)
               ("C-c C-l" . clj-load-current-ns)
+              ("C-c C-t" . clj-toggle-between-implementation-and-test)
               ("C-x C-e" . lisp-eval-last-sexp)
               ("M-;"     . clj-comment-form)))
 
