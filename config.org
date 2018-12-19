@@ -647,8 +647,8 @@ to retrieve and display completion candidates.
   (setq inferior-lisp-program "lein repl"))
 
 (defun heroku-repl ()
- (interactive)
- (setq inferior-lisp-program "heroku run lein repl"))
+  (interactive)
+  (setq inferior-lisp-program "heroku run lein repl"))
 
 (defun heroku-production-repl ()
   (interactive)
@@ -661,11 +661,11 @@ to retrieve and display completion candidates.
 (lein-repl)
 
 (defun enable-repl-pprint ()
- (interactive)
- (lisp-eval-string
-  (format "%s"
-          '(clojure.main/repl :print (fn [x] (newline)
-                                             (clojure.pprint/pprint x))))))
+  (interactive)
+  (lisp-eval-string
+   (format "%s"
+           '(clojure.main/repl :print (fn [x] (newline)
+                                          (clojure.pprint/pprint x))))))
 
 (defun on-first-prompt (output)
   (when (string-match "^[^=>]*[=>] *" output)
@@ -785,8 +785,8 @@ to retrieve and display completion candidates.
               ("M-;"     . clj-comment-form)))
 
 (add-hook 'inferior-lisp-mode-hook (lambda()
-          (font-lock-add-keywords 'inferior-lisp-mode
-                                  clojure-font-lock-keywords 'end)))
+                                     (font-lock-add-keywords 'inferior-lisp-mode
+                                                             clojure-font-lock-keywords 'end)))
 
 (defun empty-file ()
   (save-excursion
