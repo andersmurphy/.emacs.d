@@ -703,8 +703,7 @@ to retrieve and display completion candidates.
   (interactive)
   (lisp-eval-string (format ":----Javadoc--<> (clojure.java.javadoc/javadoc %s)" (symbol-at-point))))
 
-(defun clj-load-current-ns ()
-  (interactive)
+(defun clj-apply-f-to-ns-and-return-to-point (f)
   (save-buffer)
   (let ((current-point (point)))
     (goto-char (point-min))
@@ -712,10 +711,25 @@ to retrieve and display completion candidates.
       (when ns-idx
         (goto-char ns-idx)
         (let ((sym (symbol-at-point)))
-          (lisp-eval-string ":----Reload-Namespace--<>")
-          (lisp-eval-string (format "(require '%s :reload)" sym))
-          (lisp-eval-string (format "(in-ns '%s)" sym)))))
+          (funcall f sym))))
     (goto-char current-point)))
+
+(defun clj-load-current-ns ()
+  (interactive)
+  (clj-apply-f-to-ns-and-return-to-point
+   (lambda (sym)
+     (lisp-eval-string ":----Reload-Namespace--<>")
+     (lisp-eval-string (format "(require '%s :reload)" sym))
+     (lisp-eval-string (format "(in-ns '%s)" sym)))))
+
+(defun clj-run-test-for-current-ns ()
+  (interactive)
+  (clj-apply-f-to-ns-and-return-to-point
+   (lambda (sym)
+     (lisp-eval-string ":----Run-Tests--<>")
+     (lisp-eval-string (format "(require '%s :reload)" sym))
+     (lisp-eval-string (format "(in-ns '%s)" sym))
+     (lisp-eval-string (format "(clojure.test/run-tests '%s)" sym sym)))))
 
 (defun clj-comment-form ()
   (interactive)
@@ -743,30 +757,17 @@ to retrieve and display completion candidates.
 
 (defun clj-find-implementation-or-test (file-name)
   (unless file-name (error "The current buffer is not visiting a file"))
-  (if (string-suffix-p "test" (file-name-sans-extension (file-name-nondirectory file-name)))
+  (if (string-suffix-p "test" (file-name-sans-extension
+                               (file-name-nondirectory file-name)))
       (replace-regexp-in-string
        "_test" "" (replace-regexp-in-string
                    "test/" "src/" file-name))
-    (replace-regexp-in-string "src/" "test/" (replace-regexp-in-string ".clj" "_test.clj" file-name))))
+    (replace-regexp-in-string
+     "src/" "test/" (replace-regexp-in-string ".clj" "_test.clj" file-name))))
 
 (defun clj-toggle-between-implementation-and-test ()
   (interactive)
   (find-file (clj-find-implementation-or-test (buffer-file-name))))
-
-(defun clj-run-test-for-current-ns ()
-  (interactive)
-  (save-buffer)
-  (let ((current-point (point)))
-    (goto-char (point-min))
-    (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
-      (when ns-idx
-        (goto-char ns-idx)
-        (let ((sym (symbol-at-point)))
-          (lisp-eval-string ":----Run-Tests--<>")
-          (lisp-eval-string (format "(require '%s :reload)" sym))
-          (lisp-eval-string (format "(in-ns '%s)" sym))
-          (lisp-eval-string (format "(clojure.test/run-tests '%s)" sym sym)))))
-    (goto-char current-point)))
 
 (use-package clojure-mode
   :ensure t
