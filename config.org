@@ -728,8 +728,7 @@ to retrieve and display completion candidates.
    (lambda (sym)
      (lisp-eval-string ":----Run-Tests--<>")
      (lisp-eval-string (format "(require '%s :reload)" sym))
-     (lisp-eval-string (format "(in-ns '%s)" sym))
-     (lisp-eval-string (format "(clojure.test/run-tests '%s)" sym sym)))))
+     (lisp-eval-string (format "(clojure.test/run-tests '%s)" sym)))))
 
 (defun clj-comment-form ()
   (interactive)
