@@ -660,12 +660,15 @@ to retrieve and display completion candidates.
 
 (lein-repl)
 
+(defun clj-eval (quoted-list)
+  (lisp-eval-string
+   (replace-regexp-in-string "\\\\." "."
+                             (format "%S" quoted-list))))
+
 (defun enable-repl-pprint ()
   (interactive)
-  (lisp-eval-string
-   (format "%s"
-           '(clojure.main/repl :print (fn [x] (newline)
-                                          (clojure.pprint/pprint x))))))
+  (clj-eval '(clojure.main/repl :print (fn [x] (newline)
+                                           (clojure.pprint/pprint x)))))
 
 (defun on-first-prompt (output)
   (when (string-match "^[^=>]*[=>] *" output)
@@ -693,15 +696,18 @@ to retrieve and display completion candidates.
 
 (defun clj-doc-for-symbol ()
   (interactive)
-  (lisp-eval-string (format ":----Doc------<> (clojure.repl/doc %s)" (symbol-at-point))))
+  (clj-eval `(:----Doc------<>
+              (clojure.repl/doc ,(symbol-at-point)))))
 
 (defun clj-source-for-symbol ()
   (interactive)
-  (lisp-eval-string (format ":----Source---<> (clojure.repl/source %s)" (symbol-at-point))))
+  (clj-eval `(:----Source---<>
+              (clojure.repl/source ,(symbol-at-point)))))
 
 (defun clj-javadoc-for-symbol ()
   (interactive)
-  (lisp-eval-string (format ":----Javadoc--<> (clojure.java.javadoc/javadoc %s)" (symbol-at-point))))
+  (clj-eval `(:----Javadoc--<>
+              (clojure.java.javadoc/javadoc ,(symbol-at-point)))))
 
 (defun clj-apply-f-to-ns-and-return-to-point (f)
   (save-buffer)
@@ -718,9 +724,9 @@ to retrieve and display completion candidates.
   (interactive)
   (clj-apply-f-to-ns-and-return-to-point
    (lambda (sym)
-     (lisp-eval-string ":----Reload-Namespace--<>")
-     (lisp-eval-string (format "(require '%s :reload)" sym))
-     (lisp-eval-string (format "(in-ns '%s)" sym)))))
+     (clj-eval `(:----Reload-Namespace--<>
+                 (require ',sym :reload)
+                 (in-ns ',sym))))))
 
 (defun clj-run-test-for-current-ns ()
   (interactive)
