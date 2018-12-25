@@ -733,16 +733,18 @@ to retrieve and display completion candidates.
   (clj-apply-f-to-ns-and-return-to-point
    (lambda (sym)
      (let* ((sym-name (symbol-name sym))
-            (ns (if (string-suffix-p "test" sym-name)
-                    (replace-regexp-in-string "-test" "")
-                  sym-name))
-            (test-ns (if (string-suffix-p "test" sym-name)
-                         sym-name
-                       (concat sym-name "-test"))))
-       (lisp-eval-string ":----Run-Tests--<>")
-       (lisp-eval-string (format "(require '%s :reload)" ns))
-       (lisp-eval-string (format "(require '%s :reload)" test-ns))
-       (lisp-eval-string (format "(clojure.test/run-tests '%s)" test-ns))))))
+            (ns (make-symbol
+                 (if (string-suffix-p "test" sym-name)
+                     (replace-regexp-in-string "-test" "")
+                   sym-name)))
+            (test-ns (make-symbol
+                      (if (string-suffix-p "test" sym-name)
+                          sym-name
+                        (concat sym-name "-test")))))
+       (clj-eval `(:----Run-Tests--<>
+                   (require ',ns :reload)
+                   (require ',test-ns :reload)
+                   (clojure.test/run-tests ',test-ns)))))))
 
 (defun clj-comment-form ()
   (interactive)
