@@ -661,9 +661,9 @@ to retrieve and display completion candidates.
 (lein-repl)
 
 (defun clj-eval (quoted-list)
-  (lisp-eval-string
-   (replace-regexp-in-string "\\\\." "."
-                             (format "%S" quoted-list))))
+  (->> (format "%S" quoted-list)
+       (replace-regexp-in-string "\\\\." ".")
+       lisp-eval-string))
 
 (defun enable-repl-pprint ()
   (interactive)
@@ -760,15 +760,15 @@ to retrieve and display completion candidates.
 
 (defun clj-apropos ()
   (interactive)
-  (lisp-eval-string
-   (format ":----Apropos--<> (clojure.repl/apropos #\"%s\")"
-           (read-string "Apropos (regex):"))))
+  (->> (read-string "Apropos (regex):")
+       (format ":----Apropos--<> (clojure.repl/apropos #\"%s\")")
+       lisp-eval-string))
 
 (defun clj-find-doc ()
   (interactive)
-  (lisp-eval-string
-   (format ":----Find-Doc--<> (clojure.repl/find-doc #\"%s\")"
-           (read-string "Find Doc (regex):"))))
+  (->> (read-string "Find Doc (regex):")
+       (format ":----Find-Doc--<> (clojure.repl/find-doc #\"%s\")")
+       lisp-eval-string))
 
 (defun clj-find-implementation-or-test (file-name)
   (unless file-name (error "The current buffer is not visiting a file"))
@@ -782,7 +782,9 @@ to retrieve and display completion candidates.
 
 (defun clj-toggle-between-implementation-and-test ()
   (interactive)
-  (find-file (clj-find-implementation-or-test (buffer-file-name))))
+  (-> (buffer-file-name)
+      clj-find-implementation-or-test
+      find-file))
 
 (use-package clojure-mode
   :ensure t
