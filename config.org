@@ -650,11 +650,15 @@ to retrieve and display completion candidates.
 #+BEGIN_SRC emacs-lisp
 (defun clj-repl ()
   (interactive)
-  (setq inferior-lisp-program "clojure"))
+  (setq inferior-lisp-program
+        ;; Need to omit spaces in arg string as inf-lisp
+        ;; just does a split on string.
+        "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}"))
 
 (defun lein-repl ()
   (interactive)
-  (setq inferior-lisp-program "lein repl"))
+  (setq inferior-lisp-program
+        "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl"))
 
 (defun heroku-repl ()
   (interactive)
