@@ -593,12 +593,13 @@ to retrieve and display completion candidates.
 *** Compilation buffers display ANSI
 
 #+BEGIN_SRC emacs-lisp
-(ignore-errors
-  (require 'ansi-color)
-  (defun colorize-compilation-buffer ()
-  (when (eq major-mode 'compilation-mode)
-    (ansi-color-apply-on-region compilation-filter-start (point-max))))
-  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+(use-package ansi-color
+  :ensure t
+  :config (progn
+            (defun ansi-colorize-buffer ()
+              (let ((inhibit-read-only t))
+                (ansi-color-apply-on-region (point-min) (point-max))))
+            (add-hook 'compilation-filter-hook 'ansi-colorize-buffer)))
 #+END_SRC
 
 *** Aggressive Indent
