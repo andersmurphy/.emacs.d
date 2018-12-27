@@ -679,7 +679,7 @@ to retrieve and display completion candidates.
 
 (defun switch-to-previous-buffer ()
   (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
+  (-> (current-buffer) (other-buffer 1) switch-to-buffer))
 
 (defun clj-open-repl ()
   (interactive)
