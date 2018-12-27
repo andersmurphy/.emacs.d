@@ -744,7 +744,7 @@ to retrieve and display completion candidates.
      (let* ((sym-name (symbol-name sym))
             (ns (make-symbol
                  (if (string-suffix-p "test" sym-name)
-                     (replace-regexp-in-string "-test" "")
+                     (replace-regexp-in-string "-test" "" sym-name)
                    sym-name)))
             (test-ns (make-symbol
                       (if (string-suffix-p "test" sym-name)
