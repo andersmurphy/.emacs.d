@@ -636,6 +636,15 @@ to retrieve and display completion candidates.
 #+END_SRC
 
 ** Clojure
+*** Edn
+
+[[https://github.com/expez/edn.el][Edn]] is an emacs lisp library for reading and writing the data format edn.
+
+#+BEGIN_SRC emacs-lisp
+(use-package edn
+  :ensure t)
+#+END_SRC
+
 *** Clojure Mode & Inferior Lisp
 
 #+BEGIN_SRC emacs-lisp
@@ -661,10 +670,9 @@ to retrieve and display completion candidates.
 
 (lein-repl)
 
-(defun clj-eval (quoted-list)
-  (->> (format "%S" quoted-list)
-       (replace-regexp-in-string "\\\\." ".")
-       lisp-eval-string))
+(defun clj-eval (edn)
+  (-> (edn-print-string edn)
+      lisp-eval-string))
 
 (defun enable-repl-pprint ()
   (interactive)
