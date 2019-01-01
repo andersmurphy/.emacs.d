@@ -568,7 +568,7 @@ window stay within the same window.
       org-src-tab-acts-natively t)
 #+END_SRC
 
-* Programming Languages
+* Programming
 ** General
 *** Show line numbers
 
