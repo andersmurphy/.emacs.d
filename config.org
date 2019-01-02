@@ -800,6 +800,12 @@ to retrieve and display completion candidates.
       clj-find-implementation-or-test
       find-file))
 
+(defun clj-compliment-completion ()
+  (interactive)
+  (clj-eval
+   `(do (require '[compliment.core])
+        (compliment.core/completions ,(symbol-name (symbol-at-point))))))
+
 (use-package clojure-mode
   :ensure t
   :defer t
