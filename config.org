@@ -710,18 +710,15 @@ to retrieve and display completion candidates.
 
 (defun clj-doc-for-symbol ()
   (interactive)
-  (clj-eval `(:----Doc------<>
-              (clojure.repl/doc ,(symbol-at-point)))))
+  (clj-eval `(clojure.repl/doc ,(symbol-at-point))))
 
 (defun clj-source-for-symbol ()
   (interactive)
-  (clj-eval `(:----Source---<>
-              (clojure.repl/source ,(symbol-at-point)))))
+  (clj-eval `(clojure.repl/source ,(symbol-at-point))))
 
 (defun clj-javadoc-for-symbol ()
   (interactive)
-  (clj-eval `(:----Javadoc--<>
-              (clojure.java.javadoc/javadoc ,(symbol-at-point)))))
+  (clj-eval `(clojure.java.javadoc/javadoc ,(symbol-at-point))))
 
 (defun clj-apply-f-to-ns-and-return-to-point (f)
   (save-buffer)
@@ -738,9 +735,8 @@ to retrieve and display completion candidates.
   (interactive)
   (clj-apply-f-to-ns-and-return-to-point
    (lambda (sym)
-     (clj-eval `(:----Reload-Namespace--<>
-                 (require ',sym :reload)
-                 (in-ns ',sym))))))
+     (clj-eval `(do (require ',sym :reload)
+                    (in-ns ',sym))))))
 
 (defun clj-run-test-for-current-ns ()
   (interactive)
@@ -755,10 +751,9 @@ to retrieve and display completion candidates.
                       (if (string-suffix-p "test" sym-name)
                           sym-name
                         (concat sym-name "-test")))))
-       (clj-eval `(:----Run-Tests--<>
-                   (require ',ns :reload)
-                   (require ',test-ns :reload)
-                   (clojure.test/run-tests ',test-ns)))))))
+       (clj-eval `(do (require ',ns :reload)
+                      (require ',test-ns :reload)
+                      (clojure.test/run-tests ',test-ns)))))))
 
 (defun clj-comment-form ()
   (interactive)
@@ -770,18 +765,18 @@ to retrieve and display completion candidates.
     (if (search-forward "#_" (+ (point) 2) t)
         (delete-char -2)
       (insert "#_")
-      (backward-char 2))))
+      (backward-pchar 2))))
 
 (defun clj-apropos ()
   (interactive)
   (->> (read-string "Apropos (regex):")
-       (format ":----Apropos--<> (clojure.repl/apropos #\"%s\")")
+       (format "(clojure.repl/apropos #\"%s\")")
        lisp-eval-string))
 
 (defun clj-find-doc ()
   (interactive)
   (->> (read-string "Find Doc (regex):")
-       (format ":----Find-Doc--<> (clojure.repl/find-doc #\"%s\")")
+       (format "(clojure.repl/find-doc #\"%s\")")
        lisp-eval-string))
 
 (defun clj-find-implementation-or-test (file-name)
