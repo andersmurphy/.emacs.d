@@ -705,6 +705,7 @@ to retrieve and display completion candidates.
            (switch-to-prev-buffer)
            (other-window 1)
            (inferior-lisp inferior-lisp-program)))
+  (comint-show-maximum-output)
   (other-window 1))
 
 (defun clj-doc-for-symbol ()
