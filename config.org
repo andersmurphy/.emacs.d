@@ -693,10 +693,6 @@ to retrieve and display completion candidates.
     (remove-hook 'comint-output-filter-functions
                  'on-first-prompt)))
 
-(defun switch-to-previous-buffer ()
-  (interactive)
-  (-> (current-buffer) (other-buffer 1) switch-to-buffer))
-
 (defun clj-open-repl ()
   (interactive)
   (add-hook 'comint-output-filter-functions
@@ -706,7 +702,7 @@ to retrieve and display completion candidates.
              (other-window 1)
              (inferior-lisp inferior-lisp-program))
     (progn (inferior-lisp inferior-lisp-program)
-           (switch-to-previous-buffer)
+           (switch-to-prev-buffer)
            (other-window 1)
            (inferior-lisp inferior-lisp-program)))
   (other-window 1))
