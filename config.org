@@ -587,8 +587,11 @@ to retrieve and display completion candidates.
   :ensure t
   :config
   (global-company-mode)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous))
+  (setq company-idle-delay 0.2)
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("TAB" . company-complete-selection)))
 #+END_SRC
 
 *** Compilation buffers display ANSI
