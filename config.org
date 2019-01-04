@@ -655,8 +655,8 @@ to retrieve and display completion candidates.
 (defun clj-repl ()
   (interactive)
   (setq inferior-lisp-program
-        ;; Need to omit spaces in arg string as inf-lisp
-        ;; just does a split on string.
+; Need to omit spaces in arg string as inf-lisp just does a split on string:
+;https://github.com/emacs-mirror/emacs/blob/d0e2a341dd9a9a365fd311748df024ecb25b70ec/lisp/progmodes/inf-lisp.el#L306p
         "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}"))
 
 (defun lein-repl ()
