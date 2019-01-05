@@ -623,20 +623,20 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
-    :ensure t
-    :config
-    (progn
-      (use-package smartparens-config)
-      (sp-use-smartparens-bindings)
-      (show-smartparens-global-mode t))
-    :init
-    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-    (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
-    :bind (:map smartparens-mode-map
-          ("C-(" . sp-backward-slurp-sexp)
-          ("C-{" . sp-backward-barf-sexp)
-          ("C-)" . sp-forward-slurp-sexp)
-          ("C-}" . sp-forward-barf-sexp)))
+  :ensure t
+  :config
+  (progn
+    (use-package smartparens-config)
+    (sp-use-smartparens-bindings)
+    (show-smartparens-global-mode t))
+  :init
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+  :bind (:map smartparens-mode-map
+              ("C-(" . sp-backward-slurp-sexp)
+              ("C-{" . sp-backward-barf-sexp)
+              ("C-)" . sp-forward-slurp-sexp)
+              ("C-}" . sp-forward-barf-sexp)))
 #+END_SRC
 
 ** Clojure
@@ -765,7 +765,7 @@ to retrieve and display completion candidates.
     (if (search-forward "#_" (+ (point) 2) t)
         (delete-char -2)
       (insert "#_")
-      (backward-pchar 2))))
+      (backward-char 2))))
 
 (defun clj-apropos ()
   (interactive)
