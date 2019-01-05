@@ -585,9 +585,9 @@ to retrieve and display completion candidates.
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
-  :config
-  (global-company-mode)
-  (setq company-idle-delay 0.2)
+  :init
+    (setq company-idle-delay 0.2)
+    (global-company-mode)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
