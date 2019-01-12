@@ -237,6 +237,12 @@ Disables mouse.
   (global-disable-mouse-mode))
 #+END_SRC
 
+** Don't ask for confirmation when killing buffers with process
+
+#+BEGIN_SRC emacs-lisp
+(setq kill-buffer-query-functions nil)
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
