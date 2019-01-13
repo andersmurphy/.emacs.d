@@ -658,38 +658,13 @@ to retrieve and display completion candidates.
 *** Clojure Mode & Inferior Lisp
 
 #+BEGIN_SRC emacs-lisp
-(defun clj-repl ()
-  (interactive)
-  (setq inferior-lisp-program
-; Need to omit spaces in arg string as inf-lisp just does a split on string:
-;https://github.com/emacs-mirror/emacs/blob/d0e2a341dd9a9a365fd311748df024ecb25b70ec/lisp/progmodes/inf-lisp.el#L306p
-        "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}"))
-
-(defun lein-repl ()
-  (interactive)
-  (setq inferior-lisp-program
-        "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl"))
-
-(defun heroku-repl ()
-  (interactive)
-  (setq inferior-lisp-program "heroku run lein repl"))
-
-(defun heroku-production-repl ()
-  (interactive)
-  (setq inferior-lisp-program "heroku run lein repl --remote production"))
-
-(defun heroku-staging-repl ()
-  (interactive)
-  (setq inferior-lisp-program "heroku run lein repl --remote staging"))
-
-(lein-repl)
+(setq inferior-lisp-program "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl")
 
 (defun clj-eval (edn)
   (-> (edn-print-string edn)
       lisp-eval-string))
 
 (defun enable-repl-pprint ()
-  (interactive)
   (clj-eval '(clojure.main/repl :print (fn [x] (newline)
                                            (clojure.pprint/pprint x)))))
 
@@ -713,6 +688,33 @@ to retrieve and display completion candidates.
            (inferior-lisp inferior-lisp-program)))
   (comint-show-maximum-output)
   (other-window 1))
+
+(defun kill-inferior-lisp-buffer ()
+  (when (get-buffer "*inferior-lisp*")
+    (kill-buffer "*inferior-lisp*")))
+
+(defun start-repl (repl-command-string)
+  (kill-inferior-lisp-buffer)
+  (setq inferior-lisp-program repl-command-string)
+  (clj-open-repl))
+
+;; Need to omit spaces in arg string as inf-lisp just does a split on string:
+;; https://github.com/emacs-mirror/emacs/blob/d0e2a341dd9a9a365fd311748df024ecb25b70ec/lisp/progmodes/inf-lisp.el#L306p
+(defun clj-repl ()
+  (interactive)
+  (start-repl "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}"))
+(defun lein-repl ()
+  (interactive)
+  (start-repl "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl"))
+(defun heroku-repl ()
+  (interactive)
+  (start-repl "heroku run lein repl"))
+(defun heroku-production-repl ()
+  (interactive)
+  (start-repl "heroku run lein repl --remote production"))
+(defun heroku-staging-repl ()
+  (interactive)
+  (start-repl "heroku run lein repl --remote staging"))
 
 (defun clj-doc-for-symbol ()
   (interactive)
