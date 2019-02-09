@@ -634,7 +634,8 @@ to retrieve and display completion candidates.
   (progn
     (use-package smartparens-config)
     (sp-use-smartparens-bindings)
-    (show-smartparens-global-mode t))
+    (show-smartparens-global-mode t)
+    (setq sp-highlight-pair-overlay nil))
   :init
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
