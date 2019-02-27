@@ -889,6 +889,7 @@ to retrieve and display completion candidates.
   (emms-standard)
   (emms-default-players)
   (emms-mode-line-disable)
+  (setq emms-repeat-playlist t)
   (setq emms-source-file-default-directory "~/Documents/music"))
 #+END_SRC
 
