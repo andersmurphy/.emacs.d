@@ -665,6 +665,10 @@ to retrieve and display completion candidates.
   (-> (edn-print-string edn)
       lisp-eval-string))
 
+(defun clj-symbol-at-point ()
+    (with-syntax-table clojure-mode-syntax-table
+      (symbol-at-point)))
+
 (defun enable-repl-pprint ()
   (clj-eval '(clojure.main/repl :print (fn [x] (newline)
                                            (clojure.pprint/pprint x)))))
@@ -719,15 +723,15 @@ to retrieve and display completion candidates.
 
 (defun clj-doc-for-symbol ()
   (interactive)
-  (clj-eval `(clojure.repl/doc ,(symbol-at-point))))
+  (clj-eval `(clojure.repl/doc ,(clj-symbol-at-point))))
 
 (defun clj-source-for-symbol ()
   (interactive)
-  (clj-eval `(clojure.repl/source ,(symbol-at-point))))
+  (clj-eval `(clojure.repl/source ,(clj-symbol-at-point))))
 
 (defun clj-javadoc-for-symbol ()
   (interactive)
-  (clj-eval `(clojure.java.javadoc/javadoc ,(symbol-at-point))))
+  (clj-eval `(clojure.java.javadoc/javadoc ,(clj-symbol-at-point))))
 
 (defun clj-apply-f-to-ns-and-return-to-point (f)
   (save-buffer)
@@ -736,7 +740,7 @@ to retrieve and display completion candidates.
     (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
       (when ns-idx
         (goto-char ns-idx)
-        (let ((sym (symbol-at-point)))
+        (let ((sym (clj-symbol-at-point)))
           (funcall f sym))))
     (goto-char current-point)))
 
@@ -812,7 +816,7 @@ to retrieve and display completion candidates.
   (interactive)
   (clj-eval
    `(do (require '[compliment.core])
-        (compliment.core/completions ,(symbol-name (symbol-at-point))))))
+        (compliment.core/completions ,(symbol-name (clj-symbol-at-point))))))
 
 (use-package clojure-mode
   :ensure t
@@ -898,6 +902,12 @@ to retrieve and display completion candidates.
 [[https://github.com/jrblevin/markdown-mode][Markdown mode]] for rendering markdown.
 
 #+BEGIN_SRC emacs-lisp
+(defun clj-open-md-block-repl ()
+  (interactive)
+  (setq inferior-lisp-program
+        "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}")
+  (clj-open-repl))
+
 (use-package markdown-mode
   :ensure t
   :defer t
@@ -905,5 +915,13 @@ to retrieve and display completion candidates.
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
+  :init (setq markdown-command "multimarkdown")
+  :config (markdown-toggle-fontify-code-blocks-natively)
+  :bind (:map markdown-mode-map
+              ("C-c C-a" . clj-apropos)
+              ("C-c C-z" . clj-open-md-block-repl)
+              ("C-c C-d" . clj-doc-for-symbol)
+              ("C-c C-s" . clj-source-for-symbol)
+              ("C-c C-f" . clj-find-doc)
+              ("C-x C-e" . lisp-eval-last-sexp)))
 #+END_SRC
