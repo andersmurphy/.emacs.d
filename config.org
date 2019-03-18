@@ -35,6 +35,14 @@ Markdown mode depends on multimarkdown to preview markdown.
 brew install multimarkdown
 #+END_SRC
 
+** Joker
+
+[[https://github.com/candid82/joker][Joker]] backend for clojure linter.
+
+#+BEGIN_SRC sh
+brew install joker
+#+END_SRC
+
 * Defaults
 ** Turn off alarms completely
 
@@ -462,6 +470,51 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 #+END_SRC
 
+** Fycheck
+
+[[https://github.com/flycheck/flycheck][Flycheck]] on-the-fly syntax checking extension.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode)
+  ;; Change fringe indicator to be a circle
+  (define-fringe-bitmap 'my-flycheck-fringe-indicator
+    (vector #b00000000
+            #b00000000
+            #b00000000
+            #b00000000
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b00000000
+            #b00000000
+            #b00000000
+            #b00000000
+            #b00000000))
+  (flycheck-define-error-level 'error
+    :severity 2
+    :overlay-category 'flycheck-error-overlay
+    :fringe-bitmap 'my-flycheck-fringe-indicator
+    :fringe-face 'flycheck-fringe-error)
+  (flycheck-define-error-level 'warning
+    :severity 1
+    :overlay-category 'flycheck-warning-overlay
+    :fringe-bitmap 'my-flycheck-fringe-indicator
+    :fringe-face 'flycheck-fringe-warning)
+  (flycheck-define-error-level 'info
+    :severity 0
+    :overlay-category 'flycheck-info-overlay
+    :fringe-bitmap 'my-flycheck-fringe-indicator
+    :fringe-face 'flycheck-fringe-info))
+#+END_SRC
+
 * Navigation
 ** Recent files
 
@@ -848,6 +901,15 @@ to retrieve and display completion candidates.
 
 (add-hook 'clojure-mode-hook 'clj-insert-ns-form-when-opening-clj-file)
 (add-hook 'before-save-hook 'clj-before-save)
+#+END_SRC
+
+*** Flycheck Joker
+
+[[https://github.com/candid82/flycheck-joker][flycheck-joker]] is a clojure linter.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck-joker
+  :ensure t)
 #+END_SRC
 
 ** Http
