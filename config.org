@@ -470,7 +470,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 (global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
 #+END_SRC
 
-** Fycheck
+** Flycheck
 
 [[https://github.com/flycheck/flycheck][Flycheck]] on-the-fly syntax checking extension.
 
