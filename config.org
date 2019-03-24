@@ -311,13 +311,33 @@ Function for toggling between light and dark themes.
 
 ** Modeline
 
-Hide modeline.
+Doom modeline.
 
 #+BEGIN_SRC emacs-lisp
-(setq-default mode-line-format nil)
-(setq window-divider-default-bottom-width 1)
-(setq window-divider-default-places 'bottom-only)
-(window-divider-mode 1)
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :init
+  (setq doom-modeline-icon nil)
+  :config
+  (doom-modeline-def-segment buffer-info-ignore-modified
+    (let ((active (doom-modeline--active)))
+      (concat
+       (propertize " " 'face (if active 'mode-line 'mode-line-inactive))
+
+       ;; buffer file name
+       (when-let ((name (buffer-name)))
+         (if active
+             (propertize name 'face 'doom-modeline-buffer-file)
+           (propertize name 'face 'mode-line-inactive))))))
+
+  (doom-modeline-def-modeline 'my-simple-line
+    '(bar buffer-info-ignore-modified checker)
+    '())
+
+  (defun setup-custom-doom-modeline ()
+    (doom-modeline-set-modeline 'my-simple-line 'default))
+  (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline))
 #+END_SRC
 
 ** Title bar
