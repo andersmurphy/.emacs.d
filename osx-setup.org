@@ -41,6 +41,12 @@ Set editor.
 git config --global core.editor 'emacsclient'
 #+END_SRC
 
+Set pull with rebase to be default.
+
+#+BEGIN_SRC sh
+git config --global pull.rebase true
+#+END_SRC
+
 Set colour ui.
 
 #+BEGIN_SRC sh
