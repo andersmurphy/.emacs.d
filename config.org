@@ -592,15 +592,15 @@ window stay within the same window.
       org-src-tab-acts-natively t)
 #+END_SRC
 
-*** Auto tangle osx-setup.org on save
+*** Auto tangle .org files in script folder
 
 #+BEGIN_SRC emacs-lisp
-(defun my/tangle-osx-setup ()
-  (when (equal (buffer-file-name)
-               (expand-file-name "~/.emacs.d/osx-setup.org"))
-    (org-babel-tangle-file "~/.emacs.d/osx-setup.org")))
+(defun my/tangle-scripts ()
+  (when-let ((file-name (buffer-file-name)))
+    (when (string-match "^.*?/\.emacs\.d/scripts/.*\.org$" file-name)
+      (org-babel-tangle-file file-name))))
 
-(add-hook 'after-save-hook #'my/tangle-osx-setup)
+(add-hook 'after-save-hook #'my/tangle-scripts)
 #+END_SRC
 
 * Programming
