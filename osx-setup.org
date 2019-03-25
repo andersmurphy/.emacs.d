@@ -28,6 +28,19 @@ brew update
 
 * Git
 
+Set identity.
+
+#+BEGIN_SRC sh
+git config --global user.name "andersmurphy"
+git config --global user.email "andersmurphy@gmail.com"
+#+END_SRC
+
+Set editor.
+
+#+BEGIN_SRC  sh
+git config --global core.editor 'emacsclient'
+#+END_SRC
+
 Set colour ui.
 
 #+BEGIN_SRC sh
