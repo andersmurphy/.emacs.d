@@ -35,3 +35,4 @@ brew install clojure
 brew install leiningen
 
 brew install joker
+ln -s ~/.emacs.d/.joker ~
