@@ -6,6 +6,12 @@
 defaults write com.apple.finder AppleShowAllFiles -boolean true ; killall Finder
 #+END_SRC
 
+* Automatically hide and show the Dock
+
+#+BEGIN_SRC sh
+defaults write com.apple.dock autohide -bool true
+#+END_SRC
+
 * Xcode command line tools
 
 Install command line tools.

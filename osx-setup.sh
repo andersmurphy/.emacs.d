@@ -1,5 +1,7 @@
 defaults write com.apple.finder AppleShowAllFiles -boolean true ; killall Finder
 
+defaults write com.apple.dock autohide -bool true
+
 xcode-select --install
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
