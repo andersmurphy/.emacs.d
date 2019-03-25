@@ -1,5 +1,9 @@
 {:known-macros
-   []
+   [clojure.spec.alpha/fdef
+    compojure.core/defroutes
+    compojure.core/GET
+    compojure.core/POST
+    compojure.core/DELETE]
  :known-namespaces
    []
  :known-tags
