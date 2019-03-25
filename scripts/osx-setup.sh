@@ -17,8 +17,7 @@ git config --global pull.rebase true
 
 git config --global color.ui true
 
-echo '.projectile
-.DS_Store' > .gitignore
+echo '.DS_Store' > .gitignore
 
 git config --global core.excludesfile '~/.gitignore'
 
