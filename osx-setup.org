@@ -116,4 +116,5 @@ Linter.
 
 #+BEGIN_SRC sh
 brew install joker
+ln -s ~/.emacs.d/.joker ~
 #+END_SRC
