@@ -577,7 +577,6 @@ restores the old window configuration when you quit out of magit.
 #+END_SRC
 
 ** Org mode
-
 *** Defer Org
 
 Defer org to speed up load time (if config hasn't changed).
@@ -588,6 +587,7 @@ Defer org to speed up load time (if config hasn't changed).
 #+END_SRC
 
 *** Org babel/source blocks
+
 Enables source blocks syntax highlights and makes the editing popup
 window stay within the same window.
 
@@ -597,6 +597,17 @@ window stay within the same window.
       org-src-strip-leading-and-trailing-blank-lines t
       org-src-preserve-indentation t
       org-src-tab-acts-natively t)
+#+END_SRC
+
+*** Auto tangle osx-setup.org on save
+
+#+BEGIN_SRC emacs-lisp
+(defun tangle-osx-setup ()
+  (when (equal (buffer-file-name)
+               (expand-file-name "~/.emacs.d/osx-setup.org"))
+    (org-babel-tangle-file "~/.emacs.d/osx-setup.org")))
+
+(add-hook 'after-save-hook #'tangle-osx-setup)
 #+END_SRC
 
 * Programming
