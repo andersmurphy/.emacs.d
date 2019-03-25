@@ -1,48 +1,6 @@
 # C-c ' (org-edit-special) toggles org-edit-src-code on src blocks.
 # Reload config with M-x reload-config.
 
-* Installing Emacs
-** OSX
-
-Install emacs using homebrew.
-
-#+BEGIN_SRC sh
-brew cask install emacs
-#+END_SRC
-
-* External Dependencies
-** Aspell
-
-Spellcheck depends on aspell.
-
-#+BEGIN_SRC sh
-brew install aspell
-#+END_SRC
-
-** Mpv
-
-Emms depends on mpv to play music.
-
-#+BEGIN_SRC sh
-brew install mpv
-#+END_SRC
-
-** Multimarkdown
-
-Markdown mode depends on multimarkdown to preview markdown.
-
-#+BEGIN_SRC sh
-brew install multimarkdown
-#+END_SRC
-
-** Joker
-
-[[https://github.com/candid82/joker][Joker]] backend for clojure linter.
-
-#+BEGIN_SRC sh
-brew install joker
-#+END_SRC
-
 * Defaults
 ** Turn off alarms completely
 

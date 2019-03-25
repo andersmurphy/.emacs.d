@@ -47,3 +47,48 @@ Set as global ignore file.
 #+BEGIN_SRC sh
 git config --global core.excludesfile '~/.gitignore'
 #+END_SRC
+* Emacs
+
+#+BEGIN_SRC sh
+brew cask install emacs
+#+END_SRC
+
+** Emacs External Dependencies
+
+Spellcheck depends on aspell.
+
+#+BEGIN_SRC sh
+brew install aspell
+#+END_SRC
+
+Emms depends on mpv to play music.
+
+#+BEGIN_SRC sh
+brew install mpv
+#+END_SRC
+
+Markdown mode depends on multimarkdown to preview markdown.
+
+#+BEGIN_SRC sh
+brew install multimarkdown
+#+END_SRC
+
+* Clojure
+
+Language.
+
+#+BEGIN_SRC sh
+brew install clojure
+#+END_SRC
+
+Build tool.
+
+#+BEGIN_SRC sh
+brew install leiningen
+#+END_SRC
+
+Linter.
+
+#+BEGIN_SRC sh
+brew install joker
+#+END_SRC
