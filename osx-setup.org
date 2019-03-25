@@ -27,13 +27,12 @@ brew update
 #+END_SRC
 
 * Git
-** Set colour ui
+
+Set colour ui.
 
 #+BEGIN_SRC sh
 git config --global color.ui true
 #+END_SRC
-
-** Global Git Ignore
 
 Create global git ignore file.
 
