@@ -111,7 +111,7 @@ switch between buffers, an Emacs frame loses focus, etc.
 Function for reloading config.
 
 #+BEGIN_SRC emacs-lisp
-(defun reload-config ()
+(defun my/reload-config ()
   (interactive)
     (save-buffer)
     (load-file  "~/.emacs.d/init.el"))
@@ -259,7 +259,7 @@ Sets light/dark themes, and loads initial theme.
 Function for toggling between light and dark themes.
 
 #+BEGIN_SRC emacs-lisp
-(defun toggle-dark-light-theme ()
+(defun my/toggle-dark-light-theme ()
   (interactive)
   (disable-theme active-theme)
   (if (eq active-theme light-theme)
@@ -290,13 +290,13 @@ Doom modeline.
              (propertize name 'face 'doom-modeline-buffer-file)
            (propertize name 'face 'mode-line-inactive))))))
 
-  (doom-modeline-def-modeline 'my-simple-line
+  (doom-modeline-def-modeline 'my/simple-line
     '(bar buffer-info-ignore-modified checker)
     '())
 
-  (defun setup-custom-doom-modeline ()
-    (doom-modeline-set-modeline 'my-simple-line 'default))
-  (add-hook 'doom-modeline-mode-hook 'setup-custom-doom-modeline))
+  (defun my/setup-custom-doom-modeline ()
+    (doom-modeline-set-modeline 'my/simple-line 'default))
+  (add-hook 'doom-modeline-mode-hook 'my/setup-custom-doom-modeline))
 #+END_SRC
 
 ** Title bar
@@ -442,11 +442,11 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 ** Back to indentation or beginning
 
 #+BEGIN_SRC emacs-lisp
-(defun back-to-indentation-or-beginning () (interactive)
+(defun my/back-to-indentation-or-beginning () (interactive)
    (if (= (point) (progn (back-to-indentation) (point)))
        (beginning-of-line)))
 
-(global-set-key (kbd "C-a") 'back-to-indentation-or-beginning)
+(global-set-key (kbd "C-a") 'my/back-to-indentation-or-beginning)
 #+END_SRC
 
 ** Flycheck
@@ -560,20 +560,13 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 *** Fullscreen magit
 
-The following code makes magit-status run alone in the frame, and then
-restores the old window configuration when you quit out of magit.
+The following code makes magit-status run alone in the frame.
 
 #+BEGIN_SRC emacs-lisp
 (defadvice magit-status (around magit-fullscreen activate)
   (window-configuration-to-register :magit-fullscreen)
   ad-do-it
   (delete-other-windows))
-
-(defun magit-quit-session ()
-  "Restores the previous window configuration and kills the magit buffer"
-  (interactive)
-  (kill-buffer)
-  (jump-to-register :magit-fullscreen))
 #+END_SRC
 
 ** Org mode
@@ -602,12 +595,12 @@ window stay within the same window.
 *** Auto tangle osx-setup.org on save
 
 #+BEGIN_SRC emacs-lisp
-(defun tangle-osx-setup ()
+(defun my/tangle-osx-setup ()
   (when (equal (buffer-file-name)
                (expand-file-name "~/.emacs.d/osx-setup.org"))
     (org-babel-tangle-file "~/.emacs.d/osx-setup.org")))
 
-(add-hook 'after-save-hook #'tangle-osx-setup)
+(add-hook 'after-save-hook #'my/tangle-osx-setup)
 #+END_SRC
 
 * Programming
@@ -642,10 +635,10 @@ to retrieve and display completion candidates.
 (use-package ansi-color
   :ensure t
   :config (progn
-            (defun ansi-colorize-buffer ()
+            (defun my/ansi-colorize-buffer ()
               (let ((inhibit-read-only t))
                 (ansi-color-apply-on-region (point-min) (point-max))))
-            (add-hook 'compilation-filter-hook 'ansi-colorize-buffer)))
+            (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)))
 #+END_SRC
 
 *** Aggressive Indent
@@ -697,28 +690,28 @@ to retrieve and display completion candidates.
 #+BEGIN_SRC emacs-lisp
 (setq inferior-lisp-program "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl")
 
-(defun clj-eval (edn)
+(defun my/clj-eval (edn)
   (-> (edn-print-string edn)
       lisp-eval-string))
 
-(defun clj-symbol-at-point ()
+(defun my/clj-symbol-at-point ()
     (with-syntax-table clojure-mode-syntax-table
       (symbol-at-point)))
 
-(defun enable-repl-pprint ()
-  (clj-eval '(clojure.main/repl :print (fn [x] (newline)
+(defun my/enable-repl-pprint ()
+  (my/clj-eval '(clojure.main/repl :print (fn [x] (newline)
                                            (clojure.pprint/pprint x)))))
 
-(defun on-first-prompt (output)
+(defun my/on-first-prompt (output)
   (when (string-match "^[^=>]*[=>] *" output)
-    (enable-repl-pprint)
+    (my/enable-repl-pprint)
     (remove-hook 'comint-output-filter-functions
-                 'on-first-prompt)))
+                 'my/on-first-prompt)))
 
-(defun clj-open-repl ()
+(defun my/clj-open-repl ()
   (interactive)
   (add-hook 'comint-output-filter-functions
-            'on-first-prompt)
+            'my/on-first-prompt)
   (if (one-window-p)
       (progn (split-window-right)
              (other-window 1)
@@ -730,70 +723,70 @@ to retrieve and display completion candidates.
   (comint-show-maximum-output)
   (other-window 1))
 
-(defun kill-inferior-lisp-buffer ()
+(defun my/kill-inferior-lisp-buffer ()
   (when (get-buffer "*inferior-lisp*")
     (kill-buffer "*inferior-lisp*")))
 
-(defun start-repl (repl-command-string)
-  (kill-inferior-lisp-buffer)
+(defun my/start-repl (repl-command-string)
+  (my/kill-inferior-lisp-buffer)
   (setq inferior-lisp-program repl-command-string)
-  (clj-open-repl))
+  (my/clj-open-repl))
 
 ;; Need to omit spaces in arg string as inf-lisp just does a split on string:
 ;; https://github.com/emacs-mirror/emacs/blob/d0e2a341dd9a9a365fd311748df024ecb25b70ec/lisp/progmodes/inf-lisp.el#L306p
-(defun clj-repl ()
+(defun my/clj-repl ()
   (interactive)
-  (start-repl "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}"))
-(defun lein-repl ()
+  (my/start-repl "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}"))
+(defun my/lein-repl ()
   (interactive)
-  (start-repl "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl"))
-(defun heroku-repl ()
+  (my/start-repl "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl"))
+(defun my/heroku-repl ()
   (interactive)
-  (start-repl "heroku run lein repl"))
-(defun heroku-production-repl ()
+  (my/start-repl "heroku run lein repl"))
+(defun my/heroku-production-repl ()
   (interactive)
-  (start-repl "heroku run lein repl --remote production"))
-(defun heroku-staging-repl ()
+  (my/start-repl "heroku run lein repl --remote production"))
+(defun my/heroku-staging-repl ()
   (interactive)
-  (start-repl "heroku run lein repl --remote staging"))
+  (my/start-repl "heroku run lein repl --remote staging"))
 
-(defun clj-doc-for-symbol ()
+(defun my/clj-doc-for-symbol ()
   (interactive)
-  (clj-eval `(clojure.repl/doc ,(clj-symbol-at-point))))
+  (my/clj-eval `(clojure.repl/doc ,(my/clj-symbol-at-point))))
 
-(defun clj-source-for-symbol ()
+(defun my/clj-source-for-symbol ()
   (interactive)
-  (clj-eval `(clojure.repl/source ,(clj-symbol-at-point))))
+  (my/clj-eval `(clojure.repl/source ,(my/clj-symbol-at-point))))
 
-(defun clj-javadoc-for-symbol ()
+(defun my/clj-javadoc-for-symbol ()
   (interactive)
-  (clj-eval `(clojure.java.javadoc/javadoc ,(clj-symbol-at-point))))
+  (my/clj-eval `(clojure.java.javadoc/javadoc ,(my/clj-symbol-at-point))))
 
-(defun clj-apply-f-to-ns-and-return-to-point (f)
+(defun my/clj-apply-f-to-ns-and-return-to-point (f)
   (save-buffer)
   (let ((current-point (point)))
     (goto-char (point-min))
     (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
       (when ns-idx
         (goto-char ns-idx)
-        (let ((sym (clj-symbol-at-point)))
+        (let ((sym (my/clj-symbol-at-point)))
           (funcall f sym))))
     (goto-char current-point)))
 
-(defun clj-load-current-ns ()
+(defun my/clj-load-current-ns ()
   (interactive)
-  (clj-apply-f-to-ns-and-return-to-point
+  (my/clj-apply-f-to-ns-and-return-to-point
    (lambda (sym)
-     (clj-eval `(do (require ',sym :reload)
+     (my/clj-eval `(do (require ',sym :reload)
                     (in-ns ',sym))))))
 
-(defun clj-eval-buffer ()
+(defun my/clj-eval-buffer ()
   (interactive)
   (lisp-eval-region (point-min) (point-max)))
 
-(defun clj-run-test-for-current-ns ()
+(defun my/clj-run-test-for-current-ns ()
   (interactive)
-  (clj-apply-f-to-ns-and-return-to-point
+  (my/clj-apply-f-to-ns-and-return-to-point
    (lambda (sym)
      (let* ((sym-name (symbol-name sym))
             (ns (make-symbol
@@ -804,11 +797,11 @@ to retrieve and display completion candidates.
                       (if (string-suffix-p "test" sym-name)
                           sym-name
                         (concat sym-name "-test")))))
-       (clj-eval `(do (require ',ns :reload)
+       (my/clj-eval `(do (require ',ns :reload)
                       (require ',test-ns :reload)
                       (clojure.test/run-tests ',test-ns)))))))
 
-(defun clj-comment-form ()
+(defun my/clj-comment-form ()
   (interactive)
   (let ((bounds (bounds-of-thing-at-point 'sexp)))
     (if bounds
@@ -820,19 +813,19 @@ to retrieve and display completion candidates.
       (insert "#_")
       (backward-char 2))))
 
-(defun clj-apropos ()
+(defun my/clj-apropos ()
   (interactive)
   (->> (read-string "Apropos (regex):")
        (format "(clojure.repl/apropos #\"%s\")")
        lisp-eval-string))
 
-(defun clj-find-doc ()
+(defun my/clj-find-doc ()
   (interactive)
   (->> (read-string "Find Doc (regex):")
        (format "(clojure.repl/find-doc #\"%s\")")
        lisp-eval-string))
 
-(defun clj-find-implementation-or-test (file-name)
+(defun my/clj-find-implementation-or-test (file-name)
   (unless file-name (error "The current buffer is not visiting a file"))
   (if (string-suffix-p "test" (file-name-sans-extension
                                (file-name-nondirectory file-name)))
@@ -842,55 +835,55 @@ to retrieve and display completion candidates.
     (replace-regexp-in-string
      "src/" "test/" (replace-regexp-in-string ".clj" "_test.clj" file-name))))
 
-(defun clj-toggle-between-implementation-and-test ()
+(defun my/clj-toggle-between-implementation-and-test ()
   (interactive)
   (-> (buffer-file-name)
-      clj-find-implementation-or-test
+      my/clj-find-implementation-or-test
       find-file))
 
-(defun clj-compliment-completion ()
+(defun my/clj-compliment-completion ()
   (interactive)
-  (clj-eval
+  (my/clj-eval
    `(do (require '[compliment.core])
-        (compliment.core/completions ,(symbol-name (clj-symbol-at-point))))))
+        (compliment.core/completions ,(symbol-name (my/clj-symbol-at-point))))))
 
 (use-package clojure-mode
   :ensure t
   :defer t
   :bind (:map clojure-mode-map
-              ("C-c C-a" . clj-apropos)
-              ("C-c C-z" . clj-open-repl)
-              ("C-c C-d" . clj-doc-for-symbol)
-              ("C-c C-s" . clj-source-for-symbol)
-              ("C-c C-j" . clj-javadoc-for-symbol)
-              ("C-c C-f" . clj-find-doc)
-              ("C-c C-l" . clj-load-current-ns)
-              ("C-c C-b" . clj-eval-buffer)
-              ("M-g t"   . clj-toggle-between-implementation-and-test)
-              ("C-c C-t" . clj-run-test-for-current-ns)
+              ("C-c C-a" . my/clj-apropos)
+              ("C-c C-z" . my/clj-open-repl)
+              ("C-c C-d" . my/clj-doc-for-symbol)
+              ("C-c C-s" . my/clj-source-for-symbol)
+              ("C-c C-j" . my/clj-javadoc-for-symbol)
+              ("C-c C-f" . my/clj-find-doc)
+              ("C-c C-l" . my/clj-load-current-ns)
+              ("C-c C-b" . my/clj-eval-buffer)
+              ("M-g t"   . my/clj-toggle-between-implementation-and-test)
+              ("C-c C-t" . my/clj-run-test-for-current-ns)
               ("C-x C-e" . lisp-eval-last-sexp)
-              ("M-;"     . clj-comment-form)))
+              ("M-;"     . my/clj-comment-form)))
 
 (add-hook 'inferior-lisp-mode-hook (lambda()
                                      (font-lock-add-keywords 'inferior-lisp-mode
                                                              clojure-font-lock-keywords 'end)))
 
-(defun empty-file ()
+(defun my/empty-file ()
   (save-excursion
     (save-match-data
       (goto-char (point-min))
       (eobp))))
 
-(defun clj-insert-ns-form-when-opening-clj-file ()
-  (when (empty-file)
+(defun my/clj-insert-ns-form-when-opening-clj-file ()
+  (when (my/empty-file)
     (clojure-insert-ns-form)))
 
-(defun clj-before-save ()
+(defun my/clj-before-save ()
   (when (eq major-mode 'clojure-mode)
     (clojure-align (point-min) (point-max))))
 
-(add-hook 'clojure-mode-hook 'clj-insert-ns-form-when-opening-clj-file)
-(add-hook 'before-save-hook 'clj-before-save)
+(add-hook 'clojure-mode-hook 'my/clj-insert-ns-form-when-opening-clj-file)
+(add-hook 'before-save-hook 'my/clj-before-save)
 #+END_SRC
 
 *** Flycheck Joker
@@ -947,11 +940,11 @@ to retrieve and display completion candidates.
 [[https://github.com/jrblevin/markdown-mode][Markdown mode]] for rendering markdown.
 
 #+BEGIN_SRC emacs-lisp
-(defun clj-open-md-block-repl ()
+(defun my/clj-open-md-block-repl ()
   (interactive)
   (setq inferior-lisp-program
         "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}")
-  (clj-open-repl))
+  (my/clj-open-repl))
 
 (use-package markdown-mode
   :ensure t
@@ -963,10 +956,10 @@ to retrieve and display completion candidates.
   :init (setq markdown-command "multimarkdown")
   :config (markdown-toggle-fontify-code-blocks-natively)
   :bind (:map markdown-mode-map
-              ("C-c C-a" . clj-apropos)
-              ("C-c C-z" . clj-open-md-block-repl)
-              ("C-c C-d" . clj-doc-for-symbol)
-              ("C-c C-s" . clj-source-for-symbol)
-              ("C-c C-f" . clj-find-doc)
+              ("C-c C-a" . my/clj-apropos)
+              ("C-c C-z" . my/clj-open-md-block-repl)
+              ("C-c C-d" . my/clj-doc-for-symbol)
+              ("C-c C-s" . my/clj-source-for-symbol)
+              ("C-c C-f" . my/clj-find-doc)
               ("C-x C-e" . lisp-eval-last-sexp)))
 #+END_SRC
