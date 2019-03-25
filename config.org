@@ -144,7 +144,8 @@ switch between buffers, an Emacs frame loses focus, etc.
   :ensure t
   :diminish super-save-mode
   :config
-  (super-save-mode t))
+  (super-save-mode t)
+  (setq save-silently t))
 #+END_SRC
 
 ** Reloading config
