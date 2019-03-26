@@ -203,6 +203,18 @@ Disables mouse.
 (setq kill-buffer-query-functions nil)
 #+END_SRC
 
+** Exec-path-from-shell
+
+[[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] ensures environment variables inside GUI Emacs look the same as in the user's shell on OSX.
+
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
