@@ -304,11 +304,19 @@ Doom modeline.
 
   (doom-modeline-def-modeline 'my/simple-line
     '(bar buffer-info-ignore-modified checker)
-    '())
-
+    '(misc-info))
   (defun my/setup-custom-doom-modeline ()
     (doom-modeline-set-modeline 'my/simple-line 'default))
   (add-hook 'doom-modeline-mode-hook 'my/setup-custom-doom-modeline))
+#+END_SRC
+
+Display time in modeline.
+
+#+BEGIN_SRC emacs-lisp
+(setq display-time-default-load-average nil)
+(setq display-time-string-forms
+      '((propertize (format-time-string "%H:%M" now) 'face 'bold)))
+(display-time-mode t)
 #+END_SRC
 
 ** Title bar
