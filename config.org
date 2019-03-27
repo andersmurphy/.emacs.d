@@ -1,5 +1,5 @@
 # C-c ' (org-edit-special) toggles org-edit-src-code on src blocks.
-# Reload config with M-x reload-config.
+# Reload config with M-x my/reload-config.
 
 * Defaults
 ** Turn off alarms completely
