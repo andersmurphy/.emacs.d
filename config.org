@@ -604,6 +604,15 @@ window stay within the same window.
 (add-hook 'after-save-hook #'my/tangle-scripts)
 #+END_SRC
 
+*** Disable flycheck elisp checkdoc in org-mode src blocks
+
+#+BEGIN_SRC emacs-lisp
+(defun my/disable-fylcheck-in-org-src-block ()
+  (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+
+(add-hook 'org-src-mode-hook 'my/disable-fylcheck-in-org-src-block)
+#+END_SRC
+
 * Programming
 ** General
 *** Show line numbers
