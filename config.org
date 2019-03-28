@@ -909,11 +909,23 @@ to retrieve and display completion candidates.
       my/clj-find-implementation-or-test
       find-file))
 
-(defun my/clj-compliment-completion ()
-  (interactive)
+(defun my/clj-compliment-completion (prefix)
   (my/clj-eval
    `(do (require '[compliment.core])
-        (compliment.core/completions ,(symbol-name (my/clj-symbol-at-point))))))
+        (->> (compliment.core/completions ,prefix)
+             (map :candidate)))))
+
+(defun my/clj-completion-backend (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'my/clj-completion-backend))
+    (prefix (and (eq major-mode 'emacs-lisp-mode)
+                 (company-grab-symbol)))
+    (candidates (my/clj-compliment-completion arg))))
+
+;;(add-to-list 'company-backends 'my/clj-completion-backend)
+;; TODO get response from repl using inf-lisp
+;; Fallback to hippy-expand style completion when no candidates?
 
 (use-package clojure-mode
   :ensure t
