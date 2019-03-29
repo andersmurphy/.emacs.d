@@ -917,6 +917,10 @@ to retrieve and display completion candidates.
         (->> (compliment.core/completions ,prefix)
              (map :candidate)))))
 
+(defun my/check-first-item-string (list)
+  (when (stringp (car list))
+    list))
+
 (defun my/clj-completions (prefix)
   (let ((proc (inferior-lisp-proc))
         (output-buffer "*my/clj-completions*"))
@@ -929,9 +933,10 @@ to retrieve and display completion candidates.
       (while (null comint-redirect-completed)
         (accept-process-output nil 1))
       (set-buffer output-buffer)
-      (->> (buffer-substring-no-properties (point-min) (point-max))
-           string-trim
-           read))))
+      (-> (buffer-substring-no-properties (point-min) (point-max))
+          string-trim
+          read
+          my/check-first-item-string))))
 
 (defun my/clj-completion-backend (command &optional arg &rest ignored)
   (interactive (list 'interactive))
