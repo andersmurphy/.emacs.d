@@ -633,6 +633,8 @@ to retrieve and display completion candidates.
   :init
     (setq company-idle-delay 0.2)
     (global-company-mode)
+  :config
+  (add-to-list 'company-backends 'my/clj-completion-backend)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
@@ -910,22 +912,36 @@ to retrieve and display completion candidates.
       find-file))
 
 (defun my/clj-compliment-completion (prefix)
-  (my/clj-eval
+  (edn-print-string
    `(do (require '[compliment.core])
         (->> (compliment.core/completions ,prefix)
              (map :candidate)))))
+
+(defun my/clj-completions (prefix)
+  (let ((proc (inferior-lisp-proc))
+        (output-buffer "*my/clj-completions*"))
+    (save-excursion
+      (set-buffer (get-buffer-create output-buffer))
+      (erase-buffer)
+      (comint-redirect-send-command-to-process
+       (my/clj-compliment-completion prefix) output-buffer proc nil t)
+      (set-buffer (process-buffer proc))
+      (while (null comint-redirect-completed)
+        (accept-process-output nil 1))
+      (set-buffer output-buffer)
+      (->> (buffer-substring-no-properties (point-min) (point-max))
+           string-trim
+           read))))
 
 (defun my/clj-completion-backend (command &optional arg &rest ignored)
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'my/clj-completion-backend))
-    (prefix (and (eq major-mode 'emacs-lisp-mode)
+    (prefix (and (eq major-mode 'clojure-mode)
+                 (comint-check-proc "*inferior-lisp*")
                  (company-grab-symbol)))
-    (candidates (my/clj-compliment-completion arg))))
-
-;;(add-to-list 'company-backends 'my/clj-completion-backend)
-;; TODO get response from repl using inf-lisp
-;; Fallback to hippy-expand style completion when no candidates?
+    (candidates (my/clj-completions arg))
+    (sorted t)))
 
 (use-package clojure-mode
   :ensure t
