@@ -30,8 +30,13 @@ brew install mpv
 brew install multimarkdown
 
 brew install clojure
+rm ~/.clojure/deps.edn
+ln -s ~/.emacs.d/dotfiles/.clojure/deps.edn ~/.clojure/
 
 brew install leiningen
+rm ~/.lein/profiles.clj
+ln -s ~/.emacs.d/dotfiles/.lein/profiles.clj ~/.lein/
 
 brew install joker
+rm ~/.joker
 ln -s ~/.emacs.d/dotfiles/.joker ~
