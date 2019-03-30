@@ -778,6 +778,12 @@ to retrieve and display completion candidates.
     (remove-hook 'comint-output-filter-functions
                  'my/on-first-prompt)))
 
+(defun my/clj-try-to-open-project-project-file ()
+  (or (ignore-errors
+        (find-file-existing (concat (counsel-locate-git-root) "deps.edn")))
+      (ignore-errors
+        (find-file-existing (concat (counsel-locate-git-root) "project.clj")))))
+
 (defun my/clj-open-repl ()
   (interactive)
   (add-hook 'comint-output-filter-functions
@@ -785,10 +791,11 @@ to retrieve and display completion candidates.
   (if (one-window-p)
       (progn (split-window-right)
              (other-window 1)
+             (my/clj-try-to-open-project-project-file)
              (inferior-lisp inferior-lisp-program))
-    (progn (inferior-lisp inferior-lisp-program)
+    (progn (other-window 1)
            (switch-to-prev-buffer)
-           (other-window 1)
+           (my/clj-try-to-open-project-project-file)
            (inferior-lisp inferior-lisp-program)))
   (comint-show-maximum-output)
   (other-window 1))
