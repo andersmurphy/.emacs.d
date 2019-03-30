@@ -1,5 +1,5 @@
 # C-c ' (org-edit-special) toggles org-edit-src-code on src blocks.
-# Reload config with M-x my/reload-config.
+# Reload config with M-x reload-config.
 
 * Defaults
 ** Turn off alarms completely
@@ -111,7 +111,7 @@ switch between buffers, an Emacs frame loses focus, etc.
 Function for reloading config.
 
 #+BEGIN_SRC emacs-lisp
-(defun my/reload-config ()
+(defun reload-config ()
   (interactive)
     (save-buffer)
     (load-file  "~/.emacs.d/init.el"))
@@ -758,8 +758,6 @@ to retrieve and display completion candidates.
 *** Clojure Mode & Inferior Lisp
 
 #+BEGIN_SRC emacs-lisp
-(setq inferior-lisp-program "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl")
-
 (defun my/clj-eval (edn)
   (-> (edn-print-string edn)
       lisp-eval-string))
@@ -778,24 +776,28 @@ to retrieve and display completion candidates.
     (remove-hook 'comint-output-filter-functions
                  'my/on-first-prompt)))
 
-(defun my/clj-try-to-open-project-project-file ()
+(defun my/clj-try-to-open-project-project-file (&optional clj-lisp-prog)
   (or (ignore-errors
-        (find-file-existing (concat (counsel-locate-git-root) "deps.edn")))
+        (find-file-existing (concat (counsel-locate-git-root) "project.clj"))
+        (or (and clj-lisp-prog (setq inferior-lisp-program clj-lisp-prog))
+            (setq inferior-lisp-program "lein repl")))
       (ignore-errors
-        (find-file-existing (concat (counsel-locate-git-root) "project.clj")))))
+        (find-file-existing (concat (counsel-locate-git-root) "deps.edn"))
+        (setq inferior-lisp-program "clojure"))
+      (setq inferior-lisp-program "clojure")))
 
-(defun my/clj-open-repl ()
+(defun my/clj-open-repl (&optional clj-lisp-prog)
   (interactive)
   (add-hook 'comint-output-filter-functions
             'my/on-first-prompt)
   (if (one-window-p)
       (progn (split-window-right)
              (other-window 1)
-             (my/clj-try-to-open-project-project-file)
+             (my/clj-try-to-open-project-project-file clj-lisp-prog)
              (inferior-lisp inferior-lisp-program))
-    (progn (other-window 1)
-           (switch-to-prev-buffer)
-           (my/clj-try-to-open-project-project-file)
+    (progn (display-buffer-use-some-window (current-buffer) nil)
+           (other-window 1)
+           (my/clj-try-to-open-project-project-file clj-lisp-prog)
            (inferior-lisp inferior-lisp-program)))
   (comint-show-maximum-output)
   (other-window 1))
@@ -804,24 +806,14 @@ to retrieve and display completion candidates.
   (when (get-buffer "*inferior-lisp*")
     (kill-buffer "*inferior-lisp*")))
 
-(defun my/start-repl (repl-command-string)
+(defun my/start-repl (clj-lisp-prog)
   (my/kill-inferior-lisp-buffer)
-  (setq inferior-lisp-program repl-command-string)
-  (my/clj-open-repl))
+  (my/clj-open-repl clj-lisp-prog))
 
-(defun my/clj-repl ()
-  (interactive)
-  (my/start-repl "clojure"))
-(defun my/lein-repl ()
-  (interactive)
-  (my/start-repl "lein repl"))
-(defun my/heroku-repl ()
-  (interactive)
-  (my/start-repl "heroku run lein repl"))
-(defun my/heroku-production-repl ()
+(defun heroku-production-repl ()
   (interactive)
   (my/start-repl "heroku run lein repl --remote production"))
-(defun my/heroku-staging-repl ()
+(defun heroku-staging-repl ()
   (interactive)
   (my/start-repl "heroku run lein repl --remote staging"))
 
