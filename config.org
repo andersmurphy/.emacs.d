@@ -809,14 +809,12 @@ to retrieve and display completion candidates.
   (setq inferior-lisp-program repl-command-string)
   (my/clj-open-repl))
 
-;; Need to omit spaces in arg string as inf-lisp just does a split on string:
-;; https://github.com/emacs-mirror/emacs/blob/d0e2a341dd9a9a365fd311748df024ecb25b70ec/lisp/progmodes/inf-lisp.el#L306p
 (defun my/clj-repl ()
   (interactive)
-  (my/start-repl "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}"))
+  (my/start-repl "clojure"))
 (defun my/lein-repl ()
   (interactive)
-  (my/start-repl "lein update-in :dependencies conj [compliment\"0.3.8\"] -- repl"))
+  (my/start-repl "lein repl"))
 (defun my/heroku-repl ()
   (interactive)
   (my/start-repl "heroku run lein repl"))

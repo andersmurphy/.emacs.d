@@ -1,0 +1,2 @@
+{:deps
+ {compliment {:mvn/version "0.3.8"}}}

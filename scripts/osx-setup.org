@@ -103,17 +103,22 @@ Language.
 
 #+BEGIN_SRC sh
 brew install clojure
+rm ~/.clojure/deps.edn
+ln -s ~/.emacs.d/dotfiles/.clojure/deps.edn ~/.clojure/
 #+END_SRC
 
 Build tool.
 
 #+BEGIN_SRC sh
 brew install leiningen
+rm ~/.lein/profiles.clj
+ln -s ~/.emacs.d/dotfiles/.lein/profiles.clj ~/.lein/
 #+END_SRC
 
 Linter.
 
 #+BEGIN_SRC sh
 brew install joker
+rm ~/.joker
 ln -s ~/.emacs.d/dotfiles/.joker ~
 #+END_SRC
