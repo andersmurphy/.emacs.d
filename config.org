@@ -1013,7 +1013,9 @@ to retrieve and display completion candidates.
   :ensure t
   :defer t
   :config
-  (setq nov-variable-pitch nil))
+  (setq nov-variable-pitch nil)
+  (setq nov-text-width 80))
+
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 #+END_SRC
 
