@@ -11,19 +11,20 @@
 ;; each 50MB of allocated data (the default is on every 0.76MB).
 (setq gc-cons-threshold 50000000)
 
-;; Set up package
-(require 'package)
-
-;; Enable Elpa and Melpa
-(add-to-list 'package-archives
-     '("gnu" . "https://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives
-     '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-
-;; Update the package metadata if the local cache is missing
-(unless package-archive-contents
-  (package-refresh-contents))
+;; Bootstrap straight.el package manager
+;; https://github.com/raxod502/straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; Always load newest byte code
 (setq load-prefer-newer t)
@@ -31,9 +32,14 @@
 ;; Bootstrap use-package
 ;; Install use-package if it's not already installed.
 ;; use-package is used to configure the rest of the packages.
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(require 'use-package)
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+;; Ensure env variables on osx (straight needs this to find git command?)
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; Only use org to load the config if it has changed or doesn't exist
 (let ((org-file (concat user-emacs-directory "config.org"))

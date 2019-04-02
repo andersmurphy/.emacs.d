@@ -99,7 +99,6 @@ switch between buffers, an Emacs frame loses focus, etc.
 
 #+BEGIN_SRC emacs-lisp
 (use-package super-save
-  :ensure t
   :diminish super-save-mode
   :config
   (super-save-mode t)
@@ -149,11 +148,12 @@ Also hides auto revert message.
 Bind return to alternate file, so that dired reuses same buffer.
 
 #+BEGIN_SRC emacs-lisp
-(use-package dired
-  :config
-  (put 'dired-find-alternate-file 'disabled nil)
-  :bind (:map dired-mode-map
-              ("RET" . dired-find-alternate-file)))
+  (use-package dired
+    :straight nil
+    :config
+    (put 'dired-find-alternate-file 'disabled nil)
+    :bind (:map dired-mode-map
+                ("RET" . dired-find-alternate-file)))
 #+END_SRC
 
 *** WDired
@@ -192,7 +192,6 @@ Disables mouse.
 
 #+BEGIN_SRC emacs-lisp
 (use-package disable-mouse
-  :ensure t
   :config
   (global-disable-mouse-mode))
 #+END_SRC
@@ -201,18 +200,6 @@ Disables mouse.
 
 #+BEGIN_SRC emacs-lisp
 (setq kill-buffer-query-functions nil)
-#+END_SRC
-
-** Exec-path-from-shell
-
-[[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] ensures environment variables inside GUI Emacs look the same as in the user's shell on OSX.
-
-#+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq window-system '(mac ns x))
-  :config
-  (exec-path-from-shell-initialize))
 #+END_SRC
 
 * Appearance
@@ -249,7 +236,6 @@ Disables default splash screen.
 
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
-  :ensure t
   :defer t)
 #+END_SRC
 
@@ -312,7 +298,6 @@ Doom modeline.
 
 #+BEGIN_SRC emacs-lisp
 (use-package doom-modeline
-  :ensure t
   :hook (after-init . doom-modeline-mode)
   :init
   (setq doom-modeline-icon nil)
@@ -441,7 +426,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell
-  :ensure t
   :config
   (setq ispell-program-name "aspell"
     ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
@@ -459,7 +443,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
-  :ensure t
   :bind (("s-Z" . undo-tree-redo)
      ("s-z" . undo-tree-undo))
   :config
@@ -474,7 +457,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package whitespace
-  :ensure t
   :init
   (add-hook 'before-save-hook #'whitespace-cleanup))
 #+END_SRC
@@ -510,7 +492,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-       :ensure t
        :diminish ivy-mode
        :config
        (setq ivy-use-virtual-buffers t)
@@ -525,7 +506,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
-  :ensure t
   :bind ("C-s" . swiper)
     ("s-f" . swiper))
 #+END_SRC
@@ -536,7 +516,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
-  :ensure t
   :init
   (counsel-mode t)
   :bind
@@ -551,7 +530,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  :ensure t
   :defer t
   :config
   (setq magit-completing-read-function 'ivy-completing-read)
@@ -629,7 +607,6 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package company
-  :ensure t
   :init
     (setq company-idle-delay 0.2)
     (global-company-mode)
@@ -645,7 +622,6 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ansi-color
-  :ensure t
   :config (progn
             (defun my/ansi-colorize-buffer ()
               (let ((inhibit-read-only t))
@@ -659,7 +635,6 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
-  :ensure t
   :init
   (add-hook 'prog-mode-hook 'aggressive-indent-mode))
 #+END_SRC
@@ -670,10 +645,10 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
-  :ensure t
   :config
   (progn
-    (use-package smartparens-config)
+    (use-package smartparens-config
+      :straight nil)
     (sp-use-smartparens-bindings)
     (show-smartparens-global-mode t)
     (setq sp-highlight-pair-overlay nil))
@@ -693,7 +668,6 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-  :ensure t
   :init
   (global-flycheck-mode)
   ;; Change fringe indicator to be a circle
@@ -741,8 +715,7 @@ to retrieve and display completion candidates.
 [[https://github.com/magnars/dash.el#--x-optional-form-rest-more][Dash]] a modern list api for Emacs (includes things like -> ->> macros).
 
 #+BEGIN_SRC emacs-lisp
-(use-package dash
-  :ensure t)
+(use-package dash)
 #+END_SRC
 
 *** Edn
@@ -750,8 +723,7 @@ to retrieve and display completion candidates.
 [[https://github.com/expez/edn.el][Edn]] is an emacs lisp library for reading and writing the data format edn.
 
 #+BEGIN_SRC emacs-lisp
-(use-package edn
-  :ensure t)
+(use-package edn)
 #+END_SRC
 
 ** Clojure
@@ -946,7 +918,6 @@ to retrieve and display completion candidates.
     (sorted t)))
 
 (use-package clojure-mode
-  :ensure t
   :defer t
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
@@ -989,8 +960,7 @@ to retrieve and display completion candidates.
 [[https://github.com/candid82/flycheck-joker][flycheck-joker]] is a clojure linter.
 
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck-joker
-  :ensure t)
+(use-package flycheck-joker)
 #+END_SRC
 
 ** Http
@@ -999,7 +969,6 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package restclient
-  :ensure t
   :defer t
   :mode ("\\.\\(http\\|rest\\)$" . restclient-mode))
 #+END_SRC
@@ -1010,7 +979,6 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package nov
-  :ensure t
   :defer t
   :config
   (setq nov-variable-pitch nil)
@@ -1025,7 +993,6 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package emms
-  :ensure t
   :defer t
   :config
   (emms-standard)
@@ -1048,7 +1015,6 @@ to retrieve and display completion candidates.
   (my/clj-open-repl))
 
 (use-package markdown-mode
-  :ensure t
   :defer t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)

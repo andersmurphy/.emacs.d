@@ -18,3 +18,7 @@ url/
 emms
 /transient
 .DS_Store
+/straight/build/*
+/straight/build-cache.el
+/straight/repos/*
+/straight/modified/*
