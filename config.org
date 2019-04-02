@@ -113,7 +113,8 @@ Function for reloading config.
 (defun reload-config ()
   (interactive)
     (save-buffer)
-    (load-file  "~/.emacs.d/init.el"))
+    (straight-transaction
+      (load-file  "~/.emacs.d/init.el")))
 #+END_SRC
 
 ** Switch window focus on split
