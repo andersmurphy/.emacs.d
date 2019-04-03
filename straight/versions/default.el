@@ -35,7 +35,7 @@
  ("smartparens" . "4d1571019080fec63b11474db32380b5fa4eb418")
  ("straight.el" . "744b580bf3803f0c75e6706a04f7489e154c5c89")
  ("super-save" . "2a905b8bdfc93bee16e2d62a61c6211bbe009331")
- ("swiper" . "ea6ef8111a24ac468eae3b68f59108c02d2960aa")
+ ("swiper" . "0465711c0d2b6405b8fd014772965279b9d98a7b")
  ("transient" . "9e30038d2d69e4ad0f3333777137af52e4771442")
  ("undo-tree" . "d54ef13e3c69655e39f977b8bf75399a6d2b5e42")
  ("use-package" . "bccdb1eb86b865f090b19b46d9d4793be219ea55")
