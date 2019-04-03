@@ -2,6 +2,17 @@
 # Reload config with M-x reload-config.
 
 * Defaults
+** Exec-path-from-shell
+
+[[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] ensures environment variables inside GUI Emacs look the same as in the user's shell on OSX.
+
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize))
+  #+END_SRC
+
 ** Turn off alarms completely
 
 #+BEGIN_SRC emacs-lisp

@@ -35,12 +35,6 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-;; Ensure env variables on osx (straight needs this to find git command?)
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns x))
-  :config
-  (exec-path-from-shell-initialize))
-
 ;; Only use org to load the config if it has changed or doesn't exist
 (let ((org-file (concat user-emacs-directory "config.org"))
       (el-file  (concat user-emacs-directory "config.el")))
