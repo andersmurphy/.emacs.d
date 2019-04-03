@@ -11,6 +11,9 @@ brew update
 git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
 
+git config --global url.https://github.com/.insteadOf git@github.com:
+git config --global url.https://gitlab.com/.insteadOf git@gitlab.com:
+
 git config --global core.editor 'emacsclient'
 
 git config --global pull.rebase true
