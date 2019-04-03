@@ -630,8 +630,6 @@ to retrieve and display completion candidates.
   :init
     (setq company-idle-delay 0.2)
     (global-company-mode)
-  :config
-  (add-to-list 'company-backends 'my/clj-completion-backend)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
@@ -755,12 +753,12 @@ to retrieve and display completion candidates.
       lisp-eval-string))
 
 (defun my/clj-symbol-at-point ()
-    (with-syntax-table clojure-mode-syntax-table
-      (symbol-at-point)))
+  (with-syntax-table clojure-mode-syntax-table
+    (symbol-at-point)))
 
 (defun my/enable-repl-pprint ()
   (my/clj-eval '(clojure.main/repl :print (fn [x] (newline)
-                                           (clojure.pprint/pprint x)))))
+                                              (clojure.pprint/pprint x)))))
 
 (defun my/on-first-prompt (output)
   (when (string-match "^[^=>]*[=>] *" output)
@@ -939,6 +937,11 @@ to retrieve and display completion candidates.
 
 (use-package clojure-mode
   :defer t
+  :hook ((clojure-mode . (lambda ()
+                           (set (make-local-variable 'company-backends)
+                                (list
+                                 (list 'my/clj-completion-backend
+                                       'company-dabbrev-code))))))
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
               ("C-c C-z" . my/clj-open-repl)
