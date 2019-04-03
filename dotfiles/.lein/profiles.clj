@@ -1,1 +1,1 @@
-{:repl {:dependencies [[compliment "0.3.8"]]}}
+{:user {:dependencies [[compliment "0.3.8"]]}}
