@@ -49,7 +49,7 @@ git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
 #+END_SRC
 
-Set credential store.
+Set [[https://help.github.com/en/articles/caching-your-github-password-in-git][credential store]].
 
 #+BEGIN_SRC sh
 git config --global credential.helper osxkeychain
