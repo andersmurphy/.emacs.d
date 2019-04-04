@@ -43,13 +43,6 @@ git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
 #+END_SRC
 
-Use https.
-
-#+BEGIN_SRC sh
-git config --global url.https://github.com/.insteadOf git@github.com:
-git config --global url.https://gitlab.com/.insteadOf git@gitlab.com:
-#+END_SRC
-
 Set editor.
 
 #+BEGIN_SRC  sh
