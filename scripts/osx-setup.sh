@@ -8,8 +8,12 @@ xcode-select --install
 
 brew update
 
+brew install git
+
 git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
+
+git config --global credential.helper osxkeychain
 
 git config --global core.editor 'emacsclient'
 

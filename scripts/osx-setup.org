@@ -36,11 +36,23 @@ brew update
 
 * Git
 
+Install latest version of git.
+
+#+BEGIN_SRC sh
+brew install git
+#+END_SRC
+
 Set identity.
 
 #+BEGIN_SRC sh
 git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
+#+END_SRC
+
+Set credential store.
+
+#+BEGIN_SRC sh
+git config --global credential.helper osxkeychain
 #+END_SRC
 
 Set editor.
