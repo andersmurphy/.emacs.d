@@ -391,10 +391,11 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (setq-default cursor-type 'bar)
 #+END_SRC
 
-** Remove cursor only appears in current buffer
+** Cursor only appears in current buffer
 
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-in-non-selected-windows nil)
+(setq blink-cursor-delay 0)
 #+END_SRC
 
 ** Font
@@ -1004,7 +1005,7 @@ to retrieve and display completion candidates.
 (use-package nov
   :defer t
   :config
-  (setq nov-text-width 50))
+  (setq nov-text-width 80))
 
 (defun my-nov-font-setup ()
   (face-remap-add-relative 'variable-pitch :family "Menlo"
