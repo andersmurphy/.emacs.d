@@ -395,7 +395,6 @@ Sets the initial frame to be flush with the top left corner of the screen.
 
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-in-non-selected-windows nil)
-(setq blink-cursor-delay 0)
 #+END_SRC
 
 ** Font
