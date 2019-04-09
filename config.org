@@ -526,8 +526,8 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
-  :bind ("C-s" . swiper)
-    ("s-f" . swiper))
+  :bind ("C-s" . swiper-isearch)
+    ("s-f" . swiper-isearch))
 #+END_SRC
 
 ** Counsel
