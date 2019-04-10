@@ -1004,17 +1004,15 @@ to retrieve and display completion candidates.
 (use-package nov
   :defer t
   :init
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-  :config
-  (setq nov-text-width 80))
-
-(defun my/nov-font-setup ()
+  (defun my/nov-font-setup ()
   (face-remap-add-relative 'variable-pitch
                             :family "Menlo"
                             :height 1.1)
   (nov-render-document))
-
-(add-hook 'nov-mode-hook 'my/nov-font-setup)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  :config
+  (setq nov-text-width 80)
+  :hook (nov-mode . my/nov-font-setup))
 #+END_SRC
 
 ** Music
