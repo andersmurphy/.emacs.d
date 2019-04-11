@@ -63,7 +63,13 @@ Function for reloading config.
 ** Answering 'y' or 'n'
 
 #+BEGIN_SRC emacs-lisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+** Disable dialog boxes
+
+#+BEGIN_SRC emacs-lisp
+(setq use-dialog-box nil)
 #+END_SRC
 
 ** Disable all backups
