@@ -653,7 +653,7 @@ to retrieve and display completion candidates.
 
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
-  :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
+  :hook (prog-mode . aggressive-indent-mode))
 #+END_SRC
 
 *** Smartparens
