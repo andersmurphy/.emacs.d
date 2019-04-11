@@ -994,6 +994,55 @@ to retrieve and display completion candidates.
   :defer t
   :mode ("\\.\\(http\\|rest\\)$" . restclient-mode))
 #+END_SRC
+
+** Javascript
+*** Json mode
+
+[[Major mode for editing JSON file][Json Mode]] is a major mode for editing JSON file.
+
+#+BEGIN_SRC emacs-lisp
+(use-package json-mode)
+#+END_SRC
+
+*** web mode
+
+Handles files that mix html and js like jsx.
+
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :config
+  (setq web-mode-code-indent-offset 2)
+  (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode)))
+#+END_SRC
+
+*** Add node modules path
+
+[[https://github.com/codesuki/add-node-modules-path][add-node-modules-path]] allows Emacs to find project based installs of e.g. eslint.
+
+#+BEGIN_SRC emacs-lisp
+(use-package add-node-modules-path
+  :hook (web-mode . add-node-modules-path))
+#+END_SRC
+
+*** Flycheck
+
+Flycheck checks Javascript with one of javascript-eslint, javascript-jshint
+or javascript-gjslint, and then with javascript-jscs.
+
+Disable jshint.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+#+END_SRC
+
+Use eslint in web-mode.
+
+#+BEGIN_SRC emacs-lisp
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+#+END_SRC
+
 * Misc
 ** Epub Reader
 
