@@ -1007,7 +1007,11 @@ Handles files that mix html and js like jsx.
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
   :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
+  (setq web-mode-indent-style 2)
+  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
   (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode)))
 #+END_SRC
 
