@@ -761,30 +761,33 @@ to retrieve and display completion candidates.
     (remove-hook 'comint-output-filter-functions
                  'my/on-first-prompt)))
 
-(defun my/clj-try-to-open-project-project-file (&optional clj-lisp-prog)
-  (or (ignore-errors
-        (find-file-existing (concat (counsel-locate-git-root) "project.clj"))
-        (or (and clj-lisp-prog (setq inferior-lisp-program clj-lisp-prog))
-            (setq inferior-lisp-program "lein repl")))
-      (ignore-errors
-        (find-file-existing (concat (counsel-locate-git-root) "deps.edn"))
-        (setq inferior-lisp-program "clojure"))
-      (setq inferior-lisp-program "clojure")))
+(defun my/try-to-open-clj-project-file (&optional clj-lisp-prog)
+  (unless (get-buffer "*inferior-lisp*")
+    (or (ignore-errors
+          (find-file-existing (concat (counsel-locate-git-root) "project.clj"))
+          (or (and clj-lisp-prog (setq inferior-lisp-program clj-lisp-prog))
+              (setq inferior-lisp-program "lein repl")))
+        (ignore-errors
+          (find-file-existing (concat (counsel-locate-git-root) "deps.edn"))
+          (setq inferior-lisp-program "clojure"))
+        (setq inferior-lisp-program "clojure"))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
   (interactive)
   (add-hook 'comint-output-filter-functions
             'my/on-first-prompt)
-  (if (one-window-p)
-      (progn (split-window-right)
-             (other-window 1)
-             (my/clj-try-to-open-project-project-file clj-lisp-prog)
-             (inferior-lisp inferior-lisp-program))
-    (progn (display-buffer-use-some-window (current-buffer) nil)
-           (other-window 1)
-           (my/clj-try-to-open-project-project-file clj-lisp-prog)
-           (inferior-lisp inferior-lisp-program)))
-  (comint-show-maximum-output)
+  (when (one-window-p)
+    (split-window-right))
+  (display-buffer-use-some-window (current-buffer) nil)
+  (other-window 1)
+  (previous-buffer)
+  (if (string= (buffer-name) "*inferior-lisp*")
+      (previous-buffer)
+    (progn
+      (next-buffer)
+      (my/try-to-open-clj-project-file clj-lisp-prog)
+      (inferior-lisp inferior-lisp-program)
+      (comint-show-maximum-output)))
   (other-window 1))
 
 (defun my/kill-inferior-lisp-buffer ()
