@@ -652,6 +652,16 @@ to retrieve and display completion candidates.
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 #+END_SRC
 
+*** Hungry delete
+
+Makes backspace and C-d erase all consecutive white space in a given direction (instead of just one).
+
+#+BEGIN_SRC emacs-lisp
+(use-package hungry-delete
+  :config
+  (global-hungry-delete-mode))
+#+END_SRC
+
 *** Smartparens
 
 [[https://github.com/Fuco1/smartparens][Smartparens]] paredit for all the things.
