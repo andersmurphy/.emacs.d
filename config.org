@@ -1003,19 +1003,21 @@ to retrieve and display completion candidates.
 (use-package json-mode)
 #+END_SRC
 
-*** web mode
+*** rjsx-mode
 
-Handles files that mix html and js like jsx.
+[[https://github.com/felipeochoa/rjsx-mode][rjsx-mode]] handles files js/jsx.
 
 #+BEGIN_SRC emacs-lisp
-(use-package web-mode
+(use-package rjsx-mode
   :config
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-indent-style 2)
-  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-  (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode)))
+  (setq indent-tabs-mode nil)
+  (setq js-indent-level 2)
+  (setq js2-basic-offset 2)
+  (setq js2-strict-missing-semi-warning nil)
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-strict-trailing-comma-warning nil)
+  (setq js2-strict-inconsistent-return-warning nil)
+  (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 #+END_SRC
 
 *** Add node modules path
