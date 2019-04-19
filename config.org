@@ -1036,7 +1036,7 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
 
 #+BEGIN_SRC emacs-lisp
 (use-package add-node-modules-path
-  :hook (web-mode . add-node-modules-path))
+  :hook (rjsx-mode . add-node-modules-path))
 #+END_SRC
 
 *** Flycheck
@@ -1052,10 +1052,10 @@ Disable jshint.
     '(javascript-jshint)))
 #+END_SRC
 
-Use eslint in web-mode.
+Use eslint in rjsx-mode.
 
 #+BEGIN_SRC emacs-lisp
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+(flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 #+END_SRC
 
 * Misc
