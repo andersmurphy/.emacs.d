@@ -218,6 +218,13 @@ Disables mouse.
 (setq kill-buffer-query-functions nil)
 #+END_SRC
 
+** Default scratch buffer to org
+
+#+BEGIN_SRC emacs-lisp
+(setq initial-scratch-message nil
+      initial-major-mode 'org-mode)
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
