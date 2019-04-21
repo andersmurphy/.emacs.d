@@ -225,6 +225,16 @@ Disables mouse.
       initial-major-mode 'org-mode)
 #+END_SRC
 
+** Persistent scratch buffer
+
+[[https://github.com/Fanael/persistent-scratch][persistent-scratch]] makes the scratch buffer persistent.
+
+#+BEGIN_SRC emacs-lisp
+(use-package persistent-scratch
+  :config
+  (persistent-scratch-setup-default))
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
