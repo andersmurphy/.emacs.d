@@ -22,4 +22,4 @@ emms
 /straight/build-cache.el
 /straight/repos/*
 /straight/modified/*
-/.persistent-scratch
+/scratch.org
