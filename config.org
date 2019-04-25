@@ -218,21 +218,11 @@ Disables mouse.
 (setq kill-buffer-query-functions nil)
 #+END_SRC
 
-** Default scratch buffer to org
+** Default initial buffer to local persistent scratch.org file
 
 #+BEGIN_SRC emacs-lisp
-(setq initial-scratch-message nil
-      initial-major-mode 'org-mode)
-#+END_SRC
-
-** Persistent scratch buffer
-
-[[https://github.com/Fanael/persistent-scratch][persistent-scratch]] makes the scratch buffer persistent.
-
-#+BEGIN_SRC emacs-lisp
-(use-package persistent-scratch
-  :config
-  (persistent-scratch-setup-default))
+(setq initial-buffer-choice "~/.emacs.d/scratch.org")
+(setq initial-scratch-message "")
 #+END_SRC
 
 * Appearance
