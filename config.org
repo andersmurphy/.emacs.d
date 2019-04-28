@@ -557,18 +557,8 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   :config
   (setq magit-completing-read-function 'ivy-completing-read)
   (setq magit-save-repository-buffers 'dontask)
+  (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
   :bind ("C-x g" . magit-status))
-#+END_SRC
-
-*** Fullscreen magit
-
-The following code makes magit-status run alone in the frame.
-
-#+BEGIN_SRC emacs-lisp
-(defadvice magit-status (around magit-fullscreen activate)
-  (window-configuration-to-register :magit-fullscreen)
-  ad-do-it
-  (delete-other-windows))
 #+END_SRC
 
 ** Org mode
