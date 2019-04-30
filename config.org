@@ -748,14 +748,15 @@ Handles auto-inserting templates when creating new files.
 #+BEGIN_SRC emacs-lisp
 (use-package autoinsert
   :init
-  (setq auto-insert-query nil)
-  (setq auto-insert-directory (locate-user-emacs-file "templates"))
-  (add-hook 'find-file-hook 'auto-insert)
-  (auto-insert-mode 1)
+  (setq auto-insert-query nil
+        auto-insert-alist nil
+        auto-insert-directory (locate-user-emacs-file "templates"))
   :config
+  (auto-insert-mode 1)
   (defun my/autoinsert-yas-expand ()
     (yas-expand-snippet (buffer-string) (point-min) (point-max)))
-  (define-auto-insert "\\.clj$" ["default_clj.clj" my/autoinsert-yas-expand]))
+  (define-auto-insert "\\.clj$" ["default_clj.clj" my/autoinsert-yas-expand])
+  (define-auto-insert "\\test.clj$" ["default_test_clj.clj" my/autoinsert-yas-expand]))
 #+END_SRC
 
 ** Sql
@@ -1028,6 +1029,17 @@ Toggle between up and down file if they exist (assumes files are in the same fol
     (clojure-align (point-min) (point-max))))
 
 (add-hook 'before-save-hook 'my/clj-before-save)
+
+(defun my/require-test-src-file ()
+  (concat "["
+          (->> (clojure-expected-ns)
+               (replace-regexp-in-string "-test" ""))
+          " :as "
+          (->> (buffer-name)
+               file-name-sans-extension
+               (replace-regexp-in-string "_" "-")
+               (replace-regexp-in-string "-test" ""))
+          "]"))
 #+END_SRC
 
 *** Flycheck Joker
