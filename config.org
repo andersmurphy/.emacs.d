@@ -729,6 +729,35 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
     :fringe-face 'flycheck-fringe-info))
 #+END_SRC
 
+*** Yasnippet
+
+[[https://github.com/joaotavora/yasnippet][yasnipet]] mode for code snippets.
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :init
+  (yas-global-mode 1)
+  :config
+  (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets")))
+#+END_SRC
+
+*** Auto Insert
+
+Handles auto-inserting templates when creating new files.
+
+#+BEGIN_SRC emacs-lisp
+(use-package autoinsert
+  :init
+  (setq auto-insert-query nil)
+  (setq auto-insert-directory (locate-user-emacs-file "templates"))
+  (add-hook 'find-file-hook 'auto-insert)
+  (auto-insert-mode 1)
+  :config
+  (defun my/autoinsert-yas-expand ()
+    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
+  (define-auto-insert "\\.clj$" ["default_clj.clj" my/autoinsert-yas-expand]))
+#+END_SRC
+
 ** Sql
 
 Toggle between up and down file if they exist (assumes files are in the same folder).
@@ -994,15 +1023,10 @@ Toggle between up and down file if they exist (assumes files are in the same fol
       (goto-char (point-min))
       (eobp))))
 
-(defun my/clj-insert-ns-form-when-opening-clj-file ()
-  (when (my/empty-file)
-    (clojure-insert-ns-form)))
-
 (defun my/clj-before-save ()
   (when (eq major-mode 'clojure-mode)
     (clojure-align (point-min) (point-max))))
 
-(add-hook 'clojure-mode-hook 'my/clj-insert-ns-form-when-opening-clj-file)
 (add-hook 'before-save-hook 'my/clj-before-save)
 #+END_SRC
 
