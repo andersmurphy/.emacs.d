@@ -768,10 +768,9 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   :config
   (defun my/sql-find-up-or-down (file-name)
     (unless file-name (error "The current buffer is not visiting a file"))
-    (if (string-suffix-p "up" (file-name-sans-extension
-                               (file-name-nondirectory file-name)))
-        (replace-regexp-in-string "up" "down" file-name)
-      (replace-regexp-in-string "down" "up" file-name)))
+    (if (string-suffix-p ".up" (file-name-sans-extension (file-name-nondirectory file-name)))
+        (replace-regexp-in-string "\\.up\\." ".down." file-name)
+      (replace-regexp-in-string "\\.down\\." ".up." file-name)))
 
   (defun my/sql-toggle-up-down ()
     (interactive)
