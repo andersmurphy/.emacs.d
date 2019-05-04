@@ -506,8 +506,8 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
 
 #+BEGIN_SRC emacs-lisp
 (use-package hungry-delete
-  :bind ("DEL" . hungry-delete-backward)
-        ("C-d" . hungry-delete-forward))
+  :config
+  (global-hungry-delete-mode))
 #+END_SRC
 
 * Navigation
