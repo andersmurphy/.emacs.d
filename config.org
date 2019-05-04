@@ -500,6 +500,16 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 (global-set-key (kbd "C-a") 'my/back-to-indentation-or-beginning)
 #+END_SRC
 
+** Hungry delete
+
+Makes backspace and C-d erase all consecutive white space in a given direction (instead of just one).
+
+#+BEGIN_SRC emacs-lisp
+(use-package hungry-delete
+  :bind ("DEL" . hungry-delete-backward)
+        ("C-d" . hungry-delete-forward))
+#+END_SRC
+
 * Navigation
 ** Recent files
 
@@ -647,16 +657,6 @@ to retrieve and display completion candidates.
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
-#+END_SRC
-
-*** Hungry delete
-
-Makes backspace and C-d erase all consecutive white space in a given direction (instead of just one).
-
-#+BEGIN_SRC emacs-lisp
-(use-package hungry-delete
-  :config
-  (global-hungry-delete-mode))
 #+END_SRC
 
 *** Smartparens
