@@ -1187,5 +1187,5 @@ Use eslint in rjsx-mode.
               ("C-c C-d" . my/clj-doc-for-symbol)
               ("C-c C-s" . my/clj-source-for-symbol)
               ("C-c C-f" . my/clj-find-doc)
-              ("C-x C-e" . lisp-eval-last-sexp)))
+              ("C-x C-e" . my/lisp-eval-last-sexp)))
 #+END_SRC
