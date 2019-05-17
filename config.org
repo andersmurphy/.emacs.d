@@ -831,7 +831,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
           (setq inferior-lisp-program "clojure"))
         (setq inferior-lisp-program "clojure"))))
 
-(defun my/clj-open-repl (&optional clj-lisp-prog)
+(defun my/clj-open-repl (&optional do-not-toggle-previous-buffer clj-lisp-prog)
   (interactive)
   (add-hook 'comint-output-filter-functions
             'my/on-first-prompt)
@@ -840,7 +840,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   (display-buffer-use-some-window (current-buffer) nil)
   (other-window 1)
   (previous-buffer)
-  (if (string= (buffer-name) "*inferior-lisp*")
+  (if (and (not do-not-toggle-previous-buffer) (string= (buffer-name) "*inferior-lisp*"))
       (previous-buffer)
     (progn
       (next-buffer)
@@ -855,7 +855,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 (defun my/start-repl (clj-lisp-prog)
   (my/kill-inferior-lisp-buffer)
-  (my/clj-open-repl clj-lisp-prog))
+  (my/clj-open-repl t clj-lisp-prog))
 
 (defun heroku-production-repl ()
   (interactive)
@@ -866,14 +866,17 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 (defun my/clj-doc-for-symbol ()
   (interactive)
+  (my/clj-open-repl t)
   (my/clj-eval `(clojure.repl/doc ,(my/clj-symbol-at-point))))
 
 (defun my/clj-source-for-symbol ()
   (interactive)
+  (my/clj-open-repl t)
   (my/clj-eval `(clojure.repl/source ,(my/clj-symbol-at-point))))
 
 (defun my/clj-javadoc-for-symbol ()
   (interactive)
+  (my/clj-open-repl t)
   (my/clj-eval `(clojure.java.javadoc/javadoc ,(my/clj-symbol-at-point))))
 
 (defun my/clj-apply-f-to-ns-and-return-to-point (f)
@@ -889,17 +892,20 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 (defun my/clj-load-current-ns ()
   (interactive)
+  (my/clj-open-repl t)
   (my/clj-apply-f-to-ns-and-return-to-point
    (lambda (sym)
      (my/clj-eval `(do (require ',sym :reload)
-                    (in-ns ',sym))))))
+                       (in-ns ',sym))))))
 
 (defun my/clj-eval-buffer ()
   (interactive)
+  (my/clj-open-repl t)
   (lisp-eval-region (point-min) (point-max)))
 
 (defun my/clj-run-test-for-current-ns ()
   (interactive)
+  (my/clj-open-repl t)
   (my/clj-apply-f-to-ns-and-return-to-point
    (lambda (sym)
      (let* ((sym-name (symbol-name sym))
@@ -912,8 +918,8 @@ Toggle between up and down file if they exist (assumes files are in the same fol
                           sym-name
                         (concat sym-name "-test")))))
        (my/clj-eval `(do (require ',ns :reload)
-                      (require ',test-ns :reload)
-                      (clojure.test/run-tests ',test-ns)))))))
+                         (require ',test-ns :reload)
+                         (clojure.test/run-tests ',test-ns)))))))
 
 (defun my/clj-comment-form ()
   (interactive)
@@ -929,12 +935,14 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 (defun my/clj-apropos ()
   (interactive)
+  (my/clj-open-repl t)
   (->> (read-string "Apropos (regex):")
        (format "(clojure.repl/apropos #\"%s\")")
        lisp-eval-string))
 
 (defun my/clj-find-doc ()
   (interactive)
+  (my/clj-open-repl t)
   (->> (read-string "Find Doc (regex):")
        (format "(clojure.repl/find-doc #\"%s\")")
        lisp-eval-string))
@@ -992,6 +1000,11 @@ Toggle between up and down file if they exist (assumes files are in the same fol
     (candidates (my/clj-completions arg))
     (sorted t)))
 
+(defun my/lisp-eval-last-sexp ()
+  (interactive)
+  (my/clj-open-repl t)
+  (lisp-eval-last-sexp))
+
 (use-package clojure-mode
   :defer t
   :hook ((clojure-mode . (lambda ()
@@ -1010,7 +1023,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("C-c C-b" . my/clj-eval-buffer)
               ("M-g t"   . my/clj-toggle-between-implementation-and-test)
               ("C-c C-t" . my/clj-run-test-for-current-ns)
-              ("C-x C-e" . lisp-eval-last-sexp)
+              ("C-x C-e" . my/lisp-eval-last-sexp)
               ("M-;"     . my/clj-comment-form)))
 
 (add-hook 'inferior-lisp-mode-hook (lambda()
