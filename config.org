@@ -452,12 +452,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   :config
   (setq ispell-program-name "aspell"
     ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
-  (setq flyspell-prog-text-faces
-        ;; disables spellcheck in strings for prog mode (still works in comments)
-        (delq 'font-lock-string-face
-              flyspell-prog-text-faces))
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
+  (add-hook 'text-mode-hook #'flyspell-mode))
 #+END_SRC
 
 ** Undo tree
