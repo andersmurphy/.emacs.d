@@ -292,27 +292,29 @@ Function for toggling between light and dark themes.
 *** Hook for after theme load
 
 #+BEGIN_SRC emacs-lisp
- (defvar after-load-theme-hook nil
-   "Hook run after a color theme is loaded using `load-theme'.")
- (defadvice load-theme (after run-after-load-theme-hook activate)
-   "Run `after-load-theme-hook'."
+(defun my/flycheck-use-line ()
+  (set-face-attribute 'flycheck-error nil
+                      :underline `(:style line :color ,(doom-color 'red)))
+  (set-face-attribute 'flycheck-warning nil
+                      :underline `(:style line :color ,(doom-color 'yellow)))
+  (set-face-attribute 'flycheck-info nil
+                      :underline `(:style line :color ,(doom-color 'green)))
+  (set-face-attribute 'flyspell-incorrect nil
+                      :underline `(:style line :color ,(doom-color 'red))
+                      :inherit 'unspecified)
+  (set-face-attribute 'flyspell-duplicate nil
+                      :underline `(:style line :color ,(doom-color 'yellow))
+                      :inherit 'unspecified))
+
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
+(defadvice load-theme (after run-after-load-theme-hook activate)
+    "Run `after-load-theme-hook'."
    (run-hooks 'after-load-theme-hook))
 
 (add-hook
  'after-load-theme-hook
- (lambda ()
-   (set-face-attribute 'flycheck-error nil
-                       :underline `(:style line :color ,(doom-color 'red)))
-   (set-face-attribute 'flycheck-warning nil
-                       :underline `(:style line :color ,(doom-color 'yellow)))
-   (set-face-attribute 'flycheck-info nil
-                       :underline `(:style line :color ,(doom-color 'green)))
-   (set-face-attribute 'flyspell-incorrect nil
-                       :underline `(:style line :color ,(doom-color 'red))
-                       :inherit 'unspecified)
-   (set-face-attribute 'flyspell-duplicate nil
-                       :underline `(:style line :color ,(doom-color 'yellow))
-                       :inherit 'unspecified)))
+ 'my/flycheck-use-line)
 #+END_SRC
 
 ** Modeline
@@ -685,6 +687,7 @@ to retrieve and display completion candidates.
 (use-package flycheck
   :init
   (global-flycheck-mode)
+  (my/flycheck-use-line)
   ;; Change fringe indicator to be a circle
   (define-fringe-bitmap 'my-flycheck-fringe-indicator
     (vector #b00000000
