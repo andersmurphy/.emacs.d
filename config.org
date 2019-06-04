@@ -260,15 +260,16 @@ Disables default splash screen.
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
   :config
-  (load-theme 'doom-nova t)
+  (setq my/theme 'doom-nova)
+  (load-theme my/theme t)
   (custom-theme-set-faces
-   'doom-nova
+   my/theme
    `(font-lock-type-face ((t (:foreground ,(doom-color 'fg)))))
-   `(font-lock-keyword-face ((t (:foreground ,(doom-color 'violet)))))
-   `(font-lock-variable-name-face ((t (:foreground ,(doom-color 'blue)))))
-   `(font-lock-function-name-face ((t (:foreground ,(doom-color 'blue)))))
-   `(font-lock-constant-face ((t (:foreground ,(doom-color 'cyan)))))
-   `(font-lock-builtin-face ((t (:foreground ,(doom-color 'cyan)))))
+   `(font-lock-keyword-face ((t (:foreground ,(doom-color 'fg)))))
+   `(font-lock-variable-name-face ((t (:foreground ,(doom-color 'functions)))))
+   `(font-lock-function-name-face ((t (:foreground ,(doom-color 'functions)))))
+   `(font-lock-constant-face ((t (:foreground ,(doom-color 'constants)))))
+   `(font-lock-builtin-face ((t (:foreground ,(doom-color 'constants)))))
    `(font-lock-string-face ((t (:foreground ,(doom-color 'green)))))))
 #+END_SRC
 
