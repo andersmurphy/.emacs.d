@@ -260,7 +260,7 @@ Disables default splash screen.
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
   :config
-  (setq my/theme 'doom-nova)
+  (setq my/theme 'doom-solarized-light)
   (load-theme my/theme t)
   (custom-theme-set-faces
    my/theme
