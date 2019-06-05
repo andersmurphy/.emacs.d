@@ -270,7 +270,7 @@ Disables default splash screen.
    `(font-lock-function-name-face ((t (:foreground ,(doom-color 'functions)))))
    `(font-lock-constant-face ((t (:foreground ,(doom-color 'constants)))))
    `(font-lock-builtin-face ((t (:foreground ,(doom-color 'constants)))))
-   `(font-lock-string-face ((t (:foreground ,(doom-color 'green)))))))
+   `(font-lock-string-face ((t (:foreground ,(doom-color 'teal)))))))
 #+END_SRC
 
 *** Hook for after theme load
