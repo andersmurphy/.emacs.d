@@ -549,6 +549,8 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
   (setq magit-completing-read-function 'ivy-completing-read)
   (setq magit-save-repository-buffers 'dontask)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+  (setq magit-diff-refine-hunk 'all)
+  (setq magit-diff-refine-ignore-whitespace t)
   :bind ("C-x g" . magit-status))
 #+END_SRC
 
