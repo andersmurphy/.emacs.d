@@ -25,6 +25,8 @@ echo '.DS_Store' > .gitignore
 
 git config --global core.excludesfile '~/.gitignore'
 
+git config --global diff.algorithm histogram
+
 brew cask install emacs
 
 brew install aspell
