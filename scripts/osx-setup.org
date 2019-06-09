@@ -83,6 +83,13 @@ Set as global ignore file.
 #+BEGIN_SRC sh
 git config --global core.excludesfile '~/.gitignore'
 #+END_SRC
+
+Set external git diff algorithm.
+
+#+BEGIN_SRC sh
+git config --global diff.algorithm histogram
+#+END_SRC
+
 * Emacs
 
 #+BEGIN_SRC sh
