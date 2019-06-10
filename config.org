@@ -804,16 +804,31 @@ Toggle between up and down file if they exist (assumes files are in the same fol
     (remove-hook 'comint-output-filter-functions
                  'my/on-first-prompt)))
 
+(defun my/dir-contains-git-root-p (dirname)
+  (file-exists-p (concat dirname "/.git/config")))
+
+(defun my/try-to-find-project-file (dirname)
+  (cond
+   ((file-exists-p (concat dirname "project.clj"))
+    (list (concat dirname "project.clj")
+          (or clj-lisp-prog "lein repl")))
+   ((file-exists-p (concat dirname "deps.edn"))
+    (list (concat dirname "deps.edn")
+          "clojure"))
+   ((my/dir-contains-git-root-p dirname)
+    (list (buffer-file-name) "clojure"))
+   ((string= "" dirname)
+    (list (buffer-file-name) "clojure"))
+   (t (my/try-to-find-project-file
+       (file-name-directory
+        (directory-file-name dirname))))))
+
 (defun my/try-to-open-clj-project-file (&optional clj-lisp-prog)
   (unless (get-buffer "*inferior-lisp*")
-    (or (ignore-errors
-          (find-file-existing (concat (counsel-locate-git-root) "project.clj"))
-          (or (and clj-lisp-prog (setq inferior-lisp-program clj-lisp-prog))
-              (setq inferior-lisp-program "lein repl")))
-        (ignore-errors
-          (find-file-existing (concat (counsel-locate-git-root) "deps.edn"))
-          (setq inferior-lisp-program "clojure"))
-        (setq inferior-lisp-program "clojure"))))
+    (let ((file-and-prog (my/try-to-find-project-file
+                          (file-name-directory (buffer-file-name)))))
+      (find-file-existing (nth 0 file-and-prog))
+      (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
 (defun my/clj-open-repl (&optional do-not-toggle-previous-buffer clj-lisp-prog)
   (interactive)
