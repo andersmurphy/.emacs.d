@@ -264,7 +264,7 @@ Disables default splash screen.
   (custom-theme-set-faces
    my/theme
    `(org-level-1 ((t (:height 1.2 :weight ultra-bold :forground ,(doom-color 'blue)))))
-   `(org-level-2 ((t (:height 1.0 :weight bold :forground ,()))))
+   `(org-level-2 ((t (:height 1.0 :weight bold :forground ,(doom-color 'magenta)))))
    `(font-lock-type-face ((t (:foreground ,(doom-color 'fg)))))
    `(font-lock-type-face ((t (:foreground ,(doom-color 'fg)))))
    `(font-lock-keyword-face ((t (:foreground ,(doom-color 'fg)))))
