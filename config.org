@@ -263,6 +263,8 @@ Disables default splash screen.
   (load-theme my/theme t)
   (custom-theme-set-faces
    my/theme
+   `(emms-playlist-track-face ((t (:foreground ,(doom-color 'fg)))))
+   `(emms-playlist-selected-face ((t (:foreground ,(doom-color 'highlight)))))
    `(org-level-1 ((t (:height 1.2 :weight ultra-bold :foreground ,(doom-color 'blue)))))
    `(org-level-2 ((t (:height 1.0 :weight bold :foreground ,(doom-color 'magenta)))))
    `(font-lock-type-face ((t (:foreground ,(doom-color 'fg)))))
