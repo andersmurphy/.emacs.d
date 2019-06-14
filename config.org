@@ -211,12 +211,6 @@ Disables mouse.
   (global-disable-mouse-mode))
 #+END_SRC
 
-** Don't ask for confirmation when killing buffers with process
-
-#+BEGIN_SRC emacs-lisp
-(setq kill-buffer-query-functions nil)
-#+END_SRC
-
 ** Default initial buffer to local persistent scratch.org file
 
 #+BEGIN_SRC emacs-lisp
