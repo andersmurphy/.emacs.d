@@ -1,2 +1,4 @@
 {:deps
- {compliment {:mvn/version "0.3.8"}}}
+ {compliment                  {:mvn/version "0.3.8"}
+  org.clojure/tools.namespace {:mvn/version "0.3.0"}}
+ :paths [".emacs.d/dotfiles/clojure/"]}
