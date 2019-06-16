@@ -887,7 +887,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   (my/clj-open-repl t)
   (lisp-eval-region (point-min) (point-max)))
 
-(defun my/clj-run-test-for-current-ns ()
+(defun my/clj-run-ns-tests ()
   (interactive)
   (my/clj-open-repl t)
   (my/clj-apply-f-to-ns-and-return-to-point
@@ -904,6 +904,17 @@ Toggle between up and down file if they exist (assumes files are in the same fol
        (my/clj-eval `(do (require ',ns :reload)
                          (require ',test-ns :reload)
                          (clojure.test/run-tests ',test-ns)))))))
+
+(defun my/clj-run-project-tests ()
+  (interactive)
+  (my/clj-open-repl t)
+  (my/clj-eval `(do (require '[clojure.test])
+                    (require '[clojure.tools.namespace.find])
+                    (time
+                     (->> (map clojure.java.io/file (set ["test"]))
+                          (mapcat clojure.tools.namespace.find/find-namespaces-in-dir)
+                          (map (fn [ns] (require ns) ns))
+                          (apply clojure.test/run-tests))))))
 
 (defun my/clj-comment-form ()
   (interactive)
@@ -1006,7 +1017,8 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("C-c C-l" . my/clj-load-current-ns)
               ("C-c C-b" . my/clj-eval-buffer)
               ("M-g t"   . my/clj-toggle-between-implementation-and-test)
-              ("C-c C-t" . my/clj-run-test-for-current-ns)
+              ("C-c C-t n" . my/clj-run-ns-tests)
+              ("C-c C-t p" . my/clj-run-project-tests)
               ("C-x C-e" . my/lisp-eval-last-sexp)
               ("M-;"     . my/clj-comment-form)))
 
