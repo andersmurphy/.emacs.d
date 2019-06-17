@@ -800,13 +800,12 @@ Toggle between up and down file if they exist (assumes files are in the same fol
    ((file-exists-p (concat dirname "deps.edn"))
     (list (concat dirname "deps.edn")
           "clojure"))
-   ((my/dir-contains-git-root-p dirname)
+   ((or (my/dir-contains-git-root-p dirname)
+        (string= "/" dirname))
     (list (buffer-file-name) "clojure"))
-   ((string= "" dirname)
-    (list (buffer-file-name) "clojure"))
-   (t (my/try-to-find-project-file
-       (file-name-directory
-        (directory-file-name dirname))))))
+   (t (-> (directory-file-name dirname)
+          file-name-directory
+          my/try-to-find-project-file))))
 
 (defun my/try-to-open-clj-project-file (&optional clj-lisp-prog)
   (unless (get-buffer "*inferior-lisp*")
