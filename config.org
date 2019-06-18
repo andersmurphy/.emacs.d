@@ -34,8 +34,9 @@ switch between buffers, an Emacs frame loses focus, etc.
 #+END_SRC
 
 ** Update Packages
+
 #+BEGIN_SRC emacs-lisp
-(defun update-emacs-packages ()
+(defun my/update-emacs-packages ()
   (interactive)
   (straight-pull-all)
   (straight-freeze-versions))
@@ -46,7 +47,7 @@ switch between buffers, an Emacs frame loses focus, etc.
 Function for reloading config.
 
 #+BEGIN_SRC emacs-lisp
-(defun reload-config ()
+(defun my/reload-config ()
   (interactive)
     (save-buffer)
     (straight-transaction
@@ -198,9 +199,11 @@ Ask for confirmation when closing emacs.
 #+END_SRC
 
 ** Show keystrokes ASAP
+
 #+BEGIN_SRC emacs-lisp
 (setq echo-keystrokes 0.1)
 #+END_SRC
+
 ** Disable mouse
 
 Disables mouse.
