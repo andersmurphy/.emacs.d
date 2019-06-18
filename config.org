@@ -50,8 +50,7 @@ Function for reloading config.
 (defun my/reload-config ()
   (interactive)
     (save-buffer)
-    (straight-transaction
-      (load-file  "~/.emacs.d/init.el")))
+    (load-file  "~/.emacs.d/init.el"))
 #+END_SRC
 
 ** Turn off alarms completely
