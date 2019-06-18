@@ -905,7 +905,9 @@ Toggle between up and down file if they exist (assumes files are in the same fol
                         (concat sym-name "-test")))))
        (my/clj-eval `(do (require ',ns :reload)
                          (require ',test-ns :reload)
-                         (clojure.test/run-tests ',test-ns)))))))
+                         (binding
+                          [clojure.test/*stack-trace-depth* 10]
+                          (clojure.test/run-tests ',test-ns))))))))
 
 (defun my/clj-run-project-tests ()
   (interactive)
@@ -913,10 +915,12 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   (my/clj-eval `(do (require '[clojure.test])
                     (require '[clojure.tools.namespace.find])
                     (time
-                     (->> (map clojure.java.io/file (set ["test"]))
-                          (mapcat clojure.tools.namespace.find/find-namespaces-in-dir)
-                          (map (fn [ns] (require ns) ns))
-                          (apply clojure.test/run-tests))))))
+                     (binding
+                      [clojure.test/*stack-trace-depth* 10]
+                      (->> (map clojure.java.io/file (set ["test"]))
+                           (mapcat clojure.tools.namespace.find/find-namespaces-in-dir)
+                           (map (fn [ns] (require ns) ns))
+                           (apply clojure.test/run-tests)))))))
 
 (defun my/clj-comment-form ()
   (interactive)
