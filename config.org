@@ -1024,7 +1024,9 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("C-c C-b" . my/clj-eval-buffer)
               ("M-g t"   . my/clj-toggle-between-implementation-and-test)
               ("C-c C-t n" . my/clj-run-ns-tests)
+              ("C-c C-t C-n" . my/clj-run-ns-tests)
               ("C-c C-t p" . my/clj-run-project-tests)
+              ("C-c C-t C-p" . my/clj-run-project-tests)
               ("C-x C-e" . my/lisp-eval-last-sexp)
               ("M-;"     . my/clj-comment-form)))
 
