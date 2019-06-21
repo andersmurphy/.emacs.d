@@ -7,7 +7,7 @@
  :known-namespaces
    []
  :known-tags
-   []
+   [time/inst time/ld]
  :ignored-unused-namespaces
    []
  :rules
