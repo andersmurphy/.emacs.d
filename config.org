@@ -1013,6 +1013,20 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   (my/clj-open-repl t)
   (lisp-eval-last-sexp))
 
+(defvar my/clj-warn-on-reflection-state nil)
+
+(defun my/clj-toggle-warn-on-reflection ()
+  (interactive)
+  (if my/clj-warn-on-reflection-state
+      (progn
+        (my/clj-eval `(do (set! *warn-on-reflection* false)
+                          {'*warn-on-reflection* false}))
+        (setq my/clj-warn-on-reflection-state nil))
+    (progn
+      (my/clj-eval `(do (set! *warn-on-reflection* true)
+                        {'*warn-on-reflection* true}))
+      (setq my/clj-warn-on-reflection-state t))))
+
 (use-package clojure-mode
   :defer t
   :hook ((clojure-mode . (lambda ()
