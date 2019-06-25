@@ -1055,12 +1055,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
                                      (font-lock-add-keywords 'inferior-lisp-mode
                                                              clojure-font-lock-keywords 'end)))
 
-(defun my/empty-file ()
-  (save-excursion
-    (save-match-data
-      (goto-char (point-min))
-      (eobp))))
-
 (defun my/clj-before-save ()
   (when (eq major-mode 'clojure-mode)
     (clojure-align (point-min) (point-max))))
