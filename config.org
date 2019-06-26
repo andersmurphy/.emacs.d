@@ -973,32 +973,60 @@ Toggle between up and down file if they exist (assumes files are in the same fol
       my/clj-find-implementation-or-test
       find-file))
 
-(defun my/clj-compliment-completion (prefix)
-  (edn-print-string
-   `(do (require '[compliment.core])
-        (->> (compliment.core/completions ,prefix)
-             (map :candidate)))))
-
 (defun my/check-first-item-string (list)
   (when (stringp (car list))
     list))
 
-(defun my/clj-completions (prefix)
-  (let ((proc (inferior-lisp-proc))
-        (output-buffer "*my/clj-completions*"))
+(defun my/clj-run-command-read-edn-output (output-buffer command)
+  (let ((proc (inferior-lisp-proc)))
     (save-excursion
       (set-buffer (get-buffer-create output-buffer))
       (erase-buffer)
       (comint-redirect-send-command-to-process
-       (my/clj-compliment-completion prefix) output-buffer proc nil t)
+       command output-buffer proc nil t)
       (set-buffer (process-buffer proc))
       (while (null comint-redirect-completed)
         (accept-process-output nil 1))
       (set-buffer output-buffer)
       (-> (buffer-substring-no-properties (point-min) (point-max))
           string-trim
-          read
-          my/check-first-item-string))))
+          read))))
+
+(defun my/clj-jump (col file line)
+  (xref-push-marker-stack)
+  (-> (split-string (buffer-file-name) "src")
+      car
+      (concat "src/" file)
+      find-file)
+  (goto-line line)
+  (forward-char col))
+
+(defun my/clj-jump-to-symbol ()
+  (interactive)
+  (->> (format "(->> (select-keys (meta #\'%s) [:file :line :column])
+                    seq
+                    sort
+                    (map second))"
+               (my/clj-symbol-at-point))
+       lisp-eval-string
+       (my/clj-run-command-read-edn-output "*my/clj-jump*")
+       (apply 'my/clj-jump)))
+
+(defun my/clj-jump-back ()
+  (interactive)
+  (xref-pop-marker-stack))
+
+(defun my/clj-compliment-completion (prefix)
+  (edn-print-string
+   `(do (require '[compliment.core])
+        (->> (compliment.core/completions ,prefix)
+             (map :candidate)))))
+
+(defun my/clj-completions (prefix)
+  (-> (my/clj-run-command-read-edn-output
+       (my/clj-compliment-completion prefix)
+       "*my/clj-completions*")
+      my/check-first-item-string))
 
 (defun my/clj-completion-backend (command &optional arg &rest ignored)
   (interactive (list 'interactive))
@@ -1017,7 +1045,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   (lisp-eval-last-sexp))
 
 (defvar my/clj-warn-on-reflection-state nil)
-
 (defun my/clj-toggle-warn-on-reflection ()
   (interactive)
   (if my/clj-warn-on-reflection-state
@@ -1052,7 +1079,9 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("C-c C-t p" . my/clj-run-project-tests)
               ("C-c C-t C-p" . my/clj-run-project-tests)
               ("C-x C-e" . my/lisp-eval-last-sexp)
-              ("M-;"     . my/clj-comment-form)))
+              ("M-;" . my/clj-comment-form)
+              ("M-." . my/clj-jump-to-symbol)
+              ("M-," . my/clj-jump-back)))
 
 (add-hook 'inferior-lisp-mode-hook (lambda()
                                      (font-lock-add-keywords 'inferior-lisp-mode
