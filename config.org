@@ -792,12 +792,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   (my/clj-eval '(clojure.main/repl :print (fn [x] (newline)
                                               (clojure.pprint/pprint x)))))
 
-(defun my/on-first-prompt (output)
-  (when (string-match "^[^=>]*[=>] *" output)
-    (my/enable-repl-pprint)
-    (remove-hook 'comint-output-filter-functions
-                 'my/on-first-prompt)))
-
 (defun my/dir-contains-git-root-p (dirname)
   (file-exists-p (concat dirname "/.git/config")))
 
@@ -824,10 +818,24 @@ Toggle between up and down file if they exist (assumes files are in the same fol
       (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
+(defun my/do-on-first-prompt (thunk)
+  (let ((sym  (gensym)))
+    (defalias sym (lambda (output)
+                    (when (string-match "^[^=>]*[=>] *" output)
+                      (and thunk (funcall thunk))
+                      (remove-hook 'comint-output-filter-functions
+                                   sym))))
+    (add-hook 'comint-output-filter-functions
+              sym)))
+
+(defun my/clj-inferior-lisp ()
+  (if (get-buffer "*inferior-lisp*")
+      (inferior-lisp inferior-lisp-program)
+    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
+           (inferior-lisp inferior-lisp-program))))
+
 (defun my/clj-open-repl (&optional do-not-toggle-previous-buffer clj-lisp-prog)
   (interactive)
-  (add-hook 'comint-output-filter-functions
-            'my/on-first-prompt)
   (when (one-window-p)
     (split-window-right))
   (display-buffer-use-some-window (current-buffer) nil)
@@ -838,7 +846,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
     (progn
       (next-buffer)
       (my/try-to-open-clj-project-file clj-lisp-prog)
-      (inferior-lisp inferior-lisp-program)
+      (my/clj-inferior-lisp)
       (comint-show-maximum-output)))
   (other-window 1))
 
