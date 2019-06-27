@@ -1,6 +1,12 @@
 # C-c ' (org-edit-special) toggles org-edit-src-code on src blocks.
 
 * Defaults
+** Enable lexical scope in config.el
+
+#+BEGIN_SRC emacs-lisp
+;;; -*- lexical-binding: t -*-
+#+END_SRC
+
 ** Exec-path-from-shell
 
 [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] ensures environment variables inside GUI Emacs look the same as in the user's shell on OSX.
@@ -795,7 +801,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 (defun my/dir-contains-git-root-p (dirname)
   (file-exists-p (concat dirname "/.git/config")))
 
-(defun my/try-to-find-project-file (dirname)
+(defun my/try-to-find-project-file (clj-lisp-prog dirname)
   (cond
    ((file-exists-p (concat dirname "project.clj"))
     (list (concat dirname "project.clj")
@@ -806,13 +812,14 @@ Toggle between up and down file if they exist (assumes files are in the same fol
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
     (list (buffer-file-name) "clojure"))
-   (t (-> (directory-file-name dirname)
-          file-name-directory
-          my/try-to-find-project-file))))
+   (t (->> (directory-file-name dirname)
+           file-name-directory
+           (my/try-to-find-project-file clj-lisp-prog)))))
 
 (defun my/try-to-open-clj-project-file (&optional clj-lisp-prog)
   (unless (get-buffer "*inferior-lisp*")
     (let ((file-and-prog (my/try-to-find-project-file
+                          clj-lisp-prog
                           (file-name-directory (buffer-file-name)))))
       (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
