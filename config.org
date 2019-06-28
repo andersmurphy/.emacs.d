@@ -1065,17 +1065,16 @@ Toggle between up and down file if they exist (assumes files are in the same fol
       read))
 
 (defun my/clj-eval-last-sexp-with-ns ()
+  "Evaluates previous sexp in the context of the current buffers namespace.
+   If buffer doesn't have namespace defaults to current namespace."
   (interactive)
   (when (my/clj-open-repl t)
     (let ((ns (my/clj-get-current-namespace-symbol))
           (sexp (my/clj-get-last-sexp)))
-      (my/clj-eval `(binding [*ns* (the-ns ',ns)]
-                             (eval ',sexp))))))
-
-(defun my/lisp-eval-last-sexp ()
-  (interactive)
-  (when (my/clj-open-repl t)
-    (lisp-eval-last-sexp)))
+      (if ns
+          (my/clj-eval `(binding [*ns* (the-ns ',ns)]
+                                 (eval ',sexp)))
+        (my/clj-eval sexp)))))
 
 (defvar my/clj-warn-on-reflection-state nil)
 (defun my/clj-toggle-warn-on-reflection ()
@@ -1273,5 +1272,5 @@ Use eslint in rjsx-mode.
               ("C-c C-d" . my/clj-doc-for-symbol)
               ("C-c C-s" . my/clj-source-for-symbol)
               ("C-c C-f" . my/clj-find-doc)
-              ("C-x C-e" . my/lisp-eval-last-sexp)))
+              ("C-x C-e" . my/clj-eval-last-sexp-with-ns)))
 #+END_SRC
