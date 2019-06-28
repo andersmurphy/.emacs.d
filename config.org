@@ -884,14 +884,12 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 (defun my/clj-get-current-namespace-symbol ()
   (save-buffer)
-  (let ((current-point (point)))
+  (save-excursion
     (goto-char (point-min))
     (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
       (when ns-idx
         (goto-char ns-idx)
-        (let ((sym (my/clj-symbol-at-point)))
-          (goto-char current-point)
-          sym)))))
+        (my/clj-symbol-at-point)))))
 
 (defun my/clj-load-current-ns ()
   (interactive)
