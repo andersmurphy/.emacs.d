@@ -1062,6 +1062,18 @@ Toggle between up and down file if they exist (assumes files are in the same fol
     (candidates (my/clj-completions arg))
     (sorted t)))
 
+(defun my/clj-get-last-sexp ()
+  (-> (buffer-substring (save-excursion (backward-sexp) (point)) (point))
+      read))
+
+(defun my/clj-eval-last-sexp-with-ns ()
+  (interactive)
+  (when (my/clj-open-repl t)
+    (let ((ns (my/clj-get-current-namespace-symbol))
+          (sexp (my/clj-get-last-sexp)))
+      (my/clj-eval `(binding [*ns* (the-ns ',ns)]
+                             (eval ',sexp))))))
+
 (defun my/lisp-eval-last-sexp ()
   (interactive)
   (when (my/clj-open-repl t)
@@ -1101,7 +1113,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("C-c C-t C-n" . my/clj-run-ns-tests)
               ("C-c C-t p" . my/clj-run-project-tests)
               ("C-c C-t C-p" . my/clj-run-project-tests)
-              ("C-x C-e" . my/lisp-eval-last-sexp)
+              ("C-x C-e" . my/clj-eval-last-sexp-with-ns)
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
               ("M-," . my/clj-jump-back)))
