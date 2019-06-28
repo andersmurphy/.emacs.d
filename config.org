@@ -1123,12 +1123,14 @@ Toggle between up and down file if they exist (assumes files are in the same fol
                                                              clojure-font-lock-keywords 'end)))
 
 (defun my/clj-before-save ()
+  "Vertically align the contents of the sexp around point on save."
   (when (eq major-mode 'clojure-mode)
     (clojure-align (point-min) (point-max))))
 
 (add-hook 'before-save-hook 'my/clj-before-save)
 
 (defun my/require-test-src-file ()
+  "Used for generating test templates."
   (concat "["
           (->> (clojure-expected-ns)
                (replace-regexp-in-string "-test" ""))
