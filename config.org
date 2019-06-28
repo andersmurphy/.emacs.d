@@ -996,7 +996,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
       (set-buffer (get-buffer-create output-buffer))
       (erase-buffer)
       (comint-redirect-send-command-to-process
-       command output-buffer proc nil t)
+       (edn-print-string command) output-buffer proc nil t)
       (set-buffer (process-buffer proc))
       (while (null comint-redirect-completed)
         (accept-process-output nil 1))
@@ -1022,32 +1022,32 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 (defun my/clj-jump-to-symbol ()
   (interactive)
   (when (my/clj-open-repl t)
-    (->> (my/clj-eval `(-> (ns-resolve
-                            ',(my/clj-get-current-namespace-symbol)
-                            ',(my/clj-symbol-at-point))
-                           meta
-                           (select-keys [:file :line :column])
-                           seq
-                           sort
-                           ((partial map second))))
-         (my/clj-run-command-read-edn-output "*my/clj-jump*")
-         my/clj-jump)))
+    (-> (my/clj-run-command-read-edn-output
+         "*my/clj-jump*"
+         `(-> (ns-resolve
+               ',(my/clj-get-current-namespace-symbol)
+               ',(my/clj-symbol-at-point))
+              meta
+              (select-keys [:file :line :column])
+              seq
+              sort
+              ((partial map second))))
+        my/clj-jump)))
 
 (defun my/clj-jump-back ()
   (interactive)
   (xref-pop-marker-stack))
 
-(defun my/clj-compliment-completion (prefix)
-  (edn-print-string
-   `(do (require '[compliment.core])
-        (->> (compliment.core/completions ,prefix)
-             (map :candidate)))))
-
 (defun my/clj-completions (prefix)
-  (-> (my/clj-run-command-read-edn-output
-       (my/clj-compliment-completion prefix)
-       "*my/clj-completions*")
-      my/check-first-item-string))
+  (let ((ns (my/clj-get-current-namespace-symbol)))
+    (-> (my/clj-run-command-read-edn-output
+         "*my/clj-completions*"
+         `(do (require '[compliment.core])
+              (compliment.core/completions
+               ,prefix
+               {:plain-candidates true
+               :ns (the-ns ',ns)})))
+        my/check-first-item-string)))
 
 (defun my/clj-completion-backend (command &optional arg &rest ignored)
   (interactive (list 'interactive))
