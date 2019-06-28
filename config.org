@@ -1115,17 +1115,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
     (clojure-align (point-min) (point-max))))
 
 (add-hook 'before-save-hook 'my/clj-before-save)
-
-(defun my/require-test-src-file ()
-  (concat "["
-          (->> (clojure-expected-ns)
-               (replace-regexp-in-string "-test" ""))
-          " :as "
-          (->> (buffer-name)
-               file-name-sans-extension
-               (replace-regexp-in-string "_" "-")
-               (replace-regexp-in-string "-test" ""))
-          "]"))
 #+END_SRC
 
 *** Flycheck Joker
