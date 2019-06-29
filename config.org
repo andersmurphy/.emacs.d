@@ -1022,16 +1022,17 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 (defun my/clj-jump-to-symbol ()
   (interactive)
   (when (my/clj-open-repl t)
-    (-> (my/clj-run-command-read-edn-output
-         "*my/clj-jump*"
-         `(-> (ns-resolve
-               ',(my/clj-get-current-namespace-symbol)
-               ',(my/clj-symbol-at-point))
-              meta
-              (select-keys [:file :line :column])
-              seq
-              sort
-              ((partial map second))))
+    (-> (when-let ((ns (my/clj-get-current-namespace-symbol)))
+          (my/clj-run-command-read-edn-output
+           "*my/clj-jump*"
+           `(-> (ns-resolve
+                 ',ns
+                 ',(my/clj-symbol-at-point))
+                meta
+                (select-keys [:file :line :column])
+                seq
+                sort
+                ((partial map second)))))
         my/clj-jump)))
 
 (defun my/clj-jump-back ()
