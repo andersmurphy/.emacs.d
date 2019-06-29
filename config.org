@@ -1046,7 +1046,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               (compliment.core/completions
                ,prefix
                {:plain-candidates true
-               :ns (the-ns ',ns)})))
+               :ns (when ',ns (the-ns ',ns))})))
         my/check-first-item-string)))
 
 (defun my/clj-completion-backend (command &optional arg &rest ignored)
