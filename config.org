@@ -959,16 +959,14 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 (defun my/clj-apropos ()
   (interactive)
   (when (my/clj-open-repl t)
-    (->> (read-string "Apropos (regex):")
-         (format "(clojure.repl/apropos #\"%s\")")
-         lisp-eval-string)))
+    (my/clj-eval `(clojure.repl/apropos
+                   (re-pattern ,(read-string "Apropos (regex):"))))))
 
 (defun my/clj-find-doc ()
   (interactive)
   (when (my/clj-open-repl t)
-    (->> (read-string "Find Doc (regex):")
-         (format "(clojure.repl/find-doc #\"%s\")")
-         lisp-eval-string)))
+    (my/clj-eval `(clojure.repl/find-doc
+                   (re-pattern ,(read-string "Find Doc (regex):"))))))
 
 (defun my/clj-find-implementation-or-test (file-name)
   (unless file-name (error "The current buffer is not visiting a file"))
