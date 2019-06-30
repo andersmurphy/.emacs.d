@@ -793,6 +793,27 @@ Toggle between up and down file if they exist (assumes files are in the same fol
         (goto-char ns-idx)
         (my/clj-symbol-at-point)))))
 
+(defun my/clj-eval-string-with-ns (string)
+  (let ((ns (my/clj-get-current-namespace-symbol)))
+    (if ns
+        (-> (format "(binding [*ns* (the-ns '%s)]
+                              (eval '%s))"
+                    ns string)
+            lisp-eval-string)
+      (lisp-eval-string string))))
+
+(defun my/clj-get-last-sexp ()
+  (interactive)
+  (buffer-substring (save-excursion (backward-sexp) (point)) (point)))
+
+(defun my/clj-eval-last-sexp-with-ns ()
+  "Evaluates previous sexp in the context of the current buffers namespace.
+   If buffer doesn't have namespace defaults to current namespace."
+  (interactive)
+  (my/when-repl-running
+   (my/clj-eval-string-with-ns (my/clj-get-last-sexp))
+   (my/show-repl)))
+
 (defun my/clj-eval (edn)
   (-> (edn-print-string edn)
       lisp-eval-string))
@@ -1082,25 +1103,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
                  (company-grab-symbol)))
     (candidates (my/clj-completions arg))
     (sorted t)))
-
-(defun my/clj-get-last-sexp ()
-  (interactive)
-  (buffer-substring (save-excursion (backward-sexp) (point)) (point)))
-
-(defun my/clj-eval-last-sexp-with-ns ()
-  "Evaluates previous sexp in the context of the current buffers namespace.
-   If buffer doesn't have namespace defaults to current namespace."
-  (interactive)
-  (my/when-repl-running
-   (let ((ns (my/clj-get-current-namespace-symbol))
-         (sexp (my/clj-get-last-sexp)))
-     (if ns
-         (-> (format "(binding [*ns* (the-ns '%s)]
-                              (eval '%s))"
-                     ns sexp)
-             lisp-eval-string)
-       (lisp-eval-string sexp)))
-   (my/show-repl)))
 
 (defvar my/clj-warn-on-reflection-state nil)
 (defun my/clj-toggle-warn-on-reflection ()
