@@ -910,15 +910,15 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 (defun my/clj-doc-for-symbol ()
   (interactive)
   (my/when-repl-running
-   (my/clj-eval
-    `(clojure.repl/doc ,(my/clj-symbol-at-point)))
+   (my/clj-eval-string-with-ns
+    (edn-print-string `(clojure.repl/doc ,(my/clj-symbol-at-point))))
    (my/show-repl)))
 
 (defun my/clj-source-for-symbol ()
   (interactive)
   (my/when-repl-running
-   (my/clj-eval
-    `(clojure.repl/source ,(my/clj-symbol-at-point)))
+   (my/clj-eval-string-with-ns
+    (edn-print-string `(clojure.repl/source ,(my/clj-symbol-at-point))))
    (my/show-repl)))
 
 (defun my/clj-javadoc-for-symbol ()
