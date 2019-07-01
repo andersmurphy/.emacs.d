@@ -55,6 +55,35 @@ If buffer doesn't have namespace defaults to current namespace."
                                               (newline)
                                               (clojure.pprint/pprint x)))))
 
+(defun my/do-on-first-prompt (thunk)
+  "Evaluate THUNK on first REPL prompt."
+  (let ((sym  (gensym)))
+    (defalias sym (lambda (output)
+                    (when (string-match "^[^=>]*[=>] *" output)
+                      (and thunk (funcall thunk))
+                      (remove-hook 'comint-output-filter-functions
+                                   sym))))
+    (add-hook 'comint-output-filter-functions
+              sym)))
+
+(defun my/clj-inferior-lisp ()
+  (interactive)
+  (if (get-buffer "*inferior-lisp*")
+      (inferior-lisp inferior-lisp-program)
+    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
+           (inferior-lisp inferior-lisp-program))))
+
+(defun my/show-repl ()
+  "Show running REPL in buffer that is not the current buffer."
+  (when (get-buffer "*inferior-lisp*")
+    (when (one-window-p)
+      (split-window-right))
+    (display-buffer-use-some-window (current-buffer) nil)
+    (previous-buffer)
+    (my/clj-inferior-lisp)
+    (comint-show-maximum-output)
+    (other-window 1)))
+
 (defun my/dir-contains-git-root-p (dirname)
   (file-exists-p (concat dirname "/.git/config")))
 
@@ -81,22 +110,6 @@ If buffer doesn't have namespace defaults to current namespace."
       (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
-(defun my/do-on-first-prompt (thunk)
-  (let ((sym  (gensym)))
-    (defalias sym (lambda (output)
-                    (when (string-match "^[^=>]*[=>] *" output)
-                      (and thunk (funcall thunk))
-                      (remove-hook 'comint-output-filter-functions
-                                   sym))))
-    (add-hook 'comint-output-filter-functions
-              sym)))
-
-(defun my/clj-inferior-lisp ()
-  (if (get-buffer "*inferior-lisp*")
-      (inferior-lisp inferior-lisp-program)
-    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
-           (inferior-lisp inferior-lisp-program))))
-
 (defun my/clj-open-repl (&optional clj-lisp-prog)
   (interactive)
   (when (one-window-p)
@@ -120,11 +133,6 @@ If buffer doesn't have namespace defaults to current namespace."
 (defun my/start-repl (clj-lisp-prog)
   (my/kill-inferior-lisp-buffer)
   (my/clj-open-repl clj-lisp-prog))
-
-(defun my/show-repl ()
-  (when (get-buffer "*inferior-lisp*")
-    (inferior-lisp inferior-lisp-program)
-    (previous-buffer)))
 
 (defmacro my/when-repl-running (&rest forms)
   `(if (get-buffer "*inferior-lisp*")
