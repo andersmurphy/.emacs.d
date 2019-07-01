@@ -66,23 +66,12 @@ If buffer doesn't have namespace defaults to current namespace."
     (add-hook 'comint-output-filter-functions
               sym)))
 
-(defun my/clj-inferior-lisp ()
-  (interactive)
-  (if (get-buffer "*inferior-lisp*")
-      (inferior-lisp inferior-lisp-program)
-    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
-           (inferior-lisp inferior-lisp-program))))
-
 (defun my/show-repl ()
   "Show running REPL in buffer that is not the current buffer."
   (when (get-buffer "*inferior-lisp*")
-    (when (one-window-p)
-      (split-window-right))
-    (display-buffer-use-some-window (current-buffer) nil)
-    (previous-buffer)
-    (my/clj-inferior-lisp)
-    (comint-show-maximum-output)
-    (other-window 1)))
+    (unless (string= (buffer-name) "*inferior-lisp*")
+      (display-buffer "*inferior-lisp*" t))
+    (comint-show-maximum-output)))
 
 (defun my/dir-contains-git-root-p (dirname)
   (file-exists-p (concat dirname "/.git/config")))
@@ -109,6 +98,13 @@ If buffer doesn't have namespace defaults to current namespace."
                           (file-name-directory (buffer-file-name)))))
       (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
+
+(defun my/clj-inferior-lisp ()
+  (interactive)
+  (if (get-buffer "*inferior-lisp*")
+      (inferior-lisp inferior-lisp-program)
+    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
+           (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
   (interactive)
