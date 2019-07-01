@@ -6,10 +6,12 @@
 (require 'dash)
 
 (defun my/clj-symbol-at-point ()
+  "Get Clojure symbol at point."
   (with-syntax-table clojure-mode-syntax-table
     (symbol-at-point)))
 
 (defun my/clj-get-current-namespace-symbol ()
+  "Get symbol for current buffer namespace."
   (save-buffer)
   (save-excursion
     (goto-char (point-min))
@@ -19,6 +21,8 @@
         (my/clj-symbol-at-point)))))
 
 (defun my/clj-eval-string-with-ns (string)
+  "Evaluate STRING in the context of the current buffer namespace.
+If buffer doesn't have namespace defaults to current namespace."
   (let ((ns (my/clj-get-current-namespace-symbol)))
     (if ns
         (-> (format "(binding [*ns* (the-ns '%s)]
@@ -28,11 +32,12 @@
       (lisp-eval-string string))))
 
 (defun my/clj-get-last-sexp ()
+  "Get last sexp as STRING."
   (interactive)
   (buffer-substring (save-excursion (backward-sexp) (point)) (point)))
 
 (defun my/clj-eval-last-sexp-with-ns ()
-  "Evaluate previous sexp in the context of the current buffers namespace.
+  "Evaluate previous sexp in the context of the current buffer namespace.
 If buffer doesn't have namespace defaults to current namespace."
   (interactive)
   (my/when-repl-running
@@ -40,11 +45,14 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/show-repl)))
 
 (defun my/clj-eval (edn)
+  "Evaluate elisp representation of EDN."
   (-> (edn-print-string edn)
       lisp-eval-string))
 
 (defun my/enable-repl-pprint ()
-  (my/clj-eval '(clojure.main/repl :print (fn [x] (newline)
+  "Enable pprint in REPL."
+  (my/clj-eval '(clojure.main/repl :print (fn [x]
+                                              (newline)
                                               (clojure.pprint/pprint x)))))
 
 (defun my/dir-contains-git-root-p (dirname)
