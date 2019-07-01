@@ -137,14 +137,17 @@ If buffer doesn't have namespace defaults to current namespace."
      (message "REPL needs to be running for this command to work!")))
 
 (defun heroku-production-repl ()
+  "Start heroku production REPL."
   (interactive)
   (my/start-repl "heroku run lein repl --remote production"))
 
 (defun heroku-staging-repl ()
+  "Start heroku staging REPL."
   (interactive)
   (my/start-repl "heroku run lein repl --remote staging"))
 
 (defun my/clj-doc-for-symbol ()
+  "Print doc for symbol at point."
   (interactive)
   (my/when-repl-running
    (my/clj-eval-string-with-ns
@@ -152,6 +155,7 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/show-repl)))
 
 (defun my/clj-source-for-symbol ()
+  "Print source for symbol at point."
   (interactive)
   (my/when-repl-running
    (my/clj-eval-string-with-ns
@@ -159,12 +163,14 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/show-repl)))
 
 (defun my/clj-javadoc-for-symbol ()
+  "Open javadoc in browser for symbol at point."
   (interactive)
   (my/when-repl-running
    (my/clj-eval `(clojure.java.javadoc/javadoc ,(my/clj-symbol-at-point)))
    (my/show-repl)))
 
 (defun my/clj-load-current-ns ()
+  "Load current buffer namespace."
   (interactive)
   (my/when-repl-running
    (let ((sym (my/clj-get-current-namespace-symbol)))
@@ -173,6 +179,7 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/show-repl)))
 
 (defun my/clj-eval-buffer ()
+  "Evaluate entire buffer in REPL."
   (interactive)
   (my/my/when-repl-running
    (lisp-eval-region (point-min) (point-max))
@@ -182,6 +189,8 @@ If buffer doesn't have namespace defaults to current namespace."
   (string-match-p "heroku" inferior-lisp-program))
 
 (defun my/clj-run-ns-tests ()
+  "Run all tests for namepsace. Reloads both namespace and test namespace.
+Works from both namespace and test namespace"
   (interactive)
   (my/when-repl-running
    (if (not (my/inferior-lisp-program-heroku-p))
@@ -204,6 +213,7 @@ If buffer doesn't have namespace defaults to current namespace."
      (message "Command disabled: You shouldn't run tests on Heroku!"))))
 
 (defun my/clj-run-project-tests ()
+  "Run all tests for project. Reloads all test and test namespaces."
   (interactive)
   (my/when-repl-running
    (if (not (my/inferior-lisp-program-heroku-p))
@@ -223,6 +233,7 @@ If buffer doesn't have namespace defaults to current namespace."
      (message "Command disabled: You shouldn't run tests on Heroku!"))))
 
 (defun my/clj-comment-form ()
+  "Comment or uncomment current form using #_ reader macro."
   (interactive)
   (let ((bounds (bounds-of-thing-at-point 'sexp)))
     (if bounds
@@ -235,6 +246,7 @@ If buffer doesn't have namespace defaults to current namespace."
       (backward-char 2))))
 
 (defun my/clj-apropos ()
+  "Given a regular expression return a list of all definitions in all currently loaded namespaces that match."
   (interactive)
   (my/when-repl-running
    (progn
@@ -243,6 +255,7 @@ If buffer doesn't have namespace defaults to current namespace."
      (my/show-repl))))
 
 (defun my/clj-find-doc ()
+  "Given a regular expression print documentation for any vars whose documentation or name contain a match."
   (interactive)
   (my/when-repl-running
    (progn
@@ -251,6 +264,7 @@ If buffer doesn't have namespace defaults to current namespace."
      (my/show-repl))))
 
 (defun my/clj-find-implementation-or-test (file-name)
+  "Find coresponding test or implementation file for FILE-NAME."
   (unless file-name (error "The current buffer is not visiting a file"))
   (if (string-suffix-p "test" (file-name-sans-extension
                                (file-name-nondirectory file-name)))
@@ -261,6 +275,7 @@ If buffer doesn't have namespace defaults to current namespace."
      "src/" "test/" (replace-regexp-in-string ".clj" "_test.clj" file-name))))
 
 (defun my/clj-toggle-between-implementation-and-test ()
+  "Toggle between implementation and test files. Reuses current window."
   (interactive)
   (-> (buffer-file-name)
       my/clj-find-implementation-or-test
@@ -300,6 +315,7 @@ If buffer doesn't have namespace defaults to current namespace."
     (message "Symbol definition not found!")))
 
 (defun my/clj-jump-to-symbol ()
+  "Jump to symbol definition. If symbol is defined in another file, open that file in a buffer and go to the definition line and column."
   (interactive)
   (my/when-repl-running
    (-> (when-let ((ns (my/clj-get-current-namespace-symbol)))
@@ -316,6 +332,7 @@ If buffer doesn't have namespace defaults to current namespace."
        my/clj-jump)))
 
 (defun my/clj-jump-back ()
+  "Return to point before jump."
   (interactive)
   (xref-pop-marker-stack))
 
@@ -343,6 +360,7 @@ If buffer doesn't have namespace defaults to current namespace."
 
 (defvar my/clj-warn-on-reflection-state nil)
 (defun my/clj-toggle-warn-on-reflection ()
+  "Toggle warn on reflection."
   (interactive)
   (my/when-repl-running
    (if my/clj-warn-on-reflection-state
@@ -379,5 +397,4 @@ If buffer doesn't have namespace defaults to current namespace."
           "]"))
 
 (provide 'clj)
-
 ;;; clj.el ends here
