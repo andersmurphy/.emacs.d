@@ -68,10 +68,13 @@ If buffer doesn't have namespace defaults to current namespace."
 
 (defun my/show-repl ()
   "Show running REPL in buffer that is not the current buffer."
+  (interactive)
   (when (get-buffer "*inferior-lisp*")
     (unless (string= (buffer-name) "*inferior-lisp*")
       (display-buffer "*inferior-lisp*" t))
-    (comint-show-maximum-output)))
+    (other-window 1)
+    (comint-show-maximum-output)
+    (other-window 1)))
 
 (defun my/dir-contains-git-root-p (dirname)
   (file-exists-p (concat dirname "/.git/config")))
