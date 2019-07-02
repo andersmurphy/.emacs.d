@@ -77,6 +77,7 @@ If buffer doesn't have namespace defaults to current namespace."
     (other-window 1)))
 
 (defun my/dir-contains-git-root-p (dirname)
+  "Return non-nil if DIRNAME has /.git/config."
   (file-exists-p (concat dirname "/.git/config")))
 
 (defun my/try-to-find-project-file (clj-lisp-prog dirname)
@@ -103,6 +104,7 @@ If buffer doesn't have namespace defaults to current namespace."
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
 (defun my/clj-inferior-lisp ()
+  "Run REPL. If REPL is not running do first prompt behaviour after launch."
   (interactive)
   (if (get-buffer "*inferior-lisp*")
       (inferior-lisp inferior-lisp-program)
@@ -126,14 +128,17 @@ If buffer doesn't have namespace defaults to current namespace."
   (other-window 1))
 
 (defun my/kill-inferior-lisp-buffer ()
+  "Kill *unferior-lisp* buffer if running."
   (when (get-buffer "*inferior-lisp*")
     (kill-buffer "*inferior-lisp*")))
 
 (defun my/start-repl (clj-lisp-prog)
+  "Kill any running REPL and start new REPL for CLJ-LISP-PROG."
   (my/kill-inferior-lisp-buffer)
   (my/clj-open-repl clj-lisp-prog))
 
 (defmacro my/when-repl-running (&rest forms)
+  "Evaluate FORMS if REPL is running. Otherwise show error mnessage."
   `(if (get-buffer "*inferior-lisp*")
        (progn
          ,@forms)
@@ -285,6 +290,7 @@ Works from both namespace and test namespace"
       find-file))
 
 (defun my/check-first-item-string (list)
+  "Return LIST if first item is a string."
   (when (stringp (car list))
     list))
 
@@ -304,6 +310,7 @@ Works from both namespace and test namespace"
           read))))
 
 (defun my/clj-jump (list)
+  "Jump to line and column in file."
   (if list
       (let ((col  (nth 0 list))
             (file (nth 1 list))
@@ -340,6 +347,9 @@ Works from both namespace and test namespace"
   (xref-pop-marker-stack))
 
 (defun my/clj-completions (prefix)
+  "Completion function that passes PREFIX to function to compliment.
+Uses the namepsace of the current buffer. If buffer doesn't have namespace
+defaults to current namespace."
   (let ((ns (my/clj-get-current-namespace-symbol)))
     (-> (my/clj-run-command-read-edn-output
          "*my/clj-completions*"
@@ -351,6 +361,7 @@ Works from both namespace and test namespace"
         my/check-first-item-string)))
 
 (defun my/clj-completion-backend (command &optional arg &rest ignored)
+  "Completion backend powered by the clojure compliment completion library."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'my/clj-completion-backend))
