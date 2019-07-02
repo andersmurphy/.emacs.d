@@ -320,6 +320,15 @@ Works from both namespace and test namespace"
           string-trim
           read))))
 
+(defun my/clj-get-file-source-path (file)
+  "Return path to FILE source."
+  (let ((source-dir (if (string-match-p "test" file) "test" "src")))
+    (-> (split-string
+         (buffer-file-name)
+         "src\\|test")
+        car
+        (concat source-dir "/" file))))
+
 (defun my/clj-jump (list)
   "Jump to line and column in file."
   (if list
@@ -327,10 +336,8 @@ Works from both namespace and test namespace"
             (file (nth 1 list))
             (line (nth 2 list)))
         (xref-push-marker-stack)
-        (-> (split-string (buffer-file-name) "src")
-            car
-            (concat "src/" file)
-            find-file-existing)
+        (->(my/clj-get-file-source-path file)
+           find-file-existing)
         (goto-line line)
         (forward-char col))
     (message "Symbol definition not found!")))
