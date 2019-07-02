@@ -206,10 +206,11 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/show-repl)))
 
 (defun my/inferior-lisp-program-heroku-p ()
+  "Return non-nil if heroku REPL is running."
   (string-match-p "heroku" inferior-lisp-program))
 
 (defun my/clj-run-ns-tests ()
-  "Run all tests for namepsace. Reloads both namespace and test namespace.
+  "Run all unit-tests for namepsace. Reloads both namespace and test namespace.
 Works from both namespace and test namespace"
   (interactive)
   (my/when-repl-running
@@ -233,7 +234,7 @@ Works from both namespace and test namespace"
      (message "Command disabled: You shouldn't run tests on Heroku!"))))
 
 (defun my/clj-run-project-tests ()
-  "Run all tests for project. Reloads all test and test namespaces."
+  "Run all unit-tests for project. Reloads all test and test namespaces."
   (interactive)
   (my/when-repl-running
    (if (not (my/inferior-lisp-program-heroku-p))
