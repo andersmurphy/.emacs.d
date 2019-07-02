@@ -10,6 +10,11 @@
   (with-syntax-table clojure-mode-syntax-table
     (symbol-at-point)))
 
+(defun my/clj-eval (command)
+  "Evaluate elisp representation of COMMAND."
+  (-> (edn-print-string command)
+      lisp-eval-string))
+
 (defun my/clj-get-current-namespace-symbol ()
   "Get symbol for current buffer namespace."
   (save-buffer)
@@ -20,18 +25,27 @@
         (goto-char ns-idx)
         (my/clj-symbol-at-point)))))
 
-(defun my/clj-eval-string-with-ns (string)
-  "Evaluate STRING in the context of the current buffer namespace.
+(defun my/clj-format-with-ns (command)
+  "Format edn COMMAND to use the current buffer namespace.
+If buffer doesn't have namespace defaults to current namespace.
+Handles both string and edn commands."
+  (let ((ns (my/clj-get-current-namespace-symbol))
+        (string (if (stringp command)
+                    command
+                  (edn-print-string command))))
+    (format "(if '%s
+             (do
+               (require '%s)
+               (binding [*ns* (the-ns '%s)]
+                 (eval '%s)))
+             (eval '%s))"
+            ns ns ns string string)))
+
+(defun my/clj-eval-with-ns (command)
+  "Evaluate COMMAND in the context of the current buffer namespace.
 If buffer doesn't have namespace defaults to current namespace."
-  (let ((ns (my/clj-get-current-namespace-symbol)))
-    (-> (format "(if '%s
-                   (do
-                     (require '%s)
-                     (binding [*ns* (the-ns '%s)]
-                       (eval '%s)))
-                   (eval '%s))"
-                ns ns ns string string)
-        lisp-eval-string)))
+  (-> (my/clj-format-with-ns command)
+      lisp-eval-string))
 
 (defun my/clj-get-last-sexp ()
   "Get last sexp as STRING."
@@ -43,13 +57,8 @@ If buffer doesn't have namespace defaults to current namespace."
 If buffer doesn't have namespace defaults to current namespace."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-string-with-ns (my/clj-get-last-sexp))
+   (my/clj-eval-with-ns (my/clj-get-last-sexp))
    (my/show-repl)))
-
-(defun my/clj-eval (edn)
-  "Evaluate elisp representation of EDN."
-  (-> (edn-print-string edn)
-      lisp-eval-string))
 
 (defun my/enable-repl-pprint ()
   "Enable pprint in REPL."
@@ -160,23 +169,24 @@ If buffer doesn't have namespace defaults to current namespace."
   "Print doc for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-string-with-ns
-    (edn-print-string `(clojure.repl/doc ,(my/clj-symbol-at-point))))
+   (my/clj-eval-with-ns
+    `(clojure.repl/doc ,(my/clj-symbol-at-point)))
    (my/show-repl)))
 
 (defun my/clj-source-for-symbol ()
   "Print source for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-string-with-ns
-    (edn-print-string `(clojure.repl/source ,(my/clj-symbol-at-point))))
+   (my/clj-eval-with-ns
+    `(clojure.repl/source ,(my/clj-symbol-at-point)))
    (my/show-repl)))
 
 (defun my/clj-javadoc-for-symbol ()
   "Open javadoc in browser for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval `(clojure.java.javadoc/javadoc ,(my/clj-symbol-at-point)))
+   (my/clj-eval-with-ns
+    `(clojure.java.javadoc/javadoc ,(my/clj-symbol-at-point)))
    (my/show-repl)))
 
 (defun my/clj-load-current-ns ()
@@ -259,19 +269,17 @@ Works from both namespace and test namespace"
   "Given a regular expression return a list of all definitions in all currently loaded namespaces that match."
   (interactive)
   (my/when-repl-running
-   (progn
-     (my/clj-eval `(clojure.repl/apropos
-                    (re-pattern ,(read-string "Apropos (regex):"))))
-     (my/show-repl))))
+   (my/clj-eval `(clojure.repl/apropos
+                  (re-pattern ,(read-string "Apropos (regex):"))))
+   (my/show-repl)))
 
 (defun my/clj-find-doc ()
   "Given a regular expression print documentation for any vars whose documentation or name contain a match."
   (interactive)
   (my/when-repl-running
-   (progn
-     (my/clj-eval `(clojure.repl/find-doc
-                    (re-pattern ,(read-string "Find Doc (regex):"))))
-     (my/show-repl))))
+   (my/clj-eval `(clojure.repl/find-doc
+                  (re-pattern ,(read-string "Find Doc (regex):"))))
+   (my/show-repl)))
 
 (defun my/clj-find-implementation-or-test (file-name)
   "Find coresponding test or implementation file for FILE-NAME."
@@ -297,12 +305,13 @@ Works from both namespace and test namespace"
     list))
 
 (defun my/clj-run-command-read-edn-output (output-buffer command)
-  (let ((proc (inferior-lisp-proc)))
+  (let ((proc (inferior-lisp-proc))
+        (formatted-command (my/clj-format-with-ns command)))
     (save-excursion
       (set-buffer (get-buffer-create output-buffer))
       (erase-buffer)
       (comint-redirect-send-command-to-process
-       (edn-print-string command) output-buffer proc nil t)
+       formatted-command output-buffer proc nil t)
       (set-buffer (process-buffer proc))
       (while (null comint-redirect-completed)
         (accept-process-output nil 1))
@@ -330,17 +339,14 @@ Works from both namespace and test namespace"
   "Jump to symbol definition. If symbol is defined in another file, open that file in a buffer and go to the definition line and column."
   (interactive)
   (my/when-repl-running
-   (-> (when-let ((ns (my/clj-get-current-namespace-symbol)))
-         (my/clj-run-command-read-edn-output
-          "*my/clj-jump*"
-          `(-> (ns-resolve
-                ',ns
-                ',(my/clj-symbol-at-point))
-               meta
-               (select-keys [:file :line :column])
-               seq
-               sort
-               ((partial map second)))))
+   (-> (my/clj-run-command-read-edn-output
+        "*my/clj-jump*"
+        `(-> (var ,(my/clj-symbol-at-point))
+             meta
+             (select-keys [:file :line :column])
+             seq
+             sort
+             ((partial map second))))
        my/clj-jump)))
 
 (defun my/clj-jump-back ()
@@ -352,15 +358,13 @@ Works from both namespace and test namespace"
   "Completion function that passes PREFIX to function to compliment.
 Uses the namepsace of the current buffer. If buffer doesn't have namespace
 defaults to current namespace."
-  (let ((ns (my/clj-get-current-namespace-symbol)))
-    (-> (my/clj-run-command-read-edn-output
-         "*my/clj-completions*"
-         `(do (require '[compliment.core])
-              (compliment.core/completions
-               ,prefix
-               {:plain-candidates true
-               :ns (when ',ns (the-ns ',ns))})))
-        my/check-first-item-string)))
+  (-> (my/clj-run-command-read-edn-output
+       "*my/clj-completions*"
+       `(do (require '[compliment.core])
+            (compliment.core/completions
+             ,prefix
+             {:plain-candidates true})))
+      my/check-first-item-string))
 
 (defun my/clj-completion-backend (command &optional arg &rest ignored)
   "Completion backend powered by the clojure compliment completion library."
