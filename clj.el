@@ -24,12 +24,14 @@
   "Evaluate STRING in the context of the current buffer namespace.
 If buffer doesn't have namespace defaults to current namespace."
   (let ((ns (my/clj-get-current-namespace-symbol)))
-    (if ns
-        (-> (format "(binding [*ns* (the-ns '%s)]
-                              (eval '%s))"
-                    ns string)
-            lisp-eval-string)
-      (lisp-eval-string string))))
+    (-> (format "(if '%s
+                   (do
+                     (require '%s)
+                     (binding [*ns* (the-ns '%s)]
+                       (eval '%s)))
+                   (eval '%s))"
+                ns ns ns string string)
+        lisp-eval-string)))
 
 (defun my/clj-get-last-sexp ()
   "Get last sexp as STRING."
