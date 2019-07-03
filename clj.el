@@ -17,7 +17,6 @@
 
 (defun my/clj-get-current-namespace-symbol ()
   "Get symbol for current buffer namespace."
-  (save-buffer)
   (save-excursion
     (goto-char (point-min))
     (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
@@ -201,6 +200,7 @@ Optionally CLJ-LISP-PROG can be specified"
 (defun my/clj-load-current-ns ()
   "Load current buffer namespace."
   (interactive)
+  (save-buffer)
   (my/when-repl-running
    (let ((sym (my/clj-get-current-namespace-symbol)))
      (my/clj-eval `(do (require ',sym :reload)
@@ -218,6 +218,7 @@ Optionally CLJ-LISP-PROG can be specified"
   "Run all unit-tests for namepsace. Reloads both namespace and test namespace.
 Works from both namespace and test namespace"
   (interactive)
+  (save-buffer)
   (my/when-repl-running
    (if (not (my/inferior-lisp-program-heroku-p))
        (let* ((sym (my/clj-get-current-namespace-symbol))
@@ -241,6 +242,7 @@ Works from both namespace and test namespace"
 (defun my/clj-run-project-tests ()
   "Run all unit-tests for project. Reloads all test and test namespaces."
   (interactive)
+  (save-buffer)
   (my/when-repl-running
    (if (not (my/inferior-lisp-program-heroku-p))
        (progn
