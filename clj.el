@@ -35,11 +35,11 @@ Handles both string and edn commands."
                   (edn-print-string command))))
     (format "(if '%s
              (do
-               (require '%s)
+               (when-not (find-ns '%s) (require '%s))
                (binding [*ns* (the-ns '%s)]
                  (eval '%s)))
              (eval '%s))"
-            ns ns ns string string)))
+            ns ns ns ns string string)))
 
 (defun my/clj-eval-with-ns (command)
   "Evaluate COMMAND in the context of the current buffer namespace.
@@ -149,7 +149,7 @@ If buffer doesn't have namespace defaults to current namespace."
   (my/clj-open-repl clj-lisp-prog))
 
 (defmacro my/when-repl-running (&rest forms)
-  "Evaluate FORMS if REPL is running. Otherwise show error mnessage."
+  "Evaluate FORMS if REPL is running. Otherwise show error message."
   `(if (get-buffer "*inferior-lisp*")
        (progn
          ,@forms)
