@@ -33,13 +33,11 @@ Handles both string and edn commands."
         (string (if (stringp command)
                     command
                   (edn-print-string command))))
-    (format "(if '%s
-             (do
+    (format "(do
                (when-not (find-ns '%s) (require '%s))
-               (binding [*ns* (the-ns '%s)]
-                 (eval '%s)))
-             (eval '%s))"
-            ns ns ns ns string string)))
+               (binding [*ns* (or (find-ns '%s) *ns*)]
+                 (eval '%s)))"
+            ns ns ns string)))
 
 (defun my/clj-eval-with-ns (command)
   "Evaluate COMMAND in the context of the current buffer namespace.
@@ -66,6 +64,17 @@ If buffer doesn't have namespace defaults to current namespace."
                                               (newline)
                                               (clojure.pprint/pprint x)))))
 
+(defun my/inferior-lisp-program-heroku-p ()
+  "Return non-nil if heroku REPL is running."
+  (string-match-p "heroku" inferior-lisp-program))
+
+(defun my/clj-refresh-repl ()
+  "Refresh REPL."
+  (unless (my/inferior-lisp-program-heroku-p)
+    (my/clj-eval
+     `(do (require '[clojure.tools.namespace.repl])
+          (clojure.tools.namespace.repl/refresh)))))
+
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
   (let ((sym  (gensym)))
@@ -91,7 +100,10 @@ If buffer doesn't have namespace defaults to current namespace."
   "Return non-nil if DIRNAME has /.git/config."
   (file-exists-p (concat dirname "/.git/config")))
 
-(defun my/try-to-find-project-file (clj-lisp-prog dirname)
+(defun my/try-to-find-project-file (dirname &optional clj-lisp-prog)
+  "Will try to find the correct project root project.clj/deps.edn file.
+In the case of nested projects will find the nearest project.clj/deps.edn file.
+Works up directories starting from the current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
   (cond
    ((file-exists-p (concat dirname "project.clj"))
     (list (concat dirname "project.clj")
@@ -102,15 +114,18 @@ If buffer doesn't have namespace defaults to current namespace."
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
     (list (buffer-file-name) "clojure"))
-   (t (->> (directory-file-name dirname)
-           file-name-directory
-           (my/try-to-find-project-file clj-lisp-prog)))))
+   (t (-> (directory-file-name dirname)
+          file-name-directory
+          (my/try-to-find-project-file clj-lisp-prog)))))
 
 (defun my/try-to-open-clj-project-file (&optional clj-lisp-prog)
+  "Will try to open the correct project root project.clj/deps.edn file.
+In the case of nested projects will open the nearest project.clj/deps.edn file.
+Optionally CLJ-LISP-PROG can be specified"
   (unless (get-buffer "*inferior-lisp*")
     (let ((file-and-prog (my/try-to-find-project-file
-                          clj-lisp-prog
-                          (file-name-directory (buffer-file-name)))))
+                          (file-name-directory (buffer-file-name))
+                          clj-lisp-prog)))
       (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
@@ -119,10 +134,14 @@ If buffer doesn't have namespace defaults to current namespace."
   (interactive)
   (if (get-buffer "*inferior-lisp*")
       (inferior-lisp inferior-lisp-program)
-    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
+    (progn (my/do-on-first-prompt
+            (lambda ()
+              (my/enable-repl-pprint)
+              (my/clj-refresh-repl)))
            (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
+  "Open REPL in window that is not the current buffer. If there is only the current buffer split window right. Will try to find the project root and open the correct REPL type accordingly. Optionally CLJ-LISP-PROG can be specified."
   (interactive)
   (when (one-window-p)
     (split-window-right))
@@ -204,10 +223,6 @@ If buffer doesn't have namespace defaults to current namespace."
   (my/my/when-repl-running
    (lisp-eval-region (point-min) (point-max))
    (my/show-repl)))
-
-(defun my/inferior-lisp-program-heroku-p ()
-  "Return non-nil if heroku REPL is running."
-  (string-match-p "heroku" inferior-lisp-program))
 
 (defun my/clj-run-ns-tests ()
   "Run all unit-tests for namepsace. Reloads both namespace and test namespace.
