@@ -68,13 +68,6 @@ If buffer doesn't have namespace defaults to current namespace."
   "Return non-nil if heroku REPL is running."
   (string-match-p "heroku" inferior-lisp-program))
 
-(defun my/clj-refresh-repl ()
-  "Refresh REPL."
-  (unless (my/inferior-lisp-program-heroku-p)
-    (my/clj-eval
-     `(do (require '[clojure.tools.namespace.repl])
-          (clojure.tools.namespace.repl/refresh)))))
-
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
   (let ((sym  (gensym)))
@@ -134,10 +127,7 @@ Optionally CLJ-LISP-PROG can be specified"
   (interactive)
   (if (get-buffer "*inferior-lisp*")
       (inferior-lisp inferior-lisp-program)
-    (progn (my/do-on-first-prompt
-            (lambda ()
-              (my/enable-repl-pprint)
-              (my/clj-refresh-repl)))
+    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
            (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
