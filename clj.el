@@ -218,7 +218,7 @@ Optionally CLJ-LISP-PROG can be specified"
   "Run all unit-tests for namepsace. Reloads both namespace and test namespace.
 Works from both namespace and test namespace"
   (interactive)
-  (save-buffer)
+  (save-some-buffers t)
   (my/when-repl-running
    (if (not (my/inferior-lisp-program-heroku-p))
        (let* ((sym (my/clj-get-current-namespace-symbol))
@@ -242,7 +242,7 @@ Works from both namespace and test namespace"
 (defun my/clj-run-project-tests ()
   "Run all unit-tests for project. Reloads all test and test namespaces."
   (interactive)
-  (save-buffer)
+  (save-some-buffers t)
   (my/when-repl-running
    (if (not (my/inferior-lisp-program-heroku-p))
        (progn
