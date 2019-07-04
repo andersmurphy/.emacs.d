@@ -249,6 +249,7 @@ Works from both namespace and test namespace"
          (my/clj-eval `(do (require '[clojure.test])
                            (require '[clojure.tools.namespace.find])
                            (require '[clojure.tools.namespace.repl])
+                           (clojure.tools.namespace.repl/set-refresh-dirs "src" "test")
                            (clojure.tools.namespace.repl/refresh)
                            (time
                             (binding
