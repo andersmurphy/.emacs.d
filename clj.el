@@ -205,7 +205,7 @@ Optionally CLJ-LISP-PROG can be specified"
    (let ((sym (my/clj-get-current-namespace-symbol)))
      (my/clj-eval `(do (require ',sym :reload)
                        (in-ns ',sym))))
-   (my/show-repl)))
+   (message "Namespace loaded.")))
 
 (defun my/clj-eval-buffer ()
   "Evaluate entire buffer in REPL."
