@@ -210,7 +210,7 @@ Optionally CLJ-LISP-PROG can be specified"
 (defun my/clj-eval-buffer ()
   "Evaluate entire buffer in REPL."
   (interactive)
-  (my/my/when-repl-running
+  (my/when-repl-running
    (lisp-eval-region (point-min) (point-max))
    (my/show-repl)))
 
