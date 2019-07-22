@@ -402,6 +402,12 @@ Sets font and font size.
 (global-visual-line-mode)
 #+END_SRC
 
+** OSX cmd (super) key to control
+
+#+BEGIN_SRC emacs-lisp
+(setq mac-command-modifier 'control)
+#+END_SRC
+
 * Text Manipulation
 ** Delete selected region when typing
 
