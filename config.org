@@ -221,6 +221,19 @@ Disables mouse.
 (setq initial-scratch-message "")
 #+END_SRC
 
+** OSX cmd (super) key to control
+
+#+BEGIN_SRC emacs-lisp
+(setq mac-command-modifier 'control)
+#+END_SRC
+
+** Global key bindings
+
+#+BEGIN_SRC emacs-lisp
+(define-key global-map [?\C-v] 'yank)
+(define-key global-map [?\C-z] 'undo)
+#+END_SRC
+
 * Appearance
 ** Menu, tool and scroll bars
 
@@ -401,12 +414,6 @@ Sets font and font size.
 
 #+BEGIN_SRC emacs-lisp
 (global-visual-line-mode)
-#+END_SRC
-
-** OSX cmd (super) key to control
-
-#+BEGIN_SRC emacs-lisp
-(setq mac-command-modifier 'control)
 #+END_SRC
 
 * Text Manipulation
