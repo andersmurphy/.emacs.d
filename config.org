@@ -380,6 +380,7 @@ Sets the initial frame to be flush with the top left corner of the screen.
 
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-type 'bar)
+(setq-default blink-cursor-interval 0.4)
 #+END_SRC
 
 ** Cursor only appears in current buffer
