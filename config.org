@@ -221,7 +221,9 @@ Disables mouse.
 (setq initial-scratch-message "")
 #+END_SRC
 
-** OSX cmd (super) key to control
+** OSX cmd key
+
+Bind cmd (super) key to control
 
 #+BEGIN_SRC emacs-lisp
 (setq mac-command-modifier 'control)
@@ -230,8 +232,8 @@ Disables mouse.
 ** Global key bindings
 
 #+BEGIN_SRC emacs-lisp
-(define-key global-map [?\C-v] 'yank)
-(define-key global-map [?\C-z] 'undo)
+(global-set-key (kbd "C-v") 'yank)
+(global-set-key (kbd "C-z") 'undo)
 #+END_SRC
 
 * Appearance
