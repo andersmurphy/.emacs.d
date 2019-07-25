@@ -389,10 +389,17 @@ Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(top . 0))
 #+END_SRC
 
-** Cursor shape
+** Cursor
+
+Change cursor shape to bar.
 
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-type 'bar)
+#+END_SRC
+
+Prevents cursor from disappearing randomly on OSX.
+
+#+BEGIN_SRC emacs-lisp
 (setq-default blink-cursor-interval 0.4)
 #+END_SRC
 
