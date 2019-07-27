@@ -399,12 +399,6 @@ Change cursor shape to bar.
 (setq-default cursor-type 'bar)
 #+END_SRC
 
-Prevents cursor from disappearing randomly on OSX.
-
-#+BEGIN_SRC emacs-lisp
-(setq-default blink-cursor-interval 0.4)
-#+END_SRC
-
 ** Cursor only appears in current buffer
 
 #+BEGIN_SRC emacs-lisp
