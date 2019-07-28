@@ -399,7 +399,19 @@ Change cursor shape to bar.
 (setq-default cursor-type 'bar)
 #+END_SRC
 
-** Cursor only appears in current buffer
+Cursor never stops blinking.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default blink-cursor-blinks 0)
+#+END_SRC
+
+Unbind suspend-frame (this would cause the cursor to disappear if you pressed C-x C-z by mistake).
+
+#+BEGIN_SRC emacs-lisp
+(global-unset-key (kbd "C-x C-z"))
+#+END_SRC
+
+Cursor only appears in current buffer.
 
 #+BEGIN_SRC emacs-lisp
 (setq-default cursor-in-non-selected-windows nil)
