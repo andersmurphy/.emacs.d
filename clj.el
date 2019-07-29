@@ -58,10 +58,12 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/show-repl)))
 
 (defun my/enable-repl-pprint ()
-  "Enable pprint in REPL."
-  (my/clj-eval '(clojure.main/repl :print (fn [x]
-                                              (newline)
-                                              (clojure.pprint/pprint x)))))
+  "Enable pprint in REPL and set collection max *print-length*."
+  (my/clj-eval '(do
+                 (set! *print-length* 30)
+                 (clojure.main/repl :print (fn [x]
+                                               (newline)
+                                               (clojure.pprint/pprint x))))))
 
 (defun my/inferior-lisp-program-heroku-p ()
   "Return non-nil if heroku REPL is running."
