@@ -271,22 +271,28 @@ Disables default splash screen.
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
   :config
-  (setq my/theme 'doom-solarized-light)
-  (load-theme my/theme t)
-  (custom-theme-set-faces
-   my/theme
-   `(emms-playlist-track-face ((t (:foreground ,(doom-color 'fg)))))
-   `(emms-playlist-selected-face ((t (:foreground ,(doom-color 'highlight)))))
-   `(org-level-1 ((t (:height 1.2 :weight ultra-bold :foreground ,(doom-color 'blue)))))
-   `(org-level-2 ((t (:height 1.0 :weight bold :foreground ,(doom-color 'magenta)))))
-   `(font-lock-type-face ((t (:foreground ,(doom-color 'fg)))))
-   `(font-lock-type-face ((t (:foreground ,(doom-color 'fg)))))
-   `(font-lock-keyword-face ((t (:foreground ,(doom-color 'fg)))))
-   `(font-lock-variable-name-face ((t (:foreground ,(doom-color 'functions)))))
-   `(font-lock-function-name-face ((t (:foreground ,(doom-color 'functions)))))
-   `(font-lock-constant-face ((t (:foreground ,(doom-color 'constants)))))
-   `(font-lock-builtin-face ((t (:foreground ,(doom-color 'constants)))))
-   `(font-lock-string-face ((t (:foreground ,(doom-color 'teal)))))))
+  (setq my/dark-theme 'doom-solarized-dark)
+  (setq my/light-theme 'doom-solarized-light)
+  (setq my/active-theme my/dark-theme)
+  (load-theme my/active-theme t)
+  (defun my/customise-theme ()
+    (doom-themes-set-faces
+      my/active-theme
+      '(cursor :background magenta)
+      '(sp-show-pair-match-face :foreground magenta :weight 'bold)
+      '(line-number-current-line :foreground magenta :weight 'bold)
+      '(emms-playlist-track-face :foreground fg)
+      '(emms-playlist-selected-face :foreground highlight)
+      '(org-level-1 :foreground blue :height 1.2 :weight 'ultra-bold)
+      '(org-level-2 :foreground violet :height 1.0 :weight 'bold)
+      '(org-level-3 :foreground teal :height 1.0 :weight 'bold)
+      '(font-lock-type-face :foreground fg)
+      '(font-lock-keyword-face :foreground fg)
+      '(font-lock-variable-name-face :foreground blue)
+      '(font-lock-function-name-face :foreground blue)
+      '(font-lock-constant-face :foreground constants)
+      '(font-lock-builtin-face :foreground constants)))
+  (my/customise-theme))
 #+END_SRC
 
 *** Hook for after theme load
@@ -315,6 +321,19 @@ Disables default splash screen.
 (add-hook
  'after-load-theme-hook
  'my/flycheck-use-line)
+#+END_SRC
+
+*** Toggle Dark/light Theme
+
+#+BEGIN_SRC emacs-lisp
+(defun my/toggle-theme ()
+   (interactive)
+   (disable-theme my/active-theme)
+   (if (eq my/active-theme my/light-theme)
+    (setq my/active-theme my/dark-theme)
+    (setq my/active-theme my/light-theme))
+   (load-theme my/active-theme t)
+   (my/customise-theme))
 #+END_SRC
 
 ** Modeline
