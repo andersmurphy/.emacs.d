@@ -280,7 +280,7 @@ Disables default splash screen.
       my/active-theme
       '(cursor :background magenta)
       '(sp-show-pair-match-face :foreground magenta :weight 'bold)
-      '(line-number-current-line :foreground magenta :weight 'bold)
+      '(line-number-current-line :foreground fg :weight 'bold)
       '(emms-playlist-track-face :foreground fg)
       '(emms-playlist-selected-face :foreground highlight)
       '(org-level-1 :foreground blue :height 1.2 :weight 'ultra-bold)
