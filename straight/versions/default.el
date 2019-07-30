@@ -9,7 +9,7 @@
  ("doom-modeline" . "6ecda37e4550e85cfa5e4957d0a05bd393e6a4b3")
  ("edn.el" . "be9e32d1b49e35247b263b0243df7cfdc8d413ab")
  ("emacs-async" . "bd68cc1ab1ac6af890e250bdaa12ffb1cb9649be")
- ("emacs-doom-themes" . "4be80b29416d58d2130e019b7337c8b87d70b56c")
+ ("emacs-doom-themes" . "214a36624ee29974edf9c3a37b68844b8f34ca03")
  ("emacs-memoize" . "9a561268ffb550b257a08710489a95cd087998b6")
  ("emms" . "e70459caaadeb715116abb45ddf5e98921d46c14")
  ("epkgs" . "17fec4a37982ef08e9329c405457227ee01914fd")
@@ -46,4 +46,4 @@
  ("use-package" . "1d5ffb2e0d1427066ced58febbba68c1328bf001")
  ("with-editor" . "45c29f9bfb7f2df93426ce1571e2f4f41ed4e492")
  ("yasnippet" . "d91dd66f2aed9bbaef32813a68b105ea77e83890"))
-:neptune
+:pluto
