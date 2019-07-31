@@ -278,6 +278,14 @@ Disables default splash screen.
   (defun my/customise-theme ()
     (doom-themes-set-faces
       my/active-theme
+      '(eww-invalid-certificate :foreground red :weight 'bold)
+      '(eww-valid-certificate :foreground green :weight 'bold)
+      '(eww-form-checkbox :foreground blue :box blue)
+      '(eww-form-file :foreground blue :box blue)
+      '(eww-form-select :foreground bg :background blue :box blue)
+      '(eww-form-submit :foreground blue :box blue)
+      '(eww-form-text :foreground fg :box violet)
+      '(eww-form-textarea :foreground fg :box violet)
       '(cursor :background magenta)
       '(sp-show-pair-match-face :foreground magenta :weight 'bold)
       '(line-number-current-line :foreground fg :weight 'bold)
@@ -988,4 +996,19 @@ Use eslint in rjsx-mode.
               ("C-c C-s" . my/clj-source-for-symbol)
               ("C-c C-f" . my/clj-find-doc)
               ("C-x C-e" . my/clj-eval-last-sexp-with-ns)))
+#+END_SRC
+** Web Browser
+
+eww is the built in emacs web browser.
+
+#+BEGIN_SRC emacs-lisp
+(use-package eww
+  :straight nil
+  :config
+;; use default font/text size
+  (setq shr-use-fonts nil)
+;; ignore html specified colours
+  (setq shr-use-colors nil)
+;; disable images
+  (setq shr-inhibit-images t))
 #+END_SRC
