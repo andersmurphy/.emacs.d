@@ -1010,5 +1010,8 @@ eww is the built in emacs web browser.
 ;; ignore html specified colours
   (setq shr-use-colors nil)
 ;; disable images
-  (setq shr-inhibit-images t))
+  (setq shr-inhibit-images t)
+;; disable animations
+  (setq shr-image-animate nil)
+)
 #+END_SRC
