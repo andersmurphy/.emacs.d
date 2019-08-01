@@ -643,12 +643,6 @@ window stay within the same window.
 
 * Programming
 ** General
-*** Show line numbers
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-#+END_SRC
-
 *** Company mode
 
 [[https://github.com/company-mode/company-mode][Company]] is a text completion framework for Emacs. The name stands
