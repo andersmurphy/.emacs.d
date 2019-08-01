@@ -1007,5 +1007,7 @@ eww is the built in emacs web browser.
   (setq shr-inhibit-images t)
 ;; disable animations
   (setq shr-image-animate nil)
-)
+;; don't render screen reader hidden tags
+;; reduces noise on some sites
+  (setq shr-discard-aria-hidden t))
 #+END_SRC
