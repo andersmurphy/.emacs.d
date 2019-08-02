@@ -278,6 +278,25 @@ Disables default splash screen.
   (defun my/customise-theme ()
     (doom-themes-set-faces
       my/active-theme
+      '(cursor :background magenta)
+      '(sp-show-pair-match-face :foreground magenta :weight 'bold)
+      '(line-number-current-line :foreground fg :weight 'bold)
+      '(font-lock-type-face :foreground fg)
+      '(font-lock-keyword-face :foreground fg)
+      '(font-lock-variable-name-face :foreground blue)
+      '(font-lock-function-name-face :foreground blue)
+      '(font-lock-constant-face :foreground constants)
+      '(font-lock-builtin-face :foreground constants)
+      ;; modeline
+      '(doom-modeline-bar :foreground modeline-bg)
+      ;; org
+      '(org-level-1 :foreground blue :height 1.2 :weight 'ultra-bold)
+      '(org-level-2 :foreground violet :height 1.0 :weight 'bold)
+      '(org-level-3 :foreground teal :height 1.0 :weight 'bold)
+      ;; emms
+      '(emms-playlist-track-face :foreground fg)
+      '(emms-playlist-selected-face :foreground highlight)
+      ;; eww
       '(eww-invalid-certificate :foreground red :weight 'bold)
       '(eww-valid-certificate :foreground green :weight 'bold)
       '(eww-form-checkbox :foreground blue :box blue)
@@ -285,21 +304,7 @@ Disables default splash screen.
       '(eww-form-select :foreground bg :background blue :box blue)
       '(eww-form-submit :foreground blue :box blue)
       '(eww-form-text :foreground fg :box violet)
-      '(eww-form-textarea :foreground fg :box violet)
-      '(cursor :background magenta)
-      '(sp-show-pair-match-face :foreground magenta :weight 'bold)
-      '(line-number-current-line :foreground fg :weight 'bold)
-      '(emms-playlist-track-face :foreground fg)
-      '(emms-playlist-selected-face :foreground highlight)
-      '(org-level-1 :foreground blue :height 1.2 :weight 'ultra-bold)
-      '(org-level-2 :foreground violet :height 1.0 :weight 'bold)
-      '(org-level-3 :foreground teal :height 1.0 :weight 'bold)
-      '(font-lock-type-face :foreground fg)
-      '(font-lock-keyword-face :foreground fg)
-      '(font-lock-variable-name-face :foreground blue)
-      '(font-lock-function-name-face :foreground blue)
-      '(font-lock-constant-face :foreground constants)
-      '(font-lock-builtin-face :foreground constants)))
+      '(eww-form-textarea :foreground fg :box violet)))
   (my/customise-theme))
 #+END_SRC
 
