@@ -227,10 +227,10 @@ Disables mouse.
   (global-disable-mouse-mode))
 #+END_SRC
 
-** Default initial buffer to local persistent scratch.org file
+** Default initial buffer to notes.org file
 
 #+BEGIN_SRC emacs-lisp
-(setq initial-buffer-choice "~/.emacs.d/scratch.org")
+(setq initial-buffer-choice "~/.emacs.d/emacs-sync/org/notes.org")
 (setq initial-scratch-message "")
 #+END_SRC
 
