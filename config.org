@@ -428,12 +428,6 @@ Sets the initial frame to be flush with the top left corner of the screen.
 
 ** Cursor
 
-Change cursor shape to bar.
-
-#+BEGIN_SRC emacs-lisp
-(setq-default cursor-type 'bar)
-#+END_SRC
-
 Cursor never stops blinking.
 
 #+BEGIN_SRC emacs-lisp
