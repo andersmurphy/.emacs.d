@@ -266,7 +266,7 @@ Disables default splash screen.
 ** Theme
 *** Doom
 
-[[doom-spacegrey][Doom]] themes.
+[[doom-spacegrey][Doom]] themes. To find out the name of the face you want to customise: M-x cutomize-face and then search through the list of faces.
 
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
@@ -296,6 +296,9 @@ Disables default splash screen.
       ;; emms
       '(emms-playlist-track-face :foreground fg)
       '(emms-playlist-selected-face :foreground highlight)
+      ;; markdown
+      '(markdown-header-face :foreground blue :weight 'bold)
+      '(markdown-metadata-key-face :foreground violet)
       ;; eww
       '(eww-invalid-certificate :foreground red :weight 'bold)
       '(eww-valid-certificate :foreground green :weight 'bold)
