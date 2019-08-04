@@ -987,6 +987,7 @@ Use eslint in rjsx-mode.
               ("C-c C-f" . my/clj-find-doc)
               ("C-x C-e" . my/clj-eval-last-sexp-with-ns)))
 #+END_SRC
+
 ** Web Browser
 
 eww is the built in emacs web browser.
