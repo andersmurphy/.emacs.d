@@ -32,6 +32,8 @@ brew cask install emacs
 brew install aspell
 
 brew install mpv
+rm ~/.config/mpv/mpv.conf
+ln -s ~/.emacs.d/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 
 brew install multimarkdown
 

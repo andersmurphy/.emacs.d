@@ -108,6 +108,8 @@ Emms depends on mpv to play music.
 
 #+BEGIN_SRC sh
 brew install mpv
+rm ~/.config/mpv/mpv.conf
+ln -s ~/.emacs.d/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 #+END_SRC
 
 Markdown mode depends on multimarkdown to preview markdown.
