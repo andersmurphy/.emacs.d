@@ -57,17 +57,21 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/clj-eval-with-ns (my/clj-get-last-sexp))
    (my/show-repl)))
 
-(defun my/enable-repl-pprint ()
-  "Enable pprint in REPL and set collection max *print-length*."
-  (my/clj-eval '(do
+(defun my/inferior-lisp-program-heroku-p ()
+  "Return non-nil if heroku REPL is running."
+  (string-match-p "heroku" inferior-lisp-program))
+
+(defun my/configure-repl ()
+  "Configure global repl settings."
+  (my/clj-eval `(do
+                 (when-not ,(my/inferior-lisp-program-heroku-p)
+                           (require (quote [pjstadig.humane-test-output])))
+                 (when-not ,(my/inferior-lisp-program-heroku-p)
+                           (pjstadig.humane-test-output/activate!))
                  (set! *print-length* 30)
                  (clojure.main/repl :print (fn [x]
                                                (newline)
                                                (clojure.pprint/pprint x))))))
-
-(defun my/inferior-lisp-program-heroku-p ()
-  "Return non-nil if heroku REPL is running."
-  (string-match-p "heroku" inferior-lisp-program))
 
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
@@ -128,7 +132,7 @@ Optionally CLJ-LISP-PROG can be specified"
   (interactive)
   (if (get-buffer "*inferior-lisp*")
       (inferior-lisp inferior-lisp-program)
-    (progn (my/do-on-first-prompt 'my/enable-repl-pprint)
+    (progn (my/do-on-first-prompt 'my/configure-repl)
            (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
