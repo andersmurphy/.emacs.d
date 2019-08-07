@@ -799,13 +799,16 @@ Handles auto-inserting templates when creating new files.
         ("M-h" . comint-previous-input)))
 #+END_SRC
 
-
 ** Eshell
 
 #+BEGIN_SRC emacs-lisp
 (use-package eshell
- :bind (:map eshell-mode-map
-              ("M-h" . eshell-previous-matching-input-from-input)))
+ :init
+ ;; Eshell starts out defining its map as nil and then only sets it to a keymap
+ ;; locally later so :bind won't work
+ (add-hook 'eshell-mode-hook
+          (lambda ()
+             (define-key eshell-mode-map (kbd "M-h") 'eshell-previous-matching-input-from-input))))
 #+END_SRC
 
 ** Sql
