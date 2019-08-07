@@ -791,6 +791,23 @@ Handles auto-inserting templates when creating new files.
   (define-auto-insert "\\test.clj$" ["default_test_clj.clj" my/autoinsert-yas-expand]))
 #+END_SRC
 
+*** Lisp mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package inf-lisp
+ :bind (:map inferior-lisp-mode-map
+        ("M-h" . comint-previous-input)))
+#+END_SRC
+
+
+** Eshell
+
+#+BEGIN_SRC emacs-lisp
+(use-package eshell
+ :bind (:map eshell-mode-map
+              ("M-h" . eshell-previous-matching-input-from-input)))
+#+END_SRC
+
 ** Sql
 
 Toggle between up and down file if they exist (assumes files are in the same folder).
@@ -810,7 +827,9 @@ Toggle between up and down file if they exist (assumes files are in the same fol
         my/sql-find-up-or-down
         find-file))
   :bind (:map sql-mode-map
-              ("M-g t" . my/sql-toggle-up-down)))
+              ("M-g t" . my/sql-toggle-up-down)
+         :map sql-interactive-mode-map
+              ("M-h" . comint-previous-input)))
 #+END_SRC
 
 ** Elisp
