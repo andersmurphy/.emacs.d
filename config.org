@@ -177,7 +177,9 @@ Bind return to alternate file, so that dired reuses same buffer.
     :config
     (put 'dired-find-alternate-file 'disabled nil)
     :bind (:map dired-mode-map
-                ("RET" . dired-find-alternate-file)))
+                ("RET" . dired-find-alternate-file)
+                ("h" . dired-previous-line)
+                ("p" . describe-mode)))
 #+END_SRC
 
 *** WDired
@@ -234,6 +236,8 @@ Bind cmd (super) key to control
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "C-h") 'previous-line)
+(global-set-key (kbd "C-p") 'help-command)
 #+END_SRC
 
 * Appearance
@@ -591,7 +595,16 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
   (setq magit-diff-refine-hunk 'all)
   (setq magit-diff-refine-ignore-whitespace t)
-  :bind ("C-x g" . magit-status))
+  :bind (("C-x g" . magit-status)
+         :map magit-status-mode-map
+         ("h" . magit-section-backward)
+         ("p" . magit-dispatch)
+         :map magit-log-mode-map
+         ("h" . magit-section-backward)
+         ("p" . magit-dispatch)
+         :map magit-diff-mode-map
+         ("h" . magit-section-backward)
+         ("p" . magit-dispatch)))
 #+END_SRC
 
 ** Org mode
@@ -652,7 +665,7 @@ to retrieve and display completion candidates.
     (global-company-mode)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
+              ("C-h" . company-select-previous)
               ("TAB" . company-complete-selection)))
 #+END_SRC
 
@@ -696,7 +709,8 @@ to retrieve and display completion candidates.
               ("C-(" . sp-backward-slurp-sexp)
               ("C-{" . sp-backward-barf-sexp)
               ("C-)" . sp-forward-slurp-sexp)
-              ("C-}" . sp-forward-barf-sexp)))
+              ("C-}" . sp-forward-barf-sexp)
+              ("C-M-h" . sp-previous-sexp)))
 #+END_SRC
 
 *** Flycheck
