@@ -57,17 +57,26 @@ If buffer doesn't have namespace defaults to current namespace."
    (my/clj-eval-with-ns (my/clj-get-last-sexp))
    (my/show-repl)))
 
+(defun my/->boolean (value)
+  "Convert turthy/falsy VALUE to boolean."
+  (if value t nil))
+
 (defun my/inferior-lisp-program-heroku-p ()
   "Return non-nil if heroku REPL is running."
-  (string-match-p "heroku" inferior-lisp-program))
+  (my/->boolean
+   (string-match-p "heroku" inferior-lisp-program)))
+
+(defun my/t->true-sym (value)
+  "Return symbol true if VALUE is t."
+  (if (and (booleanp value) value) 'true  value))
 
 (defun my/configure-repl ()
   "Configure global repl settings."
   (my/clj-eval `(do
-                 (when-not ,(my/inferior-lisp-program-heroku-p)
-                           (require (quote [pjstadig.humane-test-output])))
-                 (when-not ,(my/inferior-lisp-program-heroku-p)
-                           (pjstadig.humane-test-output/activate!))
+                 (when-not ,(my/t->true-sym
+                             (my/inferior-lisp-program-heroku-p))
+                           (require (quote [pjstadig.humane-test-output]))
+                           (eval '(pjstadig.humane-test-output/activate!)))
                  (set! *print-length* 30)
                  (clojure.main/repl :print (fn [x]
                                                (newline)
