@@ -256,7 +256,11 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-h") 'previous-line)
 (global-set-key (kbd "C-?") 'help-command)
 (global-set-key (kbd "C-q") 'kill-this-buffer)
-(global-set-key (kbd "C-o") 'delete-backward-char))
+(global-set-key (kbd "C-d") 'delete-backward-char)
+(global-set-key (kbd "M-d") 'delete-forward-char)
+(global-set-key (kbd "C-w") 'backward-kill-word)
+(global-set-key (kbd "M-w") 'kill-word)
+#+END_SRC
 #+END_SRC
 
 * Appearance
