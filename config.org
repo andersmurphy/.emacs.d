@@ -150,7 +150,7 @@ Disable return key, use C-j or C-m.
 
 ** Disable Backspace key
 
-Disable backspace key, use C-o.
+Disable backspace key, use C-d.
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<backspace>") 'ignore)
