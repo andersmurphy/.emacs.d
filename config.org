@@ -234,6 +234,7 @@ Bind cmd (super) key to control
 ** Global key bindings
 
 #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-j") 'newline)
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-h") 'previous-line)
