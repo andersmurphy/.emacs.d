@@ -140,6 +140,14 @@ Warn when opening files bigger than 100MB.
 (global-unset-key (kbd "<M-down>"))
 #+END_SRC
 
+** Disable return key
+
+Disable return keys, use C-j or C-m.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<return>") 'ignore)
+#+END_SRC
+
 ** Switch window focus on split
 
 Switch window focus on split.
