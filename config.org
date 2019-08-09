@@ -142,10 +142,18 @@ Warn when opening files bigger than 100MB.
 
 ** Disable return key
 
-Disable return keys, use C-j or C-m.
+Disable return key, use C-j or C-m.
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<return>") 'ignore)
+#+END_SRC
+
+** Disable Backspace key
+
+Disable backspace key, use C-o.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<backspace>") 'ignore)
 #+END_SRC
 
 ** Switch window focus on split
@@ -246,8 +254,9 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-h") 'previous-line)
-(global-set-key (kbd "C-p") 'help-command)
+(global-set-key (kbd "C-?") 'help-command)
 (global-set-key (kbd "C-q") 'kill-this-buffer)
+(global-set-key (kbd "C-o") 'delete-backward-char))
 #+END_SRC
 
 * Appearance
@@ -575,7 +584,7 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :bind ("C-s" . swiper-isearch)
-    ("s-f" . swiper-isearch))
+  ("C-r" . swiper-isearch-backward))
 #+END_SRC
 
 ** Counsel
@@ -608,13 +617,10 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
   :bind (("C-x g" . magit-status)
          :map magit-status-mode-map
          ("h" . magit-section-backward)
-         ("p" . magit-dispatch)
          :map magit-log-mode-map
          ("h" . magit-section-backward)
-         ("p" . magit-dispatch)
          :map magit-diff-mode-map
-         ("h" . magit-section-backward)
-         ("p" . magit-dispatch)))
+         ("h" . magit-section-backward)))
 #+END_SRC
 
 ** Org mode
