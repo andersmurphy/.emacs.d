@@ -239,6 +239,7 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-h") 'previous-line)
 (global-set-key (kbd "C-p") 'help-command)
+(global-set-key (kbd "C-q") 'kill-this-buffer)
 #+END_SRC
 
 * Appearance
