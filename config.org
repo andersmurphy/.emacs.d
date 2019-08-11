@@ -602,6 +602,7 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
   (counsel-mode t)
   :bind
   ("C-x p" . counsel-git)
+  ("C-p" . counsel-git)
   ("C-S-s" . counsel-git-grep))
 #+END_SRC
 
