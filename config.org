@@ -260,6 +260,7 @@ Bind cmd (super) key to control
 (global-set-key (kbd "M-d") 'delete-forward-char)
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "M-w") 'kill-word)
+(global-set-key (kbd "C-x f") 'counsel-find-file)
 #+END_SRC
 #+END_SRC
 
