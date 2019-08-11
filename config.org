@@ -548,8 +548,8 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
     (if bounds
         (kill-region (car bounds) (cdr bounds))
       (if (bound-and-true-p smartparens-mode)
-          (sp-backward-delete-char)
-        (backward-delete-char)))))
+          (sp-backward-delete-char 1)
+        (hungry-delete-backward 1)))))
 
 (defun my/kill-word-at-point ()
   (interactive)
