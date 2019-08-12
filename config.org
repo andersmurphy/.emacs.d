@@ -547,9 +547,9 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
   (let ((bounds (bounds-of-thing-at-point thing)))
     (if bounds
         (kill-region (car bounds) (cdr bounds))
-      (if (bound-and-true-p smartparens-mode)
-          (sp-backward-delete-char 1)
-        (hungry-delete-backward 1)))))
+      (cond ((bound-and-true-p smartparens-mode) (sp-backward-delete-char 1))
+            ((bound-and-true-p ivy-mode) (ivy-backward-delete-char))
+            (t (hungry-delete-backward 1))))))
 
 (defun my/kill-word-at-point ()
   (interactive)
