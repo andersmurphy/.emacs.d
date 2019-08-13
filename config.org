@@ -223,6 +223,14 @@ Disables mouse.
 (setq initial-scratch-message "")
 #+END_SRC
 
+** Change Gravity
+
+Makes recenter go to top first.
+
+#+BEGIN_SRC emacs-lisp
+(setq recenter-positions '(top middle bottom))
+#+END_SRC
+
 ** OSX cmd key
 
 Bind cmd (super) key to control
