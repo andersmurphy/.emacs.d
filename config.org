@@ -601,7 +601,7 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
   :bind
   ("C-x p" . counsel-git)
   ("C-p" . counsel-git)
-  ("C-S-s" . counsel-git-grep))
+  ("C-M-s" . counsel-git-grep))
 #+END_SRC
 
 * Project Management
