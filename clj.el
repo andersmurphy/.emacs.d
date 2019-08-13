@@ -424,9 +424,14 @@ defaults to current namespace."
                          {'*warn-on-reflection* true}))
        (setq my/clj-warn-on-reflection-state t)))))
 
-(add-hook 'inferior-lisp-mode-hook (lambda()
-                                     (font-lock-add-keywords 'inferior-lisp-mode
-                                                             clojure-font-lock-keywords 'end)))
+
+(add-hook 'inferior-lisp-mode-hook
+          (lambda()
+            ;; Add font lock to clojure keywords in REPL
+            (font-lock-add-keywords 'inferior-lisp-mode
+                                    clojure-font-lock-keywords 'end)
+            ;; Enable smartparen mode in REPL (none strict)
+            (smartparens-mode)))
 
 (defun my/clj-before-save ()
   "Vertically align the contents of the sexp around point on save."
