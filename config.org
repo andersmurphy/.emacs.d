@@ -239,6 +239,15 @@ Bind cmd (super) key to control
 (setq mac-command-modifier 'control)
 #+END_SRC
 
+** Swap ; and :
+
+Colons are used a lot more than semi-colons in lisp.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd ";") (lambda () (interactive) (insert ":")))
+(global-set-key (kbd ":") (lambda () (interactive) (insert ";")))
+#+END_SRC
+
 ** Global key bindings
 
 #+BEGIN_SRC emacs-lisp
