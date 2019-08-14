@@ -244,8 +244,19 @@ Bind cmd (super) key to control
 Colons are used a lot more than semi-colons in lisp.
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd ";") (lambda () (interactive) (insert ":")))
-(global-set-key (kbd ":") (lambda () (interactive) (insert ";")))
+(define-key key-translation-map (kbd ";") (kbd ":"))
+(define-key key-translation-map (kbd ":") (kbd ";"))
+#+END_SRC
+
+** Swap () and []
+
+Colons are used a lot more than semi-colons in lisp.
+
+#+BEGIN_SRC emacs-lisp
+(define-key key-translation-map (kbd "(") (kbd "["))
+(define-key key-translation-map (kbd "[") (kbd "("))
+(define-key key-translation-map (kbd ")") (kbd "]"))
+(define-key key-translation-map (kbd "]") (kbd ")"))
 #+END_SRC
 
 ** Global key bindings
