@@ -452,24 +452,50 @@ defaults to current namespace."
                (replace-regexp-in-string "-test" ""))
           "]"))
 
-(defun my/s-begins-with-square-bracket-p (string)
+(defun my/begins-with-bracket-p (string)
   "Return t if STRING begins with [."
   (if string
       (string= "[" (substring string nil 1))))
 
-(defun my/smart-square-brackets ()
+(defun my/list-of-strings-in-sexp ()
+  "Return list of strings before point in sexp."
+  (ignore-errors
+    (-> (buffer-substring
+         (save-excursion (backward-up-list) (point)) (point))
+        split-string)))
+
+(defun my/list-of-strings-in-outer-sexp ()
+  "Return list of strings before point in outer sexp."
+  (ignore-errors
+    (-> (buffer-substring
+         (save-excursion (backward-up-list) (backward-up-list) (point))
+         (save-excursion (backward-up-list) (point)))
+        split-string)))
+
+(defun my/smart-bracket-p (string-list)
+  "Return t if STRING-LIST satisfies smart bracket heuristic.
+If the first item in the list is a member of the smart bracket symbols list
+and the list doesn't already contain a string starting with a bracket."
+  (and (ignore-errors
+         (-> (car string-list)
+             (substring 1)
+             (member '("fn" "defn" "let" "defmacro" "if-let" "when-let"
+                       "binding" ":keys" ":strs"))))
+       (not (seq-some #'my/begins-with-bracket-p string-list))))
+
+(defun my/smart-bracket ()
   "Contextually insert [] when typing ()."
   (interactive)
-  (let ((l-of-s-before-point
-         (ignore-errors
-           (-> (buffer-substring (save-excursion (backward-up-list) (+ (point) 1)) (point))
-               split-string))))
-    (if (and (member (car l-of-s-before-point)
-                     '("defn" "let" "defmacro" "if-let" "when-let"))
-             (not (seq-some #'my/s-begins-with-square-bracket-p l-of-s-before-point)))
-        (insert "[]")
-      (insert "()"))
-    (backward-char 1)))
+  (let ((list-of-strings (my/list-of-strings-in-sexp)))
+    (cond ((my/smart-bracket-p list-of-strings)
+           (insert "[]"))
+          ((and
+            (-> list-of-strings car my/begins-with-bracket-p)
+            (my/smart-bracket-p (my/list-of-strings-in-outer-sexp)))
+           (insert "[]"))
+          (t
+           (insert "()"))))
+  (backward-char 1))
 
 (provide 'clj)
 ;;; clj.el ends here
