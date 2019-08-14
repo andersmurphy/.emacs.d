@@ -452,5 +452,10 @@ defaults to current namespace."
                (replace-regexp-in-string "-test" ""))
           "]"))
 
+(defun my/smart-square-brackets ()
+  "Contextually insert [] when typing ()."
+  (iteractive)
+  (message (my/clj-get-last-sexp)))
+
 (provide 'clj)
 ;;; clj.el ends here
