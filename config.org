@@ -238,27 +238,6 @@ Bind cmd (super) key to control
 #+BEGIN_SRC emacs-lisp
 (setq mac-command-modifier 'control)
 #+END_SRC
-
-** Swap ; and :
-
-Colons are used a lot more than semi-colons in lisp.
-
-#+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd ";") (kbd ":"))
-(define-key key-translation-map (kbd ":") (kbd ";"))
-#+END_SRC
-
-** Swap () and []
-
-Colons are used a lot more than semi-colons in lisp.
-
-#+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd "(") (kbd "["))
-(define-key key-translation-map (kbd "[") (kbd "("))
-(define-key key-translation-map (kbd ")") (kbd "]"))
-(define-key key-translation-map (kbd "]") (kbd ")"))
-#+END_SRC
-
 ** Global key bindings
 
 #+BEGIN_SRC emacs-lisp
@@ -272,6 +251,29 @@ Colons are used a lot more than semi-colons in lisp.
 (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
 (global-set-key (kbd "C-w") 'my/kill-word-at-point)
 #+END_SRC
+#+END_SRC
+
+** Swap ; and :
+
+Colons are used a lot more than semi-colons in lisp.
+
+#+BEGIN_SRC emacs-lisp
+(define-key key-translation-map (kbd ";") (kbd ":"))
+(define-key key-translation-map (kbd ":") (kbd ";"))
+#+END_SRC
+
+** Swap () and []
+
+() are used a lot more than [] in lisp.
+
+#+BEGIN_SRC emacs-lisp
+(define-key input-decode-map [?\C-\[] (kbd "<C-[>"))
+(global-unset-key (kbd "C-]"))
+
+(define-key key-translation-map (kbd "(") (kbd "["))
+(define-key key-translation-map (kbd "[") (kbd "("))
+(define-key key-translation-map (kbd ")") (kbd "]"))
+(define-key key-translation-map (kbd "]") (kbd ")"))
 #+END_SRC
 
 * Appearance
@@ -748,15 +750,15 @@ to retrieve and display completion candidates.
     (use-package smartparens-config
       :straight nil)
     (sp-use-smartparens-bindings)
+    (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
     (show-smartparens-global-mode t)
     (setq sp-highlight-pair-overlay nil))
   :init
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
   :bind (:map smartparens-mode-map
-              ("C-[" . sp-backward-slurp-sexp)
+              ("<C-[>" . sp-backward-slurp-sexp)
               ("C-{" . sp-backward-barf-sexp)
-              ("C-]" . sp-forward-slurp-sexp)
               ("C-}" . sp-forward-barf-sexp)
               ("C-M-h" . sp-previous-sexp)))
 #+END_SRC
