@@ -118,6 +118,15 @@ Markdown mode depends on multimarkdown to preview markdown.
 brew install multimarkdown
 #+END_SRC
 
+* Open jdk
+
+Installs open jdk.
+
+#+BEGIN_SRC sh
+brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk11
+#+END_SRC
+
 * Clojure
 
 Language.

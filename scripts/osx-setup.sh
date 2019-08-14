@@ -37,6 +37,9 @@ ln -s ~/.emacs.d/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 
 brew install multimarkdown
 
+brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk11
+
 brew install clojure
 rm ~/.clojure/deps.edn
 ln -s ~/.emacs.d/dotfiles/.clojure/deps.edn ~/.clojure/
