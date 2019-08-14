@@ -935,7 +935,8 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("C-x C-e" . my/clj-eval-last-sexp-with-ns)
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
-              ("M-," . my/clj-jump-back)))
+              ("M-," . my/clj-jump-back)
+              ("(" . my/smart-square-brackets)))
 #+END_SRC
 
 *** Flycheck Joker

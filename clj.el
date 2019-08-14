@@ -452,10 +452,24 @@ defaults to current namespace."
                (replace-regexp-in-string "-test" ""))
           "]"))
 
+(defun my/s-begins-with-square-bracket-p (string)
+  "Return t if STRING begins with [."
+  (if string
+      (string= "[" (substring string nil 1))))
+
 (defun my/smart-square-brackets ()
   "Contextually insert [] when typing ()."
-  (iteractive)
-  (message (my/clj-get-last-sexp)))
+  (interactive)
+  (let ((l-of-s-before-point
+         (ignore-errors
+           (-> (buffer-substring (save-excursion (backward-up-list) (+ (point) 1)) (point))
+               split-string))))
+    (if (and (member (car l-of-s-before-point)
+                     '("defn" "let" "defmacro" "if-let" "when-let"))
+             (not (seq-some #'my/s-begins-with-square-bracket-p l-of-s-before-point)))
+        (insert "[]")
+      (insert "()"))
+    (backward-char 1)))
 
 (provide 'clj)
 ;;; clj.el ends here
