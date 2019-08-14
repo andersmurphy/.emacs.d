@@ -960,7 +960,8 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 [[Major mode for editing JSON file][Json Mode]] is a major mode for editing JSON file.
 
 #+BEGIN_SRC emacs-lisp
-(use-package json-mode)
+(use-package json-mode
+  :defer t)
 #+END_SRC
 
 *** rjsx-mode
@@ -969,6 +970,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 #+BEGIN_SRC emacs-lisp
 (use-package rjsx-mode
+  :defer t
   :config
   (setq indent-tabs-mode nil)
   (setq js-indent-level 2)
