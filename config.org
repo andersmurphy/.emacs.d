@@ -238,6 +238,7 @@ Bind cmd (super) key to control
 #+BEGIN_SRC emacs-lisp
 (setq mac-command-modifier 'control)
 #+END_SRC
+
 ** Global key bindings
 
 #+BEGIN_SRC emacs-lisp
