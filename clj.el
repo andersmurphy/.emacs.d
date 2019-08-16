@@ -181,12 +181,12 @@ Optionally CLJ-LISP-PROG can be specified"
 (defun heroku-production-repl ()
   "Start heroku production REPL."
   (interactive)
-  (my/start-repl "heroku run lein repl --remote production"))
+  (my/start-repl "heroku run lein repl --remote production --size=standard-2x"))
 
 (defun heroku-staging-repl ()
   "Start heroku staging REPL."
   (interactive)
-  (my/start-repl "heroku run lein repl --remote staging"))
+  (my/start-repl "heroku run lein repl --remote staging --size=standard-2x"))
 
 (defun my/clj-doc-for-symbol ()
   "Print doc for symbol at point."
