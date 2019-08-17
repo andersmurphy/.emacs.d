@@ -659,15 +659,6 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
 #+END_SRC
 
 ** Org mode
-*** Defer Org
-
-Defer org to speed up load time (if config hasn't changed).
-
-#+BEGIN_SRC emacs-lisp
-(use-package org
-    :defer t)
-#+END_SRC
-
 *** Org babel/source blocks
 
 Enables source blocks syntax highlights and makes the editing popup
