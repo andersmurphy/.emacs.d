@@ -692,6 +692,14 @@ window stay within the same window.
 (add-hook 'org-src-mode-hook 'my/disable-fylcheck-in-org-src-block)
 #+END_SRC
 
+*** Org Capture
+
+Set default org capture directory.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-default-notes-file  "emacs-sync/org/notes.org")
+#+END_SRC
+
 * Programming
 ** General
 *** Company mode
