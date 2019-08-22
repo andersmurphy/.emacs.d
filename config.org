@@ -1085,6 +1085,7 @@ eww is the built in emacs web browser.
 (use-package eww
   :straight nil
   :config
+  (setq eww-bookmarks-directory "emacs-sync/")
 ;; use default font/text size
   (setq shr-use-fonts nil)
 ;; ignore html specified colours
