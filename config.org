@@ -83,6 +83,12 @@ That's what git is for.
                make-backup-files nil)
 #+END_SRC
 
+** Bookmarks Stored in emacs-sync
+
+#+BEGIN_SRC emacs-lisp
+(setq bookmark-default-file "emacs-sync/bookmarks")
+#+END_SRC
+
 ** Kill current buffer rather than bringing up list
 
 #+BEGIN_SRC emacs-lisp
