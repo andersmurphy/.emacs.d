@@ -83,7 +83,12 @@ That's what git is for.
                make-backup-files nil)
 #+END_SRC
 
-** Bookmarks Stored in emacs-sync
+** Bookmarks
+*** Save on any change
+
+(setq bookmark-save-flag 1)
+
+*** Stored in emacs-sync
 
 #+BEGIN_SRC emacs-lisp
 (setq bookmark-default-file "emacs-sync/bookmarks")
