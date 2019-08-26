@@ -480,7 +480,8 @@ and the list doesn't already contain a string starting with a bracket."
          (-> (car string-list)
              (substring 1)
              (member '("fn" "defn" "let" "defmacro" "if-let" "when-let"
-                       "binding" ":keys" ":strs"))))
+                       "binding" ":keys" ":strs" "assoc-in" "update-in"
+                       "get-in"))))
        (not (seq-some #'my/begins-with-bracket-p string-list))))
 
 (defun my/smart-bracket ()
