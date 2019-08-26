@@ -775,18 +775,12 @@ to retrieve and display completion candidates.
     (sp-use-smartparens-bindings)
     (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
     (show-smartparens-global-mode t)
-    (setq sp-highlight-pair-overlay nil)
-    (defun my/wrap-if-sexp ()
-      (interactive)
-      (if (symbol-at-point)
-          (sp-wrap-round)
-          (insert "()"))))
+    (setq sp-highlight-pair-overlay nil))
   :init
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
   :bind (:map smartparens-mode-map
               ("<C-[>" . sp-backward-slurp-sexp)
-              ("(" . my/wrap-if-sexp)
               ("C-{" . sp-backward-barf-sexp)
               ("C-}" . sp-forward-barf-sexp)
               ("C-M-h" . sp-previous-sexp)
@@ -916,6 +910,23 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 #+END_SRC
 
 ** Elisp
+
+*** Elisp mode bindings
+
+#+BEGIN_SRC emacs-lisp
+(use-package elisp-mode
+  :straight nil
+  :config
+  (progn
+    (defun my/wrap-if-sexp ()
+      (interactive)
+      (if (symbol-at-point)
+          (my/wrap-with-parens)
+        (my/insert-pair "()"))))
+  :bind (:map emacs-lisp-mode-map
+              ("(" . my/wrap-if-sexp)))
+#+END_SRC
+
 *** Dash
 
 [[https://github.com/magnars/dash.el#--x-optional-form-rest-more][Dash]] a modern list api for Emacs (includes things like -> ->> macros).
