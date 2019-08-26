@@ -772,7 +772,8 @@ to retrieve and display completion candidates.
               ("<C-[>" . sp-backward-slurp-sexp)
               ("C-{" . sp-backward-barf-sexp)
               ("C-}" . sp-forward-barf-sexp)
-              ("C-M-h" . sp-previous-sexp)))
+              ("C-M-h" . sp-previous-sexp)
+              (")" .))
 #+END_SRC
 
 *** Flycheck
