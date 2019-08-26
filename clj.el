@@ -494,20 +494,23 @@ and the list doesn't already contain a string starting with a bracket."
       (goto-char (+ (cdr bounds) 1))
       (insert ")"))))
 
+(defun my/insert-pair (pair)
+  "Insert PAIR."
+  (insert pair)
+  (backward-char 1))
+
 (defun my/smart-bracket ()
   "Contextually insert [] when typing ()."
   (interactive)
   (let ((list-of-strings (my/list-of-strings-in-sexp)))
     (cond ((my/clj-symbol-at-point) (my/wrap-with-parens))
           ((my/smart-bracket-p list-of-strings)
-           (insert "[]"))
+           (my/insert-pair "[]"))
           ((and
             (-> list-of-strings car my/begins-with-bracket-p)
             (my/smart-bracket-p (my/list-of-strings-in-outer-sexp)))
-           (insert "[]"))
-          (t
-           (insert "()"))))
-  (backward-char 1))
+           (my/insert-pair "[]"))
+          (t (my/insert-pair "()")))))
 
 (provide 'clj)
 ;;; clj.el ends here
