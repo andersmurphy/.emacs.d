@@ -909,7 +909,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 #+END_SRC
 
 ** Elisp
-
 *** Elisp mode bindings
 
 #+BEGIN_SRC emacs-lisp
