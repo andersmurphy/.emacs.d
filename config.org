@@ -91,7 +91,7 @@ That's what git is for.
 *** Stored in emacs-sync
 
 #+BEGIN_SRC emacs-lisp
-(setq bookmark-default-file "emacs-sync/bookmarks")
+(setq bookmark-default-file "~/.emacs.d/emacs-sync/bookmarks")
 #+END_SRC
 
 ** Kill current buffer rather than bringing up list
@@ -709,7 +709,7 @@ window stay within the same window.
 Set default org capture directory.
 
 #+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file  "emacs-sync/org/notes.org")
+(setq org-default-notes-file  "~/.emacs.d/emacs-sync/org/notes.org")
 #+END_SRC
 
 * Programming
@@ -1098,7 +1098,7 @@ eww is the built in emacs web browser.
 (use-package eww
   :straight nil
   :config
-  (setq eww-bookmarks-directory "emacs-sync/")
+  (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
 ;; use default font/text size
   (setq shr-use-fonts nil)
 ;; ignore html specified colours
