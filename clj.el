@@ -484,11 +484,22 @@ and the list doesn't already contain a string starting with a bracket."
                        "get-in"))))
        (not (seq-some #'my/begins-with-bracket-p string-list))))
 
+(defun my/wrap-with-parens ()
+  "Wrap current symbol with parens."
+  (interactive)
+  (let ((bounds (bounds-of-thing-at-point 'symbol)))
+    (save-excursion
+      (goto-char (car bounds))
+      (insert "(")
+      (goto-char (+ (cdr bounds) 1))
+      (insert ")"))))
+
 (defun my/smart-bracket ()
   "Contextually insert [] when typing ()."
   (interactive)
   (let ((list-of-strings (my/list-of-strings-in-sexp)))
-    (cond ((my/smart-bracket-p list-of-strings)
+    (cond ((my/clj-symbol-at-point) (my/wrap-with-parens))
+          ((my/smart-bracket-p list-of-strings)
            (insert "[]"))
           ((and
             (-> list-of-strings car my/begins-with-bracket-p)
