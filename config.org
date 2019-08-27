@@ -718,12 +718,22 @@ window stay within the same window.
 (add-hook 'org-src-mode-hook 'my/disable-fylcheck-in-org-src-block)
 #+END_SRC
 
+*** Org todo sort
+
+Sort sections by TODO.
+
+#+BEGIN_SRC emacs-lisp
+(defun my/org-todo-sort ()
+  (interactive)
+  (org-sort-entries nil ?o))
+#+END_SRC
+
 *** Org Capture
 
 Set default org capture directory.
 
 #+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file  "~/.emacs.d/emacs-sync/org/notes.org")
+(setq org-default-notes-file  "~/.emacs.d/emacs-sync/org/tasks.org")
 #+END_SRC
 
 Create org capture task template without asking.
@@ -734,7 +744,6 @@ Create org capture task template without asking.
   "Capture a TODO item."
   (org-capture nil "t"))
 #+END_SRC
-
 * Programming
 ** General
 *** Company mode
