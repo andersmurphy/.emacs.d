@@ -227,10 +227,10 @@ Disables mouse.
   (global-disable-mouse-mode))
 #+END_SRC
 
-** Default initial buffer to notes.org file
+** Default initial buffer to tasks.org file
 
 #+BEGIN_SRC emacs-lisp
-(setq initial-buffer-choice "~/.emacs.d/emacs-sync/org/notes.org")
+(setq initial-buffer-choice "~/.emacs.d/emacs-sync/org/tasks.org")
 (setq initial-scratch-message "")
 #+END_SRC
 
