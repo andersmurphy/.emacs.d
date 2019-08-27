@@ -264,6 +264,7 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-w") 'my/kill-word-at-point)
 (global-set-key (kbd "C-t") 'transpose-sexps)
 (global-set-key (kbd "M-c") 'my/org-capture-task)
+(global-set-key (kbd "C-v") 'yank)
 #+END_SRC
 #+END_SRC
 
@@ -629,6 +630,9 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
        :config
        (setq ivy-use-virtual-buffers t)
        (setq ivy-count-format "(%d/%d) ")
+       :bind
+       (:map ivy-mode-map
+              ("C-v" . yank))
        :init
        (ivy-mode t))
 #+END_SRC
