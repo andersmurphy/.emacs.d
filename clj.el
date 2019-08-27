@@ -516,5 +516,22 @@ Cursor point stays on the same character despite potential point shift."
            (my/insert-pair "[]"))
           (t (my/insert-pair "()")))))
 
+(defun my/smart-transpose ()
+  "Move sexp left if point at beginning. Otherwise move right.
+If end or beginning of outer sexp reached move point to other bound.
+
+\(a| b c) -> (b a| c) -> (b c a|) -> (b c |a) -> (b |a c) -> (|a b c) -> (b| a c)"
+  (interactive)
+  (let ((bounds (bounds-of-thing-at-point 'sexp)))
+    (cond ((not bounds)             (backward-sexp))
+          ((= (point) (car bounds))
+           (forward-sexp)
+           (condition-case nil
+               (progn
+                 (transpose-sexps -1)
+                 (backward-sexp))
+             (error (forward-sexp))))
+          (t (transpose-sexps 1)))))
+
 (provide 'clj)
 ;;; clj.el ends here
