@@ -262,8 +262,7 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-x C-d") 'dired)
 (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
 (global-set-key (kbd "C-w") 'my/kill-word-at-point)
-(global-set-key (kbd "C-c c") 'my/org-capture-task)
-(global-set-key (kbd "C-c C-c") 'my/org-capture-task)
+(global-set-key (kbd "M-c") 'my/org-capture-task)
 #+END_SRC
 #+END_SRC
 
