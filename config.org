@@ -262,8 +262,8 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-x C-d") 'dired)
 (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
 (global-set-key (kbd "C-w") 'my/kill-word-at-point)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c C-c") 'org-capture)
+(global-set-key (kbd "C-c c") 'my/org-capture-task)
+(global-set-key (kbd "C-c C-c") 'my/org-capture-task)
 #+END_SRC
 #+END_SRC
 
@@ -720,6 +720,15 @@ Set default org capture directory.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-default-notes-file  "~/.emacs.d/emacs-sync/org/notes.org")
+#+END_SRC
+
+Create org capture task template without asking.
+
+#+BEGIN_SRC emacs-lisp
+(defun my/org-capture-task ()
+  (interactive)
+  "Capture a TODO item."
+  (org-capture nil "t"))
 #+END_SRC
 
 * Programming
