@@ -927,7 +927,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   (progn
     (defun my/wrap-if-sexp ()
       (interactive)
-      (if (symbol-at-point)
+      (if (or (symbol-at-point) (sexp-at-point))
           (my/wrap-with-parens)
         (my/insert-pair "()"))))
   :bind (:map emacs-lisp-mode-map
