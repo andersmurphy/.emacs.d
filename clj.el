@@ -485,14 +485,18 @@ and the list doesn't already contain a string starting with a bracket."
        (not (seq-some #'my/begins-with-bracket-p string-list))))
 
 (defun my/wrap-with-parens ()
-  "Wrap current symbol with parens."
+  "Wrap current symbol or sexp with parens.
+Cursor point stays on the same character despite potential point shift."
   (interactive)
-  (let ((bounds (bounds-of-thing-at-point 'symbol)))
+  (let ((bounds (or (bounds-of-thing-at-point 'sexp)
+                    (bounds-of-thing-at-point 'symbol))))
     (save-excursion
       (goto-char (car bounds))
       (insert "(")
       (goto-char (+ (cdr bounds) 1))
-      (insert ")"))))
+      (insert ")"))
+    (when (> (+ (car bounds) 1) (point))
+      (forward-char 1))))
 
 (defun my/insert-pair (pair)
   "Insert PAIR."
@@ -503,7 +507,7 @@ and the list doesn't already contain a string starting with a bracket."
   "Contextually insert [] when typing ()."
   (interactive)
   (let ((list-of-strings (my/list-of-strings-in-sexp)))
-    (cond ((my/clj-symbol-at-point) (my/wrap-with-parens))
+    (cond ((or (symbol-at-point) (sexp-at-point)) (my/wrap-with-parens))
           ((my/smart-bracket-p list-of-strings)
            (my/insert-pair "[]"))
           ((and
