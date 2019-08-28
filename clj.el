@@ -472,16 +472,24 @@ defaults to current namespace."
          (save-excursion (backward-up-list) (point)))
         split-string)))
 
-(defun my/smart-bracket-p (string-list)
+(defvar my/sb-depth-1-syms
+  '("fn" "defn" "let" "defmacro" "if-let" "when-let"
+    "binding" ":keys" ":strs" "assoc-in" "update-in"
+    "get-in" "select-keys" "defmethod")
+  "List of symbols that trigger smart braket at paren depth 1.")
+
+(defvar my/sb-depth-2-syms
+  '("fn" "defn" "defmacro" "defmethod")
+  "List of symbols that trigger smart braket at paren depth 2.")
+
+(defun my/sb-p (syms string-list)
   "Return t if STRING-LIST satisfies smart bracket heuristic.
-If the first item in the list is a member of the smart bracket symbols list
+If the first item in the list is a member of the smart bracket SYMS list
 and the list doesn't already contain a string starting with a bracket."
   (and (ignore-errors
          (-> (car string-list)
              (substring 1)
-             (member '("fn" "defn" "let" "defmacro" "if-let" "when-let"
-                       "binding" ":keys" ":strs" "assoc-in" "update-in"
-                       "get-in" "select-keys" "defmethod"))))
+             (member syms)))
        (not (seq-some #'my/begins-with-bracket-p string-list))))
 
 (defun my/wrap-with-parens ()
@@ -508,11 +516,11 @@ Cursor point stays on the same character despite potential point shift."
   (interactive)
   (let ((list-of-strings (my/list-of-strings-in-sexp)))
     (cond ((or (symbol-at-point) (sexp-at-point)) (my/wrap-with-parens))
-          ((my/smart-bracket-p list-of-strings)
+          ((my/sb-p my/sb-depth-1-syms list-of-strings)
            (my/insert-pair "[]"))
           ((and
             (-> list-of-strings car my/begins-with-bracket-p)
-            (my/smart-bracket-p (my/list-of-strings-in-outer-sexp)))
+            (my/sb-p my/sb-depth-2-syms (my/list-of-strings-in-outer-sexp)))
            (my/insert-pair "[]"))
           (t (my/insert-pair "()")))))
 
