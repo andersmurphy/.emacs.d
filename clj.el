@@ -516,6 +516,7 @@ Cursor point stays on the same character despite potential point shift."
            (my/insert-pair "[]"))
           (t (my/insert-pair "()")))))
 
+
 (defun my/smart-transpose ()
   "Move sexp left if point at beginning. Otherwise move right.
 If end or beginning of outer sexp reached move point to other bound.
@@ -532,6 +533,31 @@ If end or beginning of outer sexp reached move point to other bound.
                  (backward-sexp))
              (error (forward-sexp))))
           (t (transpose-sexps 1)))))
+
+(defun my/insert-double-semicolon ()
+  "Insert two semicolons."
+  (interactive)
+  (insert ";; "))
+
+(defun my/strict-insert ()
+  "If to level and the last entered character is not a valid insert delete it.
+
+\(defn foo [] 3)
+n|
+
+In the above example the n would be deleted. Handles comments."
+  (let ((ppss (syntax-ppss)))
+    (when (and (= 0 (car ppss))
+               (not (nth 4 ppss))
+               (not (member (char-before) (string-to-list "{[(\"\n "))))
+      (delete-char -1))))
+
+(defun my/post-self-insert ()
+  "Prevent insert breaking top level AST."
+  (when (or (eq major-mode 'clojure-mode) (eq major-mode 'emacs-lisp-mode))
+    (my/strict-insert)))
+
+(add-hook 'post-self-insert-hook 'my/post-self-insert)
 
 (provide 'clj)
 ;;; clj.el ends here
