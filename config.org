@@ -265,7 +265,7 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-t") 'my/smart-transpose)
 (global-set-key (kbd "M-c") 'my/org-capture-task)
 (global-set-key (kbd "C-v") 'yank)
-#+END_SRC
+(global-set-key (kbd "C-o") 'other-window)
 #+END_SRC
 
 ** Swap ; and :
@@ -625,14 +625,15 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
 [[https://github.com/abo-abo/swiper][Ivy]] a light weight fuzzy search completion framework.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy
+(use-package ivy
        :diminish ivy-mode
        :config
        (setq ivy-use-virtual-buffers t)
        (setq ivy-count-format "(%d/%d) ")
        :bind
        (:map ivy-mode-map
-              ("C-v" . yank))
+              ("C-v" . yank)
+              ("C-o" . other-window))
        :init
        (ivy-mode t))
 #+END_SRC
