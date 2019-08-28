@@ -475,7 +475,7 @@ defaults to current namespace."
 (defvar my/sb-depth-1-syms
   '("fn" "defn" "let" "defmacro" "if-let" "when-let"
     "binding" ":keys" ":strs" "assoc-in" "update-in"
-    "get-in" "select-keys" "defmethod")
+    "get-in" "select-keys" "defmethod" "with-redefs")
   "List of symbols that trigger smart braket at paren depth 1.")
 
 (defvar my/sb-depth-2-syms
