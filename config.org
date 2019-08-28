@@ -944,7 +944,8 @@ Toggle between up and down file if they exist (assumes files are in the same fol
           (my/wrap-with-parens)
         (my/insert-pair "()"))))
   :bind (:map emacs-lisp-mode-map
-              ("(" . my/wrap-if-sexp)))
+              ("(" . my/wrap-if-sexp)
+              (";" . my/insert-double-semicolon)))
 #+END_SRC
 
 *** Dash
@@ -997,7 +998,8 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
               ("M-," . my/clj-jump-back)
-              ("(" . my/smart-bracket)))
+              ("(" . my/smart-bracket)
+              (";" . my/insert-double-semicolon)))
 #+END_SRC
 
 *** Flycheck Joker
