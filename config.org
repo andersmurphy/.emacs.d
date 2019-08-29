@@ -726,7 +726,10 @@ Sort sections by TODO.
 #+BEGIN_SRC emacs-lisp
 (defun my/org-todo-sort ()
   (interactive)
-  (org-sort-entries nil ?o))
+  (ignore-errors (outline-up-heading 10))
+  (org-sort-entries nil ?o)
+  (org-cycle)
+  (org-cycle))
 #+END_SRC
 
 *** Org Capture
@@ -745,6 +748,7 @@ Create org capture task template without asking.
   "Capture a TODO item."
   (org-capture nil "t"))
 #+END_SRC
+
 * Programming
 ** General
 *** Company mode
