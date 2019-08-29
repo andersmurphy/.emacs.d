@@ -515,7 +515,9 @@ Cursor point stays on the same character despite potential point shift."
   "Contextually insert [] when typing ()."
   (interactive)
   (let ((list-of-strings (my/list-of-strings-in-sexp)))
-    (cond ((or (symbol-at-point) (sexp-at-point))
+    (cond ((or (bounds-of-thing-at-point 'sexp)
+               (and (bounds-of-thing-at-point 'symbol)
+                    (not (= (char-before) ?#))))
            (my/wrap-with-parens))
           ((or (my/sb-p my/sb-depth-1-syms list-of-strings)
                (and
@@ -563,6 +565,25 @@ In the above example the n would be deleted. Handles comments."
   "Prevent insert breaking top level AST."
   (when (or (eq major-mode 'clojure-mode) (eq major-mode 'emacs-lisp-mode))
     (my/strict-insert)))
+
+(defun my/bounds-of-last-sexp ()
+  "Get bounds of last sexp."
+  (interactive)
+  (when (= (char-before) ?\))
+    (cons (save-excursion (backward-sexp) (point)) (point))))
+
+(defun my/kill-word-or-sexp-at-point ()
+  "Kill backward word or sexp. If neither hungry delete backward."
+  (interactive)
+  (let ((bounds (or (bounds-of-thing-at-point 'word)
+                    (bounds-of-thing-at-point 'sexp)
+                    (my/bounds-of-last-sexp))))
+    (if bounds
+        (kill-region (car bounds) (cdr bounds))
+      (cond ((bound-and-true-p smartparens-mode) (sp-backward-delete-char 1))
+            ((bound-and-true-p ivy-mode) (ivy-backward-delete-char))
+            (t (hungry-delete-backward 1))))))
+
 
 (add-hook 'post-self-insert-hook 'my/post-self-insert)
 

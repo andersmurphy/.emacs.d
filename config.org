@@ -261,7 +261,7 @@ Bind cmd (super) key to control
 (global-set-key (kbd "C-x f") 'counsel-find-file)
 (global-set-key (kbd "C-x C-d") 'dired)
 (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-w") 'my/kill-word-at-point)
+(global-set-key (kbd "C-w") 'my/kill-word-or-sexp-at-point)
 (global-set-key (kbd "C-t") 'my/smart-transpose)
 (global-set-key (kbd "M-c") 'my/org-capture-task)
 (global-set-key (kbd "C-v") 'yank)
@@ -593,22 +593,6 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
 (use-package hungry-delete
   :config
   (global-hungry-delete-mode))
-#+END_SRC
-
-** Kill word at point
-
-#+BEGIN_SRC emacs-lisp
-(defun my/kill-thing-at-point (thing)
-  (let ((bounds (bounds-of-thing-at-point thing)))
-    (if bounds
-        (kill-region (car bounds) (cdr bounds))
-      (cond ((bound-and-true-p smartparens-mode) (sp-backward-delete-char 1))
-            ((bound-and-true-p ivy-mode) (ivy-backward-delete-char))
-            (t (hungry-delete-backward 1))))))
-
-(defun my/kill-word-at-point ()
-  (interactive)
-  (my/kill-thing-at-point 'word))
 #+END_SRC
 
 * Navigation
