@@ -515,15 +515,14 @@ Cursor point stays on the same character despite potential point shift."
   "Contextually insert [] when typing ()."
   (interactive)
   (let ((list-of-strings (my/list-of-strings-in-sexp)))
-    (cond ((or (symbol-at-point) (sexp-at-point)) (my/wrap-with-parens))
-          ((my/sb-p my/sb-depth-1-syms list-of-strings)
-           (my/insert-pair "[]"))
-          ((and
-            (-> list-of-strings car my/begins-with-bracket-p)
-            (my/sb-p my/sb-depth-2-syms (my/list-of-strings-in-outer-sexp)))
+    (cond ((or (symbol-at-point) (sexp-at-point))
+           (my/wrap-with-parens))
+          ((or (my/sb-p my/sb-depth-1-syms list-of-strings)
+               (and
+                (-> list-of-strings car my/begins-with-bracket-p)
+                (my/sb-p my/sb-depth-2-syms (my/list-of-strings-in-outer-sexp))))
            (my/insert-pair "[]"))
           (t (my/insert-pair "()")))))
-
 
 (defun my/smart-transpose ()
   "Move sexp left if point at beginning. Otherwise move right.
