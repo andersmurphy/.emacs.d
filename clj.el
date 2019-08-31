@@ -572,18 +572,28 @@ In the above example the n would be deleted. Handles comments."
   (when (= (char-before) ?\))
     (cons (save-excursion (backward-sexp) (point)) (point))))
 
+(defun my/hungry-delete-backward (&optional killflag)
+  "Delete the preceding character or all preceding whitespace.
+Optional second arg KILLFLAG, if non-nil, means to kill instead of delete."
+  (interactive)
+  (let ((initial-point (point)))
+    (skip-chars-backward "\n ")
+    (if (= initial-point (point))
+        (delete-backward-char 1 t)
+      (delete-region (point) initial-point))))
+
 (defun my/kill-word-or-sexp-at-point ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
   (let ((bounds (or (bounds-of-thing-at-point 'word)
                     (bounds-of-thing-at-point 'sexp)
                     (my/bounds-of-last-sexp))))
-    (if bounds
-        (kill-region (car bounds) (cdr bounds))
-      (cond ((bound-and-true-p smartparens-mode) (sp-backward-delete-char 1))
-            ((bound-and-true-p ivy-mode) (ivy-backward-delete-char))
-            (t (hungry-delete-backward 1))))))
-
+    (cond (bounds
+           (kill-region (cdr bounds) (car bounds)))
+          ((and (minibufferp) (bound-and-true-p ivy-mode))
+           (ivy-backward-delete-char))
+          (t
+           (my/hungry-delete-backward t)))))
 
 (add-hook 'post-self-insert-hook 'my/post-self-insert)
 
