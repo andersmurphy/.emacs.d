@@ -581,6 +581,7 @@ In the above example the n would be deleted. Handles comments."
   "Prevent insert breaking top level AST."
   (when (or (eq major-mode 'clojure-mode) (eq major-mode 'emacs-lisp-mode))
     (my/strict-insert)))
+(add-hook 'post-self-insert-hook 'my/post-self-insert)
 
 (defun my/bounds-of-last-sexp ()
   "Get bounds of last sexp."
@@ -615,7 +616,13 @@ Optional second arg KILLFLAG, if non-nil, means to kill instead of delete."
           (t
            (my/hungry-delete-backward t)))))
 
-(add-hook 'post-self-insert-hook 'my/post-self-insert)
+(defun my/smart-quote ()
+  "If previous character is a letter insert single quote.
+Otherwise insert double quote."
+  (interactive)
+  (if (<= 65 (char-before) 122)
+      (insert "'")
+    (my/insert-pair "\"\"")))
 
 (provide 'clj)
 ;;; clj.el ends here
