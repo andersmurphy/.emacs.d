@@ -266,6 +266,7 @@ Bind cmd (super) key to control
 (global-set-key (kbd "M-c") 'my/org-capture-task)
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-o") 'other-window)
+(global-set-key (kbd "\"") 'my/smart-quote)
 #+END_SRC
 
 ** Swap ; and :
