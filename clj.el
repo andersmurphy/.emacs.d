@@ -568,7 +568,6 @@ In the above example the n would be deleted. Handles comments."
 
 (defun my/bounds-of-last-sexp ()
   "Get bounds of last sexp."
-  (interactive)
   (when (= (char-before) ?\))
     (cons (save-excursion (backward-sexp) (point)) (point))))
 
@@ -582,14 +581,19 @@ Optional second arg KILLFLAG, if non-nil, means to kill instead of delete."
         (delete-backward-char 1 t)
       (delete-region (point) initial-point))))
 
+(defun my/bounds-of-space-before-opening-paren ()
+  "Get bounds of space character if opening char is before cursor."
+  (when (and (= (char-before) ?\() (= (char-after) ?\s))
+    (cons (point) (+ (point) 1))))
+
 (defun my/kill-word-or-sexp-at-point ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
   (let ((bounds (or (bounds-of-thing-at-point 'word)
+                    (my/bounds-of-space-before-opening-paren)
                     (bounds-of-thing-at-point 'sexp)
                     (my/bounds-of-last-sexp))))
-    (cond (bounds
-           (kill-region (cdr bounds) (car bounds)))
+    (cond (bounds (kill-region (cdr bounds) (car bounds)))
           ((and (minibufferp) (bound-and-true-p ivy-mode))
            (ivy-backward-delete-char))
           (t
