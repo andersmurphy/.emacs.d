@@ -492,19 +492,33 @@ and the list doesn't already contain a string starting with a bracket."
              (member syms)))
        (not (seq-some #'my/begins-with-bracket-p string-list))))
 
-(defun my/wrap-with-parens ()
-  "Wrap current symbol or sexp with parens.
+(defun my/wrap-with (opening-string closing-string)
+  "Wrap current symbol or sexp with OPENING-STRING CLOSING-STRING.
 Cursor point stays on the same character despite potential point shift."
-  (interactive)
   (let ((bounds (or (bounds-of-thing-at-point 'sexp)
                     (bounds-of-thing-at-point 'symbol))))
     (save-excursion
       (goto-char (car bounds))
-      (insert "(")
+      (insert opening-string)
       (goto-char (+ (cdr bounds) 1))
-      (insert ")"))
+      (insert closing-string))
     (when (> (+ (car bounds) 1) (point))
       (forward-char 1))))
+
+(defun my/wrap-with-parens ()
+  "Wrap current symbol with parens."
+  (interactive)
+  (my/wrap-with "(" ")"))
+
+(defun my/wrap-with-brackets ()
+  "Wrap current symbol with parens."
+  (interactive)
+  (my/wrap-with "[" "]"))
+
+(defun my/wrap-with-braces ()
+  "Wrap current symbol with parens."
+  (interactive)
+  (my/wrap-with "{" "}"))
 
 (defun my/insert-pair (pair)
   "Insert PAIR."
