@@ -609,7 +609,7 @@ Optional second arg KILLFLAG, if non-nil, means to kill instead of delete."
 
 (defun my/bounds-of-space-before-opening-paren ()
   "Get bounds of space character if opening char is before cursor."
-  (when (and (= (char-before) ?\() (= (char-after) ?\s))
+  (when (and (member (char-before) (string-to-list "{[(\"")) (= (char-after) ?\s))
     (cons (point) (+ (point) 1))))
 
 (defun my/kill-word-or-sexp-at-point ()
