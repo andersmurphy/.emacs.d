@@ -629,7 +629,7 @@ Optional second arg KILLFLAG, if non-nil, means to kill instead of delete."
   "If previous character is a letter insert single quote.
 Otherwise insert double quote."
   (interactive)
-  (if (<= 65 (char-before) 122)
+  (if (looking-back "[[:alnum:]]" 1)
       (insert "'")
     (my/insert-pair "\"\"")))
 
