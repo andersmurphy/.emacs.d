@@ -480,18 +480,24 @@ defaults to current namespace."
 (defun my/wrap-with (opening-string closing-string)
   "Wrap current symbol or sexp with OPENING-STRING CLOSING-STRING.
 Cursor point stays on the same character despite potential point shift."
-  (let ((bounds (or (bounds-of-thing-at-point 'sexp)
+  (let ((pair (concat opening-string closing-string))
+        (bounds (or (bounds-of-thing-at-point 'sexp)
                     (bounds-of-thing-at-point 'symbol))))
-    (if bounds
-        (progn
-          (save-excursion
-            (goto-char (car bounds))
-            (insert opening-string)
-            (goto-char (+ (cdr bounds) 1))
-            (insert closing-string))
-          (when (> (+ (car bounds) 1) (point))
-            (forward-char 1)))
-      (my/insert-pair (concat opening-string closing-string)))))
+    (cond
+     ((and (= (char-before) ?\()
+           (member (char-after) (string-to-list "\n ")))
+      (my/insert-pair pair))
+     (bounds
+      (progn
+        (save-excursion
+          (goto-char (car bounds))
+          (insert opening-string)
+          (goto-char (+ (cdr bounds) 1))
+          (insert closing-string))
+        (when (> (+ (car bounds) 1) (point))
+          (forward-char 1))))
+     (t
+      (my/insert-pair pair)))))
 
 (defun my/wrap-with-parens ()
   "Wrap current symbol with parens."
