@@ -597,15 +597,14 @@ In the above example the n would be deleted. Handles comments."
   (when (= (char-before) ?\))
     (cons (save-excursion (backward-sexp) (point)) (point))))
 
-(defun my/hungry-delete-backward (&optional killflag)
-  "Delete the preceding character or all preceding whitespace.
-Optional second arg KILLFLAG, if non-nil, means to kill instead of delete."
+(defun my/hungry-delete-backward ()
+  "Delete the preceding character or all preceding whitespace."
   (interactive)
   (let ((initial-point (point)))
     (skip-chars-backward "\n ")
     (if (= initial-point (point))
         (delete-backward-char 1 t)
-      (delete-region (point) initial-point))))
+      (kill-region initial-point (point)))))
 
 (defun my/bounds-of-space-before-opening-paren ()
   "Get bounds of space character if opening char is before cursor."
@@ -615,15 +614,18 @@ Optional second arg KILLFLAG, if non-nil, means to kill instead of delete."
 (defun my/kill-word-or-sexp-at-point ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
-  (let ((bounds (or (bounds-of-thing-at-point 'word)
-                    (my/bounds-of-space-before-opening-paren)
-                    (bounds-of-thing-at-point 'sexp)
-                    (my/bounds-of-last-sexp))))
-    (cond (bounds (kill-region (cdr bounds) (car bounds)))
+  (let* ((bounds (or (bounds-of-thing-at-point 'word)
+                     (my/bounds-of-space-before-opening-paren)
+                     (bounds-of-thing-at-point 'sexp)
+                     (my/bounds-of-last-sexp)))
+         (bounds-directed (if (and bounds (> (point) (car bounds)))
+                              (cons (cdr bounds) (car bounds))
+                            bounds)))
+    (cond (bounds (kill-region (car bounds-directed) (cdr bounds-directed)))
           ((and (minibufferp) (bound-and-true-p ivy-mode))
            (ivy-backward-delete-char))
           (t
-           (my/hungry-delete-backward t)))))
+           (my/hungry-delete-backward)))))
 
 (defun my/smart-quote ()
   "If previous character is a letter insert single quote.
