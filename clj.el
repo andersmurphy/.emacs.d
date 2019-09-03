@@ -569,8 +569,9 @@ If end or beginning of outer sexp reached move point to other bound.
 (defun my/insert-double-semicolon ()
   "Insert two semicolons. Don't insert if it will break AST."
   (interactive)
-  (when (or (= (save-excursion (forward-sexp) (point)) (line-end-position))
-            (= (point) (line-end-position)))
+  (when (ignore-errors
+          (or (= (save-excursion (forward-sexp) (point)) (line-end-position))
+              (= (point) (line-end-position))))
     (insert ";; ")))
 
 (defun my/strict-insert ()
