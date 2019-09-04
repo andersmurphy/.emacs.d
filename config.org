@@ -358,6 +358,30 @@ Disables default splash screen.
       '(org-level-1 :foreground blue :height 1.2 :weight 'ultra-bold)
       '(org-level-2 :foreground violet :height 1.0 :weight 'bold)
       '(org-level-3 :foreground teal :height 1.0 :weight 'bold)
+      ;; ivy
+      '(ivy-current-match
+        :foreground magenta
+        :weight 'bold
+        :background nil)
+      '(ivy-minibuffer-match-face-1
+        :foreground nil
+        :weight 'light
+        :background nil)
+      '(ivy-minibuffer-match-face-2
+        :inherit 'ivy-minibuffer-match-face-1
+        :foreground violet
+        :weight 'semi-bold
+        :background nil)
+      '(ivy-minibuffer-match-face-3
+        :inherit 'ivy-minibuffer-match-face-2
+        :foreground green
+        :weight 'semi-bold
+        :background nil)
+      '(ivy-minibuffer-match-face-4
+        :inherit 'ivy-minibuffer-match-face-2
+        :foreground yellow
+        :weight 'semi-bold
+        :background nil)
       ;; emms
       '(emms-playlist-track-face :foreground fg)
       '(emms-playlist-selected-face :foreground highlight)
