@@ -11,7 +11,7 @@
  ("emacs-async" . "bd68cc1ab1ac6af890e250bdaa12ffb1cb9649be")
  ("emacs-doom-themes" . "470dd52ec4761a0b2c1f2c0309233e1fba04e598")
  ("emacs-memoize" . "9a561268ffb550b257a08710489a95cd087998b6")
- ("emms" . "b136d63c252aa9e9a09fcee561fe86c4aab92f20")
+ ("emms" . "e70459caaadeb715116abb45ddf5e98921d46c14")
  ("epkgs" . "c7f93abebe00e4cf5a6551a2c46a70cb8376a4a4")
  ("epl" . "78ab7a85c08222cd15582a298a364774e3282ce6")
  ("esxml" . "5548ceba17deae0c3c6d0092672edc4de3c75ce3")
