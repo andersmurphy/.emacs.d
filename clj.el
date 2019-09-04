@@ -329,6 +329,7 @@ Works from both namespace and test namespace"
     list))
 
 (defun my/clj-run-command-read-edn-output (output-buffer command)
+  "Read output of COMMAND from OUTPUT-BUFFER."
   (let ((proc (inferior-lisp-proc))
         (formatted-command (my/clj-format-with-ns command)))
     (save-excursion
