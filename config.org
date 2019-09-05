@@ -1051,7 +1051,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 #+BEGIN_SRC emacs-lisp
 (use-package rjsx-mode
-  :defer t
   :config
   (setq indent-tabs-mode nil)
   (setq js-indent-level 2)
