@@ -453,25 +453,23 @@ defaults to current namespace."
                (replace-regexp-in-string "-test" ""))
           "]"))
 
-(defun my/begins-with-bracket-p (string)
-  "Return t if STRING begins with [."
-  (if string
-      (string= "[" (substring string nil 1))))
-
-(defun my/list-of-strings-in-sexp ()
+(defun my/symbols-in-sexp ()
   "Return list of strings before point in sexp."
   (ignore-errors
     (-> (buffer-substring
-         (save-excursion (backward-up-list) (point)) (point))
-        split-string)))
+         (save-excursion (backward-up-list) (point))
+         (save-excursion (backward-up-list) (forward-sexp) (point)))
+        edn-read)))
 
-(defun my/list-of-strings-in-outer-sexp ()
+(defun my/symbols-in-outer-sexp ()
   "Return list of strings before point in outer sexp."
   (ignore-errors
-    (-> (buffer-substring
-         (save-excursion (backward-up-list) (backward-up-list) (point))
-         (save-excursion (backward-up-list) (point)))
-        split-string)))
+    (->>
+     (buffer-substring
+      (save-excursion (backward-up-list) (backward-up-list) (point))
+      (save-excursion (backward-up-list) (backward-up-list) (forward-sexp) (point)))
+     edn-read
+     (seq-remove #'vectorp))))
 
 (defun my/insert-pair (pair)
   "Insert PAIR."
@@ -516,37 +514,36 @@ Cursor point stays on the same character despite potential point shift."
   (my/wrap-with "{" "}"))
 
 (defvar my/sb-depth-1-syms
-  '("fn" "defn" "let" "defmacro" "if-let" "when-let"
-    "binding" ":keys" ":strs" "assoc-in" "update-in"
-    "get-in" "select-keys" "defmethod" "with-redefs")
+  '(fn defn let defmacro if-let when-let
+       binding :keys :strs assoc-in update-in
+       get-in select-keys defmethod with-redefs)
   "List of symbols that trigger smart braket at paren depth 1.")
 
 (defvar my/sb-depth-2-syms
-  '("fn" "defn" "defmacro" "defmethod")
+  '(fn defn defmacro defmethod)
   "List of symbols that trigger smart braket at paren depth 2.")
 
-(defun my/sb-p (syms string-list)
-  "Return t if STRING-LIST satisfies smart bracket heuristic.
+(defun my/sb-p (syms symbols)
+  "Return t if SYMBOLS satisfies smart bracket heuristic.
 If the first item in the list is a member of the smart bracket SYMS list
-and the list doesn't already contain a string starting with a bracket."
+and the list doesn't already contain a vector."
   (and (ignore-errors
-         (-> (car string-list)
-             (substring 1)
+         (-> (car symbols)
              (member syms)))
-       (not (seq-some #'my/begins-with-bracket-p string-list))))
+       (not (seq-some #'vectorp symbols))))
 
 (defun my/smart-bracket ()
   "Contextually insert [] when typing ()."
   (interactive)
-  (let ((list-of-strings (my/list-of-strings-in-sexp)))
+  (let ((symbols (my/symbols-in-sexp)))
     (cond ((or (bounds-of-thing-at-point 'sexp)
                (and (bounds-of-thing-at-point 'symbol)
                     (not (= (char-before) ?#))))
            (my/wrap-with-parens))
-          ((or (my/sb-p my/sb-depth-1-syms list-of-strings)
+          ((or (my/sb-p my/sb-depth-1-syms symbols)
                (and
-                (-> list-of-strings car my/begins-with-bracket-p)
-                (my/sb-p my/sb-depth-2-syms (my/list-of-strings-in-outer-sexp))))
+                (vectorp symbols)
+                (my/sb-p my/sb-depth-2-syms (my/symbols-in-outer-sexp))))
            (my/insert-pair "[]"))
           (t (my/insert-pair "()")))))
 
