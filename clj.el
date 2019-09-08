@@ -481,7 +481,9 @@ defaults to current namespace."
 Cursor point stays on the same character despite potential point shift."
   (let ((pair (concat opening-string closing-string))
         (bounds (or (bounds-of-thing-at-point 'sexp)
-                    (bounds-of-thing-at-point 'symbol))))
+                    (and
+                     (not (= (char-before) ?#))
+                     (bounds-of-thing-at-point 'symbol)))))
     (cond
      ((and (= (char-before) ?\()
            (member (char-after) (string-to-list "\n ")))
@@ -537,8 +539,7 @@ and the list doesn't already contain a vector."
   (interactive)
   (let ((symbols (my/symbols-in-sexp)))
     (cond ((or (bounds-of-thing-at-point 'sexp)
-               (and (bounds-of-thing-at-point 'symbol)
-                    (not (= (char-before) ?#))))
+               (bounds-of-thing-at-point 'symbol))
            (my/wrap-with-parens))
           ((or (my/sb-p my/sb-depth-1-syms symbols)
                (and
