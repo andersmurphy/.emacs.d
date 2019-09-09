@@ -611,17 +611,22 @@ In the above example the n would be deleted. Handles comments."
   (when (and (member (char-before) (string-to-list "{[(\"")) (= (char-after) ?\s))
     (cons (point) (+ (point) 1))))
 
-(defun my/bounds-of-dash-or-forward-slash ()
-  "Get bounds of - / character if after or before cursor."
-  (let ((char-list (string-to-list "-/")))
-    (cond ((member (char-after) char-list) (cons (point) (+ (point) 1)))
-          ((member (char-before) char-list) (cons (point) (- (point) 1))))))
+(defun my/bounds-of-punctuation-forward ()
+  "Get bounds of - / character if after cursor."
+  (when (member (char-after) (string-to-list "-/?!"))
+    (cons (point) (+ (point) 1))))
+
+(defun my/bounds-of-punctuation-backward ()
+  "Get bounds of - / character if  before cursor."
+  (when (member (char-before) (string-to-list "-/?!"))
+    (cons (point) (- (point) 1))))
 
 (defun my/kill-word-or-sexp-at-point ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
-  (let* ((bounds (or (bounds-of-thing-at-point 'word)
-                     (my/bounds-of-dash-or-forward-slash)
+  (let* ((bounds (or (my/bounds-of-punctuation-forward)
+                     (bounds-of-thing-at-point 'word)
+                     (my/bounds-of-punctuation-backward)
                      (my/bounds-of-space-before-opening-paren)
                      (bounds-of-thing-at-point 'sexp)
                      (my/bounds-of-last-sexp)))
