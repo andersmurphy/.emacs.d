@@ -607,14 +607,21 @@ In the above example the n would be deleted. Handles comments."
       (kill-region initial-point (point)))))
 
 (defun my/bounds-of-space-before-opening-paren ()
-  "Get bounds of space character if opening char is before cursor."
+  "Get bounds of space character after cursor if opening char is before cursor."
   (when (and (member (char-before) (string-to-list "{[(\"")) (= (char-after) ?\s))
     (cons (point) (+ (point) 1))))
+
+(defun my/bounds-of-dash-or-forward-slash ()
+  "Get bounds of - / character if after or before cursor."
+  (let ((char-list (string-to-list "-/")))
+    (cond ((member (char-after) char-list) (cons (point) (+ (point) 1)))
+          ((member (char-before) char-list) (cons (point) (- (point) 1))))))
 
 (defun my/kill-word-or-sexp-at-point ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
   (let* ((bounds (or (bounds-of-thing-at-point 'word)
+                     (my/bounds-of-dash-or-forward-slash)
                      (my/bounds-of-space-before-opening-paren)
                      (bounds-of-thing-at-point 'sexp)
                      (my/bounds-of-last-sexp)))
