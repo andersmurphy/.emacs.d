@@ -516,23 +516,28 @@ Cursor point stays on the same character despite potential point shift."
   (my/wrap-with "{" "}"))
 
 (defvar my/sb-depth-1-syms
-  '(fn defn let defmacro if-let when-let
-       binding :keys :strs assoc-in update-in
-       get-in select-keys defmethod with-redefs)
-  "List of symbols that trigger smart braket at paren depth 1.")
+  '(fn defn let defmacro if-let when-let binding assoc-in update-in
+       get-in select-keys defmethod with-redefs :keys :strs)
+  "List of symbols that trigger smart bracket at paren depth 1.")
 
 (defvar my/sb-depth-2-syms
-  '(fn defn defmacro defmethod)
-  "List of symbols that trigger smart braket at paren depth 2.")
+  '(fn defn defmacro defmethod :require :import)
+  "List of symbols that trigger smart bracket at paren depth 2.")
+
+(defvar my/sb-always-bracket-syms
+  '(:require :import)
+  "List of symbols that's should always bracket.")
 
 (defun my/sb-p (syms symbols)
   "Return t if SYMBOLS satisfies smart bracket heuristic.
-If the first item in the list is a member of the smart bracket SYMS list
-and the list doesn't already contain a vector."
-  (and (ignore-errors
-         (-> (car symbols)
-             (member syms)))
-       (not (seq-some #'vectorp symbols))))
+If the first item in the list is a member of the smart bracket SYMS list."
+  (ignore-errors
+    (-> (car symbols)
+        (member syms))))
+
+(defun my/no-vector-in-symbols (symbols)
+  "Return non-nil if no vector in SYMBOLS."
+  (not (seq-some #'vectorp symbols)))
 
 (defun my/smart-bracket ()
   "Contextually insert [] when typing ()."
@@ -541,7 +546,9 @@ and the list doesn't already contain a vector."
     (cond ((or (bounds-of-thing-at-point 'sexp)
                (bounds-of-thing-at-point 'symbol))
            (my/wrap-with-parens))
-          ((or (my/sb-p my/sb-depth-1-syms symbols)
+          ((or (my/sb-p my/sb-always-bracket-syms symbols)
+               (and (my/sb-p my/sb-depth-1-syms symbols)
+                    (my/no-vector-in-symbols symbols))
                (and
                 (vectorp symbols)
                 (my/sb-p my/sb-depth-2-syms (my/symbols-in-outer-sexp))))
@@ -648,7 +655,7 @@ Otherwise insert double quote."
     (my/insert-pair "\"\"")))
 
 (defun my/create-new-deps-project ()
-  "Create a new deps.edn project with PROJECT-NAME-PATH."
+  "Create a new deps.edn project."
   (interactive)
   (let* ((project-name-path (read-directory-name "Directory:"))
          (namespace-name (->> (split-string project-name-path "/")
