@@ -615,7 +615,8 @@ In the above example the n would be deleted. Handles comments."
 
 (defun my/bounds-of-space-before-opening-paren ()
   "Get bounds of space character after cursor if opening char is before cursor."
-  (when (and (member (char-before) (string-to-list "{[(\"")) (= (char-after) ?\s))
+  (when (and (member (char-before) (string-to-list "{[(\""))
+             (member (char-after) (string-to-list "\n ")))
     (cons (point) (+ (point) 1))))
 
 (defun my/bounds-of-punctuation-forward ()
