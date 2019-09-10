@@ -528,30 +528,31 @@ Cursor point stays on the same character despite potential point shift."
   '(:require :import)
   "List of symbols that's should always bracket.")
 
-(defun my/sb-p (syms symbols)
-  "Return t if SYMBOLS satisfies smart bracket heuristic.
+(defun my/sb-p (syms sexp)
+  "Return t if SEXP satisfies smart bracket heuristic.
 If the first item in the list is a member of the smart bracket SYMS list."
   (ignore-errors
-    (-> (car symbols)
+    (-> (car sexp)
         (member syms))))
 
-(defun my/no-vector-in-symbols (symbols)
-  "Return non-nil if no vector in SYMBOLS."
-  (not (seq-some #'vectorp symbols)))
+(defun my/no-vector-in-sexp (sexp)
+  "Return non-nil if no vector in SEXP."
+  (not (seq-some #'vectorp sexp)))
 
 (defun my/smart-bracket ()
   "Contextually insert [] when typing ()."
   (interactive)
-  (let ((symbols (my/symbols-in-sexp)))
+  (let ((sexp (my/symbols-in-sexp))
+        (outer-sexp (my/symbols-in-outer-sexp)))
     (cond ((or (bounds-of-thing-at-point 'sexp)
                (bounds-of-thing-at-point 'symbol))
            (my/wrap-with-parens))
-          ((or (my/sb-p my/sb-always-bracket-syms symbols)
-               (and (my/sb-p my/sb-depth-1-syms symbols)
-                    (my/no-vector-in-symbols symbols))
+          ((or (my/sb-p my/sb-always-bracket-syms sexp)
+               (and (my/sb-p my/sb-depth-1-syms sexp)
+                    (my/no-vector-in-sexp sexp))
                (and
-                (vectorp symbols)
-                (my/sb-p my/sb-depth-2-syms (my/symbols-in-outer-sexp))))
+                (vectorp sexp)
+                (my/sb-p my/sb-depth-2-syms outer-sexp)))
            (my/insert-pair "[]"))
           (t (my/insert-pair "()")))))
 
