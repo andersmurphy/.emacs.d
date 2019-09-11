@@ -456,10 +456,12 @@ defaults to current namespace."
 (defun my/symbols-in-sexp ()
   "Return list of strings before point in sexp."
   (ignore-errors
-    (-> (buffer-substring
-         (save-excursion (backward-up-list) (point))
-         (save-excursion (backward-up-list) (forward-sexp) (point)))
-        edn-read)))
+    (->> (buffer-substring
+          (save-excursion (backward-up-list) (point))
+          (save-excursion (backward-up-list) (forward-sexp) (point)))
+         (replace-regexp-in-string "{" "(")
+         (replace-regexp-in-string "}" ")")
+         edn-read)))
 
 (defun my/symbols-in-outer-sexp ()
   "Return list of strings before point in outer sexp."
