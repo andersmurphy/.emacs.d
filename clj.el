@@ -461,6 +461,7 @@ defaults to current namespace."
           (save-excursion (backward-up-list) (forward-sexp) (point)))
          (replace-regexp-in-string "{" "(")
          (replace-regexp-in-string "}" ")")
+         (replace-regexp-in-string "#" "")
          edn-read)))
 
 (defun my/symbols-in-outer-sexp ()
