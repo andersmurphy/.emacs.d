@@ -134,23 +134,6 @@ Warn when opening files bigger than 100MB.
        '("*Help*" display-buffer-same-window))
 #+END_SRC
 
-** Disable all arrow keys
-
-#+BEGIN_SRC emacs-lisp
-(global-unset-key (kbd "<left>"))
-(global-unset-key (kbd "<right>"))
-(global-unset-key (kbd "<up>"))
-(global-unset-key (kbd "<down>"))
-(global-unset-key (kbd "<C-left>"))
-(global-unset-key (kbd "<C-right>"))
-(global-unset-key (kbd "<C-up>"))
-(global-unset-key (kbd "<C-down>"))
-(global-unset-key (kbd "<M-left>"))
-(global-unset-key (kbd "<M-right>"))
-(global-unset-key (kbd "<M-up>"))
-(global-unset-key (kbd "<M-down>"))
-#+END_SRC
-
 ** Switch window focus on split
 
 Switch window focus on split.
@@ -227,6 +210,29 @@ Disables mouse.
   (global-disable-mouse-mode))
 #+END_SRC
 
+** Disable all arrow keys
+
+#+BEGIN_SRC emacs-lisp
+(global-unset-key (kbd "<left>"))
+(global-unset-key (kbd "<right>"))
+(global-unset-key (kbd "<up>"))
+(global-unset-key (kbd "<down>"))
+(global-unset-key (kbd "<C-left>"))
+(global-unset-key (kbd "<C-right>"))
+(global-unset-key (kbd "<C-up>"))
+(global-unset-key (kbd "<C-down>"))
+(global-unset-key (kbd "<M-left>"))
+(global-unset-key (kbd "<M-right>"))
+(global-unset-key (kbd "<M-up>"))
+(global-unset-key (kbd "<M-down>"))
+#+END_SRC
+
+** Disable return key
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<return>") 'ignore)
+#+END_SRC
+
 ** Default initial buffer to tasks.org file
 
 #+BEGIN_SRC emacs-lisp
@@ -298,6 +304,15 @@ Double quotes are used a lot more than single quotes in lisp.
 #+BEGIN_SRC emacs-lisp
 (define-key key-translation-map (kbd "'") (kbd "\""))
 (define-key key-translation-map (kbd "\"") (kbd "'"))
+#+END_SRC
+
+** Swap C-m and C-j
+
+I find C-j more ergonomic that C-m as it's on the home row.
+
+#+BEGIN_SRC emacs-lisp
+(define-key key-translation-map (kbd "C-j") (kbd "C-m"))
+(define-key key-translation-map (kbd "C-m") (kbd "C-j"))
 #+END_SRC
 
 * Appearance
