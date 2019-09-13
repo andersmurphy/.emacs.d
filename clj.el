@@ -605,7 +605,7 @@ In the above example the n would be deleted. Handles comments."
 
 (defun my/bounds-of-last-sexp ()
   "Get bounds of last sexp."
-  (when (= (char-before) ?\))
+  (when (member (char-before) (string-to-list "}])"))
     (cons (save-excursion (backward-sexp) (point)) (point))))
 
 (defun my/hungry-delete-backward ()
