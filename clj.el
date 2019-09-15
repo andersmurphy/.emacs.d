@@ -630,7 +630,10 @@ In the above example the n would be deleted. Handles comments."
 
 (defun my/bounds-of-punctuation-backward ()
   "Get bounds of - / character if  before cursor."
-  (when (member (char-before) (string-to-list "-/?!"))
+  (when (and (member (char-before) (string-to-list "-/?!"))
+             (not (and (= (char-before) ?/)
+                       (minibufferp)
+                       (bound-and-true-p ivy-mode))))
     (cons (point) (- (point) 1))))
 
 (defun my/kill-word-or-sexp-at-point ()
