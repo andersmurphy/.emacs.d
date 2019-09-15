@@ -8,6 +8,8 @@ xcode-select --install
 
 brew update
 
+brew analytics off
+
 brew install git
 
 git config --global user.name "andersmurphy"
