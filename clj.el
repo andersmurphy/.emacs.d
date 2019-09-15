@@ -636,7 +636,7 @@ In the above example the n would be deleted. Handles comments."
                        (bound-and-true-p ivy-mode))))
     (cons (point) (- (point) 1))))
 
-(defun my/kill-word-or-sexp-at-point ()
+(defun my/smart-kill ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
   (let* ((bounds (or (my/bounds-of-punctuation-forward)
