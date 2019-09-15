@@ -32,11 +32,13 @@ Handles both string and edn commands."
         (string (if (stringp command)
                     command
                   (edn-print-string command))))
-    (format "(do
+    (if ns
+        (format "(do
                (when-not (find-ns '%s) (require '%s))
                (binding [*ns* (or (find-ns '%s) *ns*)]
                  (eval '%s)))"
-            ns ns ns string)))
+                ns ns ns string)
+      (format "(eval '%s)" string))))
 
 (defun my/clj-eval-with-ns (command)
   "Evaluate COMMAND in the context of the current buffer namespace.
