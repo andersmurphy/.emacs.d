@@ -630,10 +630,7 @@ In the above example the n would be deleted. Handles comments."
 
 (defun my/bounds-of-punctuation-backward ()
   "Get bounds of - / character if  before cursor."
-  (when (and (member (char-before) (string-to-list "-/?!"))
-             (not (and (= (char-before) ?/)
-                       (minibufferp)
-                       (bound-and-true-p ivy-mode))))
+  (when  (member (char-before) (string-to-list "-/?!"))
     (cons (point) (- (point) 1))))
 
 (defun my/smart-kill ()
@@ -648,11 +645,12 @@ In the above example the n would be deleted. Handles comments."
          (bounds-directed (if (and bounds (> (point) (car bounds)))
                               (cons (cdr bounds) (car bounds))
                             bounds)))
-    (cond (bounds (kill-region (car bounds-directed) (cdr bounds-directed)))
-          ((and (minibufferp) (bound-and-true-p ivy-mode))
-           (ivy-backward-delete-char))
-          (t
-           (my/hungry-delete-backward)))))
+    (cond (bounds
+           (condition-case nil
+               (kill-region (car bounds-directed) (cdr bounds-directed))
+             (error (when (and (minibufferp) (bound-and-true-p ivy-mode))
+                      (ivy-backward-delete-char)))))
+          (t (my/hungry-delete-backward)))))
 
 (defun my/smart-quote ()
   "If previous character is a letter insert single quote.
