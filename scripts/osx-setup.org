@@ -34,6 +34,12 @@ Update.
 brew update
 #+END_SRC
 
+Disable analytics.
+
+#+BEGIN_SRC sh
+brew analytics off
+#+END_SRC
+
 * Git
 
 Install latest version of git.
