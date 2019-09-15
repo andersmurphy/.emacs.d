@@ -788,7 +788,8 @@ to retrieve and display completion candidates.
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-h" . company-select-previous)
-              ("TAB" . company-complete-selection)))
+              ("TAB" . company-complete-selection)
+              ("C-w" . my/smart-kill)))
 #+END_SRC
 
 *** Compilation buffers display ANSI
