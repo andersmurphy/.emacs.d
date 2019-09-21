@@ -627,7 +627,7 @@ In the above example the n would be deleted. Handles comments."
 
 (defun my/bounds-of-punctuation-forward ()
   "Get bounds of - / character if after cursor."
-  (when (member (char-after) (string-to-list "=_-/?!#>,.@"))
+  (when (member (char-after) (string-to-list "=_-/?!#>,.@'"))
     (cons (point) (+ (point) 1))))
 
 (defun my/bounds-of-punctuation-backward ()
