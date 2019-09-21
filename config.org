@@ -254,6 +254,14 @@ Makes recenter go to top first.
 (setq recenter-positions '(top middle bottom))
 #+END_SRC
 
+** Mark
+
+Allows you to keep hitting C-Space after that initial C-u C-Space to pop marks.
+
+#+BEGIN_SRC emacs-lisp
+(setq set-mark-command-repeat-pop 't)
+#+END_SRC
+
 ** OSX cmd key
 
 Bind cmd (super) key to control
