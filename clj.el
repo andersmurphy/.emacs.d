@@ -487,7 +487,7 @@ Cursor point stays on the same character despite potential point shift."
   (let ((pair (concat opening-string closing-string))
         (bounds (or (bounds-of-thing-at-point 'sexp)
                     (and
-                     (not (= (char-before) ?#))
+                     (not (member (char-before) (string-to-list "#@")))
                      (bounds-of-thing-at-point 'symbol)))))
     (cond
      ((and (= (char-before) ?\()
