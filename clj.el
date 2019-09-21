@@ -490,7 +490,7 @@ Cursor point stays on the same character despite potential point shift."
                      (not (member (char-before) (string-to-list "#@")))
                      (bounds-of-thing-at-point 'symbol)))))
     (cond
-     ((and (= (char-before) ?\()
+     ((and (member (char-before) (string-to-list "({[") )
            (member (char-after) (string-to-list "\n ")))
       (my/insert-pair pair))
      (bounds
