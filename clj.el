@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+;;To turn on debugger on error: M-x toggle-debug-on-error
+
 (require 'edn)
 (require 'dash)
 
