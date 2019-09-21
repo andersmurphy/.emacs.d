@@ -635,10 +635,24 @@ In the above example the n would be deleted. Handles comments."
   (when  (member (char-before) (string-to-list "=_-/?!>,."))
     (cons (point) (- (point) 1))))
 
+(defun my/bounds-of-space-forward ()
+  "Get bounds of - / character if  before cursor."
+  (when (member (char-after) (string-to-list " "))
+    (save-excursion
+      (let* ((initial-point (point))
+             (next-non-space-point (progn (skip-chars-forward " ") (point)))
+             (characters-between-point (- next-non-space-point initial-point))
+             (character-after-next-point (char-after)))
+        (cond ((member character-after-next-point (string-to-list ")}]\n"))
+               (cons initial-point next-non-space-point))
+              ((> characters-between-point 1)
+               (cons initial-point (- next-non-space-point 1))))))))
+
 (defun my/smart-kill ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
   (let* ((bounds (or (my/bounds-of-punctuation-forward)
+                     (my/bounds-of-space-forward)
                      (bounds-of-thing-at-point 'word)
                      (my/bounds-of-punctuation-backward)
                      (my/bounds-of-space-before-opening-paren)
