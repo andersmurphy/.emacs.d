@@ -524,7 +524,8 @@ Cursor point stays on the same character despite potential point shift."
 
 (defvar my/sb-depth-1-syms
   '(fn defn let defmacro if-let when-let binding assoc-in update-in
-       get-in select-keys defmethod with-redefs :keys :strs loop)
+       get-in select-keys defmethod with-redefs :keys :strs loop
+       when-some if-some)
   "List of symbols that trigger smart bracket at paren depth 1.")
 
 (defvar my/sb-depth-2-syms
