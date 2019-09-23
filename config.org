@@ -366,7 +366,7 @@ Disables default splash screen.
   :config
   (setq my/dark-theme 'doom-solarized-dark)
   (setq my/light-theme 'doom-solarized-light)
-  (setq my/active-theme my/dark-theme)
+  (setq my/active-theme my/light-theme)
   (load-theme my/active-theme t)
   (defun my/customise-theme ()
     (doom-themes-set-faces
