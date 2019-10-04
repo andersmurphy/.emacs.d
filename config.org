@@ -387,7 +387,7 @@ Disables default splash screen.
       '(cursor :background magenta)
       '(sp-show-pair-match-face :foreground magenta :weight 'bold)
       '(line-number-current-line :foreground fg :weight 'bold)
-      '(font-lock-type-face :foreground fg)
+      '(font-lock-type-face :foreground green)
       '(font-lock-keyword-face :foreground fg)
       '(font-lock-variable-name-face :foreground blue)
       '(font-lock-function-name-face :foreground blue)
