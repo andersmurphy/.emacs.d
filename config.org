@@ -1,4 +1,6 @@
 # C-c ' (org-edit-special) toggles org-edit-src-code on src blocks.
+# M-x elisp-index-search to search elisp manual
+# M-x emacs-index-search to search emacs manual
 
 * Defaults
 ** Exec-path-from-shell
@@ -807,6 +809,7 @@ Create org capture task template without asking.
 
 (defun my/start-pomodoro-timer ()
   (interactive)
+  (cancel-timer my/pomodoro-timer)
   (setq my/pomodoro-timer (run-at-time "25 mins" nil 'my/toggle-theme))
   (message "Pomodoro started!"))
 
@@ -814,7 +817,6 @@ Create org capture task template without asking.
   (interactive)
   (cancel-timer my/pomodoro-timer)
   (message "Pomodoro stopped!"))
-
 #+END_SRC
 
 * Programming
