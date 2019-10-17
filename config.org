@@ -807,15 +807,21 @@ Create org capture task template without asking.
 #+BEGIN_SRC
 (defvar my/pomodoro-timer nil)
 
+(defun my/pomodoro-finished-alert ()
+  (setq my/pomodoro-timer nil)
+  (my/toggle-theme))
+
 (defun my/start-pomodoro-timer ()
   (interactive)
-  (cancel-timer my/pomodoro-timer)
-  (setq my/pomodoro-timer (run-at-time "25 mins" nil 'my/toggle-theme))
-  (message "Pomodoro started!"))
+  (if my/pomodoro-timer
+     (message "Pomodoro already started!")
+   (setq my/pomodoro-timer (run-at-time "25 mins" nil 'my/pomodoro-finished-alert))
+   (message "Pomodoro started!")))
 
 (defun my/stop-pomodoro-timer ()
   (interactive)
   (cancel-timer my/pomodoro-timer)
+  (setq my/pomodoro-timer nil)
   (message "Pomodoro stopped!"))
 #+END_SRC
 
