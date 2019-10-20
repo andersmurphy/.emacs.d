@@ -804,7 +804,7 @@ Create org capture task template without asking.
 
 ** Simple Pomodoro Timer
 
-#+BEGIN_SRC
+#+BEGIN_SRC emacs-lisp
 (defvar my/pomodoro-timer nil)
 
 (defun my/pomodoro-finished-alert ()
