@@ -393,8 +393,8 @@ Disables default splash screen.
       '(font-lock-keyword-face :foreground fg)
       '(font-lock-variable-name-face :foreground blue)
       '(font-lock-function-name-face :foreground blue)
-      '(font-lock-constant-face :foreground constants)
-      '(font-lock-builtin-face :foreground constants)
+      '(font-lock-constant-face :foreground violet)
+      '(font-lock-builtin-face :foreground violet)
       ;; modeline
       '(doom-modeline-bar :foreground modeline-bg)
       ;; org
