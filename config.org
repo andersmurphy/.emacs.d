@@ -807,9 +807,19 @@ Create org capture task template without asking.
 #+BEGIN_SRC emacs-lisp
 (defvar my/pomodoro-timer nil)
 
+(defun flash-mode-line ()
+  (let ((flash-sec 0.25))
+    (invert-face 'mode-line)
+    (run-with-timer flash-sec nil #'invert-face 'mode-line)
+    (run-with-timer (* 2 flash-sec) nil #'invert-face 'mode-line)
+    (run-with-timer (* 3 flash-sec) nil #'invert-face 'mode-line)
+    (run-with-timer (* 4 flash-sec) nil #'invert-face 'mode-line)
+    (run-with-timer (* 5 flash-sec) nil #'invert-face 'mode-line)))
+
 (defun my/pomodoro-finished-alert ()
   (setq my/pomodoro-timer nil)
-  (my/toggle-theme))
+  (let ((ring-bell-function 'flash-mode-line))
+    (ding)))
 
 (defun my/start-pomodoro-timer ()
   (interactive)
