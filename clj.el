@@ -651,10 +651,16 @@ In the above example the n would be deleted. Handles comments."
               ((> characters-between-point 1)
                (cons initial-point (- next-non-space-point 1))))))))
 
+(defun my/bounds-of-active-region ()
+  "Get bounds of active region if region is active."
+  (when (region-active-p)
+    (cons (region-beginning) (region-end))))
+
 (defun my/smart-kill ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
-  (let* ((bounds (or (my/bounds-of-punctuation-forward)
+  (let* ((bounds (or (my/bounds-of-active-region)
+                     (my/bounds-of-punctuation-forward)
                      (my/bounds-of-space-forward)
                      (bounds-of-thing-at-point 'word)
                      (my/bounds-of-punctuation-backward)
