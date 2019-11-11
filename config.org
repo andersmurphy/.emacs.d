@@ -44,9 +44,15 @@ switch between buffers, an Emacs frame loses focus, etc.
   (straight-freeze-versions))
 #+END_SRC
 
-** Reloading config
+** Open config
 
-Function for reloading config.
+#+BEGIN_SRC emacs-lisp
+(defun my/config ()
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+#+END_SRC
+
+** Reloading config
 
 #+BEGIN_SRC emacs-lisp
 (defun my/reload-config ()
