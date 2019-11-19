@@ -689,6 +689,7 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
        :config
        (setq ivy-use-virtual-buffers t)
        (setq ivy-count-format "(%d/%d) ")
+       (ivy-configure 'counsel-M-x :sort-fn #'ivy-string<)
        :bind
        (:map ivy-mode-map
               ("C-v" . yank)
