@@ -436,7 +436,9 @@ defaults to current namespace."
             (font-lock-add-keywords 'inferior-lisp-mode
                                     clojure-font-lock-keywords 'end)
             ;; Enable smartparen mode in REPL (none strict)
-            (smartparens-mode)))
+            (smartparens-mode)
+            ;; Use clojure syntax table
+            (set-syntax-table clojure-mode-syntax-table)))
 
 (defun my/clj-before-save ()
   "Vertically align the contents of the sexp around point on save."
