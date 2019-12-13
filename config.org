@@ -988,6 +988,15 @@ Handles auto-inserting templates when creating new files.
         ("M-h" . comint-previous-input)))
 #+END_SRC
 
+*** Rainbow mode
+
+Highlights hex colours.
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode
+  :hook (prog-mode . rainbow-mode))
+#+END_SRC
+
 ** Eshell
 
 #+BEGIN_SRC emacs-lisp
@@ -1170,7 +1179,6 @@ Use eslint in rjsx-mode.
 #+BEGIN_SRC emacs-lisp
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 #+END_SRC
-
 * Misc
 ** Epub Reader
 
