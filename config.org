@@ -380,20 +380,21 @@ Disables default splash screen.
 ** Theme
 *** Doom
 
-[[doom-spacegrey][Doom]] themes. To find out the name of the face you want to customise: M-x cutomize-face and then search through the list of faces.
+[[doom-spacegrey][Doom]] themes. To find out the name of the face you want to customise: M-x customize-face and then search through the list of faces.
 
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
   :config
   (setq my/dark-theme 'doom-solarized-dark)
   (setq my/light-theme 'doom-solarized-light)
-  (setq my/active-theme my/light-theme)
+  (setq my/active-theme my/dark-theme)
   (load-theme my/active-theme t)
   (defun my/customise-theme ()
     (doom-themes-set-faces
       my/active-theme
       '(cursor :background magenta)
-      '(sp-show-pair-match-face :foreground magenta :weight 'bold)
+      '(show-paren-match :foreground magenta)
+      '(show-paren-match-expression :background region)
       '(line-number-current-line :foreground fg :weight 'bold)
       '(font-lock-type-face :foreground green)
       '(font-lock-keyword-face :foreground fg)
@@ -887,7 +888,6 @@ to retrieve and display completion candidates.
       :straight nil)
     (sp-use-smartparens-bindings)
     (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
-    (show-smartparens-global-mode t)
     (setq sp-highlight-pair-overlay nil))
   :init
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
@@ -900,6 +900,15 @@ to retrieve and display completion candidates.
               (")" . sp-backward-unwrap-sexp)))
 #+END_SRC
 
+*** Show parens mode
+
+Shows matching paren and highlights sexp.
+
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode t)
+(setq show-paren-delay 0)
+(setq show-paren-style 'expression)
+#+END_SRC
 *** Flycheck
 
 [[https://github.com/flycheck/flycheck][Flycheck]] on-the-fly syntax checking extension.
