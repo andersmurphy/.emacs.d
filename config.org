@@ -1043,6 +1043,15 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 #+END_SRC
 
 ** Elisp
+*** Elisp show docs for symbol at point
+
+#+BEGIN_SRC emacs-lisp
+(defun my/docs-for-elisp-symbol-at-point ()
+  "Show docs for elisp symbol at point."
+  (interactive)
+  (describe-function (symbol-at-point)))
+#+END_SRC
+
 *** Elisp mode bindings
 
 #+BEGIN_SRC emacs-lisp
@@ -1057,6 +1066,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
         (my/insert-pair "()"))))
   :bind (:map emacs-lisp-mode-map
               ("(" . my/wrap-if-sexp)
+              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
               (";" . my/insert-double-semicolon)))
 #+END_SRC
 
