@@ -1043,7 +1043,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 #+END_SRC
 
 ** Elisp
-*** Elisp show docs for symbol at point
+*** Show docs for symbol at point
 
 #+BEGIN_SRC emacs-lisp
 (defun my/docs-for-elisp-symbol-at-point ()
