@@ -658,17 +658,21 @@ In the above example the n would be deleted. Handles comments."
   (when (region-active-p)
     (cons (region-beginning) (region-end))))
 
+(defun my/smart-kill-bounds ()
+  "Get current smart-kill bounds."
+  (or (my/bounds-of-active-region)
+      (my/bounds-of-punctuation-forward)
+      (my/bounds-of-space-forward)
+      (bounds-of-thing-at-point 'word)
+      (my/bounds-of-punctuation-backward)
+      (my/bounds-of-space-before-opening-paren)
+      (bounds-of-thing-at-point 'sexp)
+      (my/bounds-of-last-sexp)))
+
 (defun my/smart-kill ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
-  (let* ((bounds (or (my/bounds-of-active-region)
-                     (my/bounds-of-punctuation-forward)
-                     (my/bounds-of-space-forward)
-                     (bounds-of-thing-at-point 'word)
-                     (my/bounds-of-punctuation-backward)
-                     (my/bounds-of-space-before-opening-paren)
-                     (bounds-of-thing-at-point 'sexp)
-                     (my/bounds-of-last-sexp)))
+  (let* ((bounds (my/smart-kill-bounds))
          (bounds-directed (if (and bounds (> (point) (car bounds)))
                               (cons (cdr bounds) (car bounds))
                             bounds)))
@@ -678,6 +682,23 @@ In the above example the n would be deleted. Handles comments."
              (error (when (and (minibufferp) (bound-and-true-p ivy-mode))
                       (ivy-backward-delete-char)))))
           (t (my/hungry-delete-backward)))))
+
+(defvar my/hl-current-symbol-overlay
+  (let ((ol (make-overlay 1 1)))
+    (overlay-put ol 'face 'region)
+    ol)
+  "Overlay for highlighting current symbol.")
+
+(defun my/hl-current-symbol-hook ()
+  "Post-Command-Hook for highlighting current symbol."
+  (interactive)
+  (let ((bounds (my/smart-kill-bounds)))
+    (if bounds
+        (move-overlay my/hl-current-symbol-overlay
+                      (car bounds)
+                      (cdr bounds)
+                      (current-buffer))
+      (delete-overlay my/hl-current-symbol-overlay))))
 
 (defun my/smart-quote ()
   "If previous character is a letter insert single quote.
