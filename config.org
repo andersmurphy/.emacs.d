@@ -997,28 +997,11 @@ Highlights hex colours.
   :hook (prog-mode . rainbow-mode))
 #+END_SRC
 
-*** Highlight current symbol
+*** Highlight current smart kill region
 
 Highlights the current symbol.
 
 #+BEGIN_SRC emacs-lisp
-(defvar my/hl-current-symbol-overlay
-  (let ((ol (make-overlay 1 1)))
-    (overlay-put ol 'face 'region)
-    ol)
-  "Overlay for highlighting current symbol.")
-
-(defun my/hl-current-symbol-hook ()
-  "Post-Command-Hook for highlighting current symbol."
-  (interactive)
-  (let ((bounds (bounds-of-thing-at-point 'symbol)))
-    (if bounds
-        (move-overlay my/hl-current-symbol-overlay
-                      (car bounds)
-                      (cdr bounds)
-                      (current-buffer))
-      (delete-overlay my/hl-current-symbol-overlay))))
-
 (add-hook 'post-command-hook 'my/hl-current-symbol-hook)
 #+END_SRC
 
