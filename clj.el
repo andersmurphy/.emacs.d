@@ -683,22 +683,28 @@ In the above example the n would be deleted. Handles comments."
                       (ivy-backward-delete-char)))))
           (t (my/hungry-delete-backward)))))
 
-(defvar my/hl-current-symbol-overlay
-  (let ((ol (make-overlay 1 1)))
-    (overlay-put ol 'face 'region)
-    ol)
-  "Overlay for highlighting current symbol.")
+(defvar my/hl-current-kill-region-overlay nil
+  "Overlay for highlighting current kill region.")
 
-(defun my/hl-current-symbol-hook ()
-  "Post-Command-Hook for highlighting current symbol."
+(defun my/hl-current-kill-region-make-overlay ()
+  "Create overlay for current kill region."
+  (let ((overlay (make-overlay 1 1)))
+    (overlay-put overlay 'face 'region)
+    (setq my/hl-current-kill-region-overlay overlay)
+    overlay))
+
+(defun my/hl-current-kill-region-overlay-hook ()
+  "Post-Command-Hook for highlighting current kill region."
   (interactive)
-  (let ((bounds (my/smart-kill-bounds)))
+  (let ((bounds (my/smart-kill-bounds))
+        (overlay     (or my/hl-current-kill-region-overlay
+                         (my/hl-current-kill-region-make-overlay))))
     (if bounds
-        (move-overlay my/hl-current-symbol-overlay
+        (move-overlay overlay
                       (car bounds)
                       (cdr bounds)
                       (current-buffer))
-      (delete-overlay my/hl-current-symbol-overlay))))
+      (delete-overlay my/hl-current-kill-region-overlay))))
 
 (defun my/smart-quote ()
   "If previous character is a letter insert single quote.
