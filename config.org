@@ -1002,7 +1002,7 @@ Highlights hex colours.
 Highlights the current symbol.
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'post-command-hook 'my/hl-current-symbol-hook)
+(add-hook 'post-command-hook 'my/hl-current-kill-region-overlay-hook)
 #+END_SRC
 
 ** Eshell
