@@ -584,12 +584,13 @@ If end or beginning of outer sexp reached move point to other bound.
           (t (transpose-sexps 1)))))
 
 (defun my/insert-double-semicolon ()
-  "Insert two semicolons. Don't insert if it will break AST."
+  "Insert two semicolons. Don't insert if it will break AST. Insert single semicolon if inside string."
   (interactive)
-  (when (ignore-errors
-          (or (= (save-excursion (forward-sexp) (point)) (line-end-position))
-              (= (point) (line-end-position))))
-    (insert ";; ")))
+  (cond ((ignore-errors
+           (or (= (save-excursion (forward-sexp) (point)) (line-end-position))
+               (= (point) (line-end-position))))
+         (insert ";; "))
+        ((nth 3 (syntax-ppss)) (insert ";"))))
 
 (defun my/strict-insert ()
   "If to level and the last entered character is not a valid insert delete it.
