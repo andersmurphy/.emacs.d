@@ -731,7 +731,33 @@ Otherwise insert double quote."
     (make-directory (concat project-name-path "/src"))
     (make-directory (concat project-name-path "/src/" namespace-name))
     (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
-    (save-buffer)))
+    (save-buffer)
+    (find-file (concat project-name-path "/deps.edn"))))
+
+(defun my/create-new-lein-project ()
+  "Create a new deps.edn project."
+  (interactive)
+  (let* ((project-name-path (read-directory-name "Directory:"))
+         (namespace-name (->> (split-string project-name-path "/")
+                              reverse
+                              car
+                              (replace-regexp-in-string "-" "_"))))
+    (make-directory project-name-path)
+    (find-file (concat project-name-path "/project.clj"))
+    (save-buffer)
+    (find-file (concat project-name-path "/.gitignore"))
+    (save-buffer)
+    (make-directory (concat project-name-path "/src"))
+    (make-directory (concat project-name-path "/src/" namespace-name))
+    (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
+    (save-buffer)
+    (find-file (concat project-name-path "/project.clj"))))
+
+(defun my/get-parent-directory-name (filename)
+  "Return parent directory for FILENAME."
+  (-> (file-name-directory filename)
+      directory-file-name
+      file-name-nondirectory))
 
 (provide 'clj)
 ;;; clj.el ends here
