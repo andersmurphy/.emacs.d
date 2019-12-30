@@ -976,6 +976,7 @@ Handles auto-inserting templates when creating new files.
     (yas-expand-snippet (buffer-string) (point-min) (point-max)))
   (define-auto-insert "\\.clj$" ["default_clj.clj" my/autoinsert-yas-expand])
   (define-auto-insert "\\test.clj$" ["default_test_clj.clj" my/autoinsert-yas-expand])
+  (define-auto-insert "project.clj$" ["default_project.clj" my/autoinsert-yas-expand])
   (define-auto-insert "deps.edn$" ["default_deps.edn" my/autoinsert-yas-expand])
   (define-auto-insert ".gitignore" ["default.gitignore" my/autoinsert-yas-expand]))
 #+END_SRC
