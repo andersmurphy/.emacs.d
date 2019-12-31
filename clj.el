@@ -718,7 +718,7 @@ Otherwise insert double quote."
 (defun my/create-new-deps-project ()
   "Create a new deps.edn project."
   (interactive)
-  (let* ((project-name-path (read-directory-name "Directory:"))
+  (let* ((project-name-path (counsel-read-directory-name "Directory:"))
          (namespace-name (->> (split-string project-name-path "/")
                               reverse
                               car
@@ -737,7 +737,7 @@ Otherwise insert double quote."
 (defun my/create-new-lein-project ()
   "Create a new deps.edn project."
   (interactive)
-  (let* ((project-name-path (read-directory-name "Directory:"))
+  (let* ((project-name-path (counsel-read-directory-name "Directory:"))
          (namespace-name (->> (split-string project-name-path "/")
                               reverse
                               car
