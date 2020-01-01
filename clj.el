@@ -735,7 +735,7 @@ Otherwise insert double quote."
     (find-file (concat project-name-path "/deps.edn"))))
 
 (defun my/create-new-lein-project ()
-  "Create a new deps.edn project."
+  "Create a new lein project."
   (interactive)
   (let* ((project-name-path (counsel-read-directory-name "Directory:"))
          (namespace-name (->> (split-string project-name-path "/")
