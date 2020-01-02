@@ -753,6 +753,52 @@ Otherwise insert double quote."
     (save-buffer)
     (find-file (concat project-name-path "/project.clj"))))
 
+(defun my/try-to-find-project-file (dirname &optional clj-lisp-prog)
+  "Will try to find the correct project root project.clj/deps.edn file.
+In the case of nested projects will find the nearest project.clj/deps.edn file.
+Works up directories starting from the current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
+  (cond
+   ((file-exists-p (concat dirname "project.clj"))
+    (list (concat dirname "project.clj")
+          (or clj-lisp-prog "lein repl")))
+   ((file-exists-p (concat dirname "deps.edn"))
+    (list (concat dirname "deps.edn")
+          "clojure"))
+   ((or (my/dir-contains-git-root-p dirname)
+        (string= "/" dirname))
+    (list (buffer-file-name) "clojure"))
+   (t (-> (directory-file-name dirname)
+          file-name-directory
+          (my/try-to-find-project-file clj-lisp-prog)))))
+
+(defun my/try-to-find-git-root (dirname)
+  "Will try and find the nearest root for project. Works up directories starting from the current files directory DIRNAME."
+  (cond
+   ((or (my/dir-contains-git-root-p dirname)
+        (string= "/" dirname))
+    (directory-file-name dirname))
+   (t (-> (directory-file-name dirname)
+          file-name-directory
+          my/try-to-find-git-root))))
+
+(defun my/rn-build-project ()
+  "Run a react-native project."
+  (interactive)
+  (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
+        (buffer-name "*React Native iOS*"))
+    (when (get-buffer buffer-name)
+      (kill-buffer buffer-name))
+    (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn install;yarn start" (generate-new-buffer buffer-name))))
+
+(defun my/rn-start-ios-simulator ()
+  "Run a react-native ios simulator."
+  (interactive)
+  (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
+        (buffer-name "*React Native iOS*"))
+    (when (get-buffer buffer-name)
+      (kill-buffer buffer-name))
+    (async-shell-command "react-native run-ios" (generate-new-buffer buffer-name))))
+
 (defun my/get-parent-directory-name (filename)
   "Return parent directory for FILENAME."
   (-> (file-name-directory filename)
