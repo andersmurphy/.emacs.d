@@ -805,5 +805,30 @@ Works up directories starting from the current files directory DIRNAME. Optional
       directory-file-name
       file-name-nondirectory))
 
+(defun my/json->edn ()
+  "Convert json to edn."
+  (interactive)
+  (my/smart-kill)
+  (let ((s (car kill-ring)))
+    (set-text-properties 0 (length s) nil s)
+    (->> s
+         (replace-regexp-in-string "\\([\{,][\s\n]*\\)\\([^\"':]+\\)\\([\s\n]*:\\)"
+                                   "\\1\"\\2\"\\3")
+         (replace-regexp-in-string "\\([\{,][\s\n]*\\)\"\\([^\"':]+\\)\":\\([\s\n]*\\)"
+                                   "\\1:\\2\\3")
+         (replace-regexp-in-string "\\(\"[^\"]*\"\\|\\)[\s\n]*,"
+                                   "\\1")
+         (replace-regexp-in-string "\\([\"']\\)\\(\\(?:\\\\1\\|.\\)*?\\)\\1"
+                                   "\"\\2\"")
+         (replace-regexp-in-string "\{[\s\n]+"
+                                   "{")
+         (replace-regexp-in-string "[\s\n]+}"
+                                   "}")
+         (replace-regexp-in-string "\\[[\s\n]+"
+                                   "[")
+         (replace-regexp-in-string "[\s\n]+]"
+                                   "]")
+         insert)))
+
 (provide 'clj)
 ;;; clj.el ends here
