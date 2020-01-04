@@ -812,22 +812,27 @@ Works up directories starting from the current files directory DIRNAME. Optional
   (let ((s (car kill-ring)))
     (set-text-properties 0 (length s) nil s)
     (->> s
-         (replace-regexp-in-string "\\([\{,][\s\n]*\\)\\([^\"':]+\\)\\([\s\n]*:\\)"
-                                   "\\1\"\\2\"\\3")
-         (replace-regexp-in-string "\\([\{,][\s\n]*\\)\"\\([^\"':]+\\)\":\\([\s\n]*\\)"
-                                   "\\1:\\2\\3")
-         (replace-regexp-in-string "\\(\"[^\"]*\"\\|\\)[\s\n]*,"
-                                   "\\1")
-         (replace-regexp-in-string "\\([\"']\\)\\(\\(?:\\\\1\\|.\\)*?\\)\\1"
-                                   "\"\\2\"")
+         ;; Remove spaces after leading curly bracket
          (replace-regexp-in-string "\{[\s\n]+"
                                    "{")
+         ;; Remove spaces before trailing curly bracket
          (replace-regexp-in-string "[\s\n]+}"
                                    "}")
+         ;; Remove spaces after leading square bracket
          (replace-regexp-in-string "\\[[\s\n]+"
                                    "[")
+         ;; Remove spaces before trailing square bracket
          (replace-regexp-in-string "[\s\n]+]"
                                    "]")
+         ;; Remove all commas outside of strings
+         (replace-regexp-in-string "\\(\"[^\"]*\"\\|\\)[\s\n]*,"
+                                   "\\1")
+         ;; Convert string single quotes into string double quotes
+         (replace-regexp-in-string "\\([\"']\\)\\(\\(?:\\\\1\\|.\\)*?\\)\\1"
+                                   "\"\\2\"")
+         ;; Convert keys and double quote string keys to edn keys
+         (replace-regexp-in-string  "\\(\"\\|\\)\\([^\"':\s\n{]+\\)\\(:\\|\"[\s\n]*:\\)"
+                                    ":\\2")
          insert)))
 
 (provide 'clj)
