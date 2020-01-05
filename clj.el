@@ -7,6 +7,10 @@
 (require 'edn)
 (require 'dash)
 
+(defmacro my/comment (&rest body)
+  "Comment out BODY."
+  nil)
+
 (defun my/clj-symbol-at-point ()
   "Get Clojure symbol at point."
   (with-syntax-table clojure-mode-syntax-table
