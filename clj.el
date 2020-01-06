@@ -809,6 +809,18 @@ Works up directories starting from the current files directory DIRNAME. Optional
       directory-file-name
       file-name-nondirectory))
 
+(defun my/convert-single-quote-strings-to-double-quote-strings (string-data)
+  "Convert single quote strings into double quote strings in STRING-DATA."
+  (replace-regexp-in-string "\\([\"']\\)\\(\\(?:\\\\\\1\\|.\\)*?\\)\\1"
+                            (lambda (s)
+                              (if (string-prefix-p "\"" s)
+                                  s
+                                (->> (replace-regexp-in-string "\"" "\\\"" s nil t)
+                                     (replace-regexp-in-string "\\\\'" "ø&μ@#$%_17")
+                                     (replace-regexp-in-string "'" "\"")
+                                     (replace-regexp-in-string "ø&μ@#$%_17" "'"))))
+                            string-data nil t))
+
 (defun my/json->edn ()
   "Convert json to edn."
   (interactive)
@@ -832,8 +844,7 @@ Works up directories starting from the current files directory DIRNAME. Optional
          (replace-regexp-in-string "\\(\"[^\"]*\"\\|\\)[\s\n]*,"
                                    "\\1")
          ;; Convert string single quotes into string double quotes
-         (replace-regexp-in-string "\\([\"']\\)\\(\\(?:\\\\1\\|.\\)*?\\)\\1"
-                                   "\"\\2\"")
+         my/convert-single-quote-strings-to-double-quote-strings
          ;; Convert keys and double quote string keys to edn keys
          (replace-regexp-in-string  "\\(\"\\|\\)\\([^\"':\s\n{]+\\)\\(:\\|\"[\s\n]*:\\)"
                                     ":\\2")
