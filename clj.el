@@ -845,6 +845,9 @@ Works up directories starting from the current files directory DIRNAME. Optional
                                    "\\1")
          ;; Convert string single quotes into string double quotes
          my/convert-single-quote-strings-to-double-quote-strings
+         ;; Convert null to nil
+         (replace-regexp-in-string  "\\(:.*\\)\\(?:null\\)\\([]}\n\s]\\)"
+                                    "\\1nil\\2")
          ;; Convert keys and double quote string keys to edn keys
          (replace-regexp-in-string  "\\(\"\\|\\)\\([^\"':\s\n{]+\\)\\1:"
                                     ":\\2")
