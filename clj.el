@@ -701,15 +701,16 @@ In the above example the n would be deleted. Handles comments."
 (defun my/hl-current-kill-region-overlay-hook ()
   "Post-Command-Hook for highlighting current kill region."
   (interactive)
-  (let ((bounds (my/smart-kill-bounds))
-        (overlay     (or my/hl-current-kill-region-overlay
-                         (my/hl-current-kill-region-make-overlay))))
-    (if bounds
-        (move-overlay overlay
-                      (car bounds)
-                      (cdr bounds)
-                      (current-buffer))
-      (delete-overlay my/hl-current-kill-region-overlay))))
+  (ignore-errors
+    (let ((bounds (my/smart-kill-bounds))
+          (overlay     (or my/hl-current-kill-region-overlay
+                           (my/hl-current-kill-region-make-overlay))))
+      (if bounds
+          (move-overlay overlay
+                        (car bounds)
+                        (cdr bounds)
+                        (current-buffer))
+        (delete-overlay my/hl-current-kill-region-overlay)))))
 
 (defun my/smart-quote ()
   "If previous character is a letter insert single quote.
