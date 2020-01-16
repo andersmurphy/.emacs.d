@@ -790,7 +790,7 @@ Works up directories starting from the current files directory DIRNAME. Optional
   "Run a react-native project."
   (interactive)
   (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
-        (buffer-name "*React Native iOS*"))
+        (buffer-name "*React Bundler*"))
     (when (get-buffer buffer-name)
       (kill-buffer buffer-name))
     (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn install;yarn start" (generate-new-buffer buffer-name))))
