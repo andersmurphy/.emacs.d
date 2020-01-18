@@ -387,7 +387,7 @@ Disables default splash screen.
   :config
   (setq my/dark-theme 'doom-solarized-dark)
   (setq my/light-theme 'doom-solarized-light)
-  (setq my/active-theme my/light-theme)
+  (setq my/active-theme my/dark-theme)
   (load-theme my/active-theme t)
   (defun my/customise-theme ()
     (doom-themes-set-faces
@@ -807,32 +807,6 @@ Create org capture task template without asking.
   (interactive)
   "Capture a TODO item."
   (org-capture nil "t"))
-#+END_SRC
-
-** Simple Pomodoro Timer
-
-#+BEGIN_SRC emacs-lisp
-(defvar my/pomodoro-timer nil)
-
-(defun my/pomodoro-finished-alert ()
-  (setq my/pomodoro-timer nil)
-  (my/toggle-theme))
-
-(defun my/start-pomodoro-timer ()
-  (interactive)
-  (if my/pomodoro-timer
-     (message "Pomodoro already started!")
-   (setq my/pomodoro-timer (run-at-time "25 mins" nil 'my/pomodoro-finished-alert))
-   (my/toggle-theme)
-   (message "Pomodoro started!")))
-
-(defun my/stop-pomodoro-timer ()
-  (interactive)
-  (when  my/pomodoro-timer
-    (cancel-timer my/pomodoro-timer)
-    (my/toggle-theme)
-    (setq my/pomodoro-timer nil))
-  (message "Pomodoro stopped!"))
 #+END_SRC
 
 * Programming
