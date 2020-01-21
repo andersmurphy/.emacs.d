@@ -817,6 +817,11 @@ Works up directories starting from the current files directory DIRNAME. Optional
       (kill-buffer buffer-name))
     (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn install;yarn start" (generate-new-buffer buffer-name))))
 
+(defun my/start-postgresql ()
+  "Start local postgresql database."
+  (interactive)
+  (async-shell-command "pg_ctl -D /usr/local/var/postgresql@10 start" (generate-new-buffer "*postgresql*")))
+
 (defun my/rn-start-ios-simulator ()
   "Run a react-native ios simulator."
   (interactive)
