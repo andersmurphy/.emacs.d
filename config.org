@@ -269,6 +269,11 @@ Allows you to keep hitting C-Space after that initial C-u C-Space to pop marks.
 #+BEGIN_SRC emacs-lisp
 (setq set-mark-command-repeat-pop 't)
 #+END_SRC
+** Auto update buffer when they are changed by an external source
+
+#+BEGIN_SRC
+(global-auto-revert-mode)
+#+END_SRC
 
 ** OSX cmd key
 
