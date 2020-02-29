@@ -750,6 +750,24 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
          ("h" . magit-section-backward)))
 #+END_SRC
 
+** Forge
+
+[[https://github.com/magit/forge][Forge]] lets you interface with github/gitlab with magit.
+
+#+BEGIN_SRC emacs-lisp
+(defun my/set-github-forge-token ()
+ "For generating tokens see: https://github.com/settings/tokens"
+ (interactive)
+ (find-file "~/.authinfo")
+ (insert (concat "machine api.github.com login andersmurphy^forge password "
+                 (read-string "Enter token:")
+                 "\n"))
+ (save-buffer))
+
+(use-package forge
+  :after magit)
+#+END_SRC
+
 ** Org mode
 *** Org babel/source blocks
 
