@@ -981,16 +981,6 @@ Handles auto-inserting templates when creating new files.
  :bind (:map inferior-lisp-mode-map
         ("M-h" . comint-previous-input)))
 #+END_SRC
-
-*** Rainbow mode
-
-Highlights hex colours.
-
-#+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode
-  :hook (prog-mode . rainbow-mode))
-#+END_SRC
-
 *** Highlight current smart kill region
 
 Highlights the current symbol.
