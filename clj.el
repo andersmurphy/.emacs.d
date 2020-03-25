@@ -715,14 +715,6 @@ In the above example the n would be deleted. Handles comments."
                         (current-buffer))
         (delete-overlay my/hl-current-kill-region-overlay)))))
 
-(defun my/smart-quote ()
-  "If previous character is a letter insert single quote.
-Otherwise insert double quote."
-  (interactive)
-  (if (looking-back "[[:alnum:]]" 1)
-      (insert "'")
-    (my/insert-pair "\"\"")))
-
 (defun my/create-new-deps-project ()
   "Create a new deps.edn project."
   (interactive)
