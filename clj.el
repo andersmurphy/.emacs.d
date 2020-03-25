@@ -881,5 +881,17 @@ Works up directories starting from the current files directory DIRNAME. Optional
                                     ":\\2")
          insert)))
 
+(defun my/list->list-strings ()
+  "Convert list of words to list of strings."
+  (interactive)
+  (my/smart-kill)
+  (let ((s (car kill-ring)))
+    (set-text-properties 0 (length s) nil s)
+    (->> s
+         ;; surround all words with double quotes
+         (replace-regexp-in-string "\\([^]\[\s\n()]+\\)"
+                                   "\"\\1\"")
+         insert)))
+
 (provide 'clj)
 ;;; clj.el ends here
