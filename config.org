@@ -297,6 +297,8 @@ Bind cmd (super) key to control
 (global-set-key (kbd "M-c") 'org-capture)
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-o") 'other-window)
+(global-set-key (kbd "'") 'my/smart-quote)
+(global-set-key (kbd "\"") (lambda () (interactive (insert "'"))))
 #+END_SRC
 
 ** Swap ; and :
@@ -321,15 +323,6 @@ Colons are used a lot more than semi-colons in lisp.
 (define-key key-translation-map (kbd ")") (kbd "]"))
 (define-key key-translation-map (kbd "]") (kbd ")"))
 #+END_SRC
-** Swap " and '
-
-Double quotes are used a lot more than single quotes in lisp.
-
-#+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd "'") (kbd "\""))
-(define-key key-translation-map (kbd "\"") (kbd "'"))
-#+END_SRC
-
 ** Swap C-m and C-j
 
 I find C-j more ergonomic that C-m as it's on the home row.
