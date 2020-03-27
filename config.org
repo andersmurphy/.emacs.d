@@ -653,16 +653,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-a") 'topiary/back-to-indentation-or-beginning)
 #+END_SRC
-
-** Hungry delete
-
-Makes backspace and C-d erase all consecutive white space in a given direction (instead of just one).
-
-#+BEGIN_SRC emacs-lisp
-(use-package hungry-delete
-  :config
-  (global-hungry-delete-mode))
-#+END_SRC
 * Navigation
 ** Recent files
 
