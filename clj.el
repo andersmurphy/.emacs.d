@@ -715,7 +715,22 @@ In the above example the n would be deleted. Handles comments."
                         (current-buffer))
         (delete-overlay my/hl-current-kill-region-overlay)))))
 
-(defun my/create-new-deps-project ()
+(defun my/smart-quote ()
+  "If previous and next character wrap in double quotes.
+If previous character is a alphanumeric insert single quote.
+If next character is a alphanumeric or an opening paren insert single quote.
+Otherwise insert double quote."
+  (interactive)
+  (let ((b-char (char-to-string (char-before)))
+        (a-char (char-to-string (char-after))))
+    (cond
+     ((and (string-match "[[:alnum:]-_/:]" b-char)
+           (string-match "[[:alnum:]-_/(?!:]" a-char))  (my/wrap-with "\"" "\""))
+     ((or  (string-match "[[:alnum:]]" b-char)
+           (string-match "[[:alnum:](]" a-char))  (insert "'"))
+     (t (my/insert-pair "\"\"")))))
+
+(defun my/createnew-deps-project ()
   "Create a new deps.edn project."
   (interactive)
   (let* ((project-name-path (counsel-read-directory-name "Directory:"))
