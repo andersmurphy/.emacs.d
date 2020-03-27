@@ -465,7 +465,7 @@ defaults to current namespace."
                (replace-regexp-in-string "-test" ""))
           "]"))
 
-(defun my/createnew-deps-project ()
+(defun my/create-new-deps-project ()
   "Create a new deps.edn project."
   (interactive)
   (let* ((project-name-path (counsel-read-directory-name "Directory:"))
