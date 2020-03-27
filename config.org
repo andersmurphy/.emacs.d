@@ -269,6 +269,7 @@ Allows you to keep hitting C-Space after that initial C-u C-Space to pop marks.
 #+BEGIN_SRC emacs-lisp
 (setq set-mark-command-repeat-pop 't)
 #+END_SRC
+
 ** Auto update buffer when they are changed by an external source
 
 #+BEGIN_SRC
@@ -282,6 +283,7 @@ Bind cmd (super) key to control
 #+BEGIN_SRC emacs-lisp
 (setq mac-command-modifier 'control)
 #+END_SRC
+
 ** Swap ; and :
 
 Colons are used a lot more than semi-colons in lisp.
@@ -304,6 +306,7 @@ Colons are used a lot more than semi-colons in lisp.
 (define-key key-translation-map (kbd ")") (kbd "]"))
 (define-key key-translation-map (kbd "]") (kbd ")"))
 #+END_SRC
+
 ** Swap C-m and C-j
 
 I find C-j more ergonomic that C-m as it's on the home row.
@@ -336,12 +339,12 @@ I find C-j more ergonomic that C-m as it's on the home row.
 (global-set-key (kbd "C-x f") 'counsel-find-file)
 (global-set-key (kbd "C-x C-d") 'dired)
 (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-w") 'my/smart-kill)
-(global-set-key (kbd "C-t") 'my/smart-transpose)
+(global-set-key (kbd "C-w") 'topiary/smart-kill)
+(global-set-key (kbd "C-t") 'topiary/smart-transpose)
 (global-set-key (kbd "M-c") 'org-capture)
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-o") 'other-window)
-(global-set-key (kbd "'") 'my/smart-quote)
+(global-set-key (kbd "'") 'topiary/smart-quote)
 (global-set-key (kbd "\"") (lambda () (interactive (insert "'"))))
 #+END_SRC
 
@@ -648,11 +651,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 ** Back to indentation or beginning
 
 #+BEGIN_SRC emacs-lisp
-(defun my/back-to-indentation-or-beginning () (interactive)
-   (if (= (point) (progn (back-to-indentation) (point)))
-       (beginning-of-line)))
-
-(global-set-key (kbd "C-a") 'my/back-to-indentation-or-beginning)
+(global-set-key (kbd "C-a") 'topiary/back-to-indentation-or-beginning)
 #+END_SRC
 
 ** Hungry delete
@@ -664,7 +663,6 @@ Makes backspace and C-d erase all consecutive white space in a given direction (
   :config
   (global-hungry-delete-mode))
 #+END_SRC
-
 * Navigation
 ** Recent files
 
@@ -834,7 +832,7 @@ to retrieve and display completion candidates.
               ("C-n" . company-select-next)
               ("C-h" . company-select-previous)
               ("TAB" . company-complete-selection)
-              ("C-w" . my/smart-kill)))
+              ("C-w" . topiary/smart-kill)))
 #+END_SRC
 
 *** Compilation buffers display ANSI
@@ -880,6 +878,13 @@ to retrieve and display completion candidates.
               ("C-}" . sp-forward-barf-sexp)
               ("C-M-h" . sp-previous-sexp)
               (")" . sp-backward-unwrap-sexp)))
+#+END_SRC
+
+*** Topiary
+
+#+BEGIN_SRC emacs-lisp
+(load-file ".emacs.d/topiary.el")
+(use-package topiary :straight nil)
 #+END_SRC
 
 *** Flycheck
@@ -977,7 +982,7 @@ Handles auto-inserting templates when creating new files.
 Highlights the current symbol.
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'post-command-hook 'my/hl-current-kill-region-overlay-hook)
+(add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
 #+END_SRC
 
 ** Eshell
@@ -1031,17 +1036,10 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 #+BEGIN_SRC emacs-lisp
 (use-package elisp-mode
   :straight nil
-  :config
-  (progn
-    (defun my/wrap-if-sexp ()
-      (interactive)
-      (if (or (symbol-at-point) (sexp-at-point))
-          (my/wrap-with-parens)
-        (my/insert-pair "()"))))
   :bind (:map emacs-lisp-mode-map
-              ("(" . my/wrap-if-sexp)
+              ("(" . topiary/smart-paren)
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
-              (";" . my/insert-double-semicolon)))
+              (";" . topiary/insert-double-semicolon)))
 #+END_SRC
 
 *** Dash
@@ -1094,10 +1092,10 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
               ("M-," . my/clj-jump-back)
-              ("[" . my/wrap-with-brackets)
-              ("{" . my/wrap-with-braces)
-              ("(" . my/smart-bracket)
-              (";" . my/insert-double-semicolon)))
+              ("[" . topiary/wrap-with-brackets)
+              ("{" . topiary/wrap-with-braces)
+              ("(" . topiary/smart-bracket)
+              (";" . topiary/insert-double-semicolon)))
 #+END_SRC
 
 *** Flycheck Joker
