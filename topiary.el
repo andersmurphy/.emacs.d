@@ -11,6 +11,22 @@
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
 
+(defun topiary/skip-ws-forward-char ()
+  "Move cursor forward one character. Skips over whitespace."
+  (interactive)
+  (let ((initial-point (point)))
+    (skip-chars-forward "\n ")
+    (when (= initial-point (point))
+      (forward-char 1))))
+
+(defun topiary/skip-ws-backward-char ()
+  "Move cursor backward one character. Skips over whitespace."
+  (interactive)
+  (let ((initial-point (point)))
+    (skip-chars-backward "\n ")
+    (when (= initial-point (point))
+      (backward-char 1))))
+
 (defun topiary/symbols-in-sexp ()
   "Return list of strings before point in sexp."
   (ignore-errors
