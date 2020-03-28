@@ -345,6 +345,8 @@ I find C-j more ergonomic that C-m as it's on the home row.
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "'") 'topiary/smart-quote)
+(global-set-key (kbd "C-f") 'topiary/skip-ws-forward-char)
+(global-set-key (kbd "C-b") 'topiary/skip-ws-backward-char)
 (global-set-key (kbd "\"") (lambda () (interactive (insert "'"))))
 #+END_SRC
 
