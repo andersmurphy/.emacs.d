@@ -692,6 +692,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :bind ("C-s" . swiper-isearch)
+  ("C-w" . topiary/smart-kill)
   ("C-r" . swiper-isearch-backward))
 #+END_SRC
 
