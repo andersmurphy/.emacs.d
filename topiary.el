@@ -3,7 +3,7 @@
 ;;; Code:
 
 ;;To turn on debugger on error: M-x toggle-debug-on-error
-(require 'dash)
+(require 'subr-x)
 
 (define-minor-mode topiary-mode
   :lighter " TP"
@@ -50,23 +50,26 @@
 (defun topiary/symbols-in-sexp ()
   "Return list of strings before point in sexp."
   (ignore-errors
-    (->> (buffer-substring
-          (save-excursion (backward-up-list) (point))
-          (save-excursion (backward-up-list) (forward-sexp) (point)))
-         (replace-regexp-in-string "{" "(")
-         (replace-regexp-in-string "}" ")")
-         (replace-regexp-in-string "#" "")
-         edn-read)))
+    (thread-last
+        (buffer-substring
+         (save-excursion (backward-up-list) (point))
+         (save-excursion (backward-up-list) (forward-sexp) (point)))
+      (replace-regexp-in-string "{" "(")
+      (replace-regexp-in-string "}" ")")
+      (replace-regexp-in-string "#" "")
+      read-from-string
+      car)))
 
 (defun topiary/symbols-in-outer-sexp ()
   "Return list of strings before point in outer sexp."
   (ignore-errors
-    (->>
-     (buffer-substring
-      (save-excursion (backward-up-list) (backward-up-list) (point))
-      (save-excursion (backward-up-list) (backward-up-list) (forward-sexp) (point)))
-     edn-read
-     (seq-remove #'vectorp))))
+    (thread-last
+        (buffer-substring
+         (save-excursion (backward-up-list) (backward-up-list) (point))
+         (save-excursion (backward-up-list) (backward-up-list) (forward-sexp) (point)))
+      read-from-string
+      car
+      (seq-remove #'vectorp))))
 
 (defun topiary/insert-pair (pair)
   "Insert PAIR."
@@ -130,8 +133,8 @@ Cursor point stays on the same character despite potential point shift."
   "Return t if SEXP satisfies smart bracket heuristic.
 If the first item in the list is a member of the smart bracket SYMS list."
   (ignore-errors
-    (-> (car sexp)
-        (member syms))))
+    (thread-first (car sexp)
+      (member syms))))
 
 (defun topiary/no-vector-in-sexp (sexp)
   "Return non-nil if no vector in SEXP."
@@ -223,7 +226,7 @@ In the above example the n would be deleted. Handles comments."
   (let ((initial-point (point)))
     (skip-chars-backward "\n ")
     (if (= initial-point (point))
-        (delete-backward-char 1 t)
+        (delete-char -1 t)
       (kill-region initial-point (point)))))
 
 (defun topiary/bounds-of-space-before-opening-paren ()
