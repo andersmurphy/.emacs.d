@@ -339,15 +339,10 @@ I find C-j more ergonomic that C-m as it's on the home row.
 (global-set-key (kbd "C-x f") 'counsel-find-file)
 (global-set-key (kbd "C-x C-d") 'dired)
 (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-w") 'topiary/smart-kill)
-(global-set-key (kbd "C-t") 'topiary/smart-transpose)
 (global-set-key (kbd "M-c") 'org-capture)
 (global-set-key (kbd "C-v") 'yank)
 (global-set-key (kbd "C-o") 'other-window)
-(global-set-key (kbd "'") 'topiary/smart-quote)
-(global-set-key (kbd "C-f") 'topiary/skip-ws-forward-char)
-(global-set-key (kbd "C-b") 'topiary/skip-ws-backward-char)
-(global-set-key (kbd "\"") (lambda () (interactive (insert "'"))))
+
 #+END_SRC
 
 * Appearance
@@ -593,6 +588,15 @@ Sets font and font size.
 #+END_SRC
 
 * Text Manipulation
+** Topiary
+
+Minor mode for more convenient text editing.
+
+#+BEGIN_SRC emacs-lisp
+(load-file ".emacs.d/topiary.el")
+(use-package topiary :straight nil)
+#+END_SRC
+
 ** Delete selected region when typing
 
 #+BEGIN_SRC emacs-lisp
@@ -620,7 +624,6 @@ Tab will now contextually indent or complete.
 #+BEGIN_SRC emacs-lisp
 (setq tab-always-indent 'complete)
 #+END_SRC
-
 ** Flyspell
 
 Turn spellcheck on, sets it to use aspell and british spelling.
@@ -648,12 +651,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 
 #+BEGIN_SRC emacs-lisp
 (setq sentence-end-double-space nil)
-#+END_SRC
-
-** Back to indentation or beginning
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-a") 'topiary/back-to-indentation-or-beginning)
 #+END_SRC
 * Navigation
 ** Recent files
@@ -823,8 +820,7 @@ to retrieve and display completion candidates.
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-h" . company-select-previous)
-              ("TAB" . company-complete-selection)
-              ("C-w" . topiary/smart-kill)))
+              ("TAB" . company-complete-selection)))
 #+END_SRC
 
 *** Compilation buffers display ANSI
@@ -871,14 +867,6 @@ to retrieve and display completion candidates.
               ("C-M-h" . sp-previous-sexp)
               (")" . sp-backward-unwrap-sexp)))
 #+END_SRC
-
-*** Topiary
-
-#+BEGIN_SRC emacs-lisp
-(load-file ".emacs.d/topiary.el")
-(use-package topiary :straight nil)
-#+END_SRC
-
 *** Flycheck
 
 [[https://github.com/flycheck/flycheck][Flycheck]] on-the-fly syntax checking extension.
@@ -969,13 +957,6 @@ Handles auto-inserting templates when creating new files.
  :bind (:map inferior-lisp-mode-map
         ("M-h" . comint-previous-input)))
 #+END_SRC
-*** Highlight current smart kill region
-
-Highlights the current symbol.
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
-#+END_SRC
 
 ** Eshell
 
@@ -1029,9 +1010,9 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 (use-package elisp-mode
   :straight nil
   :bind (:map emacs-lisp-mode-map
-              ("(" . topiary/smart-paren)
+
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
-              (";" . topiary/insert-double-semicolon)))
+              ))
 #+END_SRC
 
 *** Dash
@@ -1083,11 +1064,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
               ("C-x C-e" . my/clj-eval-last-sexp-with-ns)
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
-              ("M-," . my/clj-jump-back)
-              ("[" . topiary/wrap-with-brackets)
-              ("{" . topiary/wrap-with-braces)
-              ("(" . topiary/smart-bracket)
-              (";" . topiary/insert-double-semicolon)))
+              ("M-," . my/clj-jump-back)))
 #+END_SRC
 
 *** Flycheck Joker
