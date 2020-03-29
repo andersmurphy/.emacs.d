@@ -594,7 +594,12 @@ Minor mode for more convenient text editing.
 
 #+BEGIN_SRC emacs-lisp
 (load-file ".emacs.d/topiary.el")
-(use-package topiary :straight nil)
+(use-package topiary :straight nil
+  :init
+  (add-hook 'text-mode-hook #'topiary-mode)
+  (add-hook 'prog-mode-hook #'topiary-mode)
+  (add-hook 'comint-mode-hook #'topiary-mode)
+  (add-hook 'outline-mode-hook #'topiary-mode))
 #+END_SRC
 
 ** Delete selected region when typing

@@ -5,7 +5,10 @@
 ;;To turn on debugger on error: M-x toggle-debug-on-error
 (require 'subr-x)
 
+;;;###autoload
 (define-minor-mode topiary-mode
+  "Toggle topiary mode."
+  :init-value nil
   :lighter " TP"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-a") #'topiary/back-to-indentation-or-beginning)
@@ -15,7 +18,6 @@
             (define-key map (kbd "C-b") #'topiary/skip-ws-backward-char)
             (define-key map (kbd "'")   #'topiary/smart-quote)
             (define-key map (kbd "(")   #'topiary/smart-bracket)
-            (define-key map (kbd "[")   #'topiary/wrap-with-brackets)
             (define-key map (kbd "[")   #'topiary/wrap-with-brackets)
             (define-key map (kbd "{")   #'topiary/wrap-with-braces)
             (define-key map (kbd ";")   #'topiary/insert-double-semicolon)
@@ -333,9 +335,6 @@ Otherwise insert double quote."
      ((or  (string-match "[[:alnum:]]" b-char)
            (string-match "[[:alnum:](]" a-char))  (insert "'"))
      (t (topiary/insert-pair "\"\"")))))
-
-;;;###autoload
-(add-hook 'text-mode-hook 'topiary-mode)
 
 (provide 'topiary)
 ;;; topiary.el ends here
