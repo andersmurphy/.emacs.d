@@ -5,6 +5,27 @@
 ;;To turn on debugger on error: M-x toggle-debug-on-error
 (require 'dash)
 
+(define-minor-mode topiary-mode
+  :lighter " TP"
+  :keymap (let ((map (make-sparse-keymap)))
+            (define-key map (kbd "C-a") #'topiary/back-to-indentation-or-beginning)
+            (define-key map (kbd "C-w") #'topiary/smart-kill)
+            (define-key map (kbd "C-t") #'topiary/smart-transpose)
+            (define-key map (kbd "C-f") #'topiary/skip-ws-forward-char)
+            (define-key map (kbd "C-b") #'topiary/skip-ws-backward-char)
+            (define-key map (kbd "'")   #'topiary/smart-quote)
+            (define-key map (kbd "(")   #'topiary/smart-bracket)
+            (define-key map (kbd "[")   #'topiary/wrap-with-brackets)
+            (define-key map (kbd "[")   #'topiary/wrap-with-brackets)
+            (define-key map (kbd "{")   #'topiary/wrap-with-braces)
+            (define-key map (kbd ";")   #'topiary/insert-double-semicolon)
+            (define-key map (kbd "\"") (lambda ()
+                                         (interactive (insert "'"))))
+            map)
+  (if topiary-mode
+      (add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
+    (remove-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)))
+
 (defun topiary/back-to-indentation-or-beginning ()
   "Go to first character in line. If already at first character go to beginning of line."
   (interactive)
@@ -117,7 +138,7 @@ If the first item in the list is a member of the smart bracket SYMS list."
   "Return non-nil if no vector in SEXP."
   (not (seq-some #'vectorp sexp)))
 
-(defun topiary/smart-bracket ()
+(defun topiary/smart-bracket-clojure ()
   "Contextually insert [] when typing ()."
   (interactive)
   (let ((sexp (topiary/symbols-in-sexp))
@@ -134,12 +155,18 @@ If the first item in the list is a member of the smart bracket SYMS list."
            (topiary/insert-pair "[]"))
           (t (topiary/insert-pair "()")))))
 
-(defun topiary/smart-paren ()
+(defun topiary/smart-bracket-lisp ()
   "Wrap in parens if sexp otherwise insert parens."
   (interactive)
   (if (or (symbol-at-point) (sexp-at-point))
       (topiary/wrap-with-parens)
     (topiary/insert-pair "()")))
+
+(defun topiary/smart-bracket ()
+  "Select appropriate smart-bracket for LISP dialect."
+  (interactive)
+  (cond ((equal major-mode 'clojure-mode) (topiary/smart-bracket-clojure))
+        (t (topiary/smart-bracket-lisp))))
 
 (defun topiary/smart-transpose ()
   "Move sexp left if point at beginning. Otherwise move right.
@@ -297,6 +324,9 @@ Otherwise insert double quote."
      ((or  (string-match "[[:alnum:]]" b-char)
            (string-match "[[:alnum:](]" a-char))  (insert "'"))
      (t (topiary/insert-pair "\"\"")))))
+
+;;;###autoload
+(add-hook 'text-mode-hook 'topiary-mode)
 
 (provide 'topiary)
 ;;; topiary.el ends here
