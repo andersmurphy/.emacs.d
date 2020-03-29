@@ -19,8 +19,7 @@
             (define-key map (kbd "[")   #'topiary/wrap-with-brackets)
             (define-key map (kbd "{")   #'topiary/wrap-with-braces)
             (define-key map (kbd ";")   #'topiary/insert-double-semicolon)
-            (define-key map (kbd "\"") (lambda ()
-                                         (interactive (insert "'"))))
+            (define-key map (kbd "\"") (lambda () (interactive) (insert "'")))
             map)
   (if topiary-mode
       (add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
@@ -272,6 +271,13 @@ In the above example the n would be deleted. Handles comments."
       (bounds-of-thing-at-point 'sexp)
       (topiary/bounds-of-last-sexp)))
 
+(defmacro topiary/handle-ivy-if-loaded ()
+  "When ivy is loaded handle smart-kill in ivy minibuffer."
+  (when (require 'ivy nil 'noerror)
+    '(when (and (minibufferp)
+                (bound-and-true-p ivy-mode))
+       (ivy-backward-delete-char))))
+
 (defun topiary/smart-kill ()
   "Kill backward word or sexp. If neither hungry delete backward."
   (interactive)
@@ -282,8 +288,8 @@ In the above example the n would be deleted. Handles comments."
     (cond (bounds
            (condition-case nil
                (kill-region (car bounds-directed) (cdr bounds-directed))
-             (error (when (and (minibufferp) (bound-and-true-p ivy-mode))
-                      (ivy-backward-delete-char)))))
+             (error
+              (topiary/handle-ivy-if-loaded))))
           (t (topiary/hungry-delete-backward)))))
 
 (defvar topiary/hl-current-kill-region-overlay nil
