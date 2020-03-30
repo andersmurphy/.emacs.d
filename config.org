@@ -388,7 +388,7 @@ Disables default splash screen.
     (doom-themes-set-faces
       my/active-theme
       '(cursor :background magenta)
-      '(sp-show-pair-match-face :foreground magenta :weight 'bold)
+      '(show-paren-match :foreground magenta :weight 'bold)
       '(line-number-current-line :foreground fg :weight 'bold)
       '(font-lock-type-face :foreground green)
       '(font-lock-keyword-face :foreground fg)
@@ -849,6 +849,13 @@ to retrieve and display completion candidates.
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 #+END_SRC
 
+*** Show paren mode
+
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+#+END_SRC
+
 *** Smartparens
 
 [[https://github.com/Fuco1/smartparens][Smartparens]] paredit for all the things.
@@ -861,7 +868,6 @@ to retrieve and display completion candidates.
       :straight nil)
     (sp-use-smartparens-bindings)
     (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
-    (show-smartparens-global-mode t)
     (setq sp-highlight-pair-overlay nil))
   :init
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
