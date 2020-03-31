@@ -1,9 +1,40 @@
 ;;; topiary.el --- My riff on structural editing -*- lexical-binding: t -*-
 ;;; Commentary:
+
+;; Built using the lisp.el commands that come with Emacs for minimal
+;; dependencies.
+
+;; Highlights the area that commands will operate on for faster visual
+;; feedback.
+
+;; Tries to minimise the number of keybindings by doing what you mean
+;; rather than what you say based on current context. Allowing you to
+;; do more with less.
+
 ;;; Code:
 
-;;To turn on debugger on error: M-x toggle-debug-on-error
 (require 'subr-x)
+
+;; Missing functionality
+
+;; (define-key map (kbd "C-k") 'sp-kill-sexp)
+;; ("<C-[>" . sp-backward-slurp-sexp)
+;; ("C-{" . sp-backward-barf-sexp)
+;; ("C-}" . sp-forward-barf-sexp)
+;; (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
+;; (sp-backward-unwrap-sexp)
+;;  Can't insert ;; inside sexp even though it wouldn't break sexp
+;;  Should auto insert ;; in correct context
+;;  Normal ;/: behaviour outside of lisps
+;; If inserting ;; after ;; convert to  ;;;
+
+(defmacro topiary/if-in-string (then-form else-form)
+  "If in string do THEN-FORM otherwise do ELSE-FORM."
+  `(lambda ()
+     (interactive)
+     (if (nth 3 (syntax-ppss))
+         ,then-form
+       ,else-form)))
 
 ;;;###autoload
 (define-minor-mode topiary-mode
@@ -11,21 +42,41 @@
   :init-value nil
   :lighter " TP"
   :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "C-a") #'topiary/back-to-indentation-or-beginning)
-            (define-key map (kbd "C-w") #'topiary/smart-kill)
-            (define-key map (kbd "C-t") #'topiary/smart-transpose)
-            (define-key map (kbd "C-f") #'topiary/skip-ws-forward-char)
-            (define-key map (kbd "C-b") #'topiary/skip-ws-backward-char)
-            (define-key map (kbd "'")   #'topiary/smart-quote)
-            (define-key map (kbd "(")   #'topiary/smart-bracket)
-            (define-key map (kbd "[")   #'topiary/wrap-with-brackets)
-            (define-key map (kbd "{")   #'topiary/wrap-with-braces)
-            (define-key map (kbd ";")   #'topiary/insert-double-semicolon)
+            (define-key map (kbd "C-a") 'topiary/back-to-indentation-or-beginning)
+            (define-key map (kbd "C-w") 'topiary/smart-kill)
+            (define-key map (kbd "C-t") 'topiary/smart-transpose)
+            (define-key map (kbd "C-f") 'topiary/skip-ws-forward-char)
+            (define-key map (kbd "C-b") 'topiary/skip-ws-backward-char)
+            (define-key map (kbd "C-M-k") 'kill-sexp)
+            (define-key map (kbd "C-M-h") 'backward-sexp)
+            (define-key map (kbd "C-k") 'sp-kill-sexp)
+            (define-key map (kbd "'")  (topiary/if-in-string
+                                        (insert "\\\"")
+                                        (topiary/smart-quote)))
+            (define-key map (kbd "(")  (topiary/if-in-string
+                                        (insert "(")
+                                        (topiary/smart-bracket)))
+            (define-key map (kbd ")")  (topiary/if-in-string
+                                        (insert ")")
+                                        (sp-backward-unwrap-sexp)))
+            (define-key map (kbd "[")  (topiary/if-in-string
+                                        (insert "[")
+                                        (topiary/wrap-with-brackets)))
+            (define-key map (kbd "{")  (topiary/if-in-string
+                                        (insert "{")
+                                        (topiary/wrap-with-braces)))
+            (define-key map (kbd ";")  (topiary/if-in-string
+                                        (insert ";")
+                                        (topiary/insert-double-semicolon)))
             (define-key map (kbd "\"") (lambda () (interactive) (insert "'")))
+            (define-key map (kbd "\\") (lambda () (interactive) (insert "\\")))
             map)
   (if topiary-mode
-      (add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
-    (remove-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)))
+      (progn
+        (add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
+        (add-hook 'post-self-insert-hook 'topiary/post-self-insert))
+    (remove-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
+    (remove-hook 'post-self-insert-hook 'topiary/post-self-insert)))
 
 (defun topiary/back-to-indentation-or-beginning ()
   "Go to first character in line. If already at first character go to beginning of line."
@@ -213,9 +264,8 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/post-self-insert ()
   "Prevent insert breaking top level AST."
-  (when (or (eq major-mode 'clojure-mode) (eq major-mode 'emacs-lisp-mode))
+  (when (member major-mode '(clojure-mode emacs-lisp-mode))
     (topiary/strict-insert)))
-(add-hook 'post-self-insert-hook 'topiary/post-self-insert)
 
 (defun topiary/bounds-of-last-sexp ()
   "Get bounds of last sexp."

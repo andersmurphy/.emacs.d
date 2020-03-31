@@ -826,7 +826,8 @@ to retrieve and display completion candidates.
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-h" . company-select-previous)
-              ("TAB" . company-complete-selection)))
+              ("TAB" . company-complete-selection)
+              ("C-w" . topiary/smart-kill)))
 #+END_SRC
 
 *** Compilation buffers display ANSI
@@ -875,9 +876,7 @@ to retrieve and display completion candidates.
   :bind (:map smartparens-mode-map
               ("<C-[>" . sp-backward-slurp-sexp)
               ("C-{" . sp-backward-barf-sexp)
-              ("C-}" . sp-forward-barf-sexp)
-              ("C-M-h" . sp-previous-sexp)
-              (")" . sp-backward-unwrap-sexp)))
+              ("C-}" . sp-forward-barf-sexp)))
 #+END_SRC
 *** Flycheck
 
