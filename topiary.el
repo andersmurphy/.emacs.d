@@ -49,7 +49,7 @@
             (define-key map (kbd "C-b") 'topiary/skip-ws-backward-char)
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
-            (define-key map (kbd "C-k") 'sp-kill-sexp)
+            (define-key map (kbd "C-k") 'sp-kill-hybrid-sexp)
             (define-key map (kbd "'")  (topiary/if-in-string
                                         (insert "\\\"")
                                         (topiary/smart-quote)))
