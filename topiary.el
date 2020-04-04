@@ -328,10 +328,9 @@ In the above example the n would be deleted. Handles comments."
 
 (defmacro topiary/handle-ivy-if-loaded ()
   "When ivy is loaded handle smart-kill in ivy minibuffer."
-  (when (require 'ivy nil 'noerror)
-    '(when (and (minibufferp)
-                (bound-and-true-p ivy-mode))
-       (ivy-backward-delete-char))))
+  '(when (and (minibufferp)
+              (bound-and-true-p ivy-mode))
+     (ivy-backward-delete-char)))
 
 (defun topiary/smart-kill ()
   "Kill backward word or sexp. If neither hungry delete backward."
