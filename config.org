@@ -725,6 +725,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
   (setq magit-diff-refine-hunk 'all)
   (setq magit-diff-refine-ignore-whitespace t)
+  (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   :bind (("C-x g" . magit-status)
          :map magit-status-mode-map
          ("h" . magit-section-backward)
