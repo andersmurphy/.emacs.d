@@ -51,7 +51,7 @@
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'sp-kill-hybrid-sexp)
             (define-key map (kbd "'")  (topiary/if-in-string
-                                        (insert "\\\"")
+                                        (insert "'")
                                         (topiary/smart-quote)))
             (define-key map (kbd "(")  (topiary/if-in-string
                                         (insert "(")
@@ -68,7 +68,9 @@
             (define-key map (kbd ";")  (topiary/if-in-string
                                         (insert ";")
                                         (topiary/insert-double-semicolon)))
-            (define-key map (kbd "\"") (lambda () (interactive) (insert "'")))
+            (define-key map (kbd "\"") (topiary/if-in-string
+                                        (insert "\\\"")
+                                        (insert "'")))
             (define-key map (kbd "\\") (lambda () (interactive) (insert "\\")))
             map)
   (if topiary-mode
