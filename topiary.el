@@ -317,6 +317,12 @@ In the above example the n would be deleted. Handles comments."
   (when (region-active-p)
     (cons (region-beginning) (region-end))))
 
+(defun topiary/bounds-of-empty-pair ()
+  "Get bounds of empty pair () {} []."
+  (when  (and (member (char-before) (string-to-list "{[("))
+              (member (char-after) (string-to-list "}])")))
+    (cons (- (point) 1) (+ (point) 1))))
+
 (defun topiary/smart-kill-bounds ()
   "Get current smart-kill bounds."
   (or (topiary/bounds-of-active-region)
@@ -326,6 +332,7 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-punctuation-backward)
       (topiary/bounds-of-space-before-opening-paren)
       (bounds-of-thing-at-point 'sexp)
+      (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
 
 (defmacro topiary/handle-ivy-if-loaded ()
