@@ -594,7 +594,7 @@ Works up directories starting from the current files directory DIRNAME. Optional
 (defun my/json->edn ()
   "Convert json to edn."
   (interactive)
-  (my/smart-kill)
+  (topiary/smart-kill)
   (let ((s (car kill-ring)))
     (set-text-properties 0 (length s) nil s)
     (->> s
