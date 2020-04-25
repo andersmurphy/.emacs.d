@@ -397,8 +397,6 @@ Disables default splash screen.
       '(font-lock-constant-face :foreground violet)
       '(font-lock-builtin-face :foreground violet)
       '(font-lock-doc-face :foreground comments)
-      ;; modeline
-      '(doom-modeline-bar :foreground modeline-bg)
       ;; org
       '(org-level-1 :foreground blue :height 1.2 :weight 'ultra-bold)
       '(org-level-2 :foreground violet :height 1.0 :weight 'bold)
@@ -486,36 +484,40 @@ Disables default splash screen.
    (my/customise-theme))
 #+END_SRC
 
-** Modeline
+** Mode line
 
-Doom modeline.
+Custom minimalist mode line with right aligned time and flycheck errors.
 
 #+BEGIN_SRC emacs-lisp
-(use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
-  :init
-  (setq doom-modeline-icon nil)
-  :config
-  (doom-modeline-def-segment buffer-info-ignore-modified
-    (let ((active (doom-modeline--active)))
-      (concat
-       (propertize " " 'face (if active 'mode-line 'mode-line-inactive))
+(setq-default mode-line-end-spaces
+      (list (propertize " " 'display '(space :align-to (- right 5)))
+            'display-time-string))
 
-       ;; buffer file name
-       (when-let ((name (buffer-name)))
-         (if active
-             (propertize name 'face 'doom-modeline-buffer-file)
-           (propertize name 'face 'mode-line-inactive))))))
-
-  (doom-modeline-def-modeline 'my/simple-line
-    '(bar buffer-info-ignore-modified checker)
-    '(misc-info))
-  (defun my/setup-custom-doom-modeline ()
-    (doom-modeline-set-modeline 'my/simple-line 'default))
-  (add-hook 'doom-modeline-mode-hook 'my/setup-custom-doom-modeline))
+(setq-default mode-line-format
+              '("%e" mode-line-front-space
+                mode-line-buffer-identification
+                mode-line-end-spaces))
 #+END_SRC
 
-Display time in modeline.
+Make mode line fat.
+
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'mode-line nil
+                    :background (face-attribute 'mode-line :background)
+                    :foreground (face-attribute 'mode-line :foreground)
+                    :box `(:line-width 8 :color ,(face-attribute 'mode-line :background))
+                    :overline nil
+                    :underline nil)
+
+(set-face-attribute 'mode-line-inactive nil
+                    :background (face-attribute 'mode-line-inactive :background)
+                    :foreground (face-attribute 'mode-line-inactive :foreground)
+                    :box `(:line-width 8 :color ,(face-attribute 'mode-line-inactive :background))
+                    :overline nil
+                    :underline nil)
+#+END_SRC
+
+Display time in mode line.
 
 #+BEGIN_SRC emacs-lisp
 (setq display-time-default-load-average nil)
