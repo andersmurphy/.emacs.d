@@ -517,6 +517,8 @@ Make mode line fat.
                       :overline nil
                       :underline nil))
 
+(my/fat-mode-line)
+
 (add-hook
  'after-load-theme-hook
  'my/fat-mode-line)
