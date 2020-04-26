@@ -446,6 +446,12 @@ Disables default splash screen.
 *** Hook for after theme load
 
 #+BEGIN_SRC emacs-lisp
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
+(defadvice load-theme (after run-after-load-theme-hook activate)
+    "Run `after-load-theme-hook'."
+   (run-hooks 'after-load-theme-hook))
+
 (defun my/flycheck-use-line ()
   (set-face-attribute 'flycheck-error nil
                       :underline `(:style line :color ,(doom-color 'red)))
@@ -459,12 +465,6 @@ Disables default splash screen.
   (set-face-attribute 'flyspell-duplicate nil
                       :underline `(:style line :color ,(doom-color 'yellow))
                       :inherit 'unspecified))
-
-(defvar after-load-theme-hook nil
-  "Hook run after a color theme is loaded using `load-theme'.")
-(defadvice load-theme (after run-after-load-theme-hook activate)
-    "Run `after-load-theme-hook'."
-   (run-hooks 'after-load-theme-hook))
 
 (add-hook
  'after-load-theme-hook
@@ -502,19 +502,24 @@ Custom minimalist mode line with right aligned time and flycheck errors.
 Make mode line fat.
 
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'mode-line nil
-                    :background (face-attribute 'mode-line :background)
-                    :foreground (face-attribute 'mode-line :foreground)
-                    :box `(:line-width 8 :color ,(face-attribute 'mode-line :background))
-                    :overline nil
-                    :underline nil)
+(defun my/fat-mode-line ()
+  (set-face-attribute 'mode-line nil
+                      :background (face-attribute 'mode-line :background)
+                      :foreground (face-attribute 'mode-line :foreground)
+                      :box `(:line-width 8 :color ,(face-attribute 'mode-line :background))
+                      :overline nil
+                      :underline nil)
 
-(set-face-attribute 'mode-line-inactive nil
-                    :background (face-attribute 'mode-line-inactive :background)
-                    :foreground (face-attribute 'mode-line-inactive :foreground)
-                    :box `(:line-width 8 :color ,(face-attribute 'mode-line-inactive :background))
-                    :overline nil
-                    :underline nil)
+  (set-face-attribute 'mode-line-inactive nil
+                      :background (face-attribute 'mode-line-inactive :background)
+                      :foreground (face-attribute 'mode-line-inactive :foreground)
+                      :box `(:line-width 8 :color ,(face-attribute 'mode-line-inactive :background))
+                      :overline nil
+                      :underline nil))
+
+(add-hook
+ 'after-load-theme-hook
+ 'my/fat-mode-line)
 #+END_SRC
 
 Display time in mode line.
