@@ -1164,6 +1164,15 @@ Use eslint in rjsx-mode.
 #+BEGIN_SRC emacs-lisp
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 #+END_SRC
+
+** Rainbow mode
+
+Highlights hex colours. Not on by default as it can slow/crash large files.
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode)
+#+END_SRC
+
 * Misc
 ** Epub Reader
 
