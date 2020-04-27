@@ -490,7 +490,7 @@ Custom minimalist mode line with right aligned time and flycheck errors.
 
 #+BEGIN_SRC emacs-lisp
 (setq-default mode-line-end-spaces
-      (list (propertize " " 'display '(space :align-to (- right 5)))
+      (list (propertize " " 'display '(space :align-to (- right 16)))
             'display-time-string))
 
 (setq-default mode-line-format
@@ -529,7 +529,7 @@ Display time in mode line.
 #+BEGIN_SRC emacs-lisp
 (setq display-time-default-load-average nil)
 (setq display-time-string-forms
-      '((propertize (format-time-string "%H:%M" now) 'face 'bold)))
+      '((propertize (format-time-string "%F %H:%M" now) 'face 'bold)))
 (display-time-mode t)
 #+END_SRC
 
