@@ -486,6 +486,30 @@ Disables default splash screen.
 
 ** Mode line
 
+Functions for determining if mode line is active.
+
+#+BEGIN_SRC emacs-lisp
+(defvar my/mode-line-selected-window (frame-selected-window))
+
+(defun my/mode-line-set-selected-window (&rest _args)
+  (when (not (minibuffer-window-active-p (frame-selected-window)))
+    (setq my/mode-line-selected-window (frame-selected-window))
+    (force-mode-line-update)))
+
+(defun my/mode-line-unset-selected-window ()
+  (setq my/mode-line-selected-window nil)
+  (force-mode-line-update))
+
+(defun my/mode-line-selected-active-p ()
+  (eq my/mode-line-selected-window (selected-window)))
+
+(add-hook 'window-configuration-change-hook #'my/mode-line-set-selected-window)
+(add-hook 'focus-in-hook #'my/mode-line-set-selected-window)
+(add-hook 'focus-out-hook #'my/mode-line-unset-selected-window)
+(advice-add 'handle-switch-frame :after #'my/mode-line-set-selected-window)
+(advice-add 'select-window :after #'my/mode-line-set-selected-window)
+#+END_SRC
+
 Custom minimalist mode line with right aligned time and flycheck errors.
 
 #+BEGIN_SRC emacs-lisp
@@ -496,7 +520,8 @@ Custom minimalist mode line with right aligned time and flycheck errors.
 (setq-default mode-line-format
               '("%e" mode-line-front-space
                 mode-line-buffer-identification
-                mode-line-end-spaces))
+                (:eval (when (my/mode-line-selected-active-p)
+                         mode-line-end-spaces))))
 #+END_SRC
 
 Make mode line fat.
