@@ -484,25 +484,6 @@ defaults to current namespace."
     (save-buffer)
     (find-file (concat project-name-path "/deps.edn"))))
 
-(defun my/create-new-shadow-cljs-project ()
-  "Create a new deps.edn project."
-  (interactive)
-  (let* ((project-name-path (counsel-read-directory-name "Directory:"))
-         (namespace-name (->> (split-string project-name-path "/")
-                              reverse
-                              car
-                              (replace-regexp-in-string "-" "_"))))
-    (make-directory project-name-path)
-    (find-file (concat project-name-path "/shadow-cljs.edn"))
-    (save-buffer)
-    (find-file (concat project-name-path "/.gitignore"))
-    (save-buffer)
-    (make-directory (concat project-name-path "/src"))
-    (make-directory (concat project-name-path "/src/" namespace-name))
-    (find-file (concat project-name-path "/src/" namespace-name "/core.cljs"))
-    (save-buffer)
-    (find-file (concat project-name-path "/shadow-cljs.edn"))))
-
 (defun my/create-new-lein-project ()
   "Create a new lein project."
   (interactive)
