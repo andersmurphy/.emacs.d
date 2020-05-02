@@ -79,16 +79,41 @@ If buffer doesn't have namespace defaults to current namespace."
   (if (and (booleanp value) value) 'true  value))
 
 (defun my/configure-repl ()
-  "Configure global repl settings."
+  "Configure global repl settings.
+
+Sets default printer to pprint for more readable collections.
+
+Sets 'print-length' to prevent the REPL from becoming unresponsive when
+large amounts of data is printed by mistake.
+
+Truncates long strings to prevent the REPL from becoming unresponsive
+when long strings are printed by mistake. The 'string-length' atom
+determines the maximum length of the string that the REPL will
+print. This can be changed by evaluating:
+
+\(reset! user/string-length 100).
+
+Setting string-length to nil prints the whole string."
   (my/clj-eval `(do
                  (when-not ,(my/t->true-sym
                              (my/inferior-lisp-program-heroku-p))
                            (require (quote [pjstadig.humane-test-output]))
                            (eval '(pjstadig.humane-test-output/activate!)))
                  (set! *print-length* 30)
-                 (clojure.main/repl :print (fn [x]
-                                               (newline)
-                                               (clojure.pprint/pprint x))))))
+                 (def string-length (atom 1000))
+                 (clojure.main/repl
+                  :print
+                  (fn [x]
+                      (newline)
+                      (->
+                       (clojure.walk/postwalk
+                        (fn [form] (if (and (string? form)
+                                            (not (nil? @string-length))
+                                            (> (count form) @string-length))
+                                       (str (subs form 0 @string-length) "...")
+                                     form))
+                        x)
+                       clojure.pprint/pprint))))))
 
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
