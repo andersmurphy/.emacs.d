@@ -28,11 +28,15 @@
 ;;  Normal ;/: behaviour outside of lisps
 ;; If inserting ;; after ;; convert to  ;;;
 
+(defun topiary/in-string-p ()
+  "Return t if point in string."
+  (nth 3 (syntax-ppss)))
+
 (defmacro topiary/if-in-string (then-form else-form)
   "If in string do THEN-FORM otherwise do ELSE-FORM."
   `(lambda ()
      (interactive)
-     (if (nth 3 (syntax-ppss))
+     (if (in-string-p)
          ,then-form
        ,else-form)))
 
@@ -58,7 +62,7 @@
                                         (topiary/smart-bracket)))
             (define-key map (kbd ")")  (topiary/if-in-string
                                         (insert ")")
-                                        (sp-backward-unwrap-sexp)))
+                                        (topiary/unwrap)))
             (define-key map (kbd "[")  (topiary/if-in-string
                                         (insert "[")
                                         (topiary/wrap-with-brackets)))
@@ -249,7 +253,7 @@ If end or beginning of outer sexp reached move point to other bound.
            (or (= (save-excursion (forward-sexp) (point)) (line-end-position))
                (= (point) (line-end-position))))
          (insert ";; "))
-        ((nth 3 (syntax-ppss)) (insert ";"))))
+        ((in-string-p) (insert ";"))))
 
 (defun topiary/strict-insert ()
   "If to level and the last entered character is not a valid insert delete it.
@@ -319,8 +323,24 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-empty-pair ()
   "Get bounds of empty pair () {} []."
-  (when  (and (member (char-before) (string-to-list "{[("))
-              (member (char-after) (string-to-list "}])")))
+  (when (and (member (char-before) (string-to-list "{[("))
+             (member (char-after) (string-to-list "}])")))
+    (cons (- (point) 1) (+ (point) 1))))
+
+(defun topiary/bounds-of-single-bracket-in-string ()
+  "Get bounds of single bracket in string."
+  (when (topiary/in-string-p)
+    (cons (point) (- (point) 1))))
+
+(defun topiary/bounds-of-empty-string ()
+  "Get bounds of empty string."
+  (when (topiary/in-string-p)
+    (cons (- (point) 1) (+ (point) 1))))
+
+(defun topiary/bounds-of-escaped-double-quote-in-string ()
+  "Get bounds of escaped double quote string."
+  (when (and (topiary/in-string-p)
+             (member (char-after) (string-to-list "\"")))
     (cons (- (point) 1) (+ (point) 1))))
 
 (defun topiary/smart-kill-bounds ()
@@ -331,12 +351,15 @@ In the above example the n would be deleted. Handles comments."
       (bounds-of-thing-at-point 'word)
       (topiary/bounds-of-punctuation-backward)
       (topiary/bounds-of-space-before-opening-paren)
+      (topiary/bounds-of-escaped-double-quote-in-string)
+      (topiary/bounds-of-single-bracket-in-string)
+      (topiary/bounds-of-empty-string)
       (bounds-of-thing-at-point 'sexp)
       (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
 
 (defmacro topiary/handle-ivy-if-loaded ()
-  "When ivy is loaded handle smart-kill in ivy minibuffer."
+  "When ivy is loaded handle smart-kill in ivy mini buffer."
   '(when (and (minibufferp)
               (bound-and-true-p ivy-mode))
      (ivy-backward-delete-char)))
@@ -393,6 +416,28 @@ Otherwise insert double quote."
      ((or  (string-match "[[:alnum:]]" b-char)
            (string-match "[[:alnum:](]" a-char))  (insert "'"))
      (t (topiary/insert-pair "\"\"")))))
+
+(defun topiary/unwrap ()
+  "Unwrap the current expression. Works on ()[]{}\".
+
+Examples:
+  (foo bar baz)|     -> foo bar baz|
+  (foo bar)| (baz)   -> foo bar| (baz)
+  |(foo bar baz)     -> |foo bar baz
+  |(foo bar) (baz)   -> |foo bar (baz)"
+  (interactive)
+  (save-mark-and-excursion
+    (condition-case nil
+        (let ((bounds (if (or (member (char-after) (string-to-list "({[\""))
+                              (member (char-before) (string-to-list ")}]\"")))
+                          (topiary/smart-kill-bounds)
+                        (up-list)
+                        (topiary/smart-kill-bounds))))
+          (goto-char (car bounds))
+          (delete-char 1)
+          (goto-char (- (cdr bounds) 1))
+          (delete-char -1))
+      (error (message "Can't unwrap top level")))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
