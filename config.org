@@ -1171,6 +1171,22 @@ Toggle between up and down file if they exist (assumes files are in the same fol
   :hook (rjsx-mode . add-node-modules-path))
 #+END_SRC
 
+*** Prettier
+
+[[https://github.com/prettier/prettier-emacs][prettier-js]] auto format on save.
+
+#+BEGIN_SRC emacs-lisp
+(use-package prettier-js
+  :config
+  (setq prettier-js-args '("--trailing-comma"  "all"
+                           "--bracket-spacing" "true"
+                           "--single-quote"    "true"
+                           "--semi"            "false"
+                           "--print-width"     "120"))
+  :hook (rjsx-mode . (lambda ()
+                       (add-hook 'before-save-hook 'prettier-js nil 'make-it-local))))
+#+END_SRC
+
 *** Flycheck
 
 Flycheck checks Javascript with one of javascript-eslint, javascript-jshint
