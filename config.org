@@ -1182,7 +1182,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
                            "--bracket-spacing" "true"
                            "--single-quote"    "true"
                            "--semi"            "false"
-                           "--print-width"     "120"))
+                           "--print-width"     "100"))
   :hook (rjsx-mode . (lambda ()
                        (add-hook 'before-save-hook 'prettier-js nil 'make-it-local))))
 #+END_SRC
