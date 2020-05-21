@@ -1173,7 +1173,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 
 *** Prettier
 
-[[https://github.com/prettier/prettier-emacs][prettier-js]] auto format on save.
+[[https://github.com/prettier/prettier-emacs][prettier-js]] auto format on save. Options can be found [[https://prettier.io/docs/en/options.html][here]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package prettier-js
