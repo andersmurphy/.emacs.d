@@ -1178,7 +1178,7 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 #+BEGIN_SRC emacs-lisp
 (use-package prettier-js
   :config
-  (setq prettier-js-args '("--trailing-comma"  "all"
+  (setq prettier-js-args '("--trailing-comma"  "es5"
                            "--bracket-spacing" "true"
                            "--single-quote"    "true"
                            "--semi"            "false"
