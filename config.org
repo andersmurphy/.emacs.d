@@ -1007,6 +1007,15 @@ Handles auto-inserting templates when creating new files.
         ("M-h" . comint-previous-input)))
 #+END_SRC
 
+*** Hide show
+
+#+BEGIN_SRC emacs-lisp
+(use-package hideshow
+ :hook ((emacs-lisp-mode clojure-mode) . (lambda () (hs-minor-mode) (hs-hide-all)))
+ :bind (:map hs-minor-mode-map
+        ("TAB" . hs-toggle-hiding)))
+#+END_SRC
+
 ** Eshell
 
 #+BEGIN_SRC emacs-lisp
