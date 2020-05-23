@@ -1011,9 +1011,18 @@ Handles auto-inserting templates when creating new files.
 
 #+BEGIN_SRC emacs-lisp
 (use-package hideshow
- :hook ((emacs-lisp-mode clojure-mode) . (lambda () (hs-minor-mode) (hs-hide-all)))
- :bind (:map hs-minor-mode-map
-        ("TAB" . (lambda () (interactive) (beginning-of-defun) (hs-toggle-hiding)))))
+  :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
+                                            (hs-minor-mode)(hs-hide-all)))
+  :bind (:map hs-minor-mode-map
+              ("TAB" . (lambda ()
+                         (interactive)
+                         (save-excursion
+                           (unless (= (point)
+                                      (save-excursion
+                                        (beginning-of-line)
+                                        (point)))
+                             (beginning-of-defun))
+                           (hs-toggle-hiding))))))
 #+END_SRC
 
 ** Eshell
