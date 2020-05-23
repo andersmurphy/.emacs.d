@@ -1013,7 +1013,7 @@ Handles auto-inserting templates when creating new files.
 (use-package hideshow
  :hook ((emacs-lisp-mode clojure-mode) . (lambda () (hs-minor-mode) (hs-hide-all)))
  :bind (:map hs-minor-mode-map
-        ("TAB" . hs-toggle-hiding)))
+        ("TAB" . (lambda () (interactive) (beginning-of-defun) (hs-toggle-hiding)))))
 #+END_SRC
 
 ** Eshell
