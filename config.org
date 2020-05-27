@@ -1022,7 +1022,11 @@ Handles auto-inserting templates when creating new files.
                                         (beginning-of-line)
                                         (point)))
                              (beginning-of-defun))
-                           (hs-toggle-hiding))))))
+                           (hs-toggle-hiding))))
+              ("<backtab>" . (lambda ()
+                               (interactive)
+                               (save-excursion
+                                 (hs-hide-all))))))
 #+END_SRC
 
 ** Eshell
