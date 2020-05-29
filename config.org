@@ -1081,6 +1081,8 @@ Toggle between up and down file if they exist (assumes files are in the same fol
 (use-package elisp-mode
   :straight nil
   :bind (:map emacs-lisp-mode-map
+              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
+              :map lisp-interaction-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
 #+END_SRC
 
