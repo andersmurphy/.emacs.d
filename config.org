@@ -1011,6 +1011,26 @@ Handles auto-inserting templates when creating new files.
 
 #+BEGIN_SRC emacs-lisp
 (use-package hideshow
+  :config
+  (defun display-most-sever-flycheck-error (ov)
+    (when (eq 'code (overlay-get ov 'hs))
+      (let* ((most-sever-error (car (sort (flycheck-overlay-errors-in
+                                           (overlay-start ov)
+                                           (overlay-end ov))
+                                          #'flycheck-error-level-<)))
+             (level (and most-sever-error
+                         (flycheck-error-level most-sever-error)))
+             (marker-string "*fringe-dummy*")
+             (marker-length (length marker-string)))
+        (when most-sever-error
+          (put-text-property 0 marker-length 'display
+                             (list 'left-fringe
+                                   (flycheck-error-level-fringe-bitmap level)
+                                   (flycheck-error-level-fringe-face level))
+                             marker-string)
+          (overlay-put ov 'before-string marker-string))
+        (overlay-put ov 'display "..."))))
+  (setq hs-set-up-overlay 'display-most-sever-flycheck-error)
   :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
                                             (hs-minor-mode)(hs-hide-all)))
   :bind (:map hs-minor-mode-map
