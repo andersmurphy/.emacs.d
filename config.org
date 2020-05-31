@@ -19,6 +19,14 @@
 (use-package edn)
 #+END_SRC
 
+** Comment macro
+
+#+BEGIN_SRC emacs-lisp
+(defmacro comment (&rest body)
+  "Ignores body, yields nil"
+  nil)
+#+END_SRC
+
 ** Show docs for symbol at point
 
 #+BEGIN_SRC emacs-lisp
