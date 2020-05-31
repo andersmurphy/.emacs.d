@@ -2,6 +2,42 @@
 # M-x elisp-index-search to search elisp manual
 # M-x emacs-index-search to search emacs manual
 
+* Elisp
+** Dash
+
+[[https://github.com/magnars/dash.el#--x-optional-form-rest-more][Dash]] a modern list api for Emacs (includes things like -> ->> macros).
+
+#+BEGIN_SRC emacs-lisp
+(use-package dash)
+#+END_SRC
+
+** Edn
+
+[[https://github.com/expez/edn.el][Edn]] is an emacs lisp library for reading and writing the data format edn.
+
+#+BEGIN_SRC emacs-lisp
+(use-package edn)
+#+END_SRC
+
+** Show docs for symbol at point
+
+#+BEGIN_SRC emacs-lisp
+(defun my/docs-for-elisp-symbol-at-point ()
+  "Show docs for elisp symbol at point."
+  (interactive)
+  (describe-function (symbol-at-point)))
+#+END_SRC
+
+** Elisp mode bindings
+
+#+BEGIN_SRC emacs-lisp
+(use-package elisp-mode
+  :straight nil
+  :bind (:map emacs-lisp-mode-map
+              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
+              :map lisp-interaction-mode-map
+              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
+#+END_SRC
 * Defaults
 ** Exec-path-from-shell
 
@@ -1084,44 +1120,6 @@ Toggle between up and down file if they exist (assumes files are in the same fol
          :map sql-interactive-mode-map
               ("M-h" . comint-previous-input)))
 #+END_SRC
-
-** Elisp
-*** Show docs for symbol at point
-
-#+BEGIN_SRC emacs-lisp
-(defun my/docs-for-elisp-symbol-at-point ()
-  "Show docs for elisp symbol at point."
-  (interactive)
-  (describe-function (symbol-at-point)))
-#+END_SRC
-
-*** Elisp mode bindings
-
-#+BEGIN_SRC emacs-lisp
-(use-package elisp-mode
-  :straight nil
-  :bind (:map emacs-lisp-mode-map
-              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
-              :map lisp-interaction-mode-map
-              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
-#+END_SRC
-
-*** Dash
-
-[[https://github.com/magnars/dash.el#--x-optional-form-rest-more][Dash]] a modern list api for Emacs (includes things like -> ->> macros).
-
-#+BEGIN_SRC emacs-lisp
-(use-package dash)
-#+END_SRC
-
-*** Edn
-
-[[https://github.com/expez/edn.el][Edn]] is an emacs lisp library for reading and writing the data format edn.
-
-#+BEGIN_SRC emacs-lisp
-(use-package edn)
-#+END_SRC
-
 ** Clojure
 *** Clojure Mode & Inferior Lisp
 
