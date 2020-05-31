@@ -32,6 +32,10 @@
   "Return t if point in string."
   (nth 3 (syntax-ppss)))
 
+(defun topiary/in-empty-string-p ()
+  "Return t if point in empty string."
+  (and (= (char-before) (char-after) ?\")))
+
 (defmacro topiary/if-in-string (then-form else-form)
   "If in string do THEN-FORM otherwise do ELSE-FORM."
   `(lambda ()
@@ -289,7 +293,7 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-space-before-opening-paren ()
   "Get bounds of space character after cursor if opening char is before cursor."
-  (when (and (member (char-before) (string-to-list "{[("))
+  (when (and (member (char-before) (string-to-list "{[(\""))
              (member (char-after) (string-to-list "\n ")))
     (cons (point) (+ (point) 1))))
 
@@ -311,7 +315,7 @@ In the above example the n would be deleted. Handles comments."
              (next-non-space-point (progn (skip-chars-forward " ") (point)))
              (characters-between-point (- next-non-space-point initial-point))
              (character-after-next-point (char-after)))
-        (cond ((member character-after-next-point (string-to-list ")}]\n"))
+        (cond ((member character-after-next-point (string-to-list ")}]\n\""))
                (cons initial-point next-non-space-point))
               ((> characters-between-point 1)
                (cons initial-point (- next-non-space-point 1))))))))
@@ -329,17 +333,23 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-single-bracket-in-string ()
   "Get bounds of single bracket in string."
-  (when (topiary/in-string-p)
+  (when (and (topiary/in-string-p)
+             (member (char-before) (string-to-list "}]){[(")))
     (cons (point) (- (point) 1))))
 
 (defun topiary/bounds-of-empty-string ()
   "Get bounds of empty string."
-  (when (topiary/in-string-p)
+  (when (or (topiary/in-empty-string-p)
+            (save-excursion
+              (backward-char)
+              (topiary/in-empty-string-p)))
     (cons (- (point) 1) (+ (point) 1))))
 
 (defun topiary/bounds-of-escaped-double-quote-in-string ()
   "Get bounds of escaped double quote string."
-  (when (and (topiary/in-string-p)
+  (when (and (save-excursion
+               (forward-char)
+               (topiary/in-string-p))
              (member (char-after) (string-to-list "\"")))
     (cons (- (point) 1) (+ (point) 1))))
 
