@@ -293,11 +293,12 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-space-before-opening-paren ()
   "Get bounds of space character after cursor if opening char is before cursor."
-  (when (and (not (topiary/in-string-p))
-             (or (member (char-before) (string-to-list "{[("))
-                 (and (member (char-before) (string-to-list "\""))
-                      (topiary/in-string-p)))
-             (member (char-after) (string-to-list "\n ")))
+  (when (or (and (not (topiary/in-string-p))
+                 (member (char-before) (string-to-list "{[("))
+                 (member (char-after) (string-to-list "\n ")))
+            (and (topiary/in-string-p)
+                 (= (char-before) ?\")
+                 (member (char-after) (string-to-list "\n "))))
     (cons (point) (+ (point) 1))))
 
 (defun topiary/bounds-of-punctuation-forward ()
@@ -318,7 +319,9 @@ In the above example the n would be deleted. Handles comments."
              (next-non-space-point (progn (skip-chars-forward " ") (point)))
              (characters-between-point (- next-non-space-point initial-point))
              (character-after-next-point (char-after)))
-        (cond ((member character-after-next-point (string-to-list ")}]\n\""))
+        (cond ((or (member character-after-next-point (string-to-list ")}]\n"))
+                   (and (= (char-before) ?\")
+                        (topiary/in-string-p)))
                (cons initial-point next-non-space-point))
               ((> characters-between-point 1)
                (cons initial-point (- next-non-space-point 1))))))))
@@ -342,29 +345,31 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-empty-string ()
   "Get bounds of empty string."
-  (when (or (topiary/in-empty-string-p)
-            (save-excursion
-              (backward-char)
-              (topiary/in-empty-string-p)))
+  (when (topiary/in-empty-string-p)
     (cons (- (point) 1) (+ (point) 1))))
 
 (defun topiary/bounds-of-escaped-double-quote-in-string ()
   "Get bounds of escaped double quote string."
-  (when (and (save-excursion
-               (forward-char)
-               (topiary/in-string-p))
-             (member (char-after) (string-to-list "\"")))
-    (cons (- (point) 1) (+ (point) 1))))
+  (when (topiary/in-string-p)
+    (cond ((and (= (char-after) ?\")
+                (= (char-before) ?\\))
+           (cons (- (point) 1) (+ (point) 1)))
+          ((and (= (char-before) ?\")
+                (= (char-before (- (point) 1)) ?\\))
+           (cons (- (point) 2) (point) ))
+          ((and (= (char-after) ?\\)
+                (= (char-after (+ (point) 1)) ?\"))
+           (cons (point) (+ (point) 2) )))))
 
 (defun topiary/smart-kill-bounds ()
   "Get current smart-kill bounds."
   (or (topiary/bounds-of-active-region)
       (topiary/bounds-of-punctuation-forward)
+      (topiary/bounds-of-escaped-double-quote-in-string)
       (topiary/bounds-of-space-forward)
       (bounds-of-thing-at-point 'word)
       (topiary/bounds-of-punctuation-backward)
       (topiary/bounds-of-space-before-opening-paren)
-      (topiary/bounds-of-escaped-double-quote-in-string)
       (topiary/bounds-of-single-bracket-in-string)
       (topiary/bounds-of-empty-string)
       (bounds-of-thing-at-point 'sexp)
