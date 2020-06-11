@@ -36,6 +36,10 @@
   "Return t if point in empty string."
   (and (= (char-before) (char-after) ?\")))
 
+(defun topiary/end-of-buffer-p ()
+  "Return t if point at end of buffer."
+  (= (point) (point-max)))
+
 (defmacro topiary/if-in-string (then-form else-form)
   "If in string do THEN-FORM otherwise do ELSE-FORM."
   `(lambda ()
@@ -345,21 +349,21 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-empty-string ()
   "Get bounds of empty string."
-  (when (topiary/in-empty-string-p)
+  (when (and (not (topiary/end-of-buffer-p)) (topiary/in-empty-string-p))
     (cons (- (point) 1) (+ (point) 1))))
 
 (defun topiary/bounds-of-escaped-double-quote-in-string ()
   "Get bounds of escaped double quote string."
-  (when (topiary/in-string-p)
+  (when (and (not (topiary/end-of-buffer-p)) (topiary/in-string-p))
     (cond ((and (= (char-after) ?\")
                 (= (char-before) ?\\))
            (cons (- (point) 1) (+ (point) 1)))
           ((and (= (char-before) ?\")
                 (= (char-before (- (point) 1)) ?\\))
-           (cons (- (point) 2) (point) ))
+           (cons (- (point) 2) (point)))
           ((and (= (char-after) ?\\)
                 (= (char-after (+ (point) 1)) ?\"))
-           (cons (point) (+ (point) 2) )))))
+           (cons (point) (+ (point) 2))))))
 
 (defun topiary/smart-kill-bounds ()
   "Get current smart-kill bounds."
