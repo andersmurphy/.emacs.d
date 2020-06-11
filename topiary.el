@@ -305,6 +305,21 @@ In the above example the n would be deleted. Handles comments."
                  (member (char-after) (string-to-list "\n "))))
     (cons (point) (+ (point) 1))))
 
+(defun topiary/bounds-of-org-subtree ()
+  "Return the bound of current org subtree."
+  (when (and (string-equal major-mode "org-mode")
+             (not (topiary/end-of-buffer-p))
+             (= (char-after) ?\*))
+    (save-excursion
+      (let ((beg (point)))
+        (org-end-of-subtree t t)
+        ;; Include the end of an inlinetask
+        (when (and (featurep 'org-inlinetask)
+                   (looking-at-p (concat (org-inlinetask-outline-regexp)
+                                         "END[ \t]*$")))
+          (end-of-line))
+        (cons beg (point))))))
+
 (defun topiary/bounds-of-punctuation-forward ()
   "Get bounds of - / character if after cursor."
   (when (member (char-after) (string-to-list "=_-/?!#>,.@'<"))
@@ -376,6 +391,7 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-space-before-opening-paren)
       (topiary/bounds-of-single-bracket-in-string)
       (topiary/bounds-of-empty-string)
+      (topiary/bounds-of-org-subtree)
       (bounds-of-thing-at-point 'sexp)
       (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
