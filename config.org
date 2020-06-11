@@ -1106,8 +1106,7 @@ Handles auto-inserting templates when creating new files.
 #+END_SRC
 
 ** Sql
-
-Toggle between up and down file if they exist (assumes files are in the same folder).
+*** Toggle between up and down file if they exist (assumes files are in the same folder).
 
 #+BEGIN_SRC emacs-lisp
 (use-package sql
@@ -1128,6 +1127,16 @@ Toggle between up and down file if they exist (assumes files are in the same fol
          :map sql-interactive-mode-map
               ("M-h" . comint-previous-input)))
 #+END_SRC
+
+*** Postgresql
+
+#+BEGIN_SRC emacs-lisp
+(defun my/start-postgresql ()
+  "Start local postgresql database."
+  (interactive)
+  (async-shell-command "pg_ctl -D /usr/local/var/postgresql@10 start" (generate-new-buffer "*postgresql*")))
+#+END_SRC
+
 ** Clojure
 *** Clojure Mode & Inferior Lisp
 
