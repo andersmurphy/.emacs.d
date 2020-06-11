@@ -27,18 +27,26 @@
 ;;  Should auto insert ;; in correct context
 ;;  Normal ;/: behaviour outside of lisps
 ;; If inserting ;; after ;; convert to  ;;;
-
-(defun topiary/in-string-p ()
-  "Return t if point in string."
-  (nth 3 (syntax-ppss)))
-
-(defun topiary/in-empty-string-p ()
-  "Return t if point in empty string."
-  (and (= (char-before) (char-after) ?\")))
-
 (defun topiary/end-of-buffer-p ()
   "Return t if point at end of buffer."
   (= (point) (point-max)))
+
+(defun topiary/beginning-of-buffer-p ()
+  "Return t if point at beginning of buffer."
+  (= (point) (point-min)))
+
+(defun topiary/in-string-p ()
+  "Return t if point in string."
+  (and (not (topiary/beginning-of-buffer-p))
+       (not (topiary/end-of-buffer-p))
+       (nth 3 (syntax-ppss))))
+
+(defun topiary/in-empty-string-p ()
+  "Return t if point in empty string."
+  (interactive)
+  (and (not (topiary/beginning-of-buffer-p))
+       (not (topiary/end-of-buffer-p))
+       (= (char-before) (char-after) ?\")))
 
 (defmacro topiary/if-in-string (then-form else-form)
   "If in string do THEN-FORM otherwise do ELSE-FORM."
@@ -364,12 +372,12 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-empty-string ()
   "Get bounds of empty string."
-  (when (and (not (topiary/end-of-buffer-p)) (topiary/in-empty-string-p))
+  (when (topiary/in-empty-string-p)
     (cons (- (point) 1) (+ (point) 1))))
 
 (defun topiary/bounds-of-escaped-double-quote-in-string ()
   "Get bounds of escaped double quote string."
-  (when (and (not (topiary/end-of-buffer-p)) (topiary/in-string-p))
+  (when (topiary/in-string-p)
     (cond ((and (= (char-after) ?\")
                 (= (char-before) ?\\))
            (cons (- (point) 1) (+ (point) 1)))
