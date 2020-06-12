@@ -794,7 +794,7 @@ Turn spellcheck on, sets it to use aspell and british spelling.
 ** Open in finder
 
 #+BEGIN_SRC emacs-lisp
-(defun my/open-in-finder ()
+(defun my/osx-open-in-finder ()
   "Open current file in finder."
   (interactive)
   (shell-command "open ."))
