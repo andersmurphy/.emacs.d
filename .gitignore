@@ -16,7 +16,7 @@ projectile.cache
 /nov-places
 url/
 emms
-/transient
+/transient/history.el
 .DS_Store
 /straight/build/*
 /straight/build-cache.el
