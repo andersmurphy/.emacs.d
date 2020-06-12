@@ -791,6 +791,15 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   ("C-M-s" . counsel-git-grep))
 #+END_SRC
 
+** Open in finder
+
+#+BEGIN_SRC emacs-lisp
+(defun my/open-in-finder ()
+  "Open current file in finder."
+  (interactive)
+  (shell-command "open ."))
+#+END_SRC
+
 * Project Management
 ** Magit
 
