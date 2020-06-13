@@ -388,6 +388,15 @@ In the above example the n would be deleted. Handles comments."
                 (= (char-after (+ (point) 1)) ?\"))
            (cons (point) (+ (point) 2))))))
 
+(defun topiary/bounds-of-strings-at-point (strings)
+  "Return bounds of string if string at point match any STRINGS."
+  (save-excursion
+    (skip-chars-backward "[:graph:]")
+    (when (thread-last
+              (seq-map (lambda (string) (concat string "[\s\n]" )) strings)
+            (seq-some #'looking-at))
+      (cons (point) (progn (skip-chars-forward "[:graph:]") (point))))))
+
 (defun topiary/smart-kill-bounds ()
   "Get current smart-kill bounds."
   (or (topiary/bounds-of-active-region)
@@ -395,6 +404,7 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-escaped-double-quote-in-string)
       (topiary/bounds-of-space-forward)
       (bounds-of-thing-at-point 'word)
+      (topiary/bounds-of-strings-at-point '(";;" ";;;"))
       (topiary/bounds-of-punctuation-backward)
       (topiary/bounds-of-space-before-opening-paren)
       (topiary/bounds-of-single-bracket-in-string)
