@@ -2,7 +2,7 @@
 # M-x elisp-index-search to search elisp manual
 # M-x emacs-index-search to search emacs manual
 
-* Elisp
+* Elisp Extensions
 ** Dash
 
 [[https://github.com/magnars/dash.el#--x-optional-form-rest-more][Dash]] a modern list api for Emacs (includes things like -> ->> macros).
@@ -46,7 +46,35 @@
               :map lisp-interaction-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
 #+END_SRC
-* Defaults
+
+* General
+** Helper commands
+*** Open config
+
+#+BEGIN_SRC emacs-lisp
+(defun my/config ()
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+#+END_SRC
+
+*** Update Packages
+
+#+BEGIN_SRC emacs-lisp
+(defun my/update-emacs-packages ()
+  (interactive)
+  (straight-pull-all)
+  (straight-freeze-versions))
+#+END_SRC
+
+*** Reloading config
+
+#+BEGIN_SRC emacs-lisp
+(defun my/reload-config ()
+  (interactive)
+    (save-buffer)
+    (straight-transaction
+      (load-file  "~/.emacs.d/init.el")))
+#+END_SRC
 ** Exec-path-from-shell
 
 [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] ensures environment variables inside GUI Emacs look the same as in the user's shell on OSX.
@@ -77,33 +105,6 @@ switch between buffers, an Emacs frame loses focus, etc.
   :config
   (super-save-mode t)
   (setq save-silently t))
-#+END_SRC
-
-** Update Packages
-
-#+BEGIN_SRC emacs-lisp
-(defun my/update-emacs-packages ()
-  (interactive)
-  (straight-pull-all)
-  (straight-freeze-versions))
-#+END_SRC
-
-** Open config
-
-#+BEGIN_SRC emacs-lisp
-(defun my/config ()
-  (interactive)
-  (find-file "~/.emacs.d/config.org"))
-#+END_SRC
-
-** Reloading config
-
-#+BEGIN_SRC emacs-lisp
-(defun my/reload-config ()
-  (interactive)
-    (save-buffer)
-    (straight-transaction
-      (load-file  "~/.emacs.d/init.el")))
 #+END_SRC
 
 ** Turn off alarms completely
@@ -320,76 +321,29 @@ Allows you to keep hitting C-Space after that initial C-u C-Space to pop marks.
 (global-auto-revert-mode)
 #+END_SRC
 
-** OSX cmd key
-
-Bind cmd (super) key to control
+** Compilation buffers display ANSI
 
 #+BEGIN_SRC emacs-lisp
-(setq mac-command-modifier 'control)
+(use-package ansi-color
+  :config (progn
+            (defun my/ansi-colorize-buffer ()
+              (let ((inhibit-read-only t))
+                (ansi-color-apply-on-region (point-min) (point-max))))
+            (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)))
 #+END_SRC
-
-** Swap ; and :
-
-Colons are used a lot more than semi-colons in lisp.
+** Eshell
 
 #+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd ";") (kbd ":"))
-(define-key key-translation-map (kbd ":") (kbd ";"))
+(use-package eshell
+ :init
+ ;; Eshell starts out defining its map as nil and then only sets it to a keymap
+ ;; locally later so :bind won't work
+ (add-hook 'eshell-mode-hook
+          (lambda ()
+             (define-key eshell-mode-map (kbd "M-h") 'eshell-previous-matching-input-from-input))))
 #+END_SRC
 
-** Swap () and []
-
-() are used a lot more than [] in lisp.
-
-#+BEGIN_SRC emacs-lisp
-(define-key input-decode-map [?\C-\[] (kbd "<C-[>"))
-(global-unset-key (kbd "C-]"))
-
-(define-key key-translation-map (kbd "(") (kbd "["))
-(define-key key-translation-map (kbd "[") (kbd "("))
-(define-key key-translation-map (kbd ")") (kbd "]"))
-(define-key key-translation-map (kbd "]") (kbd ")"))
-#+END_SRC
-
-** Swap C-m and C-j
-
-I find C-j more ergonomic that C-m as it's on the home row.
-
-#+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd "C-j") (kbd "C-m"))
-(define-key key-translation-map (kbd "C-m") (kbd "C-j"))
-#+END_SRC
-
-** Swap C-p and C-h
-
-#+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd "C-h") (kbd "C-p"))
-(define-key key-translation-map (kbd "C-p") (kbd "C-h"))
-#+END_SRC
-
-** Swap M-p and M-h
-
-#+BEGIN_SRC emacs-lisp
-(define-key key-translation-map (kbd "M-h") (kbd "M-p"))
-(define-key key-translation-map (kbd "M-p") (kbd "M-h"))
-#+END_SRC
-
-** Global key bindings
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-j") 'newline)
-(global-set-key (kbd "C-z") 'undo)
-(global-set-key (kbd "C-?") 'help-command)
-(global-set-key (kbd "C-x f") 'counsel-find-file)
-(global-set-key (kbd "C-x C-d") 'dired)
-(global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-(global-set-key (kbd "M-c") 'org-capture)
-(global-set-key (kbd "C-v") 'yank)
-(global-set-key (kbd "C-o") 'other-window)
-
-#+END_SRC
-
-* Appearance
+* Visuals
 ** Menu, tool and scroll bars
 
 Hide menu bar.
@@ -660,84 +614,76 @@ Sets font and font size.
 (set-default-font "Menlo 14")
 #+END_SRC
 
-** Enable visual line mode
+* Global Keys
+** OSX cmd key
+
+Bind cmd (super) key to control
 
 #+BEGIN_SRC emacs-lisp
-(global-visual-line-mode)
+(setq mac-command-modifier 'control)
 #+END_SRC
 
-* Text Manipulation
-** Topiary
+** Swap ; and :
 
-Minor mode for more convenient text editing.
+Colons are used a lot more than semi-colons in lisp.
 
 #+BEGIN_SRC emacs-lisp
-(load-file ".emacs.d/topiary.el")
-(use-package topiary :straight nil
-  :init
-  :hook ((text-mode prog-mode comint-mode outline-mode) . topiary-mode))
+(define-key key-translation-map (kbd ";") (kbd ":"))
+(define-key key-translation-map (kbd ":") (kbd ";"))
 #+END_SRC
 
-** Delete selected region when typing
+** Swap () and []
+
+() are used a lot more than [] in lisp.
 
 #+BEGIN_SRC emacs-lisp
-(delete-selection-mode t)
+(define-key input-decode-map [?\C-\[] (kbd "<C-[>"))
+(global-unset-key (kbd "C-]"))
+
+(define-key key-translation-map (kbd "(") (kbd "["))
+(define-key key-translation-map (kbd "[") (kbd "("))
+(define-key key-translation-map (kbd ")") (kbd "]"))
+(define-key key-translation-map (kbd "]") (kbd ")"))
 #+END_SRC
 
-** Only use spaces
+** Swap C-m and C-j
+
+I find C-j more ergonomic that C-m as it's on the home row.
 
 #+BEGIN_SRC emacs-lisp
-(setq-default indent-tabs-mode nil)
+(define-key key-translation-map (kbd "C-j") (kbd "C-m"))
+(define-key key-translation-map (kbd "C-m") (kbd "C-j"))
 #+END_SRC
 
-** Tab width
-
-Set tab width.
+** Swap C-p and C-h
 
 #+BEGIN_SRC emacs-lisp
-(setq-default tab-width 2)
+(define-key key-translation-map (kbd "C-h") (kbd "C-p"))
+(define-key key-translation-map (kbd "C-p") (kbd "C-h"))
 #+END_SRC
 
-** Contextual tab
-
-Tab will now contextually indent or complete.
+** Swap M-p and M-h
 
 #+BEGIN_SRC emacs-lisp
-(setq tab-always-indent 'complete)
+(define-key key-translation-map (kbd "M-h") (kbd "M-p"))
+(define-key key-translation-map (kbd "M-p") (kbd "M-h"))
 #+END_SRC
-** Flyspell
-
-Turn spellcheck on, sets it to use aspell and british spelling.
+** Global key bindings
 
 #+BEGIN_SRC emacs-lisp
-(use-package flyspell
-  :config
-  (setq ispell-program-name "aspell"
-    ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
-  ;; Spellchek docs and comments in prog-mode but not strings
-  (setq flyspell-prog-text-faces (delq 'font-lock-string-face
-            flyspell-prog-text-faces))
-  (setq ispell-personal-dictionary "~/.emacs.d/.aspell.en.pws")
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
+(global-set-key (kbd "C-j") 'newline)
+(global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "C-?") 'help-command)
+(global-set-key (kbd "C-x f") 'counsel-find-file)
+(global-set-key (kbd "C-x C-d") 'dired)
+(global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
+(global-set-key (kbd "M-c") 'org-capture)
+(global-set-key (kbd "C-v") 'yank)
+(global-set-key (kbd "C-o") 'other-window)
+
 #+END_SRC
 
-** White space
-
-[[https://www.emacswiki.org/emacs/WhiteSpace][whitespace]] cleans white space on save.
-
-#+BEGIN_SRC emacs-lisp
-(use-package whitespace
-  :init
-  (add-hook 'before-save-hook #'whitespace-cleanup))
-#+END_SRC
-
-** Sentence should end with only a full stop
-
-#+BEGIN_SRC emacs-lisp
-(setq sentence-end-double-space nil)
-#+END_SRC
-* Navigation
+* Meta Navigation
 ** Recent files
 
 [[https://www.emacswiki.org/emacs/RecentFiles][Recentf]] is a minor mode that builds a list of recently opened files.
@@ -800,7 +746,6 @@ Turn spellcheck on, sets it to use aspell and british spelling.
   (shell-command "open ."))
 #+END_SRC
 
-* Project Management
 ** Magit
 
 [[https://magit.vc/][Magit]] is a great interface for git projects.
@@ -901,38 +846,63 @@ Capture templates.
          "* %?")))
 #+END_SRC
 
-* Programming
-** General
-*** Company mode
-
-[[https://github.com/company-mode/company-mode][Company]] is a text completion framework for Emacs. The name stands
-for "complete anything". It uses pluggable back-ends and front-ends
-to retrieve and display completion candidates.
+* Text Formatting
+** Enable visual line mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package company
+(global-visual-line-mode)
+#+END_SRC
+
+** Topiary
+
+Minor mode for more convenient text editing.
+
+#+BEGIN_SRC emacs-lisp
+(load-file ".emacs.d/topiary.el")
+(use-package topiary :straight nil
   :init
-    (setq company-idle-delay 0.2)
-    (global-company-mode)
-  :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
-              ("TAB" . company-complete-selection)
-              ("C-w" . topiary/smart-kill)))
+  :hook ((text-mode prog-mode comint-mode outline-mode) . topiary-mode))
 #+END_SRC
 
-*** Compilation buffers display ANSI
+** Only use spaces
 
 #+BEGIN_SRC emacs-lisp
-(use-package ansi-color
-  :config (progn
-            (defun my/ansi-colorize-buffer ()
-              (let ((inhibit-read-only t))
-                (ansi-color-apply-on-region (point-min) (point-max))))
-            (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)))
+(setq-default indent-tabs-mode nil)
 #+END_SRC
 
-*** Aggressive Indent
+** Tab width
+
+Set tab width.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-width 2)
+#+END_SRC
+
+** Contextual tab
+
+Tab will now contextually indent or complete.
+
+#+BEGIN_SRC emacs-lisp
+(setq tab-always-indent 'complete)
+#+END_SRC
+
+** White space
+
+[[https://www.emacswiki.org/emacs/WhiteSpace][whitespace]] cleans white space on save.
+
+#+BEGIN_SRC emacs-lisp
+(use-package whitespace
+  :init
+  (add-hook 'before-save-hook #'whitespace-cleanup))
+#+END_SRC
+
+** Sentence should end with only a full stop
+
+#+BEGIN_SRC emacs-lisp
+(setq sentence-end-double-space nil)
+#+END_SRC
+
+** Aggressive Indent
 
 [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent]] automatically keeps things indented.
 
@@ -940,36 +910,66 @@ to retrieve and display completion candidates.
 (use-package aggressive-indent
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 #+END_SRC
-
-*** Show paren mode
-
-#+BEGIN_SRC emacs-lisp
-(show-paren-mode 1)
-(setq show-paren-delay 0)
-#+END_SRC
-
-*** Smartparens
-
-[[https://github.com/Fuco1/smartparens][Smartparens]] paredit for all the things.
+** Hide show
 
 #+BEGIN_SRC emacs-lisp
-(use-package smartparens
+(use-package hideshow
   :config
-  (progn
-    (use-package smartparens-config
-      :straight nil)
-    (sp-use-smartparens-bindings)
-    (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
-    (setq sp-highlight-pair-overlay nil))
-  :init
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
-  :bind (:map smartparens-mode-map
-              ("<C-[>" . sp-backward-slurp-sexp)
-              ("C-{" . sp-backward-barf-sexp)
-              ("C-}" . sp-forward-barf-sexp)))
+  (defun display-most-sever-flycheck-error (ov)
+    (when (eq 'code (overlay-get ov 'hs))
+      (let* ((most-sever-error (car (sort (flycheck-overlay-errors-in
+                                           (overlay-start ov)
+                                           (overlay-end ov))
+                                          #'flycheck-error-level-<)))
+             (level (and most-sever-error
+                         (flycheck-error-level most-sever-error)))
+             (marker-string "*fringe-dummy*")
+             (marker-length (length marker-string)))
+        (when most-sever-error
+          (put-text-property 0 marker-length 'display
+                             (list 'left-fringe
+                                   (flycheck-error-level-fringe-bitmap level)
+                                   (flycheck-error-level-fringe-face level))
+                             marker-string)
+          (overlay-put ov 'before-string marker-string))
+        (overlay-put ov 'display "..."))))
+  (setq hs-set-up-overlay 'display-most-sever-flycheck-error)
+  :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
+                                            (hs-minor-mode)(hs-hide-all)))
+  :bind (:map hs-minor-mode-map
+              ("TAB" . (lambda ()
+                         (interactive)
+                         (save-excursion
+                           (unless (= (point)
+                                      (save-excursion
+                                        (beginning-of-line)
+                                        (point)))
+                             (beginning-of-defun))
+                           (hs-toggle-hiding))))
+              ("<backtab>" . (lambda ()
+                               (interactive)
+                               (save-excursion
+                                 (hs-hide-all))))))
 #+END_SRC
-*** Flycheck
+
+* Linting
+** Flyspell
+
+Turn spellcheck on, sets it to use aspell and british spelling.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell
+  :config
+  (setq ispell-program-name "aspell"
+    ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
+  ;; Spellchek docs and comments in prog-mode but not strings
+  (setq flyspell-prog-text-faces (delq 'font-lock-string-face
+            flyspell-prog-text-faces))
+  (setq ispell-personal-dictionary "~/.emacs.d/.aspell.en.pws")
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
+#+END_SRC
+** Flycheck
 
 [[https://github.com/flycheck/flycheck][Flycheck]] on-the-fly syntax checking extension.
 
@@ -1017,7 +1017,26 @@ to retrieve and display completion candidates.
     :fringe-face 'flycheck-fringe-info))
 #+END_SRC
 
-*** Yasnippet
+* Completion & Templates
+** Company mode
+
+[[https://github.com/company-mode/company-mode][Company]] is a text completion framework for Emacs. The name stands
+for "complete anything". It uses pluggable back-ends and front-ends
+to retrieve and display completion candidates.
+
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :init
+    (setq company-idle-delay 0.2)
+    (global-company-mode)
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("TAB" . company-complete-selection)
+              ("C-w" . topiary/smart-kill)))
+#+END_SRC
+
+** Yasnippet
 
 [[https://github.com/joaotavora/yasnippet][yasnipet]] mode for code snippets.
 
@@ -1029,7 +1048,7 @@ to retrieve and display completion candidates.
   (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets")))
 #+END_SRC
 
-*** Auto Insert
+** Auto Insert
 
 Handles auto-inserting templates when creating new files.
 
@@ -1052,6 +1071,8 @@ Handles auto-inserting templates when creating new files.
   (define-auto-insert ".gitignore" ["default.gitignore" my/autoinsert-yas-expand]))
 #+END_SRC
 
+* Programming Languages
+** Lisp
 *** Lisp mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1060,58 +1081,33 @@ Handles auto-inserting templates when creating new files.
         ("M-h" . comint-previous-input)))
 #+END_SRC
 
-*** Hide show
+*** Show paren mode
 
 #+BEGIN_SRC emacs-lisp
-(use-package hideshow
-  :config
-  (defun display-most-sever-flycheck-error (ov)
-    (when (eq 'code (overlay-get ov 'hs))
-      (let* ((most-sever-error (car (sort (flycheck-overlay-errors-in
-                                           (overlay-start ov)
-                                           (overlay-end ov))
-                                          #'flycheck-error-level-<)))
-             (level (and most-sever-error
-                         (flycheck-error-level most-sever-error)))
-             (marker-string "*fringe-dummy*")
-             (marker-length (length marker-string)))
-        (when most-sever-error
-          (put-text-property 0 marker-length 'display
-                             (list 'left-fringe
-                                   (flycheck-error-level-fringe-bitmap level)
-                                   (flycheck-error-level-fringe-face level))
-                             marker-string)
-          (overlay-put ov 'before-string marker-string))
-        (overlay-put ov 'display "..."))))
-  (setq hs-set-up-overlay 'display-most-sever-flycheck-error)
-  :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
-                                            (hs-minor-mode)(hs-hide-all)))
-  :bind (:map hs-minor-mode-map
-              ("TAB" . (lambda ()
-                         (interactive)
-                         (save-excursion
-                           (unless (= (point)
-                                      (save-excursion
-                                        (beginning-of-line)
-                                        (point)))
-                             (beginning-of-defun))
-                           (hs-toggle-hiding))))
-              ("<backtab>" . (lambda ()
-                               (interactive)
-                               (save-excursion
-                                 (hs-hide-all))))))
+(show-paren-mode 1)
+(setq show-paren-delay 0)
 #+END_SRC
 
-** Eshell
+*** Smartparens
+
+[[https://github.com/Fuco1/smartparens][Smartparens]] paredit for all the things.
 
 #+BEGIN_SRC emacs-lisp
-(use-package eshell
+(use-package smartparens
+  :config
+  (progn
+    (use-package smartparens-config
+      :straight nil)
+    (sp-use-smartparens-bindings)
+    (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
+    (setq sp-highlight-pair-overlay nil))
  :init
- ;; Eshell starts out defining its map as nil and then only sets it to a keymap
- ;; locally later so :bind won't work
- (add-hook 'eshell-mode-hook
-          (lambda ()
-             (define-key eshell-mode-map (kbd "M-h") 'eshell-previous-matching-input-from-input))))
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+  :bind (:map smartparens-mode-map
+              ("<C-[>" . sp-backward-slurp-sexp)
+              ("C-{" . sp-backward-barf-sexp)
+              ("C-}" . sp-forward-barf-sexp)))
 #+END_SRC
 
 ** Sql
@@ -1279,7 +1275,7 @@ Highlights hex colours. Not on by default as it can slow/crash large files.
 (use-package rainbow-mode)
 #+END_SRC
 
-* Misc
+* Media
 ** Epub Reader
 
 [[https://github.com/wasamasa/nov.el][nov.el]] an epub reader for emacs.
