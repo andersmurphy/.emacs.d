@@ -411,7 +411,8 @@ In the above example the n would be deleted. Handles comments."
      (ivy-backward-delete-char)))
 
 (defun topiary/smart-kill ()
-  "Kill backward word or sexp. If neither hungry delete backward."
+  "Kill backward word or sexp. If neither hungry delete backward.
+Delete rather than kill when in mini buffer."
   (interactive)
   (let* ((bounds (topiary/smart-kill-bounds))
          (bounds-directed (if (and bounds (> (point) (car bounds)))
@@ -419,7 +420,11 @@ In the above example the n would be deleted. Handles comments."
                             bounds)))
     (cond (bounds
            (condition-case nil
-               (kill-region (car bounds-directed) (cdr bounds-directed))
+               (let ((beg (car bounds-directed))
+                     (end (cdr bounds-directed)))
+                 (if (minibufferp)
+                     (delete-region beg end)
+                   (kill-region beg end)))
              (error
               (topiary/handle-ivy-if-loaded))))
           (t (topiary/hungry-delete-backward)))))
