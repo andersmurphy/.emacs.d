@@ -915,7 +915,8 @@ Tab will now contextually indent or complete.
 #+BEGIN_SRC emacs-lisp
 (use-package hideshow
   :config
-  (defun display-most-sever-flycheck-error (ov)
+  (defun my/display-most-sever-flycheck-error (ov)
+    "Display most sever error in folded code block at top level."
     (when (eq 'code (overlay-get ov 'hs))
       (let* ((most-sever-error (car (sort (flycheck-overlay-errors-in
                                            (overlay-start ov)
@@ -933,11 +934,10 @@ Tab will now contextually indent or complete.
                              marker-string)
           (overlay-put ov 'before-string marker-string))
         (overlay-put ov 'display "..."))))
-  (setq hs-set-up-overlay 'display-most-sever-flycheck-error)
-  :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
-                                            (hs-minor-mode)(hs-hide-all)))
-  :bind (:map hs-minor-mode-map
-              ("TAB" . (lambda ()
+  (setq hs-set-up-overlay 'my/display-most-sever-flycheck-error)
+
+  (defun my/toggle-defun-level-hiding ()
+    "Toggle folded code at top level without losing cursor position."
                          (interactive)
                          (save-excursion
                            (unless (= (point)
@@ -945,7 +945,27 @@ Tab will now contextually indent or complete.
                                         (beginning-of-line)
                                         (point)))
                              (beginning-of-defun))
-                           (hs-toggle-hiding))))
+      (hs-toggle-hiding)))
+
+  (setq my/last-flycheck-errors nil)
+
+  (defun my/refresh-folded-code-errors ()
+    "Refresh folded code that contains errors to make them visible at the top level."
+    (thread-last
+        (append (seq-difference flycheck-current-errors my/last-flycheck-errors)
+            (seq-difference my/last-flycheck-errors flycheck-current-errors))
+      (seq-do (lambda (err)
+                (save-excursion
+                  (goto-char (flycheck-error-pos err))
+                  (my/toggle-defun-level-hiding)
+                  (my/toggle-defun-level-hiding)))))
+    (setq my/last-flycheck-errors flycheck-current-errors))
+
+  :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
+                                             (hs-minor-mode)(hs-hide-all)))
+         (flycheck-after-syntax-check . my/refresh-folded-code-errors))
+  :bind (:map hs-minor-mode-map
+              ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . (lambda ()
                                (interactive)
                                (save-excursion
