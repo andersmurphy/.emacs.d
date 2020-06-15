@@ -761,7 +761,7 @@ I find C-j more ergonomic that C-m as it's on the home row.
   (setq magit-diff-refine-ignore-whitespace t)
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
 
-  (defun my/spin-off-pull-request ()
+  (defun my/magit-spin-off-pull-request ()
     "Spin off last commit as a pull request."
     (interactive)
     (let ((branch (magit-read-string-ns "Spin off branch"))
@@ -770,6 +770,13 @@ I find C-j more ergonomic that C-m as it's on the home row.
       (run-hooks 'magit-credential-hook)
       (magit-run-git "push" "-u" "origin" branch)
       (forge-create-pullreq (concat "origin/" branch) "origin/master")))
+
+  (defun my/magit-kill-unstaged-changes ()
+    "Kill all unstaged changes."
+    (interactive)
+    (when (yes-or-no-p "Kill all unstaged changes?")
+      (run-hooks 'magit-credential-hook)
+      (magit-run-git "checkout" ".")))
 
   :bind (("C-x g" . magit-status)
          :map magit-status-mode-map
