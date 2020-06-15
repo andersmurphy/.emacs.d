@@ -769,8 +769,7 @@ I find C-j more ergonomic that C-m as it's on the home row.
       (magit--branch-spinoff branch from t)
       (run-hooks 'magit-credential-hook)
       (magit-run-git "push" "-u" "origin" branch)
-      (forge-create-pullreq (concat "origin/" branch) "origin/master")
-      (magit-branch-checkout "master")))
+      (forge-create-pullreq (concat "origin/" branch) "origin/master")))
 
   :bind (("C-x g" . magit-status)
          :map magit-status-mode-map
