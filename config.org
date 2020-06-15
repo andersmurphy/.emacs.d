@@ -760,6 +760,18 @@ I find C-j more ergonomic that C-m as it's on the home row.
   (setq magit-diff-refine-hunk 'all)
   (setq magit-diff-refine-ignore-whitespace t)
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+
+  (defun my/spin-off-pull-request ()
+    "Spin off last commit as a pull request."
+    (interactive)
+    (let ((branch (magit-read-string-ns "Spin off branch"))
+          (from (car (last (magit-region-values 'commit)))))
+      (magit--branch-spinoff branch from t)
+      (run-hooks 'magit-credential-hook)
+      (magit-run-git "push" "-u" "origin" branch)
+      (forge-create-pullreq (concat "origin/" branch) "origin/master")
+      (magit-branch-checkout "master")))
+
   :bind (("C-x g" . magit-status)
          :map magit-status-mode-map
          ("h" . magit-section-backward)
