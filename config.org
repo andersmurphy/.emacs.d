@@ -778,7 +778,8 @@ I find C-j more ergonomic that C-m as it's on the home row.
          :map magit-log-mode-map
          ("h" . magit-section-backward)
          :map magit-diff-mode-map
-         ("h" . magit-section-backward)))
+         ("h" . magit-section-backward))
+  :hook (after-save . magit-after-save-refresh-status))
 #+END_SRC
 
 ** Forge
