@@ -976,8 +976,9 @@ Tab will now contextually indent or complete.
       (seq-do (lambda (err)
                 (save-excursion
                   (goto-char (flycheck-error-pos err))
+                  (when (hs-already-hidden-p)
                   (my/toggle-defun-level-hiding)
-                  (my/toggle-defun-level-hiding)))))
+                    (my/toggle-defun-level-hiding))))))
     (setq my/last-flycheck-errors flycheck-current-errors))
 
   :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
