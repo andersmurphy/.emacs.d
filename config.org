@@ -770,7 +770,7 @@ I find C-j more ergonomic that C-m as it's on the home row.
       (run-hooks 'magit-credential-hook)
       (magit-run-git "push" "-u" "origin" branch)
       (forge-create-pullreq (concat "origin/" branch) "origin/master")
-      (magit-checkout "master")))
+      (magit-branch-checkout "master")))
 
   (defun my/magit-kill-unstaged-changes ()
     "Kill all unstaged changes."
