@@ -164,3 +164,8 @@ brew install joker
 rm ~/.joker
 ln -s ~/.emacs.d/dotfiles/.joker ~
 #+END_SRC
+
+* OSX Clear fonts on retina screens
+- First, turn OFF “Font smoothing” in System Preferences → General
+- Go to System Preferences → Displays, uncheck Default and select scaled 2× resolution
+https://tonsky.me/blog/monitors/
