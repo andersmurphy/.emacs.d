@@ -1317,6 +1317,20 @@ Highlights hex colours. Not on by default as it can slow/crash large files.
 (use-package rainbow-mode)
 #+END_SRC
 
+** iOS Simulator
+*** Uninstall App
+
+#+BEGIN_SRC emacs-lisp
+(defvar my/rn-ios-uninstall-app-last-value nil)
+
+(defun my/rn-ios-uninstall-app (app-bundle-identifier)
+  "Uninstall app from simulator with APP-BUNDLE-IDENTIFIER."
+  (interactive (list (read-string "App bundle identifier: " nil
+                                  (list my/rn-ios-uninstall-app-last-value))))
+  (setq my/rn-ios-uninstall-app-last-value app-bundle-identifier)
+  (shell-command (concat "xcrun simctl uninstall booted " app-bundle-identifier)))
+#+END_SRC
+
 * Media
 ** Epub Reader
 
