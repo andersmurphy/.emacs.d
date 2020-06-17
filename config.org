@@ -48,7 +48,7 @@
 #+END_SRC
 
 * General
-** Helper commands
+** Helper functions
 *** Open config
 
 #+BEGIN_SRC emacs-lisp
@@ -75,6 +75,7 @@
     (straight-transaction
       (load-file  "~/.emacs.d/init.el")))
 #+END_SRC
+
 ** Exec-path-from-shell
 
 [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] ensures environment variables inside GUI Emacs look the same as in the user's shell on OSX.
@@ -769,8 +770,8 @@ I find C-j more ergonomic that C-m as it's on the home row.
       (magit--branch-spinoff branch from t)
       (run-hooks 'magit-credential-hook)
       (magit-run-git "push" "-u" "origin" branch)
-      (forge-create-pullreq (concat "origin/" branch) "origin/master")
-      (magit-branch-checkout "master")))
+      (magit-branch-checkout "master")
+      (forge-create-pullreq (concat "origin/" branch) "origin/master")))
 
   (defun my/magit-kill-unstaged-changes ()
     "Kill all unstaged changes."
@@ -1112,7 +1113,7 @@ Handles auto-inserting templates when creating new files.
   (define-auto-insert ".gitignore" ["default.gitignore" my/autoinsert-yas-expand]))
 #+END_SRC
 
-* Programming Languages
+* Programming
 ** Lisp
 *** Lisp mode
 
