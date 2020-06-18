@@ -1281,13 +1281,16 @@ Handles auto-inserting templates when creating new files.
 #+BEGIN_SRC emacs-lisp
 (use-package prettier-js
   :config
+  (defun my/prettier-js ()
+    (save-excursion (prettier-js)))
+
   (setq prettier-js-args '("--trailing-comma"  "es5"
                            "--bracket-spacing" "true"
                            "--single-quote"    "true"
                            "--semi"            "false"
                            "--print-width"     "100"))
   :hook (rjsx-mode . (lambda ()
-                       (add-hook 'before-save-hook 'prettier-js nil 'make-it-local))))
+                       (add-hook 'before-save-hook 'my/prettier-js nil 'make-it-local))))
 #+END_SRC
 
 *** Flycheck
