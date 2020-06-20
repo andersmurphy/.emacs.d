@@ -26,3 +26,5 @@ emms
 /emacs-sync/*
 /forge-database.sqlite
 /emacs-sync/
+/emojies/
+/request/
