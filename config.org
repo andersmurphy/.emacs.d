@@ -994,6 +994,39 @@ Tab will now contextually indent or complete.
                                  (hs-hide-all))))))
 #+END_SRC
 
+** Auto capitalise sentences (captain)
+
+#+BEGIN_SRC emacs-lisp
+(use-package captain
+  :config
+  (global-captain-mode)
+
+  (defun my/captain-prog-mode-sentence-start ()
+    "Return start of sentence in comment/string."
+    (max (captain--default-sentence-start)
+         (if (nth 8 (syntax-ppss))
+             (save-excursion
+               (goto-char (nth 8 (syntax-ppss)))
+               (skip-chars-forward ";\n\s")
+               (point))
+           0)))
+  :hook
+  ((prog-mode . (lambda ()
+                  (setq captain-predicate
+                        (lambda () (nth 8 (syntax-ppss))))
+                  (setq captain-sentence-start-function
+                        'my/captain-prog-mode-sentence-start)))
+   (text-mode . (lambda ()
+                  (setq captain-predicate (lambda () t))
+                  (setq captain-sentence-start-function
+                        'captain--default-sentence-start)))
+   (org-mode . (lambda ()
+                 (setq captain-predicate
+                       (lambda () (not (org-in-src-block-p))))
+                 (setq captain-sentence-start-function
+                       'captain--default-sentence-start)))))
+#+END_SRC
+
 * Linting
 ** Flyspell
 
