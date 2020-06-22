@@ -649,13 +649,14 @@ Colons are used a lot more than semi-colons in lisp.
 () are used a lot more than [] in lisp.
 
 #+BEGIN_SRC emacs-lisp
-(define-key input-decode-map [?\C-\[] (kbd "<C-[>"))
-(global-unset-key (kbd "C-]"))
-
-(define-key key-translation-map (kbd "(") (kbd "["))
-(define-key key-translation-map (kbd "[") (kbd "("))
-(define-key key-translation-map (kbd ")") (kbd "]"))
-(define-key key-translation-map (kbd "]") (kbd ")"))
+(comment
+ ;; These commands are currently disable as they aren't needed on a 40% keyboard
+ (define-key input-decode-map [?\C-\[] (kbd "<C-[>"))
+ (global-unset-key (kbd "C-]"))
+ (define-key key-translation-map (kbd "(") (kbd "["))
+ (define-key key-translation-map (kbd "[") (kbd "("))
+ (define-key key-translation-map (kbd ")") (kbd "]"))
+ (define-key key-translation-map (kbd "]") (kbd ")")))
 #+END_SRC
 
 ** Swap C-m and C-j
