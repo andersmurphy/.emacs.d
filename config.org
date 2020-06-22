@@ -199,6 +199,17 @@ Switch window focus on split.
                 (lambda () (interactive)(split-window-right) (other-window 1)))
 #+END_SRC
 
+** Other window
+
+#+BEGIN_SRC emacs-lisp
+(defun my/other-window ()
+  "Switch to another window. If no other window exists create one."
+  (interactive)
+  (when (one-window-p)
+    (split-window-right))
+  (other-window 1))
+#+END_SRC
+
 ** Dired
 *** Dired auto-revert
 
@@ -680,8 +691,8 @@ I find C-j more ergonomic that C-m as it's on the home row.
 (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
 (global-set-key (kbd "M-c") 'org-capture)
 (global-set-key (kbd "C-v") 'yank)
-(global-set-key (kbd "C-o") 'other-window)
-
+(global-set-key (kbd "C-x o") 'my/other-window)
+(global-set-key (kbd "C-o") 'my/other-window)
 #+END_SRC
 
 * Meta Navigation
@@ -708,7 +719,7 @@ I find C-j more ergonomic that C-m as it's on the home row.
   (:map ivy-mode-map
         ("C-v" . yank)
         ("C-w" . topiary/smart-kill)
-        ("C-o" . other-window))
+        ("C-o" . my/other-window))
   :init
   (ivy-mode t))
 #+END_SRC
