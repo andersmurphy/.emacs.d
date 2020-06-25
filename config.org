@@ -587,7 +587,15 @@ Sets font and font size.
 (set-default-font "Menlo 14")
 #+END_SRC
 
-* Global Keys
+* Controls
+** Keyboard Firmware
+
+#+BEGIN_SRC emacs-lisp
+(defun my/keyboard-firmware-tool ()
+ (interactive)
+ (browse-url "https://configure.ergodox-ez.com/planck-ez/layouts/ABGGZ/latest/0"))
+#+END_SRC
+
 ** Disable mouse
 
 Disables mouse.
@@ -615,19 +623,6 @@ Disables mouse.
 (global-unset-key (kbd "<M-down>"))
 #+END_SRC
 
-** Disable return key
-
-#+BEGIN_SRC emacs-lisp
-(comment
- ;; No longer need to disable enter key is now bound to right corner key that can be pressed with palm
- (global-set-key (kbd "<return>") 'ignore))
-#+END_SRC
-
-** Disable backspace key
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<backspace>") 'ignore)
-#+END_SRC
 ** OSX cmd key
 
 Bind cmd (super) key to control
@@ -1187,13 +1182,13 @@ Handles auto-inserting templates when creating new files.
     (use-package smartparens-config
       :straight nil)
     (sp-use-smartparens-bindings)
-    (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
+    (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
     (setq sp-highlight-pair-overlay nil))
  :init
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
   :bind (:map smartparens-mode-map
-              ("<C-[>" . sp-backward-slurp-sexp)
+              ("<C-(>" . sp-backward-slurp-sexp)
               ("C-{" . sp-backward-barf-sexp)
               ("C-}" . sp-forward-barf-sexp)))
 #+END_SRC
