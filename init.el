@@ -228,6 +228,7 @@
                '(ns-appearance . dark))
 
   ;; Remove title bar icon and file name.
+  (defvar ns-use-proxy-icon)
   (setq ns-use-proxy-icon nil)
   (setq frame-title-format nil)
 
@@ -246,12 +247,13 @@
   (global-unset-key (kbd "C-x C-z"))
 
   ;; Sets font and font size.
-  (set-default-font "Menlo 14"))
+  (set-frame-font "Menlo 14"))
 (use-package doom-themes
   :config
-  (setq my/dark-theme 'doom-solarized-dark)
-  (setq my/light-theme 'doom-solarized-light)
-  (setq my/active-theme my/dark-theme)
+
+  (defvar my/dark-theme 'doom-solarized-dark)
+  (defvar my/light-theme 'doom-solarized-light)
+  (defvar my/active-theme my/dark-theme)
   (load-theme my/active-theme t)
 
   (defun my/toggle-theme ()
@@ -402,7 +404,9 @@
    'my/fat-mode-line)
 
   ;; Display time in mode line.
+  (defvar display-time-default-load-average)
   (setq display-time-default-load-average nil)
+  (defvar display-time-string-forms)
   (setq display-time-string-forms
         '((propertize (format-time-string "%F %H:%M" now) 'face 'bold)))
   (display-time-mode t))
@@ -642,7 +646,8 @@
         (beginning-of-defun))
       (hs-toggle-hiding)))
 
-  (setq my/last-flycheck-errors nil)
+  (defvar my/last-flycheck-errors nil)
+  (defvar flycheck-current-errors)
 
   (defun my/refresh-folded-code-errors ()
     "Refresh folded code that contains errors to make them visible at the top level."
@@ -794,6 +799,7 @@
 
   ;; Show paren mode
   (show-paren-mode 1)
+  (defvar show-paren-delay)
   (setq show-paren-delay 0))
 ;; Lisp
 (use-package smartparens
@@ -934,6 +940,7 @@
   (emms-mode-line-disable)
   (emms-playing-time-disable-display)
   (setq emms-repeat-playlist t)
+  (defvar emms-source-file-default-directory)
   (setq emms-source-file-default-directory "~/Dropbox/music"))
 (use-package markdown-mode
   :defer t
