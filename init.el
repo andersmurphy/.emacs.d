@@ -37,7 +37,9 @@
   ;; Install use-package if it's not already installed.
   ;; use-package is used to configure the rest of the packages.
   (straight-use-package 'use-package)
+  (defvar straight-use-package-by-default)
   (setq straight-use-package-by-default t)
+  (require 'use-package)
 
   ;; Forces Custom to save all customizations in a seperate file
   (setq custom-file "~/.emacs.d/custom.el")
@@ -45,18 +47,12 @@
   ;; Prevents error if the custom.el file doesn't exist
   (load custom-file 'noerror))
 
-;;; Elisp Extension
+;;; Emacs lisp Extension
 (defmacro comment (&rest body)
   "Ignore BODY, yields nil."
   nil)
-(use-package dash
-  ;; A modern list api for Emacs (includes things like -> ->> macros).
-  ;; https://github.com/magnars/dash.el
-  )
-(use-package edn
-  ;; Library for reading and writing the data format edn.
-  ;;   https://github.com/expez/edn.el
-  )
+(use-package dash)
+(use-package edn)
 (use-package elisp-mode
   :straight nil
   :config
@@ -755,7 +751,11 @@
     :severity 0
     :overlay-category 'flycheck-info-overlay
     :fringe-bitmap 'my-flycheck-fringe-indicator
-    :fringe-face 'flycheck-fringe-info))
+    :fringe-face 'flycheck-fringe-info)
+
+  :config
+  ;; Make flycheck use current load path
+  (setq-default flycheck-emacs-lisp-load-path 'inherit))
 
 ;;; Completion & Templates
 (use-package company
