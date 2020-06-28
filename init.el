@@ -147,7 +147,7 @@
   (interactive)
   (save-buffer)
   (straight-transaction
-   (load-file  "~/.emacs.d/init.")))
+   (load  "~/.emacs.d/init.el")))
 (defun my/other-window ()
   "Switch to another window. If no other window exists create one."
   (interactive)
@@ -368,6 +368,7 @@
     (eq my/mode-line-selected-window (selected-window)))
 
   (add-hook 'window-configuration-change-hook #'my/mode-line-set-selected-window)
+
   (add-hook 'focus-in-hook #'my/mode-line-set-selected-window)
   (add-hook 'focus-out-hook #'my/mode-line-unset-selected-window)
   (advice-add 'handle-switch-frame :after #'my/mode-line-set-selected-window)
@@ -703,7 +704,7 @@
                        (lambda () (not (org-in-src-block-p))))
                  (setq captain-sentence-start-function
                        'captain--default-sentence-start)))))
-(load-file ".emacs.d/topiary.el")
+(load "~/.emacs.d/topiary.el")
 (use-package topiary
   :straight nil
   :init
@@ -847,7 +848,7 @@
               :map sql-interactive-mode-map
               ("M-h" . comint-previous-input)))
 ;; Clojure
-(load-file ".emacs.d/clj.el")
+(load "~/.emacs.d/clj.el")
 (use-package clj :straight nil)
 (use-package clojure-mode
   :defer t
