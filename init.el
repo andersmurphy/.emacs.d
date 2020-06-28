@@ -2,10 +2,13 @@
 
 ;;; Commentary:
 
-;; Emacs Startup File --- initialization for Emacs
+;; Emacs Startup File --- initialisation for Emacs
 
-;; M-x elisp-index-search to search elisp manual
-;; M-x emacs-index-search to search Emacs manual
+;; M-. to navigate to function source.
+;; C-c C-d to navigate to function docs.
+;; C-x C-e to evaluate current expression.
+;; M-x elisp-index-search to search elisp manual.
+;; M-x emacs-index-search to search Emacs manual.
 
 ;;; Code:
 (progn ;;; Setup
@@ -613,6 +616,7 @@
 (use-package aggressive-indent
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 (use-package hideshow
+  :straight nil
   :config
   (defun my/display-most-sever-flycheck-error (ov)
     "Display most sever error in folded code block at top level."
