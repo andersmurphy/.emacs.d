@@ -330,15 +330,33 @@
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
 
+  (defun set-face (face inherit-face)
+    "Reset a FACE and make it inherit INHERIT-FACE."
+    (set-face-attribute face nil
+                        :foreground 'unspecified :background 'unspecified
+                        :family     'unspecified :slant      'unspecified
+                        :weight     'unspecified :height     'unspecified
+                        :underline  'unspecified :overline   'unspecified
+                        :box        'unspecified :inherit    inherit-face))
+
   (defun my/apply-universal-theme-changes ()
     "Apply the changes to all themes."
+
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
+
     ;; Set divider to match mode line inactive colour.
     (set-face-background 'vertical-border
                          (face-attribute 'mode-line-inactive :background))
     (set-face-foreground 'vertical-border
                          (face-background 'vertical-border))
+
+    ;; Less colours in code font lock
+    (set-face 'font-lock-keyword-face 'default)
+    (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
+    (set-face 'font-lock-builtin-face 'font-lock-constant-face)
+    (set-face 'font-lock-doc-face 'font-lock-comment-face)
+
   ;; Make flycheck use solid line underlines.
     (set-face-attribute
      'flycheck-error nil
