@@ -251,106 +251,53 @@
 
   ;; Sets font and font size.
   (set-frame-font "Menlo 14"))
-(use-package doom-themes
-  :config
+(progn ;; Universal theme changes
 
-  (defvar my/dark-theme 'doom-solarized-dark)
-  (defvar my/light-theme 'doom-solarized-light)
-  (defvar my/active-theme my/dark-theme)
-  (load-theme my/active-theme t)
+  ;; These changes apply to all themes.
 
-  (defun my/toggle-theme ()
-    "Toggle Dark/light theme."
-    (interactive)
-    (disable-theme my/active-theme)
-    (if (eq my/active-theme my/light-theme)
-        (setq my/active-theme my/dark-theme)
-      (setq my/active-theme my/light-theme))
-    (load-theme my/active-theme t)
-    (my/customise-theme))
+  ;; To find out the name of the face you want to customise:
+  ;; M-x cutomize-face and then search through the list of faces.
 
-  ;; Hook for after theme load
+  ;; Set fringes to always match background.
+  (set-face-attribute 'fringe nil :background nil)
+
+  ;; Set divider to match mode line inactive colour.
+  (set-face-background 'vertical-border
+                       (face-attribute 'mode-line-inactive :background))
+  (set-face-foreground 'vertical-border
+                       (face-background 'vertical-border))
+
+  ;; Hook for after theme load.
   (defvar after-load-theme-hook nil
     "Hook run after a color theme is loaded using `load-theme'.")
   (defadvice load-theme (after run-after-load-theme-hook activate)
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
 
+  ;; Make flycheck use solid line underlines.
   (defun my/flycheck-use-line ()
-    (set-face-attribute 'flycheck-error nil
-                        :underline `(:style line :color ,(doom-color 'red)))
-    (set-face-attribute 'flycheck-warning nil
-                        :underline `(:style line :color ,(doom-color 'yellow)))
-    (set-face-attribute 'flycheck-info nil
-                        :underline `(:style line :color ,(doom-color 'green)))
-    (set-face-attribute 'flyspell-incorrect nil
-                        :underline `(:style line :color ,(doom-color 'red))
+    (set-face-attribute
+     'flycheck-error nil
+     :underline `(:style line :color ,(face-foreground 'error)))
+    (set-face-attribute
+     'flycheck-warning nil
+     :underline `(:style line :color ,(face-foreground 'warning)))
+    (set-face-attribute
+     'flycheck-info nil
+     :underline `(:style line :color ,(face-foreground 'success)))
+    (set-face-attribute
+     'flyspell-incorrect nil
+     :underline `(:style line :color ,(face-foreground 'error))
                         :inherit 'unspecified)
-    (set-face-attribute 'flyspell-duplicate nil
-                        :underline `(:style line :color ,(doom-color 'yellow))
+    (set-face-attribute
+     'flyspell-duplicate nil
+     :underline `(:style line :color ,(face-foreground 'warning))
                         :inherit 'unspecified))
+
 
   (add-hook
    'after-load-theme-hook
-   'my/flycheck-use-line)
-
-  (defun my/customise-theme ()
-    (doom-themes-set-faces
-      my/active-theme
-      '(cursor :background magenta)
-      '(show-paren-match :foreground magenta :weight 'bold)
-      '(line-number-current-line :foreground fg :weight 'bold)
-      '(font-lock-type-face :foreground green)
-      '(font-lock-keyword-face :foreground fg)
-      '(font-lock-variable-name-face :foreground blue)
-      '(font-lock-function-name-face :foreground blue)
-      '(font-lock-constant-face :foreground violet)
-      '(font-lock-builtin-face :foreground violet)
-      '(font-lock-doc-face :foreground comments)
-      ;; org
-      '(org-level-1 :foreground blue :height 1.2 :weight 'ultra-bold)
-      '(org-level-2 :foreground violet :height 1.0 :weight 'bold)
-      '(org-level-3 :foreground teal :height 1.0 :weight 'bold)
-      ;; ivy
-      '(ivy-current-match
-        :foreground magenta
-        :weight 'bold
-        :background nil)
-      '(ivy-minibuffer-match-face-1
-        :foreground nil
-        :weight 'light
-        :background nil)
-      '(ivy-minibuffer-match-face-2
-        :inherit 'ivy-minibuffer-match-face-1
-        :foreground violet
-        :weight 'semi-bold
-        :background nil)
-      '(ivy-minibuffer-match-face-3
-        :inherit 'ivy-minibuffer-match-face-2
-        :foreground green
-        :weight 'semi-bold
-        :background nil)
-      '(ivy-minibuffer-match-face-4
-        :inherit 'ivy-minibuffer-match-face-2
-        :foreground yellow
-        :weight 'semi-bold
-        :background nil)
-      ;; emms
-      '(emms-playlist-track-face :foreground fg)
-      '(emms-playlist-selected-face :foreground highlight)
-      ;; markdown
-      '(markdown-header-face :foreground blue :weight 'bold)
-      '(markdown-metadata-key-face :foreground violet)
-      ;; eww
-      '(eww-invalid-certificate :foreground red :weight 'bold)
-      '(eww-valid-certificate :foreground green :weight 'bold)
-      '(eww-form-checkbox :foreground blue :box blue)
-      '(eww-form-file :foreground blue :box blue)
-      '(eww-form-select :foreground bg :background blue :box blue)
-      '(eww-form-submit :foreground blue :box blue)
-      '(eww-form-text :foreground fg :box violet)
-      '(eww-form-textarea :foreground fg :box violet)))
-  (my/customise-theme))
+   'my/flycheck))
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
   (defvar my/mode-line-selected-window (frame-selected-window))
