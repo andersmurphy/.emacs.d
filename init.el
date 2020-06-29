@@ -322,26 +322,24 @@
   ;; To find out the name of the face you want to customise:
   ;; M-x cutomize-face and then search through the list of faces.
 
-  ;; Set fringes to always match background.
-  (set-face-attribute 'fringe nil :background nil)
-
-  ;; Set divider to match mode line inactive colour.
-  (set-face-background 'vertical-border
-                       (face-attribute 'mode-line-inactive :background))
-  (set-face-foreground 'vertical-border
-                       (face-background 'vertical-border))
-
   ;; Hook for after theme load.
-  ;; Update the theme of these components on theme change
+  ;; Update the theme of these components on theme change.
   (defvar after-load-theme-hook nil
     "Hook run after a color theme is loaded using `load-theme'.")
   (defadvice load-theme (after run-after-load-theme-hook activate)
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
 
+  (defun my/apply-universal-theme-changes ()
+    "Apply the changes to all themes."
+    ;; Set fringes to always match background.
+    (set-face-attribute 'fringe nil :background nil)
+    ;; Set divider to match mode line inactive colour.
+    (set-face-background 'vertical-border
+                         (face-attribute 'mode-line-inactive :background))
+    (set-face-foreground 'vertical-border
+                         (face-background 'vertical-border))
   ;; Make flycheck use solid line underlines.
-  (defun my/flycheck-use-line ()
-    (when (boundp 'flycheck-error)
     (set-face-attribute
      'flycheck-error nil
      :underline `(:style line :color ,(face-foreground 'error)))
@@ -358,12 +356,32 @@
     (set-face-attribute
      'flyspell-duplicate nil
      :underline `(:style line :color ,(face-foreground 'warning))
-       :inherit 'unspecified)))
+     :inherit 'unspecified)
+
+    ;; Make mode line fat.
+    (set-face-attribute
+     'mode-line nil
+     :background (face-attribute 'mode-line :background)
+     :foreground (face-attribute 'mode-line :foreground)
+     :box `(:line-width 8 :color ,(face-attribute 'mode-line :background))
+     :overline nil
+     :underline nil)
+
+    (set-face-attribute
+     'mode-line-inactive nil
+     :background (face-attribute 'mode-line-inactive :background)
+     :foreground (face-attribute 'mode-line-inactive :foreground)
+     :box `(:line-width 8 :color ,(face-attribute 'mode-line-inactive :background))
+     :overline nil
+     :underline nil))
 
   (add-hook
    'after-load-theme-hook
-   'my/flycheck-use-line))
+   'my/apply-universal-theme-changes))
 (use-package chocolate-theme
+  ;; Theme changes are made to these packages
+  ;; so they need to be loaded before the theme.
+  :after (flycheck flyspell)
   :config
   (load-theme 'chocolate t))
 (progn ;; Mode Line
@@ -399,28 +417,6 @@
                   mode-line-buffer-identification
                   (:eval (when (my/mode-line-selected-active-p)
                            mode-line-end-spaces))))
-
-  ;; Make mode line fat.
-  (defun my/fat-mode-line ()
-    (set-face-attribute 'mode-line nil
-                        :background (face-attribute 'mode-line :background)
-                        :foreground (face-attribute 'mode-line :foreground)
-                        :box `(:line-width 8 :color ,(face-attribute 'mode-line :background))
-                        :overline nil
-                        :underline nil)
-
-    (set-face-attribute 'mode-line-inactive nil
-                        :background (face-attribute 'mode-line-inactive :background)
-                        :foreground (face-attribute 'mode-line-inactive :foreground)
-                        :box `(:line-width 8 :color ,(face-attribute 'mode-line-inactive :background))
-                        :overline nil
-                        :underline nil))
-
-  (my/fat-mode-line)
-
-  (add-hook
-   'after-load-theme-hook
-   'my/fat-mode-line)
 
   ;; Display time in mode line.
   (defvar display-time-default-load-average)
@@ -675,7 +671,6 @@
 (use-package flycheck
   :init
   (global-flycheck-mode)
-  (my/flycheck-use-line)
   ;; Change fringe indicator to be a circle
   (define-fringe-bitmap 'my-flycheck-fringe-indicator
     (vector #b00000000
