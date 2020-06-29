@@ -332,6 +332,7 @@
                        (face-background 'vertical-border))
 
   ;; Hook for after theme load.
+  ;; Update the theme of these components on theme change
   (defvar after-load-theme-hook nil
     "Hook run after a color theme is loaded using `load-theme'.")
   (defadvice load-theme (after run-after-load-theme-hook activate)
@@ -340,6 +341,7 @@
 
   ;; Make flycheck use solid line underlines.
   (defun my/flycheck-use-line ()
+    (when (boundp 'flycheck-error)
     (set-face-attribute
      'flycheck-error nil
      :underline `(:style line :color ,(face-foreground 'error)))
@@ -356,12 +358,11 @@
     (set-face-attribute
      'flyspell-duplicate nil
      :underline `(:style line :color ,(face-foreground 'warning))
-                        :inherit 'unspecified))
-
+       :inherit 'unspecified)))
 
   (add-hook
    'after-load-theme-hook
-   'my/flycheck))
+   'my/flycheck-use-line))
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
   (defvar my/mode-line-selected-window (frame-selected-window))
@@ -425,6 +426,7 @@
   (setq display-time-string-forms
         '((propertize (format-time-string "%F %H:%M" now) 'face 'bold)))
   (display-time-mode t))
+
 ;;; Meta Navigation
 (defun my/osx-open-in-finder ()
   "Open current file in finder."
