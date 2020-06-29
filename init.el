@@ -354,6 +354,7 @@
     ;; Less colours in code font lock
     (set-face 'font-lock-keyword-face 'default)
     (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
+    (set-face 'font-lock-type-face 'font-lock-function-name-face)
     (set-face 'font-lock-builtin-face 'font-lock-constant-face)
     (set-face 'font-lock-doc-face 'font-lock-comment-face)
 
