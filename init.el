@@ -70,6 +70,70 @@
               :map lisp-interaction-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
 
+;;; Controls
+(progn ;; Defaults
+
+  ;; Disable all arrow keys
+  (global-unset-key (kbd "<left>"))
+  (global-unset-key (kbd "<right>"))
+  (global-unset-key (kbd "<up>"))
+  (global-unset-key (kbd "<down>"))
+  (global-unset-key (kbd "<C-left>"))
+  (global-unset-key (kbd "<C-right>"))
+  (global-unset-key (kbd "<C-up>"))
+  (global-unset-key (kbd "<C-down>"))
+  (global-unset-key (kbd "<M-left>"))
+  (global-unset-key (kbd "<M-right>"))
+  (global-unset-key (kbd "<M-up>"))
+  (global-unset-key (kbd "<M-down>"))
+
+  ;; Bind cmd (super) key to control
+  (setq mac-command-modifier 'control)
+
+  ;; Swap ; and :
+  (define-key key-translation-map (kbd ";") (kbd ":"))
+  (define-key key-translation-map (kbd ":") (kbd ";"))
+
+  ;; Swap C-m and C-j
+  (define-key key-translation-map (kbd "C-j") (kbd "C-m"))
+  (define-key key-translation-map (kbd "C-m") (kbd "C-j"))
+
+  ;; Swap C-p and C-h
+  (define-key key-translation-map (kbd "C-h") (kbd "C-p"))
+  (define-key key-translation-map (kbd "C-p") (kbd "C-h"))
+
+  ;; Swap M-p and M-h
+  (define-key key-translation-map (kbd "M-h") (kbd "M-p"))
+  (define-key key-translation-map (kbd "M-p") (kbd "M-h"))
+
+  ;; Global key bindings
+  (global-set-key (kbd "C-j") 'newline)
+  (global-set-key (kbd "C-z") 'undo)
+  (global-set-key (kbd "C-?") 'help-command)
+  (global-set-key (kbd "C-x f") 'counsel-find-file)
+  (global-set-key (kbd "C-x C-d") 'dired)
+  (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
+  (global-set-key (kbd "M-c") 'org-capture)
+  (global-set-key (kbd "C-v") 'yank)
+  (global-set-key (kbd "C-x o") 'my/other-window)
+  (global-set-key (kbd "C-o") 'my/other-window)
+  (global-set-key (kbd "C-x k") 'kill-this-buffer)
+  (global-set-key (kbd "C-x 2")
+                  (lambda () (interactive)
+                    (split-window-below)
+                    (other-window 1)))
+  (global-set-key (kbd "C-x 3")
+                  (lambda () (interactive)
+                    (split-window-right)
+                    (other-window 1))))
+(defun my/keyboard-firmware-tool ()
+  "Open keyboard firmware configuration tool in browser."
+  (interactive)
+  (browse-url "https://configure.ergodox-ez.com/planck-ez/layouts/ABGGZ/latest/0"))
+(use-package disable-mouse
+  :config
+  (global-disable-mouse-mode))
+
 ;;; General
 (progn ;; Defaults
 
@@ -361,71 +425,6 @@
   (setq display-time-string-forms
         '((propertize (format-time-string "%F %H:%M" now) 'face 'bold)))
   (display-time-mode t))
-
-;;; Controls
-(progn ;; Defaults
-
-  ;; Disable all arrow keys
-  (global-unset-key (kbd "<left>"))
-  (global-unset-key (kbd "<right>"))
-  (global-unset-key (kbd "<up>"))
-  (global-unset-key (kbd "<down>"))
-  (global-unset-key (kbd "<C-left>"))
-  (global-unset-key (kbd "<C-right>"))
-  (global-unset-key (kbd "<C-up>"))
-  (global-unset-key (kbd "<C-down>"))
-  (global-unset-key (kbd "<M-left>"))
-  (global-unset-key (kbd "<M-right>"))
-  (global-unset-key (kbd "<M-up>"))
-  (global-unset-key (kbd "<M-down>"))
-
-  ;; Bind cmd (super) key to control
-  (setq mac-command-modifier 'control)
-
-  ;; Swap ; and :
-  (define-key key-translation-map (kbd ";") (kbd ":"))
-  (define-key key-translation-map (kbd ":") (kbd ";"))
-
-  ;; Swap C-m and C-j
-  (define-key key-translation-map (kbd "C-j") (kbd "C-m"))
-  (define-key key-translation-map (kbd "C-m") (kbd "C-j"))
-
-  ;; Swap C-p and C-h
-  (define-key key-translation-map (kbd "C-h") (kbd "C-p"))
-  (define-key key-translation-map (kbd "C-p") (kbd "C-h"))
-
-  ;; Swap M-p and M-h
-  (define-key key-translation-map (kbd "M-h") (kbd "M-p"))
-  (define-key key-translation-map (kbd "M-p") (kbd "M-h"))
-
-  ;; Global key bindings
-  (global-set-key (kbd "C-j") 'newline)
-  (global-set-key (kbd "C-z") 'undo)
-  (global-set-key (kbd "C-?") 'help-command)
-  (global-set-key (kbd "C-x f") 'counsel-find-file)
-  (global-set-key (kbd "C-x C-d") 'dired)
-  (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-  (global-set-key (kbd "M-c") 'org-capture)
-  (global-set-key (kbd "C-v") 'yank)
-  (global-set-key (kbd "C-x o") 'my/other-window)
-  (global-set-key (kbd "C-o") 'my/other-window)
-  (global-set-key (kbd "C-x k") 'kill-this-buffer)
-  (global-set-key (kbd "C-x 2")
-                  (lambda () (interactive)
-                    (split-window-below)
-                    (other-window 1)))
-  (global-set-key (kbd "C-x 3")
-                  (lambda () (interactive)
-                    (split-window-right)
-                    (other-window 1))))
-(defun my/keyboard-firmware-tool ()
-  "Open keyboard firmware configuration tool in browser."
-  (interactive)
-  (browse-url "https://configure.ergodox-ez.com/planck-ez/layouts/ABGGZ/latest/0"))
-(use-package disable-mouse
-  :config
-  (global-disable-mouse-mode))
-
 ;;; Meta Navigation
 (defun my/osx-open-in-finder ()
   "Open current file in finder."
