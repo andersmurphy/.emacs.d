@@ -363,6 +363,9 @@
   (add-hook
    'after-load-theme-hook
    'my/flycheck-use-line))
+(use-package chocolate-theme
+  :config
+  (load-theme 'chocolate t))
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
   (defvar my/mode-line-selected-window (frame-selected-window))
