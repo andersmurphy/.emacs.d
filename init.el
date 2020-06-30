@@ -642,34 +642,6 @@
                                (interactive)
                                (save-excursion
                                  (hs-hide-all))))))
-(use-package captain
-  :config
-  (global-captain-mode)
-
-  (defun my/captain-prog-mode-sentence-start ()
-    "Return start of sentence in comment/string."
-    (max (captain--default-sentence-start)
-         (if (nth 8 (syntax-ppss))
-             (save-excursion
-               (goto-char (nth 8 (syntax-ppss)))
-               (skip-chars-forward ";\n\s")
-               (point))
-           0)))
-  :hook
-  ((prog-mode . (lambda ()
-                  (setq captain-predicate
-                        (lambda () (nth 8 (syntax-ppss))))
-                  (setq captain-sentence-start-function
-                        'my/captain-prog-mode-sentence-start)))
-   (text-mode . (lambda ()
-                  (setq captain-predicate (lambda () t))
-                  (setq captain-sentence-start-function
-                        'captain--default-sentence-start)))
-   (org-mode . (lambda ()
-                 (setq captain-predicate
-                       (lambda () (not (org-in-src-block-p))))
-                 (setq captain-sentence-start-function
-                       'captain--default-sentence-start)))))
 (load "~/.emacs.d/topiary.el")
 (use-package topiary
   :straight nil
