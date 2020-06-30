@@ -878,8 +878,6 @@
                            "--print-width"     "100"))
   :hook (rjsx-mode . (lambda ()
                        (add-hook 'before-save-hook 'my/prettier-js nil 'make-it-local))))
-;; Hex Colours
-(use-package rainbow-mode)
 ;; iOS Simulator
 (defvar my/rn-ios-uninstall-app-last-value nil)
 (defun my/rn-ios-uninstall-app (app-bundle-identifier)
