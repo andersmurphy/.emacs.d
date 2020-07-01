@@ -98,6 +98,9 @@
   (define-key key-translation-map (kbd "C-j") (kbd "C-m"))
   (define-key key-translation-map (kbd "C-m") (kbd "C-j"))
 
+  ;; Make return/enter key behave like C-m
+  (define-key key-translation-map (kbd "RET") (kbd "C-m"))
+
   ;; Swap C-p and C-h
   (define-key key-translation-map (kbd "C-h") (kbd "C-p"))
   (define-key key-translation-map (kbd "C-p") (kbd "C-h"))
