@@ -397,9 +397,23 @@ In the above example the n would be deleted. Handles comments."
             (seq-some #'looking-at))
       (cons (point) (progn (skip-chars-forward "[:graph:]") (point))))))
 
+(defun topiary/bounds-of-html-tag-forward ()
+  "Return bounds of html tag at point forward."
+  (when (and (provided-mode-derived-p major-mode 'sgml-mode) (= (char-after) ?<))
+    (save-excursion
+      (cons (point) (progn (sgml-skip-tag-forward 1) (point))))))
+
+(defun topiary/bounds-of-html-tag-backward ()
+  "Return bounds of html tag at point backward."
+  (when (and (provided-mode-derived-p major-mode 'sgml-mode) (= (char-before) ?>))
+    (save-excursion
+      (cons (point) (progn (sgml-skip-tag-backward 1) (point))))))
+
 (defun topiary/smart-kill-bounds ()
   "Get current smart-kill bounds."
   (or (topiary/bounds-of-active-region)
+      (topiary/bounds-of-html-tag-forward)
+      (topiary/bounds-of-html-tag-backward)
       (topiary/bounds-of-punctuation-forward)
       (topiary/bounds-of-escaped-double-quote-in-string)
       (topiary/bounds-of-space-forward)
