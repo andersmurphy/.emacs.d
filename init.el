@@ -356,12 +356,18 @@
 
     ;; Less colours in code font lock
     (set-face 'font-lock-keyword-face 'default)
+    (set-face-attribute 'font-lock-function-name-face nil :weight 'bold)
     (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
     (set-face 'font-lock-type-face 'font-lock-function-name-face)
     (set-face 'font-lock-builtin-face 'font-lock-constant-face)
+    (set-face-attribute 'font-lock-string-face nil :slant 'italic)
+    (set-face-attribute 'font-lock-comment-delimiter-face nil
+                        :slant 'italic
+                        :weight 'normal)
+    (set-face 'font-lock-comment-face 'font-lock-comment-delimiter-face)
     (set-face 'font-lock-doc-face 'font-lock-comment-face)
 
-  ;; Make flycheck use solid line underlines.
+    ;; Make flycheck use solid line underlines.
     (set-face-attribute
      'flycheck-error nil
      :underline `(:style line :color ,(face-foreground 'error)))
@@ -374,7 +380,7 @@
     (set-face-attribute
      'flyspell-incorrect nil
      :underline `(:style line :color ,(face-foreground 'error))
-                        :inherit 'unspecified)
+     :inherit 'unspecified)
     (set-face-attribute
      'flyspell-duplicate nil
      :underline `(:style line :color ,(face-foreground 'warning))
