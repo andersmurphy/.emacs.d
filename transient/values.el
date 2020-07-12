@@ -1,1 +1,1 @@
-((magit-diff:magit-status-mode "-U0" "--no-ext-diff"))
+((magit-diff:magit-status-mode "--no-ext-diff"))
