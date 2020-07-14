@@ -350,19 +350,25 @@
 
     ;; Set divider to match mode line inactive colour.
     (set-face-background 'vertical-border
-                         (face-attribute 'mode-line-inactive :background))
+                         (face-background 'mode-line-inactive))
     (set-face-foreground 'vertical-border
                          (face-background 'vertical-border))
 
-
-    ;; Set weight and slant for code font lock
-    (set-face-attribute 'font-lock-function-name-face nil :weight 'bold)
-    (set-face-attribute 'font-lock-string-face nil :slant 'italic)
+    ;; Monochrome code font lock
+    (set-face-attribute 'font-lock-function-name-face nil
+                        :weight 'bold
+                        :inherit 'default)
+    (set-face-attribute 'font-lock-constant-face nil
+                        :weight 'normal
+                        :inherit 'default)
+    (set-face-attribute 'font-lock-string-face nil
+                        :slant 'italic
+                        :inherit 'default)
     (set-face-attribute 'font-lock-comment-face nil
                         :slant 'italic
-                        :weight 'normal)
+                        :weight 'normal
+                        :inherit 'default)
 
-    ;; Less colours in code font lock
     (set-face 'font-lock-keyword-face 'default)
     (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
     (set-face 'font-lock-type-face 'font-lock-function-name-face)
