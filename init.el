@@ -406,12 +406,12 @@
   (add-hook
    'after-load-theme-hook
    'my/apply-universal-theme-changes))
-(use-package chocolate-theme
+(use-package eink-theme
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
   :after (flycheck flyspell)
   :config
-  (load-theme 'chocolate t))
+  (load-theme 'eink t))
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
   (defvar my/mode-line-selected-window (frame-selected-window))
