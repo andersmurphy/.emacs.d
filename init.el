@@ -354,18 +354,21 @@
     (set-face-foreground 'vertical-border
                          (face-background 'vertical-border))
 
-    ;; Less colours in code font lock
-    (set-face 'font-lock-keyword-face 'default)
+
+    ;; Set weight and slant for code font lock
     (set-face-attribute 'font-lock-function-name-face nil :weight 'bold)
-    (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
-    (set-face 'font-lock-type-face 'font-lock-function-name-face)
-    (set-face 'font-lock-builtin-face 'font-lock-constant-face)
     (set-face-attribute 'font-lock-string-face nil :slant 'italic)
     (set-face-attribute 'font-lock-comment-delimiter-face nil
                         :slant 'italic
                         :weight 'normal)
+
+    ;; Less colours in code font lock
+    (set-face 'font-lock-keyword-face 'default)
+    (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
+    (set-face 'font-lock-type-face 'font-lock-function-name-face)
+    (set-face 'font-lock-builtin-face 'font-lock-constant-face)
     (set-face 'font-lock-comment-face 'font-lock-comment-delimiter-face)
-    (set-face 'font-lock-doc-face 'font-lock-comment-face)
+    (set-face 'font-lock-doc-face 'font-lock-comment-delimiter-face)
 
     ;; Make flycheck use solid line underlines.
     (set-face-attribute
@@ -385,6 +388,14 @@
      'flyspell-duplicate nil
      :underline `(:style line :color ,(face-foreground 'warning))
      :inherit 'unspecified)
+
+    ;; Set mode line font weight and height
+    (set-face-attribute 'mode-line nil
+                        :height (face-attribute 'default :height)
+                        :weight 'bold)
+    (set-face-attribute 'mode-line-inactive nil
+                        :height (face-attribute 'default :height)
+                        :weight 'bold)
 
     ;; Make mode line fat.
     (set-face-attribute
