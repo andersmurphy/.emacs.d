@@ -358,7 +358,7 @@
     ;; Set weight and slant for code font lock
     (set-face-attribute 'font-lock-function-name-face nil :weight 'bold)
     (set-face-attribute 'font-lock-string-face nil :slant 'italic)
-    (set-face-attribute 'font-lock-comment-delimiter-face nil
+    (set-face-attribute 'font-lock-comment-face nil
                         :slant 'italic
                         :weight 'normal)
 
@@ -367,8 +367,7 @@
     (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
     (set-face 'font-lock-type-face 'font-lock-function-name-face)
     (set-face 'font-lock-builtin-face 'font-lock-constant-face)
-    (set-face 'font-lock-comment-face 'font-lock-comment-delimiter-face)
-    (set-face 'font-lock-doc-face 'font-lock-comment-delimiter-face)
+    (set-face 'font-lock-doc-face 'font-lock-comment-face)
 
     ;; Make flycheck use solid line underlines.
     (set-face-attribute
