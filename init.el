@@ -407,7 +407,7 @@
      'mode-line nil
      :background (face-attribute 'mode-line :background)
      :foreground (face-attribute 'mode-line :foreground)
-     :box `(:line-width 8 :color ,(face-attribute 'mode-line :background))
+     :box `(:line-width 4 :color ,(face-attribute 'mode-line :background))
      :overline nil
      :underline nil)
 
@@ -415,7 +415,7 @@
      'mode-line-inactive nil
      :background (face-attribute 'mode-line-inactive :background)
      :foreground (face-attribute 'mode-line-inactive :foreground)
-     :box `(:line-width 8 :color ,(face-attribute 'mode-line-inactive :background))
+     :box `(:line-width 4 :color ,(face-attribute 'mode-line-inactive :background))
      :overline nil
      :underline nil))
 
