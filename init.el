@@ -318,6 +318,46 @@
 
   ;; Sets font and font size.
   (set-frame-font "Menlo 14"))
+(progn ;; Colour helpers
+
+  (defun set-face (face inherit-face)
+    "Reset a FACE and make it inherit INHERIT-FACE."
+    (set-face-attribute face nil
+                        :foreground 'unspecified :background 'unspecified
+                        :family     'unspecified :slant      'unspecified
+                        :weight     'unspecified :height     'unspecified
+                        :underline  'unspecified :overline   'unspecified
+                        :box        'unspecified :inherit    inherit-face))
+
+  (defun hex->%rgb (color)
+    "Convert colour (hexadecimal string) to percentage based RGB."
+    (cl-loop with div = (float (car (tty-color-standard-values "#ffffff")))
+             for x in (tty-color-standard-values (downcase color))
+             collect (/ x div)))
+
+  (defun blend-color (color1 color2 alpha)
+    "Blend two colours (hexidecimal strings) together by a coefficient ALPHA (a
+     float between 0 and 1)"
+    (if (and (string-prefix-p "#" color1) (string-prefix-p "#" color2))
+        (apply (lambda (r g b) (format "#%02x%02x%02x" (* r 255) (* g 255) (* b 255)))
+               (cl-loop for it    in (hex->%rgb   color1)
+                        for other in (hex->%rgb color2)
+                        collect (+ (* alpha it) (* other (- 1 alpha)))))
+      (color1)))
+
+  (defun darken-color (color alpha)
+    "Darken a COLOR (a hexadecimal string) by a coefficient ALPHA (a float
+     between 0 and 1)."
+    (if (listp color)
+        (cl-loop for c in color collect (darken-color c alpha))
+      (blend-color color "#000000" (- 1 alpha))))
+
+  (defun lighten-color (color alpha)
+    "Brighten a COLOR (a hexadecimal string) by a coefficient ALPHA (a float
+     between 0 and 1)."
+    (if (listp color)
+        (cl-loop for c in color collect (lighten-color c alpha))
+      (blend-color color "#FFFFFF" (- 1 alpha)))))
 (progn ;; Universal theme changes
 
   ;; These changes apply to all themes.
@@ -328,19 +368,10 @@
   ;; Hook for after theme load.
   ;; Update the theme of these components on theme change.
   (defvar after-load-theme-hook nil
-    "Hook run after a color theme is loaded using `load-theme'.")
+    "Hook run after a colour theme is loaded using `load-theme'.")
   (defadvice load-theme (after run-after-load-theme-hook activate)
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
-
-  (defun set-face (face inherit-face)
-    "Reset a FACE and make it inherit INHERIT-FACE."
-    (set-face-attribute face nil
-                        :foreground 'unspecified :background 'unspecified
-                        :family     'unspecified :slant      'unspecified
-                        :weight     'unspecified :height     'unspecified
-                        :underline  'unspecified :overline   'unspecified
-                        :box        'unspecified :inherit    inherit-face))
 
   (defun my/apply-universal-theme-changes ()
     "Apply the changes to all themes."
@@ -357,16 +388,19 @@
     ;; Monochrome code font lock
     (set-face-attribute 'font-lock-function-name-face nil
                         :weight 'bold
+                        :foreground 'unspecified
                         :inherit 'default)
     (set-face-attribute 'font-lock-constant-face nil
-                        :weight 'normal
+                        :slant   'italic
+                        :weight  'unspecified
+                        :foreground 'unspecified
                         :inherit 'default)
     (set-face-attribute 'font-lock-string-face nil
-                        :slant 'italic
+                        :foreground 'unspecified
                         :inherit 'default)
     (set-face-attribute 'font-lock-comment-face nil
-                        :slant 'italic
-                        :weight 'normal
+                        :weight  'unspecified
+                        :foreground (lighten-color (face-foreground 'default) 0.5)
                         :inherit 'default)
 
     (set-face 'font-lock-keyword-face 'default)
