@@ -329,19 +329,19 @@
                         :underline  'unspecified :overline   'unspecified
                         :box        'unspecified :inherit    inherit-face))
 
-  (defun hex->%rgb (color)
-    "Convert colour (hexadecimal string) to percentage based RGB."
+  (defun hex->rgb (color)
+    "Convert colour (hexadecimal string) to RGB."
     (cl-loop with div = (float (car (tty-color-standard-values "#ffffff")))
              for x in (tty-color-standard-values (downcase color))
-             collect (/ x div)))
+             collect (* (/ x div) 255)))
 
   (defun blend-color (color1 color2 alpha)
     "Blend two colours (hexidecimal strings) together by a coefficient ALPHA (a
      float between 0 and 1)"
     (if (and (string-prefix-p "#" color1) (string-prefix-p "#" color2))
-        (apply (lambda (r g b) (format "#%02x%02x%02x" (* r 255) (* g 255) (* b 255)))
-               (cl-loop for it    in (hex->%rgb   color1)
-                        for other in (hex->%rgb color2)
+        (apply (lambda (r g b) (format "#%02x%02x%02x" r g b))
+               (cl-loop for it    in (hex->rgb color1)
+                        for other in (hex->rgb color2)
                         collect (+ (* alpha it) (* other (- 1 alpha)))))
       (color1)))
 
@@ -357,7 +357,17 @@
      between 0 and 1)."
     (if (listp color)
         (cl-loop for c in color collect (lighten-color c alpha))
-      (blend-color color "#FFFFFF" (- 1 alpha)))))
+      (blend-color color "#FFFFFF" (- 1 alpha))))
+
+  (defun is-light-color-p (color)
+    "Return t if COLOR is light. Uses HSP: http://alienryderflex.com/hsp.html"
+    (thread-last
+        (cl-mapcar (lambda (a b) (* a a b))
+                   (hex->rgb color)
+                   '(0.299 0.587 0.114))
+      (apply  #'+)
+      sqrt
+      (< 127.5))))
 (progn ;; Universal theme changes
 
   ;; These changes apply to all themes.
