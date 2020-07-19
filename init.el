@@ -210,11 +210,10 @@
   (straight-pull-all)
   (straight-freeze-versions))
 (defun my/reload-init ()
-  "Reload this init."
+  "Reload init."
   (interactive)
   (save-buffer)
-  (straight-transaction
-   (load  "~/.emacs.d/init.el")))
+  (load  "~/.emacs.d/init.el"))
 (defun my/other-window ()
   "Switch to another window. If no other window exists create one."
   (interactive)
