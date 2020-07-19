@@ -410,7 +410,9 @@
                         :inherit 'default)
     (set-face-attribute 'font-lock-comment-face nil
                         :weight  'unspecified
-                        :foreground (lighten-color (face-foreground 'default) 0.5)
+                        :foreground (if (is-light-color-p (face-foreground 'default))
+                                        (darken-color (face-foreground 'default) 0.5)
+                                      (lighten-color (face-foreground 'default) 0.5))
                         :inherit 'default)
 
     (set-face 'font-lock-keyword-face 'default)
