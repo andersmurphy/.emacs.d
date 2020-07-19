@@ -30,7 +30,7 @@ git config --global core.excludesfile '~/.gitignore'
 git config --global diff.algorithm histogram
 
 brew tap daviderestivo/emacs-head
-brew install emacs-head@27 --with-cocoa --with-imagemagick --with-jansson
+brew install emacs-head@27 --with-cocoa --with-imagemagick --with-jansson --with-xwidgets
 ln -s /usr/local/opt/emacs-head/Emacs.app /Applications
 
 brew install aspell
