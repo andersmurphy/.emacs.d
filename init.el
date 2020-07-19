@@ -319,7 +319,7 @@
   (set-frame-font "Menlo 14"))
 (progn ;; Colour helpers
 
-  (defun set-face (face inherit-face)
+  (defun my/set-face (face inherit-face)
     "Reset a FACE and make it inherit INHERIT-FACE."
     (set-face-attribute face nil
                         :foreground 'unspecified :background 'unspecified
@@ -328,41 +328,41 @@
                         :underline  'unspecified :overline   'unspecified
                         :box        'unspecified :inherit    inherit-face))
 
-  (defun hex->rgb (color)
+  (defun my/hex->rgb (color)
     "Convert colour (hexadecimal string) to RGB."
     (cl-loop with div = (float (car (tty-color-standard-values "#ffffff")))
              for x in (tty-color-standard-values (downcase color))
              collect (* (/ x div) 255)))
 
-  (defun blend-color (color1 color2 alpha)
+  (defun my/blend-color (color1 color2 alpha)
     "Blend two colours (hexidecimal strings) together by a coefficient ALPHA (a
      float between 0 and 1)"
     (if (and (string-prefix-p "#" color1) (string-prefix-p "#" color2))
         (apply (lambda (r g b) (format "#%02x%02x%02x" r g b))
-               (cl-loop for it    in (hex->rgb color1)
-                        for other in (hex->rgb color2)
+               (cl-loop for it    in (my/hex->rgb color1)
+                        for other in (my/hex->rgb color2)
                         collect (+ (* alpha it) (* other (- 1 alpha)))))
       (color1)))
 
-  (defun darken-color (color alpha)
+  (defun my/darken-color (color alpha)
     "Darken a COLOR (a hexadecimal string) by a coefficient ALPHA (a float
      between 0 and 1)."
     (if (listp color)
-        (cl-loop for c in color collect (darken-color c alpha))
-      (blend-color color "#000000" (- 1 alpha))))
+        (cl-loop for c in color collect (my/darken-color c alpha))
+      (my/blend-color color "#000000" (- 1 alpha))))
 
-  (defun lighten-color (color alpha)
+  (defun my/lighten-color (color alpha)
     "Brighten a COLOR (a hexadecimal string) by a coefficient ALPHA (a float
      between 0 and 1)."
     (if (listp color)
-        (cl-loop for c in color collect (lighten-color c alpha))
-      (blend-color color "#FFFFFF" (- 1 alpha))))
+        (cl-loop for c in color collect (my/lighten-color c alpha))
+      (my/blend-color color "#FFFFFF" (- 1 alpha))))
 
-  (defun is-light-color-p (color)
+  (defun my/is-light-color-p (color)
     "Return t if COLOR is light. Uses HSP: http://alienryderflex.com/hsp.html"
     (thread-last
         (cl-mapcar (lambda (a b) (* a a b))
-                   (hex->rgb color)
+                   (my/hex->rgb color)
                    '(0.299 0.587 0.114))
       (apply  #'+)
       sqrt
@@ -388,12 +388,6 @@
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
 
-    ;; Set divider to match mode line inactive colour.
-    (set-face-background 'vertical-border
-                         (face-background 'mode-line-inactive))
-    (set-face-foreground 'vertical-border
-                         (face-background 'vertical-border))
-
     ;; Monochrome code font lock
     (set-face-attribute 'font-lock-function-name-face nil
                         :weight 'bold
@@ -409,16 +403,17 @@
                         :inherit 'default)
     (set-face-attribute 'font-lock-comment-face nil
                         :weight  'unspecified
-                        :foreground (if (is-light-color-p (face-foreground 'default))
-                                        (darken-color (face-foreground 'default) 0.5)
-                                      (lighten-color (face-foreground 'default) 0.5))
+                        :foreground
+                        (if (my/is-light-color-p (face-foreground 'default))
+                            (my/darken-color (face-foreground 'default) 0.5)
+                          (my/lighten-color (face-foreground 'default) 0.5))
                         :inherit 'default)
 
-    (set-face 'font-lock-keyword-face 'default)
-    (set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
-    (set-face 'font-lock-type-face 'font-lock-function-name-face)
-    (set-face 'font-lock-builtin-face 'font-lock-constant-face)
-    (set-face 'font-lock-doc-face 'font-lock-comment-face)
+    (my/set-face 'font-lock-keyword-face 'default)
+    (my/set-face 'font-lock-variable-name-face 'font-lock-function-name-face)
+    (my/set-face 'font-lock-type-face 'font-lock-function-name-face)
+    (my/set-face 'font-lock-builtin-face 'font-lock-constant-face)
+    (my/set-face 'font-lock-doc-face 'font-lock-comment-face)
 
     ;; Make flycheck use solid line underlines.
     (set-face-attribute
@@ -439,13 +434,33 @@
      :underline `(:style line :color ,(face-foreground 'warning))
      :inherit 'unspecified)
 
-    ;; Set mode line font weight and height
+    ;; Set mode line font weight, height and colour.
     (set-face-attribute 'mode-line nil
                         :height (face-attribute 'default :height)
+                        :foreground (face-foreground 'default)
+                        :background
+                        (if (my/is-light-color-p (face-background 'default))
+                            (my/darken-color (face-background 'default) 0.1)
+                          (my/lighten-color (face-background 'default) 0.1))
                         :weight 'bold)
     (set-face-attribute 'mode-line-inactive nil
                         :height (face-attribute 'default :height)
+                        :foreground
+                        (if (my/is-light-color-p (face-foreground 'default))
+                            (my/darken-color (face-foreground 'default) 0.5)
+                          (my/lighten-color (face-foreground 'default) 0.5))
+                        :background
+                        (if (my/is-light-color-p (face-background 'default))
+                            (my/darken-color (face-background 'default) 0.05)
+                          (my/lighten-color (face-background 'default) 0.05))
                         :weight 'bold)
+    (my/set-face 'mode-line-buffer-id nil)
+
+    ;; Set divider to match mode line inactive colour.
+    (set-face-background 'vertical-border
+                         (face-background 'mode-line-inactive))
+    (set-face-foreground 'vertical-border
+                         (face-background 'vertical-border))
 
     ;; Make mode line fat.
     (set-face-attribute
