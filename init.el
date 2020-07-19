@@ -472,6 +472,13 @@
   ;; so they need to be loaded before the theme.
   :after (flycheck flyspell)
   :config
+
+  (defun my/disable-all-themes ()
+    "Disable all active themes."
+    (dolist (i custom-enabled-themes)
+      (disable-theme i)))
+
+  (my/disable-all-themes)
   (load-theme 'eink t))
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
