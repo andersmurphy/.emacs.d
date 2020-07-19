@@ -382,6 +382,11 @@
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
 
+  (defun my/dim-parens ()
+    "Make parenthesis less prominent by matching comment face."
+    (font-lock-add-keywords nil
+                            '(("(\\|)" . 'font-lock-comment-face))))
+
   (defun my/apply-universal-theme-changes ()
     "Apply the changes to all themes."
 
@@ -479,9 +484,9 @@
      :overline nil
      :underline nil))
 
-  (add-hook
-   'after-load-theme-hook
-   'my/apply-universal-theme-changes))
+  (add-hook 'after-load-theme-hook 'my/apply-universal-theme-changes)
+  (add-hook 'clojure-mode-hook 'my/dim-parens)
+  (add-hook 'emacs-lisp-mode-hook 'my/dim-parens))
 (use-package eink-theme
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
