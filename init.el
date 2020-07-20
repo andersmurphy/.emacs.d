@@ -410,8 +410,8 @@
                         :weight  'unspecified
                         :foreground
                         (if (my/is-light-color-p (face-foreground 'default))
-                            (my/darken-color (face-foreground 'default) 0.5)
-                          (my/lighten-color (face-foreground 'default) 0.5))
+                            (my/darken-color (face-foreground 'default) 0.4)
+                          (my/lighten-color (face-foreground 'default) 0.4))
                         :inherit 'default)
 
     (my/set-face 'font-lock-keyword-face 'default)
