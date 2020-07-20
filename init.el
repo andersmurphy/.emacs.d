@@ -406,6 +406,18 @@
                         :foreground 'unspecified
                         :inherit 'default)
 
+    ;; Show paren
+    (set-face-attribute 'show-paren-match nil
+                        :weight 'bold
+                        :background (face-background 'region)
+                        :foreground 'unspecified
+                        :inherit 'default)
+    (set-face-attribute 'show-paren-mismatch nil
+                        :weight 'bold
+                        :background (face-background 'region)
+                        :foreground (face-foreground 'error)
+                        :inherit 'default)
+
     ;; Ivy
     (my/set-face 'ivy-current-match 'region)
 
