@@ -406,6 +406,9 @@
                         :foreground 'unspecified
                         :inherit 'default)
 
+    ;; Ivy
+    (my/set-face 'ivy-current-match 'region)
+
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
 
@@ -505,7 +508,7 @@
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
   :straight nil
-  :after (flycheck flyspell)
+  :after (flycheck flyspell ivy)
   :config
 
   (defun my/disable-all-themes ()
