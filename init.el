@@ -399,7 +399,7 @@
                         :foreground 'unspecified
                         :inherit 'default)
     (set-face-attribute 'font-lock-constant-face nil
-                        :slant   'italic
+                        :slant   'unspecified
                         :weight  'unspecified
                         :foreground 'unspecified
                         :inherit 'default)
