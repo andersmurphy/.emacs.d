@@ -390,15 +390,21 @@
   (defun my/apply-universal-theme-changes ()
     "Apply the changes to all themes."
 
-    ;; Set cursor colour
+    ;; Cursor colour
     (set-cursor-color (face-foreground 'default))
 
-    ;; Set region
+    ;; Region
     (set-face-attribute 'region nil
                         :background
                         (if (my/is-light-color-p (face-background 'default))
                             (my/darken-color (face-background 'default) 0.1)
                           (my/lighten-color (face-background 'default) 0.1)))
+
+    ;; Mini buffer
+    (set-face-attribute 'minibuffer-prompt nil
+                        :weight 'bold
+                        :foreground 'unspecified
+                        :inherit 'default)
 
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
