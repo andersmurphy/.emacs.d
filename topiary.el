@@ -23,10 +23,6 @@
 ;; ("C-}" . sp-forward-barf-sexp)
 ;; (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
 ;; (sp-backward-unwrap-sexp)
-;;  Can't insert ;; inside sexp even though it wouldn't break sexp
-;;  Should auto insert ;; in correct context
-;;  Normal ;/: behaviour outside of lisps
-;; If inserting ;; after ;; convert to  ;;;
 (defun topiary/end-of-buffer-p ()
   "Return t if point at end of buffer."
   (= (point) (point-max)))
