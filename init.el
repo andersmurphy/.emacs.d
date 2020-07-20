@@ -392,6 +392,13 @@
 
     ;; Set cursor colour
     (set-cursor-color (face-foreground 'default))
+    ;; Set region
+    (set-face-attribute 'region nil
+                        :background
+                        (if (my/is-light-color-p (face-background 'default))
+                            (my/darken-color (face-background 'default) 0.1)
+                          (my/lighten-color (face-background 'default) 0.1)))
+
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
 
