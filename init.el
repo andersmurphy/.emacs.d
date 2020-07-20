@@ -390,6 +390,8 @@
   (defun my/apply-universal-theme-changes ()
     "Apply the changes to all themes."
 
+    ;; Set cursor colour
+    (set-cursor-color (face-foreground 'default))
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
 
