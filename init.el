@@ -496,9 +496,11 @@
   (add-hook 'after-load-theme-hook 'my/apply-universal-theme-changes)
   (add-hook 'clojure-mode-hook 'my/dim-parens)
   (add-hook 'emacs-lisp-mode-hook 'my/dim-parens))
-(use-package eink-theme
+(load "~/.emacs.d/my-theme.el")
+(use-package my-theme
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
+  :straight nil
   :after (flycheck flyspell)
   :config
 
@@ -508,7 +510,7 @@
       (disable-theme i)))
 
   (my/disable-all-themes)
-  (load-theme 'eink t))
+  (load-theme 'my t))
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
   (defvar my/mode-line-selected-window (frame-selected-window))
