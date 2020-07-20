@@ -392,6 +392,7 @@
 
     ;; Set cursor colour
     (set-cursor-color (face-foreground 'default))
+
     ;; Set region
     (set-face-attribute 'region nil
                         :background
@@ -452,17 +453,11 @@
     (set-face-attribute 'mode-line nil
                         :height (face-attribute 'default :height)
                         :foreground (face-foreground 'default)
-                        :background
-                        (if (my/is-light-color-p (face-background 'default))
-                            (my/darken-color (face-background 'default) 0.1)
-                          (my/lighten-color (face-background 'default) 0.1))
+                        :background (face-background 'region)
                         :weight 'bold)
     (set-face-attribute 'mode-line-inactive nil
                         :height (face-attribute 'default :height)
-                        :foreground
-                        (if (my/is-light-color-p (face-foreground 'default))
-                            (my/darken-color (face-foreground 'default) 0.5)
-                          (my/lighten-color (face-foreground 'default) 0.5))
+                        :foreground (face-foreground 'font-lock-comment-face)
                         :background
                         (if (my/is-light-color-p (face-background 'default))
                             (my/darken-color (face-background 'default) 0.05)
