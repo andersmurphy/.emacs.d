@@ -433,20 +433,25 @@
     ;; Make flycheck use solid line underlines.
     (set-face-attribute
      'flycheck-error nil
-     :underline `(:style line :color ,(face-foreground 'error)))
+     :underline `(:style line :color ,(face-foreground 'error))
+     :foreground (face-foreground 'error))
     (set-face-attribute
      'flycheck-warning nil
-     :underline `(:style line :color ,(face-foreground 'warning)))
+     :underline `(:style line :color ,(face-foreground 'warning))
+     :foreground (face-foreground 'warning))
     (set-face-attribute
      'flycheck-info nil
-     :underline `(:style line :color ,(face-foreground 'success)))
+     :underline `(:style line :color ,(face-foreground 'success))
+     :foreground (face-foreground 'success))
     (set-face-attribute
      'flyspell-incorrect nil
      :underline `(:style line :color ,(face-foreground 'error))
+     :foreground (face-foreground 'error)
      :inherit 'unspecified)
     (set-face-attribute
      'flyspell-duplicate nil
      :underline `(:style line :color ,(face-foreground 'warning))
+     :foreground (face-foreground 'warning)
      :inherit 'unspecified)
 
     ;; Set mode line font weight, height and colour.
