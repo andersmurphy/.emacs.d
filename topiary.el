@@ -43,7 +43,6 @@
 
 (defun topiary/in-empty-string-p ()
   "Return t if point in empty string."
-  (interactive)
   (and (not (topiary/beginning-of-buffer-p))
        (not (topiary/end-of-buffer-p))
        (= (char-before) (char-after) ?\")))
@@ -483,13 +482,15 @@ If previous character is a alphanumeric insert single quote.
 If next character is a alphanumeric or an opening paren insert single quote.
 Otherwise insert double quote."
   (interactive)
-  (let ((b-char (char-to-string (char-before)))
-        (a-char (char-to-string (char-after))))
+  (let ((b-char (if (char-before) (char-to-string (char-before)) ""))
+        (a-char (if (char-before) (char-to-string (char-after)) "")))
     (cond
-     ((and (string-match "[[:alnum:]-_/:]" b-char)
-           (string-match "[[:alnum:]-_/(?!:]" a-char))  (topiary/wrap-with "\"" "\""))
-     ((or  (string-match "[[:alnum:]]" b-char)
-           (string-match "[[:alnum:](]" a-char))  (insert "'"))
+     ((and  (string-match "[[:alnum:]-_/:]" b-char)
+            (string-match "[[:alnum:]-_/(?!:]" a-char))
+      (topiary/wrap-with "\"" "\""))
+     ((or   (string-match "[[:alnum:]]" b-char)
+            (string-match "[[:alnum:](]" a-char))
+      (insert "'"))
      (t (topiary/insert-pair "\"\"")))))
 
 (defun topiary/unwrap ()
