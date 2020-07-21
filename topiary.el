@@ -260,11 +260,15 @@ If end or beginning of outer sexp reached move point to other bound.
 (defun topiary/insert-double-semicolon ()
   "Insert two semicolons. Don't insert if it will break AST. Insert single semicolon if inside string."
   (interactive)
-  (cond ((ignore-errors
+  (cond ((or (not (member major-mode '(clojure-mode
+                                       emacs-lisp-mode
+                                       lisp-interaction-mode)))
+             (topiary/in-string-p))
+         (insert ";"))
+        ((ignore-errors
            (or (= (save-excursion (forward-sexp) (point)) (line-end-position))
                (= (point) (line-end-position))))
-         (insert ";; "))
-        ((in-string-p) (insert ";"))))
+         (insert ";; "))))
 
 (defun topiary/strict-insert ()
   "If to level and the last entered character is not a valid insert delete it.
@@ -281,7 +285,9 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/post-self-insert ()
   "Prevent insert breaking top level AST."
-  (when (member major-mode '(clojure-mode emacs-lisp-mode))
+  (when (member major-mode '(clojure-mode
+                             emacs-lisp-mode
+                             lisp-interaction-mode))
     (topiary/strict-insert)))
 
 (defun topiary/bounds-of-last-sexp ()
