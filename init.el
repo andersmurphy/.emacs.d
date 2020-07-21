@@ -450,6 +450,7 @@
     (my/set-face 'font-lock-type-face 'font-lock-function-name-face)
     (my/set-face 'font-lock-builtin-face 'font-lock-constant-face)
     (my/set-face 'font-lock-doc-face 'font-lock-comment-face)
+    (my/set-face 'js2-function-param 'default)
 
     ;; Make flycheck use solid line underlines.
     (set-face-attribute
