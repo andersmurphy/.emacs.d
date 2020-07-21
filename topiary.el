@@ -156,7 +156,7 @@ Cursor point stays on the same character despite potential point shift."
                      (bounds-of-thing-at-point 'symbol)))))
     (cond
      ((and (member (char-before) (string-to-list "({[") )
-           (member (char-after) (string-to-list "\n ")))
+           (member (char-after) (string-to-list "\n ]})")))
       (topiary/insert-pair pair))
      (bounds
       (progn
