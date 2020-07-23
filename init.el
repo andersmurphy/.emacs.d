@@ -429,7 +429,9 @@
                         :foreground (face-foreground 'default)
                         :background nil)
     (set-face-attribute 'emms-playlist-selected-face nil
-                        :background (face-background 'region))
+                        :foreground (face-foreground 'default)
+                        :background (face-background 'default)
+                        :weight 'bold)
 
     ;; Monochrome code font lock
     (set-face-attribute 'font-lock-function-name-face nil
