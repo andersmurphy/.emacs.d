@@ -424,6 +424,13 @@
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
 
+    ;; emms
+    (set-face-attribute 'emms-playlist-track-face nil
+                        :foreground (face-foreground 'default)
+                        :background nil)
+    (set-face-attribute 'emms-playlist-selected-face nil
+                        :background (face-background 'region))
+
     ;; Monochrome code font lock
     (set-face-attribute 'font-lock-function-name-face nil
                         :weight 'bold
@@ -450,7 +457,7 @@
     (my/set-face 'font-lock-type-face 'font-lock-function-name-face)
     (my/set-face 'font-lock-builtin-face 'font-lock-constant-face)
     (my/set-face 'font-lock-doc-face 'font-lock-comment-face)
-    (my/set-face 'js2-function-param 'default)
+    ;; (my/set-face 'js2-function-param 'default)
 
     ;; Make flycheck use solid line underlines.
     (set-face-attribute
