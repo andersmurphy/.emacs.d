@@ -62,6 +62,7 @@
             (define-key map (kbd "C-t") 'topiary/smart-transpose)
             (define-key map (kbd "C-f") 'topiary/skip-ws-forward-char)
             (define-key map (kbd "C-b") 'topiary/skip-ws-backward-char)
+            (define-key map (kbd "C-v") 'topiary/smart-yank)
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'sp-kill-hybrid-sexp)
@@ -453,6 +454,20 @@ Delete rather than kill when in mini buffer."
              (error
               (topiary/handle-ivy-if-loaded))))
           (t (topiary/hungry-delete-backward)))))
+
+(defun topiary/smart-yank ()
+  "Overwrite current smart kill region when yanking."
+  (interactive)
+  (let* ((bounds (topiary/smart-kill-bounds))
+         (bounds-directed (if (and bounds (> (point) (car bounds)))
+                              (cons (cdr bounds) (car bounds))
+                            bounds)))
+    (when bounds
+      (condition-case nil
+          (let ((beg (car bounds-directed))
+                (end (cdr bounds-directed)))
+            (delete-region beg end))))
+    (yank)))
 
 (defvar topiary/hl-current-kill-region-overlay nil
   "Overlay for highlighting current kill region.")
