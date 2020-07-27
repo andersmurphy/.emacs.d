@@ -43,6 +43,11 @@
        (not (topiary/end-of-buffer-p))
        (= (char-before) (char-after) ?\")))
 
+(defun topiary/in-empty-pair-p ()
+  "Return t if point in empty pair."
+  (and (member (char-before) (string-to-list "{[("))
+       (member (char-after) (string-to-list "}])"))))
+
 (defmacro topiary/if-in-string (then-form else-form)
   "If in string do THEN-FORM otherwise do ELSE-FORM."
   `(lambda ()
@@ -362,8 +367,7 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-empty-pair ()
   "Get bounds of empty pair () {} []."
-  (when (and (member (char-before) (string-to-list "{[("))
-             (member (char-after) (string-to-list "}])")))
+  (when (topiary/in-empty-pair-p)
     (cons (- (point) 1) (+ (point) 1))))
 
 (defun topiary/bounds-of-single-bracket-in-string ()
