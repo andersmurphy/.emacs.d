@@ -301,9 +301,9 @@ In the above example the n would be deleted. Handles comments."
   (interactive)
   (let ((initial-point (point)))
     (skip-chars-backward "\n ")
-    (if (= initial-point (point))
-        (delete-char -1 t)
-      (kill-region initial-point (point)))))
+    (cond ((= initial-point (point)) (delete-char -1 t))
+          ((eq last-command 'kill-region) (kill-region initial-point (point)))
+          (t (delete-region initial-point (point))))))
 
 (defun topiary/bounds-of-space-before-opening-paren ()
   "Get bounds of space character after cursor if opening char is before cursor."
