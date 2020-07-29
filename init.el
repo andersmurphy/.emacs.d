@@ -588,7 +588,8 @@
   (selectrum-mode t))
 (use-package selectrum-prescient
   :config
-  (selectrum-prescient-mode t))
+  (selectrum-prescient-mode t)
+  (prescient-persist-mode t))
 (use-package project
   :straight nil
   :bind
