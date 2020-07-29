@@ -74,7 +74,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(mode-line ((t (:foreground ,fg :background ,bg-region :weight bold :box (:line-width 4 :color ,bg-region) :overline nil :underline nil))))
    `(mode-line-inactive ((t (:foreground ,fg-comment :background ,bg-inactive :weight bold :box (:line-width 4 :color ,bg-inactive) :overline nil :underline nil))))
    `(mode-line-buffer-id ((t nil)))
-   `(vertical-border ((t (:background ,bg-inactive))))
+   `(vertical-border ((t (:foreground ,bg-inactive))))
    `(emms-playlist-track-face ((t (:foreground ,fg :background ,bg))))
    `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))))
 
