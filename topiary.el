@@ -434,12 +434,6 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
 
-(defmacro topiary/handle-ivy-if-loaded ()
-  "When ivy is loaded handle smart-kill in ivy mini buffer."
-  '(when (and (minibufferp)
-              (bound-and-true-p ivy-mode))
-     (ivy-backward-delete-char)))
-
 (defun topiary/smart-kill ()
   "Kill backward word or sexp. If neither hungry delete backward.
 Delete rather than kill when in mini buffer."
@@ -448,30 +442,30 @@ Delete rather than kill when in mini buffer."
          (bounds-directed (if (and bounds (> (point) (car bounds)))
                               (cons (cdr bounds) (car bounds))
                             bounds)))
-    (cond (bounds
-           (condition-case nil
-               (let ((beg (car bounds-directed))
-                     (end (cdr bounds-directed)))
-                 (if (minibufferp)
-                     (delete-region beg end)
-                   (kill-region beg end)))
-             (error
-              (topiary/handle-ivy-if-loaded))))
-          (t (topiary/hungry-delete-backward)))))
+    (if bounds
+        (condition-case nil
+            (let ((beg (car bounds-directed))
+                  (end (cdr bounds-directed)))
+              (if (minibufferp)
+                  (delete-region beg end)
+                (kill-region beg end))))
+      (topiary/hungry-delete-backward))))
 
 (defun topiary/smart-yank ()
   "Overwrite current smart kill region when yanking."
   (interactive)
-  (let* ((bounds (topiary/smart-kill-bounds))
-         (bounds-directed (if (and bounds (> (point) (car bounds)))
-                              (cons (cdr bounds) (car bounds))
-                            bounds)))
-    (when bounds
-      (condition-case nil
-          (let ((beg (car bounds-directed))
-                (end (cdr bounds-directed)))
-            (delete-region beg end))))
-    (yank)))
+  (unless (or (topiary/in-empty-string-p)
+              (topiary/in-empty-pair-p))
+    (let* ((bounds (topiary/smart-kill-bounds))
+           (bounds-directed (if (and bounds (> (point) (car bounds)))
+                                (cons (cdr bounds) (car bounds))
+                              bounds)))
+      (when bounds
+        (condition-case nil
+            (let ((beg (car bounds-directed))
+                  (end (cdr bounds-directed)))
+              (delete-region beg end))))
+      (yank))))
 
 (defvar topiary/hl-current-kill-region-overlay nil
   "Overlay for highlighting current kill region.")
