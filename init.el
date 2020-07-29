@@ -432,7 +432,15 @@
   "Open current file in finder."
   (interactive)
   (shell-command "open ."))
+(use-package recentf
+  :config
+  (recentf-mode t)
+  ;; Open last 5 recent files
+  (thread-last
+      (seq-take recentf-list 5)
+    (mapcar (lambda (file) (find-file file)))))
 (use-package selectrum
+
   :config
   (selectrum-mode t))
 (use-package selectrum-prescient
@@ -446,16 +454,6 @@
   ("C-h" . project-find-file)
   ("C-M-s" . project-find-regexp))
 (use-package magit
-  :init
-  (setq magit-repository-directories
-        '(("~/.emacs.d"                . 0)
-          ("~/.emacs.d/emacs-sync"     . 0)
-          ("~/projects/"               . 1)))
-  (setq magit-repolist-columns
-        '(("Name"    25 magit-repolist-column-ident                  ())
-          ("Path"    99 magit-repolist-column-path                   ())))
-
-  (magit-list-repositories)
   :config
   (setq magit-save-repository-buffers 'dontask)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
