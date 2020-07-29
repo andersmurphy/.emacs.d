@@ -427,15 +427,6 @@
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
 
-    ;; emms
-    (set-face-attribute 'emms-playlist-track-face nil
-                        :foreground (face-foreground 'default)
-                        :background nil)
-    (set-face-attribute 'emms-playlist-selected-face nil
-                        :foreground (face-foreground 'default)
-                        :background (face-background 'default)
-                        :weight 'bold)
-
     ;; Monochrome code font lock
     (set-face-attribute 'font-lock-function-name-face nil
                         :weight 'bold
