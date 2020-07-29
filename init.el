@@ -583,11 +583,8 @@
   "Open current file in finder."
   (interactive)
   (shell-command "open ."))
-(use-package recentf
-  :straight nil
 (use-package selectrum
   :config
-  (recentf-mode t))
   (selectrum-mode t))
 (use-package selectrum-prescient
   :config
@@ -595,13 +592,14 @@
 (use-package project
   :straight nil
   :bind
-(use-package swiper
-  :bind ("C-s" . swiper-isearch)
-  ("C-w" . topiary/smart-kill)
-  ("C-r" . swiper-isearch-backward))
   ("C-x p" . project-find-file)
   ("C-h" . project-find-file)
   ("C-M-s" . project-find-regexp))
+(use-package swiper
+  :bind
+  ("C-s" . swiper-isearch)
+  ("C-w" . topiary/smart-kill)
+  ("C-r" . swiper-isearch-backward))
 (use-package magit
   :defer t
   :config
