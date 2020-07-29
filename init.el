@@ -585,8 +585,13 @@
   (shell-command "open ."))
 (use-package recentf
   :straight nil
+(use-package selectrum
   :config
   (recentf-mode t))
+  (selectrum-mode t))
+(use-package selectrum-prescient
+  :config
+  (selectrum-prescient-mode t))
 (use-package project
   :straight nil
   :bind
