@@ -587,18 +587,16 @@
   :straight nil
   :config
   (recentf-mode t))
+(use-package project
+  :straight nil
   :bind
 (use-package swiper
   :bind ("C-s" . swiper-isearch)
   ("C-w" . topiary/smart-kill)
   ("C-r" . swiper-isearch-backward))
-(use-package counsel
-  :init
-  (counsel-mode t)
-  :bind
-  ("C-x p" . counsel-git)
-  ("C-h" . counsel-git)
-  ("C-M-s" . counsel-git-grep))
+  ("C-x p" . project-find-file)
+  ("C-h" . project-find-file)
+  ("C-M-s" . project-find-regexp))
 (use-package magit
   :defer t
   :config
