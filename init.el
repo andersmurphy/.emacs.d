@@ -580,11 +580,6 @@
   ("C-x p" . project-find-file)
   ("C-h" . project-find-file)
   ("C-M-s" . project-find-regexp))
-(use-package swiper
-  :bind
-  ("C-s" . swiper-isearch)
-  ("C-w" . topiary/smart-kill)
-  ("C-r" . swiper-isearch-backward))
 (use-package magit
   :init
   (setq magit-repository-directories
