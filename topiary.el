@@ -464,8 +464,9 @@ Delete rather than kill when in mini buffer."
         (condition-case nil
             (let ((beg (car bounds-directed))
                   (end (cdr bounds-directed)))
-              (delete-region beg end))))
-      (yank))))
+              (delete-region beg end))))))
+
+  (yank))
 
 (defvar topiary/hl-current-kill-region-overlay nil
   "Overlay for highlighting current kill region.")
