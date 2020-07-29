@@ -110,12 +110,12 @@
   (define-key key-translation-map (kbd "M-p") (kbd "M-h"))
 
   ;; Global key bindings
+  (global-set-key (kbd "C-x f") 'find-file)
+  (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
   (global-set-key (kbd "C-j") 'newline)
   (global-set-key (kbd "C-z") 'undo)
   (global-set-key (kbd "C-?") 'help-command)
-  (global-set-key (kbd "C-x f") 'counsel-find-file)
   (global-set-key (kbd "C-x C-d") 'dired)
-  (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
   (global-set-key (kbd "M-c") 'org-capture)
   (global-set-key (kbd "C-v") 'yank)
   (global-set-key (kbd "C-x o") 'my/other-window)
@@ -128,7 +128,12 @@
   (global-set-key (kbd "C-x 3")
                   (lambda () (interactive)
                     (split-window-right)
-                    (other-window 1))))
+                    (other-window 1)))
+
+  ;; Minibuffer binding
+  (define-key minibuffer-local-completion-map (kbd "C-v") 'yank)
+  (define-key minibuffer-local-completion-map (kbd "C-w") 'topiary/smart-kill)
+  (define-key minibuffer-local-completion-map (kbd "C-o") 'my/other-window))
 (defun my/keyboard-firmware-tool ()
   "Open keyboard firmware configuration tool in browser."
   (interactive)
@@ -421,9 +426,6 @@
                         :foreground (face-foreground 'error)
                         :inherit 'default)
 
-    ;; Ivy
-    (my/set-face 'ivy-current-match 'region)
-
     ;; Set fringes to always match background.
     (set-face-attribute 'fringe nil :background nil)
 
@@ -524,7 +526,7 @@
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
   :straight nil
-  :after (flycheck flyspell ivy)
+  :after (flycheck flyspell)
   :config
 
   (defun my/disable-all-themes ()
@@ -585,19 +587,7 @@
   :straight nil
   :config
   (recentf-mode t))
-(use-package ivy
-  :diminish ivy-mode
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (ivy-configure 'counsel-M-x :sort-fn #'ivy-string<)
   :bind
-  (:map ivy-mode-map
-        ("C-v" . yank)
-        ("C-w" . topiary/smart-kill)
-        ("C-o" . my/other-window))
-  :init
-  (ivy-mode t))
 (use-package swiper
   :bind ("C-s" . swiper-isearch)
   ("C-w" . topiary/smart-kill)
@@ -612,7 +602,6 @@
 (use-package magit
   :defer t
   :config
-  (setq magit-completing-read-function 'ivy-completing-read)
   (setq magit-save-repository-buffers 'dontask)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
   (setq magit-diff-refine-hunk 'all)
