@@ -191,9 +191,6 @@
   ;; Show keystrokes ASAP
   (setq echo-keystrokes 0.1)
 
-  ;; Default initial buffer to tasks.org file.
-  (setq initial-buffer-choice "~/.emacs.d/emacs-sync/org/tasks.org")
-
   ;; Initial scratch message.
   (setq initial-scratch-message "")
 
@@ -602,7 +599,16 @@
   ("C-w" . topiary/smart-kill)
   ("C-r" . swiper-isearch-backward))
 (use-package magit
-  :defer t
+  :init
+  (setq magit-repository-directories
+        '(("~/.emacs.d"                . 0)
+          ("~/.emacs.d/emacs-sync"     . 0)
+          ("~/projects/"               . 1)))
+  (setq magit-repolist-columns
+        '(("Name"    25 magit-repolist-column-ident                  ())
+          ("Path"    99 magit-repolist-column-path                   ())))
+
+  (magit-list-repositories)
   :config
   (setq magit-save-repository-buffers 'dontask)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
