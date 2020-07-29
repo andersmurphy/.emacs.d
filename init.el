@@ -395,22 +395,12 @@
   (defun my/apply-universal-theme-changes ()
     "Apply the changes to all themes."
 
-    ;; Cursor colour
-    (set-cursor-color (face-foreground 'default))
-
     ;; Region
     (set-face-attribute 'region nil
                         :background
                         (if (my/is-light-color-p (face-background 'default))
                             (my/darken-color (face-background 'default) 0.1)
                           (my/lighten-color (face-background 'default) 0.1)))
-
-    ;; Mini buffer
-    (set-face-attribute 'minibuffer-prompt nil
-                        :weight 'bold
-                        :foreground 'unspecified
-                        :inherit 'default)
-
     ;; Show paren
     (set-face-attribute 'show-paren-match nil
                         :weight 'bold
@@ -422,9 +412,6 @@
                         :background (face-background 'region)
                         :foreground (face-foreground 'error)
                         :inherit 'default)
-
-    ;; Set fringes to always match background.
-    (set-face-attribute 'fringe nil :background nil)
 
     ;; Monochrome code font lock
     (set-face-attribute 'font-lock-function-name-face nil
