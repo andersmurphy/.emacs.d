@@ -858,7 +858,7 @@
   (emms-playing-time-disable-display)
   (setq emms-repeat-playlist t)
   (defvar emms-source-file-default-directory)
-  (setq emms-source-file-default-directory "~/Dropbox/music"))
+  (setq emms-source-file-default-directory "~/Dropbox/music/"))
 (use-package markdown-mode
   :defer t
   :commands (markdown-mode gfm-mode)
