@@ -199,7 +199,10 @@
   (setq set-mark-command-repeat-pop 't)
 
   ;; Auto update buffer when it is changed by an external source
-  (global-auto-revert-mode) )
+  (global-auto-revert-mode)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
 (defun my/init ()
   "Open init file (this file)."
   (interactive)
