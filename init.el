@@ -435,10 +435,14 @@
 (use-package recentf
   :config
   (recentf-mode t)
-  ;; Open last 5 recent files
-  (thread-last
-      (seq-take recentf-list 5)
-    (mapcar (lambda (file) (find-file file)))))
+  (defun my/open-recent-files ()
+    (thread-last
+        (append (seq-take recentf-list 5)
+                '("~/.emacs.d/init.el" "~/.emacs.d/emacs-sync/org/tasks.org"))
+      (seq-reverse)
+      (mapcar #'find-file)))
+  :hook
+  (after-init . my/open-recent-files))
 (use-package selectrum
 
   :config
