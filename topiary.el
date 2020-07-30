@@ -443,12 +443,11 @@ Delete rather than kill when in mini buffer."
                               (cons (cdr bounds) (car bounds))
                             bounds)))
     (if bounds
-        (condition-case nil
-            (let ((beg (car bounds-directed))
-                  (end (cdr bounds-directed)))
-              (if (minibufferp)
-                  (delete-region beg end)
-                (kill-region beg end))))
+        (let ((beg (car bounds-directed))
+              (end (cdr bounds-directed)))
+          (if (minibufferp)
+              (delete-region beg end)
+            (kill-region beg end)))
       (topiary/hungry-delete-backward))))
 
 (defun topiary/smart-yank ()
@@ -461,11 +460,9 @@ Delete rather than kill when in mini buffer."
                                 (cons (cdr bounds) (car bounds))
                               bounds)))
       (when bounds
-        (condition-case nil
-            (let ((beg (car bounds-directed))
-                  (end (cdr bounds-directed)))
-              (delete-region beg end))))))
-
+        (let ((beg (car bounds-directed))
+              (end (cdr bounds-directed)))
+          (delete-region beg end)))))
   (yank))
 
 (defvar topiary/hl-current-kill-region-overlay nil

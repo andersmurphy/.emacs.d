@@ -131,9 +131,9 @@
                     (other-window 1)))
 
   ;; Minibuffer binding
-  (define-key minibuffer-local-completion-map (kbd "C-v") 'yank)
-  (define-key minibuffer-local-completion-map (kbd "C-w") 'topiary/smart-kill)
-  (define-key minibuffer-local-completion-map (kbd "C-o") 'my/other-window))
+  (define-key minibuffer-local-map (kbd "C-v") 'yank)
+  (define-key minibuffer-local-map (kbd "C-w") 'topiary/smart-kill)
+  (define-key minibuffer-local-map (kbd "C-o") 'my/other-window))
 (defun my/keyboard-firmware-tool ()
   "Open keyboard firmware configuration tool in browser."
   (interactive)
