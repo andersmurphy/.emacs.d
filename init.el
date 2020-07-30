@@ -322,9 +322,7 @@
 
   ;; Sets font and font size.
   (set-frame-font "Menlo 14"))
-(progn ;; Universal theme changes
-
-  ;; These changes apply to all themes.
+(progn ;; Dynamic theme changes
 
   ;; To find out the name of the face you want to customise:
   ;; M-x cutomize-face and then search through the list of faces.
@@ -342,32 +340,6 @@
     (font-lock-add-keywords nil
                             '(("(\\|)" . 'font-lock-comment-face))))
 
-  (defun my/apply-universal-theme-changes ()
-    "Apply the changes to all themes."
-
-    ;; Make flycheck use solid line underlines.
-    (set-face-attribute
-     'flycheck-error nil
-     :underline `(:style line :color ,(face-foreground 'error))
-     :foreground (face-foreground 'error))
-    (set-face-attribute
-     'flycheck-warning nil
-     :underline `(:style line :color ,(face-foreground 'warning))
-     :foreground (face-foreground 'warning))
-    (set-face-attribute
-     'flycheck-info nil
-     :underline `(:style line :color ,(face-foreground 'success))
-     :foreground (face-foreground 'success))
-    (set-face-attribute
-     'flyspell-incorrect nil
-     :underline `(:style line :color ,(face-foreground 'error))
-     :inherit 'unspecified)
-    (set-face-attribute
-     'flyspell-duplicate nil
-     :underline `(:style line :color ,(face-foreground 'warning))
-     :inherit 'unspecified))
-
-  (add-hook 'after-load-theme-hook 'my/apply-universal-theme-changes)
   (add-hook 'clojure-mode-hook 'my/dim-parens)
   (add-hook 'emacs-lisp-mode-hook 'my/dim-parens))
 (load "~/.emacs.d/my-theme.el")

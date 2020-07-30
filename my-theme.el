@@ -1,3 +1,8 @@
+;;; my-theme.el --- My theme
+
+;;; Commentary:
+
+;;; Code:
 (deftheme my
   "Created 2020-07-20.")
 
@@ -14,7 +19,7 @@
              (cl-loop for it    in (my/hex->rgb color1)
                       for other in (my/hex->rgb color2)
                       collect (+ (* alpha it) (* other (- 1 alpha)))))
-    (color1)))
+    color1))
 
 (defun my/darken-color (color alpha)
   "Darken a hex COLOR by a coefficient ALPHA between 0 and 1."
@@ -48,6 +53,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                        (my/darken-color fg 0.4)
                      (my/lighten-color fg 0.4)))
        (fg-error (face-foreground 'error))
+       (fg-warning (face-foreground 'warning))
+       (fg-success (face-foreground 'success))
        (bg-inactive (if (my/is-light-color-p bg)
                         (my/darken-color bg 0.05)
                       (my/lighten-color bg 0.05))))
@@ -74,9 +81,15 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(mode-line ((t (:foreground ,fg :background ,bg-region :weight bold :box (:line-width 4 :color ,bg-region) :overline nil :underline nil))))
    `(mode-line-inactive ((t (:foreground ,fg-comment :background ,bg-inactive :weight bold :box (:line-width 4 :color ,bg-inactive) :overline nil :underline nil))))
    `(mode-line-buffer-id ((t nil)))
+   `(flycheck-error ((t (:underline (:style line :color ,fg-error) :foreground ,fg-error))) )
+   `(flycheck-warning ((t (:underline (:style line :color ,fg-warning) :foreground ,fg-warning))) )
+   `(flycheck-info
+     ((t (:underline (:style line :color ,fg-success) :foreground ,fg-success))) )
+   `(flyspell-incorrect ((t (:underline (:style line :color ,fg-error)))) )
+   `(flyspell-duplicate ((t (:underline (:style line :color ,fg-warning)))) )
    `(vertical-border ((t (:foreground ,bg-inactive))))
    `(emms-playlist-track-face ((t (:foreground ,fg :background ,bg))))
    `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))))
 
-
 (provide-theme 'my)
+;;; my-theme.el ends here
