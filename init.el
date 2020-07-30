@@ -278,6 +278,10 @@
   (add-hook 'eshell-mode-hook
             (lambda ()
               (define-key eshell-mode-map (kbd "M-h") 'eshell-previous-matching-input-from-input))))
+(use-package so-long
+  :straight nil
+  :config
+  (global-so-long-mode t))
 
 ;;; Visual
 (progn ;; Defaults
