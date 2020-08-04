@@ -1,4 +1,4 @@
-;;; init.el --- Initialization file for Emacs
+;;; init.el --- Initialization file for Emacs -*- lexical-binding:t -*-
 
 ;;; Commentary:
 
@@ -51,7 +51,7 @@
   (load custom-file 'noerror))
 
 ;;; Emacs lisp Extension
-(defmacro comment (&rest body)
+(defmacro comment (&rest _)
   "Ignore BODY, yields nil."
   nil)
 (use-package dash)
