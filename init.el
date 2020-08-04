@@ -413,7 +413,7 @@
   (recentf-mode t)
   (defun my/open-recent-files ()
     (thread-last
-        (append (seq-take recentf-list 5)
+        (append (seq-take recentf-list 10)
                 '("~/.emacs.d/init.el" "~/.emacs.d/emacs-sync/org/tasks.org"))
       (seq-reverse)
       (mapcar #'find-file)))
