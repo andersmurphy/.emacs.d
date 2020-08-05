@@ -547,7 +547,7 @@
                                           #'flycheck-error-level-<)))
              (level (and most-sever-error
                          (flycheck-error-level most-sever-error)))
-             (marker-string "*fringe-dummy*")
+             (marker-string (concat "*" (format "%s" level) "*"))
              (marker-length (length marker-string)))
         (when most-sever-error
           (put-text-property 0 marker-length 'display
