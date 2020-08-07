@@ -419,8 +419,24 @@
       (mapcar #'find-file)))
   :hook
   (after-init . my/open-recent-files))
+(use-package isearch
+  :straight nil
+  :config
+  (setq search-highlight t)
+  (setq search-whitespace-regexp ".*?")
+  (setq isearch-lax-whitespace t)
+  (setq isearch-regexp-lax-whitespace nil)
+  (setq isearch-lazy-highlight t)
+  :bind
+  (:map isearch-mode-map
+        ("DEL" . isearch-del-char)
+        ("C-w" . isearch-del-char)
+        ("C-g" . isearch-cancel)
+        ("C-n" . isearch-repeat-forward)
+        ("C-p" . isearch-repeat-backward)
+        ("C-s" . isearch-forward-symbol-at-point)
+        ("C-r" . isearch-query-replace)))
 (use-package selectrum
-
   :config
   (selectrum-mode t))
 (use-package selectrum-prescient
