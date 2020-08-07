@@ -57,7 +57,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
        (fg-success (face-foreground 'success))
        (bg-inactive (if (my/is-light-color-p bg)
                         (my/darken-color bg 0.05)
-                      (my/lighten-color bg 0.05))))
+                      (my/lighten-color bg 0.05)))
+       (fg-highlight (face-foreground 'highlight))
+       (bg-highlight (face-background 'highlight)))
 
   (custom-theme-set-faces
    'my
@@ -66,6 +68,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(show-paren-match ((t (:foreground ,fg :background ,bg-region :weight bold))))
    `(show-paren-mismatch ((t (:foreground ,fg-error :background ,bg-region :weight bold))))
    `(cursor ((t (:foreground ,fg))))
+   `(isearch ((t (:foreground ,fg-highlight :background ,bg-highlight))))
+   `(lazy-highlight ((t (:background ,bg-region))))
    `(minibuffer-prompt ((t (:foreground ,fg :weight bold))))
    `(eshell-prompt ((t (:foreground ,fg :weight bold))))
    `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
