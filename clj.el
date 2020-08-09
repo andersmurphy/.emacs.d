@@ -464,13 +464,6 @@ defaults to current namespace."
             ;; Use clojure syntax table
             (set-syntax-table clojure-mode-syntax-table)))
 
-(defun my/clj-before-save ()
-  "Vertically align the contents of the sexp around point on save."
-  (when (eq major-mode 'clojure-mode)
-    (clojure-align (point-min) (point-max))))
-
-(add-hook 'before-save-hook 'my/clj-before-save)
-
 (defun my/require-test-src-file ()
   "Used for generating test templates."
   (concat "["
