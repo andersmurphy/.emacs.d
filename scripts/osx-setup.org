@@ -165,6 +165,12 @@ Linter.
 brew install borkdude/brew/clj-kondo
 #+END_SRC
 
+Formatter.
+
+#+BEGIN_SRC sh
+brew install --build-from-source clj-zprint.rb
+#+END_SRC
+
 * OSX Clear fonts on retina screens
 - First, turn OFF “Font smoothing” in System Preferences → General
 - Go to System Preferences → Displays, uncheck Default and select scaled 2× resolution
