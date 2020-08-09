@@ -52,6 +52,4 @@ brew install leiningen
 rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/dotfiles/.lein/profiles.clj ~/.lein/
 
-brew install joker
-rm ~/.joker
-ln -s ~/.emacs.d/dotfiles/.joker ~
+brew install borkdude/brew/clj-kondo
