@@ -705,6 +705,20 @@
   (show-paren-mode 1)
   (defvar show-paren-delay)
   (setq show-paren-delay 0))
+;; Formatting
+(use-package apheleia
+  :straight (apheleia :host github :repo "raxod502/apheleia")
+  :config
+  (setf (alist-get 'prettier apheleia-formatters)
+        '(npx "prettier"
+              "--trailing-comma"  "es5"
+              "--bracket-spacing" "true"
+              "--single-quote"    "true"
+              "--semi" "false"
+              "--print-width"     "100"
+              file))
+  (add-to-list 'apheleia-mode-alist '(rjsx-mode . prettier))
+  (apheleia-global-mode t))
 ;; Lisp
 (use-package smartparens
   :config
@@ -801,18 +815,6 @@
   (flycheck-add-mode 'javascript-eslint 'rjsx-mode))
 (use-package add-node-modules-path
   :hook (rjsx-mode . add-node-modules-path))
-(use-package prettier-js
-  :config
-  (defun my/prettier-js ()
-    (save-excursion (prettier-js)))
-
-  (setq prettier-js-args '("--trailing-comma"  "es5"
-                           "--bracket-spacing" "true"
-                           "--single-quote"    "true"
-                           "--semi"            "false"
-                           "--print-width"     "100"))
-  :hook (rjsx-mode . (lambda ()
-                       (add-hook 'before-save-hook 'my/prettier-js nil 'make-it-local))))
 ;; iOS Simulator
 (defvar my/rn-ios-uninstall-app-last-value nil)
 (defun my/rn-ios-uninstall-app (app-bundle-identifier)
