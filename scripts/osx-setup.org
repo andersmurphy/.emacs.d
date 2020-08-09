@@ -162,9 +162,7 @@ ln -s ~/.emacs.d/dotfiles/.lein/profiles.clj ~/.lein/
 Linter.
 
 #+BEGIN_SRC sh
-brew install joker
-rm ~/.joker
-ln -s ~/.emacs.d/dotfiles/.joker ~
+brew install borkdude/brew/clj-kondo
 #+END_SRC
 
 * OSX Clear fonts on retina screens

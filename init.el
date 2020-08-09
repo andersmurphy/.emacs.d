@@ -761,7 +761,8 @@
 (load "~/.emacs.d/clj.el")
 (use-package clj :straight nil)
 (use-package clojure-mode
-  :defer t
+  :config
+  (require 'flycheck-clj-kondo)
   :hook ((clojure-mode . (lambda ()
                            (set (make-local-variable 'company-backends)
                                 (list
@@ -785,7 +786,7 @@
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
               ("M-," . my/clj-jump-back)))
-(use-package flycheck-joker)
+(use-package flycheck-clj-kondo)
 ;; HTTP
 (use-package restclient
   :defer t
