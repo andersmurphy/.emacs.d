@@ -53,3 +53,5 @@ rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/dotfiles/.lein/profiles.clj ~/.lein/
 
 brew install borkdude/brew/clj-kondo
+
+brew install --build-from-source clj-zprint.rb

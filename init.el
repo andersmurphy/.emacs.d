@@ -717,7 +717,10 @@
               "--semi" "false"
               "--print-width"     "100"
               file))
+  (setf (alist-get 'clj-zprint apheleia-formatters)
+        '("wrap-clj-zprint" file))
   (add-to-list 'apheleia-mode-alist '(rjsx-mode . prettier))
+  (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint))
   (apheleia-global-mode t))
 ;; Lisp
 (use-package smartparens
