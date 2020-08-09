@@ -403,6 +403,7 @@
     (thread-last
         (append (seq-take recentf-list 10)
                 '("~/.emacs.d/init.el" "~/.emacs.d/emacs-sync/org/tasks.org"))
+      (delete-dups)
       (seq-reverse)
       (mapcar #'find-file)))
   :hook
