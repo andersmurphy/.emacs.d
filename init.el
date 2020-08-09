@@ -370,17 +370,10 @@
       (setq my/mode-line-selected-window (frame-selected-window))
       (force-mode-line-update)))
 
-  (defun my/mode-line-unset-selected-window ()
-    (setq my/mode-line-selected-window nil)
-    (force-mode-line-update))
-
   (defun my/mode-line-selected-active-p ()
     (eq my/mode-line-selected-window (selected-window)))
 
   (add-hook 'window-configuration-change-hook #'my/mode-line-set-selected-window)
-
-  (add-hook 'focus-in-hook #'my/mode-line-set-selected-window)
-  (add-hook 'focus-out-hook #'my/mode-line-unset-selected-window)
   (advice-add 'handle-switch-frame :after #'my/mode-line-set-selected-window)
   (advice-add 'select-window :after #'my/mode-line-set-selected-window)
 
