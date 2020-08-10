@@ -595,7 +595,8 @@
 
   :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
                                              (hs-minor-mode)(hs-hide-all)))
-         (flycheck-after-syntax-check . my/refresh-folded-code-errors))
+         (flycheck-after-syntax-check . my/refresh-folded-code-errors)
+         (apheleia-post-format . my/re-toggle-all-folds))
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . (lambda ()
