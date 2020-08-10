@@ -600,7 +600,7 @@
                                (interactive)
                                (save-excursion
                                  (hs-hide-all))))))
-(load "~/.emacs.d/topiary.el")
+(load "~/.emacs.d/modes/topiary.el")
 (use-package topiary
   :straight nil
   :init
@@ -718,7 +718,7 @@
           "{:style [:community :justified] :width 100 :map {:comma? false}}"
           file))
   (add-to-list 'apheleia-mode-alist '(rjsx-mode . prettier))
-  (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint))
+  (comment (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint)))
   (apheleia-global-mode t))
 ;; Lisp
 (use-package smartparens
@@ -762,7 +762,7 @@
               :map sql-interactive-mode-map
               ("M-h" . comint-previous-input)))
 ;; Clojure
-(load "~/.emacs.d/clj.el")
+(load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
 (use-package clojure-mode
   :config
