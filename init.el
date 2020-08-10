@@ -615,7 +615,7 @@
   ;; Spellchek docs and comments in prog-mode but not strings
   (setq flyspell-prog-text-faces (delq 'font-lock-string-face
                                        flyspell-prog-text-faces))
-  (setq ispell-personal-dictionary "~/.emacs.d/.aspell.en.pws")
+  (setq ispell-personal-dictionary "~/.emacs.d/setup/dotfiles/.aspell.en.pws")
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode))
 (use-package flycheck
