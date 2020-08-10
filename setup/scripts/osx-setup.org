@@ -123,7 +123,7 @@ Emms depends on mpv to play music.
 #+BEGIN_SRC sh
 brew install mpv
 rm ~/.config/mpv/mpv.conf
-ln -s ~/.emacs.d/dotfiles/.mpv/mpv.conf ~/.config/mpv/
+ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 #+END_SRC
 
 Markdown mode depends on multimarkdown to preview markdown.
@@ -148,7 +148,7 @@ Language.
 #+BEGIN_SRC sh
 brew install clojure
 rm ~/.clojure/deps.edn
-ln -s ~/.emacs.d/dotfiles/.clojure/deps.edn ~/.clojure/
+ln -s ~/.emacs.d/setup/dotfiles/.clojure/deps.edn ~/.clojure/
 #+END_SRC
 
 Build tool.
@@ -156,7 +156,7 @@ Build tool.
 #+BEGIN_SRC sh
 brew install leiningen
 rm ~/.lein/profiles.clj
-ln -s ~/.emacs.d/dotfiles/.lein/profiles.clj ~/.lein/
+ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 #+END_SRC
 
 Linter.
@@ -168,7 +168,7 @@ brew install borkdude/brew/clj-kondo
 Formatter.
 
 #+BEGIN_SRC sh
-brew install --build-from-source brew-formulae/clj-zprint.rb
+brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
 #+END_SRC
 
 * OSX Clear fonts on retina screens
