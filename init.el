@@ -417,6 +417,7 @@
   :bind
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
+        ("TAB" . isearch-exit)
         ("C-w" . isearch-del-char)
         ("C-g" . isearch-cancel)
         ("C-n" . isearch-repeat-forward)
