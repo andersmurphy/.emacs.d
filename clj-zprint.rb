@@ -15,7 +15,7 @@ class CljZprint < Formula
     system "mv zprintm-1.0.0 clj-zprint"
     system "chmod 755 clj-zprint"
     system "echo '#!/bin/bash
-\"clj-zprint\" \"{:style [:community :justified] :width 100 :map {:comma? false}}\" < \"$1\"' > wrap-clj-zprint"
+\"clj-zprint\" \"$1\" < \"$2\"' > wrap-clj-zprint"
     system "chmod 755 wrap-clj-zprint"
     bin.install "clj-zprint"
     bin.install "wrap-clj-zprint"
