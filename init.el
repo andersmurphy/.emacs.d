@@ -346,9 +346,7 @@
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
   :straight nil
-  :after (flycheck flyspell)
   :config
-
   (defun my/disable-all-themes ()
     "Disable all active themes."
     (dolist (i custom-enabled-themes)
