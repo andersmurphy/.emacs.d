@@ -566,11 +566,8 @@
     "Toggle folded code at top level without losing cursor position."
     (interactive)
     (save-excursion
-      (unless (= (point)
-                 (save-excursion
-                   (beginning-of-line)
-                   (point)))
-        (beginning-of-defun))
+      (unless (<= (nth 0 (syntax-ppss)) 0)
+        (goto-char (car (nth 9 (syntax-ppss)))))
       (hs-toggle-hiding)))
 
   (defun my/re-toggle-all-folds ()
