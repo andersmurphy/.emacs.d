@@ -168,7 +168,7 @@ brew install borkdude/brew/clj-kondo
 Formatter.
 
 #+BEGIN_SRC sh
-brew install --build-from-source clj-zprint.rb
+brew install --build-from-source brew-formulae/clj-zprint.rb
 #+END_SRC
 
 * OSX Clear fonts on retina screens

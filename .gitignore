@@ -28,4 +28,5 @@ emms
 /emacs-sync/
 /emojies/
 /request/
+/transient/*
 /var/prescient-save.el
