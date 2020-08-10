@@ -346,7 +346,6 @@
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
   :straight nil
-  :after (flycheck flyspell)
   :config
 
   (defun my/disable-all-themes ()
@@ -664,7 +663,8 @@
 
   :config
   ;; Make flycheck use current load path
-  (setq-default flycheck-emacs-lisp-load-path 'inherit))
+  (setq-default flycheck-emacs-lisp-load-path 'inherit)
+  (setq-default flycheck-check-syntax-automatically '(mode-enabled idle-buffer-switch)))
 
 ;;; Completion & Templates
 (use-package company
