@@ -714,7 +714,7 @@
               "--trailing-comma"  "es5"
               "--bracket-spacing" "true"
               "--single-quote"    "true"
-              "--semi" "false"
+              "--semi"            "false"
               "--print-width"     "100"
               file))
   (setf (alist-get 'clj-zprint apheleia-formatters)
