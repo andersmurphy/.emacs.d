@@ -580,8 +580,8 @@
         (when (overlay-get ov 'hs)
           (goto-char (overlay-start ov))
           (when (hs-already-hidden-p)
-            (my/toggle-defun-level-hiding)
-            (my/toggle-defun-level-hiding))))))
+            (hs-toggle-hiding)
+            (hs-toggle-hiding))))))
 
   (defvar my/last-flycheck-errors nil)
   (defvar flycheck-current-errors)
