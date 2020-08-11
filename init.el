@@ -717,7 +717,7 @@
               file))
   (setf (alist-get 'clj-zprint apheleia-formatters)
         '("wrap-clj-zprint"
-          "{:style [:community :justified] :width 100 :map {:comma? false}}"
+          "{:style [:community :justified] :map {:comma? false}}"
           file))
   (add-to-list 'apheleia-mode-alist '(rjsx-mode . prettier))
   (comment (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint)))
