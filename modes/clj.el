@@ -474,7 +474,7 @@ defaults to current namespace."
 (defun my/create-new-deps-project ()
   "Create a new deps.edn project."
   (interactive)
-  (let* ((project-name-path (counsel-read-directory-name "Directory:"))
+  (let* ((project-name-path (read-directory-name "Directory:"))
          (namespace-name (->> (split-string project-name-path "/")
                               reverse
                               car
@@ -493,7 +493,7 @@ defaults to current namespace."
 (defun my/create-new-lein-project ()
   "Create a new lein project."
   (interactive)
-  (let* ((project-name-path (counsel-read-directory-name "Directory:"))
+  (let* ((project-name-path (read-directory-name "Directory:"))
          (namespace-name (->> (split-string project-name-path "/")
                               reverse
                               car
