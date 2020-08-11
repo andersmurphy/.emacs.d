@@ -693,7 +693,6 @@
   (define-auto-insert "\\.cljs$" ["default_cljs.cljs" my/autoinsert-yas-expand])
   (define-auto-insert "project.clj$" ["default_project.clj" my/autoinsert-yas-expand])
   (define-auto-insert "deps.edn$" ["default_deps.edn" my/autoinsert-yas-expand])
-  (define-auto-insert "shadow-cljs.edn$" ["default_shadow_cljs.edn" my/autoinsert-yas-expand])
   (define-auto-insert ".gitignore" ["default.gitignore" my/autoinsert-yas-expand]))
 
 ;;; Programming
