@@ -720,7 +720,7 @@
           "{:style [:community :justified] :map {:comma? false}}"
           file))
   (add-to-list 'apheleia-mode-alist '(rjsx-mode . prettier))
-  (comment (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint)))
+  (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint))
   (apheleia-global-mode t))
 ;; Lisp
 (use-package smartparens
