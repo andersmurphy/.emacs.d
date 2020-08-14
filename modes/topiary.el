@@ -454,8 +454,10 @@ Delete rather than kill when in mini buffer."
 (defun topiary/smart-yank ()
   "Overwrite current smart kill region when yanking."
   (interactive)
-  (unless (or (topiary/in-empty-string-p)
-              (topiary/in-empty-pair-p))
+  (unless (or (topiary/bounds-of-empty-string)
+              (topiary/bounds-of-empty-pair)
+              (topiary/bounds-of-punctuation-forward)
+              (topiary/bounds-of-punctuation-backward))
     (let* ((bounds (topiary/smart-kill-bounds))
            (bounds-directed (if (and bounds (> (point) (car bounds)))
                                 (cons (cdr bounds) (car bounds))
