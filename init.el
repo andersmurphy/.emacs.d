@@ -833,8 +833,7 @@
   :init
   (defun my/nov-font-setup ()
     (face-remap-add-relative 'variable-pitch
-                             :family "Menlo"
-                             :height 1.1)
+                             :height 1.3)
     (nov-render-document))
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   :config
