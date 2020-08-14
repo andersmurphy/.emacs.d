@@ -424,6 +424,7 @@
         ("C-n" . isearch-repeat-forward)
         ("C-p" . isearch-repeat-backward)
         ("C-s" . isearch-forward-symbol-at-point)
+        ("C-v" . isearch-yank-kill)
         ("C-r" . isearch-query-replace)))
 (use-package selectrum
   :config
