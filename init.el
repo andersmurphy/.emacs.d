@@ -220,6 +220,20 @@
   (when (one-window-p)
     (split-window-right))
   (other-window 1))
+(defun my/toggle-window-layout-vertical-horizontal ()
+  "Switch from a vertical layout to a horizontal layout and vice versa."
+  (interactive)
+  (let* ((current-window-x (car (window-edges)))
+         (_ (other-window 1))
+         (other-buff (buffer-name))
+         (other-window-x (car (window-edges))))
+    (delete-window)
+    (if (= current-window-x other-window-x)
+        (split-window-right)
+      (split-window-below))
+    (other-window 1)
+    (switch-to-buffer other-buff)
+    (other-window 1)))
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns x))
   :config
