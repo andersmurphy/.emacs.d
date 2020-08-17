@@ -14,14 +14,17 @@ class CljZprint < Formula
   def install
     system "mv zprintm-1.0.0 clj-zprint"
     system "chmod 755 clj-zprint"
-    system "echo '#!/bin/bash
-\"clj-zprint\" \"$1\" < \"$2\"' > wrap-clj-zprint"
+    open('wrap-clj-zprint', 'w') { |f|
+      f.write "#!/bin/bash
+ clj-zprint \"$1\" < \"$2\""
+    }
     system "chmod 755 wrap-clj-zprint"
     bin.install "clj-zprint"
     bin.install "wrap-clj-zprint"
   end
 
   test do
-    system "false"
+    system "#{bin}/clj-zprint"
+    system "#{bin}/wrap-clj-zprint"
   end
 end
