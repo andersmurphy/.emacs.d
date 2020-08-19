@@ -6,6 +6,8 @@
 
 (require 'edn)
 (require 'dash)
+(require 'clojure-mode)
+(require 'inf-lisp)
 
 (defmacro my/when-repl-running (&rest forms)
   "Evaluate FORMS if REPL is running. Otherwise show error message."
@@ -28,7 +30,7 @@
   "Get symbol for current buffer namespace."
   (save-excursion
     (goto-char (point-min))
-    (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
+    (let ((ns-idx (re-search-forward clojure-namespace-regex nil t)))
       (when ns-idx
         (goto-char ns-idx)
         (my/clj-symbol-at-point)))))
@@ -207,8 +209,8 @@ Optionally CLJ-LISP-PROG can be specified"
   (my/kill-inferior-lisp-buffer)
   (my/clj-open-repl clj-lisp-prog))
 
-(defun heroku-production-repl ()
-  "Start heroku production REPL."
+(defun heroku-repl ()
+  "Start heroku REPL."
   (interactive)
   (my/start-repl "heroku run lein repl --size=standard-2x"))
 
