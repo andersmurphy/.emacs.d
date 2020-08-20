@@ -29,7 +29,7 @@
   "Get symbol for current buffer namespace."
   (save-excursion
     (goto-char (point-min))
-    (let ((ns-idx (re-search-forward clojure-namespace-regex nil t)))
+    (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
       (when ns-idx
         (goto-char ns-idx)
         (my/clj-symbol-at-point)))))
