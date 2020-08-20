@@ -6,7 +6,6 @@
 
 (require 'edn)
 (require 'dash)
-(require 'clojure-mode)
 (require 'inf-lisp)
 
 (defmacro my/when-repl-running (&rest forms)
