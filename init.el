@@ -737,6 +737,11 @@
   (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint))
   (apheleia-global-mode t))
 ;; Lisp
+(progn ;; Defaults
+  (defun my/check-parens-before-save ()
+    (add-hook 'before-save-hook 'check-parens))
+  (add-hook 'clojure-mode-hook #'my/check-parens-before-save)
+  (add-hook 'emacs-lisp-mode-hook #'my/check-parens-before-save))
 (use-package smartparens
   :config
   (progn
