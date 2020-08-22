@@ -558,6 +558,7 @@
 (use-package hideshow
   :straight nil
   :config
+  (setq hs-hide-comments-when-hiding-all nil)
   (defun my/display-most-sever-flycheck-error (ov)
     "Display most sever error in folded code block at top level."
     (when (eq 'code (overlay-get ov 'hs))
