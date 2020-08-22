@@ -409,6 +409,7 @@
   (interactive)
   (shell-command "open ."))
 (use-package recentf
+  :straight nil
   :config
   (recentf-mode t)
   (defun my/open-recent-files ()
