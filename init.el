@@ -472,6 +472,25 @@
       (magit-branch-checkout "master")
       (forge-create-pullreq (concat "origin/" branch) "origin/master")))
 
+  (defun my/magit-search-git-log-for-change ()
+    "Search git log. Default to symbol at point."
+    (interactive)
+    (let* ((sym (thing-at-point 'symbol))
+           (regex (read-regexp
+                   "Search git change"
+                   (and sym (concat "[[{(\s\n]"
+                                    (regexp-quote sym)
+                                    "[]})\s\n]")))))
+      (if-let ((file (magit-file-relative-name)))
+          (magit-log-setup-buffer
+           (list (or magit-buffer-refname
+                     (magit-get-current-branch)
+                     "HEAD"))
+           (list (concat "-G" regex))
+           (and file (list file))
+           magit-log-buffer-file-locked)
+        (user-error "Buffer isn't visiting a file"))))
+
   (defun my/magit-kill-unstaged-changes ()
     "Kill all unstaged changes."
     (interactive)
