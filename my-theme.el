@@ -59,7 +59,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                         (my/darken-color bg 0.05)
                       (my/lighten-color bg 0.05)))
        (fg-highlight (face-foreground 'highlight))
-       (bg-highlight (face-background 'highlight)))
+       (bg-highlight (face-background 'highlight))
+       (magit-add "#e9ffe9")
+       (magit-remove "#ffecec"))
 
   (custom-theme-set-faces
    'my
@@ -95,7 +97,16 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(flyspell-duplicate ((t (:underline (:style line :color ,fg-warning)))) )
    `(vertical-border ((t (:foreground ,bg-inactive))))
    `(emms-playlist-track-face ((t (:foreground ,fg :background ,bg))))
-   `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))))
+   `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))
+   ;; diff
+   `(diff-added ((t (:background "#e9ffe9"))))
+   `(diff-removed ((t (:background "#ffecec"))))
+   `(diff-refine-added ((t (:background "#a4f4a3"))))
+   `(diff-refine-removed ((t (:background "#f9cbca"))))
+   `(magit-diff-added-highlight ((t (:background "#e9ffe9"))))
+   `(magit-diff-added ((t (:background "#e9ffe9"))))
+   `(magit-diff-removed-highlight ((t (:background "#ffecec"))))
+   `(magit-diff-removed ((t (:background "#ffecec"))))))
 
 (provide-theme 'my)
 ;;; my-theme.el ends here
