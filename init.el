@@ -833,7 +833,8 @@
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
               ("M-," . my/clj-jump-back)))
-(use-package flycheck-clj-kondo)
+(use-package flycheck-clj-kondo
+  :ensure t)
 ;; HTTP
 (use-package restclient
   :defer t
