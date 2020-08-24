@@ -67,7 +67,6 @@
             (define-key map (kbd "C-t") 'topiary/smart-transpose)
             (define-key map (kbd "C-f") 'topiary/skip-ws-forward-char)
             (define-key map (kbd "C-b") 'topiary/skip-ws-backward-char)
-            (define-key map (kbd "C-v") 'topiary/smart-yank)
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'sp-kill-hybrid-sexp)
