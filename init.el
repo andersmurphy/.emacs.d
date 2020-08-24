@@ -631,8 +631,7 @@
 
   :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
                                              (hs-minor-mode)(hs-hide-all)))
-         (flycheck-after-syntax-check . my/refresh-folded-code-errors)
-         (apheleia-post-format . my/re-toggle-all-folds))
+         (flycheck-after-syntax-check . my/refresh-folded-code-errors))
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . (lambda ()
@@ -751,12 +750,7 @@
               "--semi"            "false"
               "--print-width"     "100"
               file))
-  (setf (alist-get 'clj-zprint apheleia-formatters)
-        '("clj-zprint"
-          "{:style [:community :justified] :map {:comma? false}} <"
-          file))
   (add-to-list 'apheleia-mode-alist '(rjsx-mode . prettier))
-  (add-to-list 'apheleia-mode-alist '(clojure-mode . clj-zprint))
   (apheleia-global-mode t))
 ;; Lisp
 (progn ;; Defaults
