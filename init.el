@@ -569,11 +569,11 @@
   (setq tab-always-indent 'complete)
 
   ;; Sentence should end with only a full stop
-  (setq sentence-end-double-space nil)
-
-  ;; Remove trailing spaces
-  (add-hook 'before-save-hook #'delete-trailing-whitespace))
-
+  (setq sentence-end-double-space nil))
+(use-package whitespace
+  :straight nil
+  :init
+  (add-hook 'before-save-hook #'whitespace-cleanup))
 (use-package aggressive-indent
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 (use-package hideshow
