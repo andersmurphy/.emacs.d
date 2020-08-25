@@ -15,14 +15,6 @@
 
 (require 'subr-x)
 
-;; Missing functionality
-
-;; (define-key map (kbd "C-k") 'sp-kill-sexp)
-;; ("<C-[>" . sp-backward-slurp-sexp)
-;; ("C-{" . sp-backward-barf-sexp)
-;; ("C-}" . sp-forward-barf-sexp)
-;; (define-key smartparens-mode-map (kbd "C-]") 'sp-forward-slurp-sexp)
-;; (sp-backward-unwrap-sexp)
 (defun topiary/end-of-buffer-p ()
   "Return t if point at end of buffer."
   (= (point) (point-max)))
@@ -69,7 +61,8 @@
             (define-key map (kbd "C-b") 'topiary/skip-ws-backward-char)
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
-            (define-key map (kbd "C-k") 'sp-kill-hybrid-sexp)
+            (define-key map (kbd "C-k") 'topiary/kill-line)
+            (define-key map (kbd "C-)") 'topiary/forward-slurp)
             (define-key map (kbd "'")  (topiary/if-in-string
                                         (insert "'")
                                         (topiary/smart-quote)))
@@ -546,6 +539,17 @@ Examples:
   "Slurp all sexp forward until you get to a closing parenthesis."
   (interactive)
   (while (topiary/forward-slurp)))
+
+(defun topiary/kill-line ()
+  "Kill a line as if with `kill-line', but respecting delimiters."
+  (interactive)
+  (let ((line-number (count-lines 1 (point))))
+    (kill-sexp) ;; always delete first sexp even if over multiple lines.
+    (while (progn
+             (save-excursion
+               (forward-sexp)
+               (= line-number (count-lines 1 (point)))))
+      (kill-sexp))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
