@@ -530,5 +530,22 @@ Examples:
           (delete-char -1))
       (error (message "Can't unwrap top level")))))
 
+(defun topiary/forward-slurp ()
+  "Slurp sexp forward. Return t if successful nil otherwise."
+  (interactive)
+  (save-excursion
+    (up-list)
+    (let ((close (char-before)))
+      (delete-char -1)
+      (prog1
+          (ignore-errors
+            (forward-sexp) t)
+        (insert close)))))
+
+(defun topiary/forward-slurp-all ()
+  "Slurp all sexp forward until you get to a closing parenthesis."
+  (interactive)
+  (while (topiary/forward-slurp)))
+
 (provide 'topiary)
 ;;; topiary.el ends here
