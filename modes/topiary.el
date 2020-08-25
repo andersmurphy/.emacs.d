@@ -93,6 +93,12 @@
     (remove-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
     (remove-hook 'post-self-insert-hook 'topiary/post-self-insert)))
 
+(defun topiary/supported-mode-p ()
+  "Return t if current mode is supported topiary."
+  (member major-mode '(clojure-mode
+                       emacs-lisp-mode
+                       lisp-interaction-mode)))
+
 (defun topiary/back-to-indentation-or-beginning ()
   "Go to first character in line. If already at first character go to beginning of line."
   (interactive)
@@ -258,9 +264,7 @@ If end or beginning of outer sexp reached move point to other bound.
 (defun topiary/insert-double-semicolon ()
   "Insert two semicolons. Don't insert if it will break AST. Insert single semicolon if inside string."
   (interactive)
-  (cond ((or (not (member major-mode '(clojure-mode
-                                       emacs-lisp-mode
-                                       lisp-interaction-mode)))
+  (cond ((or (not (topiary/supported-mode-p))
              (topiary/in-string-p))
          (insert ";"))
         ((ignore-errors
@@ -283,9 +287,7 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/post-self-insert ()
   "Prevent insert breaking top level AST."
-  (when (member major-mode '(clojure-mode
-                             emacs-lisp-mode
-                             lisp-interaction-mode))
+  (when (topiary/supported-mode-p)
     (topiary/strict-insert)))
 
 (defun topiary/bounds-of-last-sexp ()
@@ -543,13 +545,15 @@ Examples:
 (defun topiary/kill-line ()
   "Kill a line as if with `kill-line', but respecting delimiters."
   (interactive)
-  (let ((line-number (count-lines 1 (point))))
-    (kill-sexp) ;; always delete first sexp even if over multiple lines.
-    (while (progn
-             (save-excursion
-               (forward-sexp)
-               (= line-number (count-lines 1 (point)))))
-      (kill-sexp))))
+  (if (topiary/supported-mode-p)
+      (let ((line-number (count-lines 1 (point))))
+        (kill-sexp) ;; always delete first sexp even if over multiple lines.
+        (while (progn
+                 (save-excursion
+                   (forward-sexp)
+                   (= line-number (count-lines 1 (point)))))
+          (kill-sexp)))
+    (kill-line)))
 
 (provide 'topiary)
 ;;; topiary.el ends here
