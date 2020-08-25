@@ -758,21 +758,6 @@
     (add-hook 'before-save-hook 'check-parens))
   (add-hook 'clojure-mode-hook #'my/check-parens-before-save)
   (add-hook 'emacs-lisp-mode-hook #'my/check-parens-before-save))
-(use-package smartparens
-  :config
-  (progn
-    (use-package smartparens-config
-      :straight nil)
-    (sp-use-smartparens-bindings)
-    (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
-    (setq sp-highlight-pair-overlay nil))
-  :init
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
-  :bind (:map smartparens-mode-map
-              ("<C-(>" . sp-backward-slurp-sexp)
-              ("C-{" . sp-backward-barf-sexp)
-              ("C-}" . sp-forward-barf-sexp)))
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
               ("M-h" . comint-previous-input)))
