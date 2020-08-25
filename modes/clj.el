@@ -455,8 +455,6 @@ defaults to current namespace."
             ;; Add font lock to clojure keywords in REPL
             (font-lock-add-keywords 'inferior-lisp-mode
                                     clojure-font-lock-keywords 'end)
-            ;; Enable smartparen mode in REPL (none strict)
-            (smartparens-mode)
             ;; Use clojure syntax table
             (set-syntax-table clojure-mode-syntax-table)))
 
