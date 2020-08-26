@@ -40,6 +40,10 @@
   (and (member (char-before) (string-to-list "{[("))
        (member (char-after) (string-to-list "}])"))))
 
+(defun topiary/in-empty-line-p ()
+  "Return t if point in empty line."
+  (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
+
 (defmacro topiary/if-in-string (then-form else-form)
   "If in string do THEN-FORM otherwise do ELSE-FORM."
   `(lambda ()
@@ -304,6 +308,15 @@ In the above example the n would be deleted. Handles comments."
           ((eq last-command 'kill-region) (kill-region initial-point (point)))
           (t (delete-region initial-point (point))))))
 
+(defun topiary/hungry-delete-forward ()
+  "Delete the following character or all preceding whitespace."
+  (interactive)
+  (let ((initial-point (point)))
+    (skip-chars-forward "\n ")
+    (cond ((= initial-point (point)) (delete-char 1 t))
+          ((eq last-command 'kill-region) (kill-region (point) initial-point))
+          (t (delete-region (point) initial-point)))))
+
 (defun topiary/bounds-of-space-before-opening-paren ()
   "Get bounds of space character after cursor if opening char is before cursor."
   (when (or (and (not (topiary/in-string-p))
@@ -545,15 +558,17 @@ Examples:
 (defun topiary/kill-line ()
   "Kill a line as if with `kill-line', but respecting delimiters."
   (interactive)
-  (if (topiary/supported-mode-p)
-      (let ((line-number (count-lines 1 (point))))
-        (kill-sexp) ;; always delete first sexp even if over multiple lines.
-        (while (progn
-                 (save-excursion
-                   (forward-sexp)
-                   (= line-number (count-lines 1 (point)))))
-          (kill-sexp)))
-    (kill-line)))
+  (cond
+   ((topiary/in-empty-line-p) (topiary/hungry-delete-forward))
+   ((topiary/supported-mode-p)
+    (let ((line-number (count-lines 1 (point))))
+      (kill-sexp) ;; always delete first sexp even if over multiple lines.
+      (while (progn
+               (save-excursion
+                 (forward-sexp)
+                 (= line-number (count-lines 1 (point)))))
+        (kill-sexp))))
+   (t (kill-line))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
