@@ -561,13 +561,14 @@ Examples:
   (cond
    ((topiary/in-empty-line-p) (topiary/hungry-delete-forward))
    ((topiary/supported-mode-p)
-    (let ((line-number (count-lines 1 (point))))
-      (kill-sexp) ;; always delete first sexp even if over multiple lines.
-      (while (progn
-               (save-excursion
-                 (forward-sexp)
-                 (= line-number (count-lines 1 (point)))))
-        (kill-sexp))))
+    (let ((line-number (count-lines 1 (point)))
+          (initial-point (point)))
+      (while (and (ignore-errors (forward-sexp) t)
+                  (and (= line-number (count-lines 1 (point)))
+                       (save-excursion
+                         (ignore-errors (forward-sexp))
+                         (= line-number (count-lines 1 (point)))))))
+      (kill-region initial-point (point))))
    (t (kill-line))))
 
 (provide 'topiary)
