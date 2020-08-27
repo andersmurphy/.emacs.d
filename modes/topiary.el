@@ -75,9 +75,6 @@
             (define-key map (kbd "(")  (topiary/if-in-string
                                         (insert "(")
                                         (topiary/smart-bracket)))
-            (define-key map (kbd ")")  (topiary/if-in-string
-                                        (insert ")")
-                                        (topiary/unwrap)))
             (define-key map (kbd "[")  (topiary/if-in-string
                                         (insert "[")
                                         (topiary/wrap-with-brackets)))
@@ -460,13 +457,37 @@ Delete rather than kill when in mini buffer."
             (kill-region beg end)))
       (topiary/hungry-delete-backward))))
 
+(defun topiary/unwrap ()
+  "Unwrap the current expression. Works on ()[]{}\".
+
+Examples:
+  (foo bar baz)|     -> foo bar baz|
+  (foo bar)| (baz)   -> foo bar| (baz)
+  |(foo bar baz)     -> |foo bar baz
+  |(foo bar) (baz)   -> |foo bar (baz)"
+  (interactive)
+  (save-mark-and-excursion
+    (condition-case nil
+        (let ((bounds (if (or (member (char-after) (string-to-list "({[\""))
+                              (member (char-before) (string-to-list ")}]\"")))
+                          (topiary/smart-kill-bounds)
+                        (up-list)
+                        (topiary/smart-kill-bounds))))
+          (goto-char (car bounds))
+          (delete-char 1)
+          (goto-char (- (cdr bounds) 1))
+          (delete-char -1))
+      (error (message "Can't unwrap top level")))))
+
 (defun topiary/delete-forward ()
   "Delete forward char doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
   (if (topiary/supported-mode-p)
-      (if (or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
-          (delete-region (- (point) 1) (+ (point) 1))
-        (and (not (member (char-after) (string-to-list "\"{[()]}")))
+      (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
+             (delete-region (- (point) 1) (+ (point) 1)))
+            ((member (char-after) (string-to-list ")]}"))
+             (save-excursion (forward-char) (topiary/unwrap)))
+            ((not (member (char-after) (string-to-list "\"{[(")))
              (topiary/hungry-delete-forward)))
     (topiary/hungry-delete-forward)))
 
@@ -474,9 +495,11 @@ Delete rather than kill when in mini buffer."
   "Delete backward char doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
   (if (topiary/supported-mode-p)
-      (if (or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
-          (delete-region (- (point) 1) (+ (point) 1))
-        (and (not (member (char-before) (string-to-list "\"{[()]}")))
+      (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
+             (delete-region (- (point) 1) (+ (point) 1)))
+            ((member (char-before) (string-to-list "{[("))
+             (save-excursion (backward-char) (topiary/unwrap)))
+            ((not (member (char-before) (string-to-list "\")]}")))
              (topiary/hungry-delete-backward)))
     (topiary/hungry-delete-backward)))
 
@@ -537,28 +560,6 @@ Otherwise insert double quote."
             (string-match "[[:alnum:](]" a-char))
       (insert "'"))
      (t (topiary/insert-pair "\"\"")))))
-
-(defun topiary/unwrap ()
-  "Unwrap the current expression. Works on ()[]{}\".
-
-Examples:
-  (foo bar baz)|     -> foo bar baz|
-  (foo bar)| (baz)   -> foo bar| (baz)
-  |(foo bar baz)     -> |foo bar baz
-  |(foo bar) (baz)   -> |foo bar (baz)"
-  (interactive)
-  (save-mark-and-excursion
-    (condition-case nil
-        (let ((bounds (if (or (member (char-after) (string-to-list "({[\""))
-                              (member (char-before) (string-to-list ")}]\"")))
-                          (topiary/smart-kill-bounds)
-                        (up-list)
-                        (topiary/smart-kill-bounds))))
-          (goto-char (car bounds))
-          (delete-char 1)
-          (goto-char (- (cdr bounds) 1))
-          (delete-char -1))
-      (error (message "Can't unwrap top level")))))
 
 (defun topiary/forward-slurp ()
   "Slurp sexp forward. Return t if successful nil otherwise."
