@@ -66,6 +66,8 @@
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'topiary/kill-line)
+            (define-key map (kbd "C-d") 'topiary/delete-forward)
+            (define-key map (kbd "DEL") 'topiary/delete-backward)
             (define-key map (kbd "C-)") 'topiary/forward-slurp)
             (define-key map (kbd "'")  (topiary/if-in-string
                                         (insert "'")
@@ -457,6 +459,26 @@ Delete rather than kill when in mini buffer."
               (delete-region beg end)
             (kill-region beg end)))
       (topiary/hungry-delete-backward))))
+
+(defun topiary/delete-forward ()
+  "Delete forward char doesn't delete delimiter unless empty, in which case it deletes both."
+  (interactive)
+  (if (topiary/supported-mode-p)
+      (if (or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
+          (delete-region (- (point) 1) (+ (point) 1))
+        (and (not (member (char-after) (string-to-list "\"{[()]}")))
+             (topiary/hungry-delete-forward)))
+    (topiary/hungry-delete-forward)))
+
+(defun topiary/delete-backward ()
+  "Delete backward char doesn't delete delimiter unless empty, in which case it deletes both."
+  (interactive)
+  (if (topiary/supported-mode-p)
+      (if (or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
+          (delete-region (- (point) 1) (+ (point) 1))
+        (and (not (member (char-before) (string-to-list "\"{[()]}")))
+             (topiary/hungry-delete-backward)))
+    (topiary/hungry-delete-backward)))
 
 (defun topiary/smart-yank ()
   "Overwrite current smart kill region when yanking."
