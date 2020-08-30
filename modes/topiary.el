@@ -91,9 +91,9 @@
             map)
   (if topiary-mode
       (progn
-        (add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
+        (add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay)
         (add-hook 'post-self-insert-hook 'topiary/post-self-insert))
-    (remove-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay-hook)
+    (remove-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay)
     (remove-hook 'post-self-insert-hook 'topiary/post-self-insert)))
 
 (defun topiary/supported-mode-p ()
@@ -441,11 +441,36 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
 
+(defvar topiary/hl-current-kill-region-overlay nil
+  "Overlay for highlighting current kill region.")
+
+(defun topiary/hl-current-kill-region-make-overlay ()
+  "Create overlay for current kill region."
+  (let ((overlay (make-overlay 1 1)))
+    (overlay-put overlay 'face 'region)
+    (setq topiary/hl-current-kill-region-overlay overlay)
+    overlay))
+
+(defun topiary/hl-current-kill-region-overlay ()
+  "Highlight current kill region."
+  (interactive)
+  (ignore-errors
+    (let ((bounds (topiary/smart-kill-bounds))
+          (overlay     (or topiary/hl-current-kill-region-overlay
+                           (topiary/hl-current-kill-region-make-overlay))))
+      (if bounds
+          (move-overlay overlay
+                        (car bounds)
+                        (cdr bounds)
+                        (current-buffer))
+        (delete-overlay topiary/hl-current-kill-region-overlay)))))
+
 (defun topiary/smart-kill ()
-  "Kill backward word or sexp. If neither hungry delete backward.
+  "Kill current topiary overlay. If neither hungry delete backward.
 Delete rather than kill when in mini buffer."
   (interactive)
-  (let* ((bounds (topiary/smart-kill-bounds))
+  (let* ((bounds (cons (overlay-start topiary/hl-current-kill-region-overlay)
+                       (overlay-end topiary/hl-current-kill-region-overlay)))
          (bounds-directed (if (and bounds (> (point) (car bounds)))
                               (cons (cdr bounds) (car bounds))
                             bounds)))
@@ -519,30 +544,6 @@ Examples:
               (end (cdr bounds-directed)))
           (delete-region beg end)))))
   (yank))
-
-(defvar topiary/hl-current-kill-region-overlay nil
-  "Overlay for highlighting current kill region.")
-
-(defun topiary/hl-current-kill-region-make-overlay ()
-  "Create overlay for current kill region."
-  (let ((overlay (make-overlay 1 1)))
-    (overlay-put overlay 'face 'region)
-    (setq topiary/hl-current-kill-region-overlay overlay)
-    overlay))
-
-(defun topiary/hl-current-kill-region-overlay-hook ()
-  "Post-Command-Hook for highlighting current kill region."
-  (interactive)
-  (ignore-errors
-    (let ((bounds (topiary/smart-kill-bounds))
-          (overlay     (or topiary/hl-current-kill-region-overlay
-                           (topiary/hl-current-kill-region-make-overlay))))
-      (if bounds
-          (move-overlay overlay
-                        (car bounds)
-                        (cdr bounds)
-                        (current-buffer))
-        (delete-overlay topiary/hl-current-kill-region-overlay)))))
 
 (defun topiary/smart-quote ()
   "If previous and next character wrap in double quotes.
