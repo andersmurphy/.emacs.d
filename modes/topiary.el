@@ -606,7 +606,7 @@ Otherwise insert double quote."
       (while (and (ignore-errors (forward-sexp) t)
                   (and (= line-number (count-lines 1 (point)))
                        (save-excursion
-                         (ignore-errors (forward-sexp))
+                         (skip-chars-forward "\n ")
                          (= line-number (count-lines 1 (point)))))))
       (kill-region initial-point (point))))
    (t (kill-line))))
