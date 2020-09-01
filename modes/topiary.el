@@ -61,8 +61,8 @@
             (define-key map (kbd "C-a") 'topiary/back-to-indentation-or-beginning)
             (define-key map (kbd "C-w") 'topiary/smart-kill)
             (define-key map (kbd "C-t") 'topiary/smart-transpose)
-            (define-key map (kbd "C-f") 'topiary/skip-ws-forward-char)
-            (define-key map (kbd "C-b") 'topiary/skip-ws-backward-char)
+            (define-key map (kbd "C-f") 'topiary/smart-forward)
+            (define-key map (kbd "C-b") 'topiary/smart-backward)
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'topiary/kill-line)
@@ -107,22 +107,6 @@
   (interactive)
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
-
-(defun topiary/skip-ws-forward-char ()
-  "Move cursor forward one character. Skips over whitespace."
-  (interactive)
-  (let ((initial-point (point)))
-    (skip-chars-forward "\n ")
-    (when (= initial-point (point))
-      (forward-char 1))))
-
-(defun topiary/skip-ws-backward-char ()
-  "Move cursor backward one character. Skips over whitespace."
-  (interactive)
-  (let ((initial-point (point)))
-    (skip-chars-backward "\n ")
-    (when (= initial-point (point))
-      (backward-char 1))))
 
 (defun topiary/symbols-in-sexp ()
   "Return list of strings before point in sexp."
@@ -481,6 +465,38 @@ Delete rather than kill when in mini buffer."
               (delete-region beg end)
             (kill-region beg end)))
       (topiary/hungry-delete-backward))))
+
+(defun topiary/smart-forward ()
+  "Move cursor forward one character if on delimiter.
+Otherwise jump topiary highlighted region forward.
+Skips over whitespace."
+  (interactive)
+  (let ((initial-point (point)))
+    (skip-chars-forward "\n ")
+    (when (= initial-point (point))
+      (if (member (char-after) (string-to-list "\"([{}])"))
+          (forward-char 1)
+        (progn
+          (topiary/hl-current-kill-region-overlay)
+          (goto-char (overlay-end topiary/hl-current-kill-region-overlay))
+          (when (= initial-point (point))
+            (forward-char 1)))))))
+
+(defun topiary/smart-backward ()
+  "Move cursor backward one character if on delimiter.
+Otherwise jump smart kill highlighted region backward.
+Skips over whitespace."
+  (interactive)
+  (let ((initial-point (point)))
+    (skip-chars-backward "\n ")
+    (when (= initial-point (point))
+      (if (member (char-before) (string-to-list "\"([{}])"))
+          (backward-char 1)
+        (progn
+          (topiary/hl-current-kill-region-overlay)
+          (goto-char (overlay-start topiary/hl-current-kill-region-overlay))
+          (when (= initial-point (point))
+            (backward-char 1)))))))
 
 (defun topiary/unwrap ()
   "Unwrap the current expression. Works on ()[]{}\".
