@@ -603,11 +603,14 @@ Otherwise insert double quote."
    ((topiary/supported-mode-p)
     (let ((line-number (count-lines 1 (point)))
           (initial-point (point)))
-      (while (and (ignore-errors (forward-sexp) t)
-                  (and (= line-number (count-lines 1 (point)))
-                       (save-excursion
-                         (skip-chars-forward "\n ")
-                         (= line-number (count-lines 1 (point)))))))
+      (while (and
+              (progn (skip-chars-forward "\n ")
+                     (not (and (= (char-after) ?\") (topiary/in-string-p))))
+              (ignore-errors (forward-sexp) t)
+              (and (= line-number (count-lines 1 (point)))
+                   (save-excursion
+                     (skip-chars-forward "\n ")
+                     (= line-number (count-lines 1 (point)))))))
       (kill-region initial-point (point))))
    (t (kill-line))))
 
