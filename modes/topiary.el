@@ -467,36 +467,20 @@ Delete rather than kill when in mini buffer."
       (topiary/hungry-delete-backward))))
 
 (defun topiary/smart-forward ()
-  "Move cursor forward one character if on delimiter.
-Otherwise jump topiary highlighted region forward.
-Skips over whitespace."
+  "Move forward skips over whitespace."
   (interactive)
   (let ((initial-point (point)))
     (skip-chars-forward "\n ")
     (when (= initial-point (point))
-      (if (member (char-after) (string-to-list "\"([{}])"))
-          (forward-char 1)
-        (progn
-          (topiary/hl-current-kill-region-overlay)
-          (goto-char (overlay-end topiary/hl-current-kill-region-overlay))
-          (when (= initial-point (point))
-            (forward-char 1)))))))
+      (forward-char 1))))
 
 (defun topiary/smart-backward ()
-  "Move cursor backward one character if on delimiter.
-Otherwise jump smart kill highlighted region backward.
-Skips over whitespace."
+  "Move backward skip over whitespace."
   (interactive)
   (let ((initial-point (point)))
     (skip-chars-backward "\n ")
     (when (= initial-point (point))
-      (if (member (char-before) (string-to-list "\"([{}])"))
-          (backward-char 1)
-        (progn
-          (topiary/hl-current-kill-region-overlay)
-          (goto-char (overlay-start topiary/hl-current-kill-region-overlay))
-          (when (= initial-point (point))
-            (backward-char 1)))))))
+      (backward-char 1))))
 
 (defun topiary/unwrap ()
   "Unwrap the current expression. Works on ()[]{}\".
