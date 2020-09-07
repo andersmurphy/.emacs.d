@@ -453,8 +453,9 @@ In the above example the n would be deleted. Handles comments."
   "Kill current topiary overlay. If neither hungry delete backward.
 Delete rather than kill when in mini buffer."
   (interactive)
-  (let* ((bounds (cons (overlay-start topiary/hl-current-kill-region-overlay)
-                       (overlay-end topiary/hl-current-kill-region-overlay)))
+  (let* ((start (overlay-start topiary/hl-current-kill-region-overlay))
+         (end (overlay-end topiary/hl-current-kill-region-overlay))
+         (bounds (when (and start end) (cons start end)))
          (bounds-directed (if (and bounds (> (point) (car bounds)))
                               (cons (cdr bounds) (car bounds))
                             bounds)))
