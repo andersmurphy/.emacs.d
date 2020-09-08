@@ -63,6 +63,8 @@
             (define-key map (kbd "C-t") 'topiary/smart-transpose)
             (define-key map (kbd "C-f") 'topiary/smart-forward)
             (define-key map (kbd "C-b") 'topiary/smart-backward)
+            (define-key map (kbd "M-f") 'topiary/smart-sexp-forward)
+            (define-key map (kbd "M-b") 'topiary/smart-sexp-backward)
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'topiary/kill-line)
@@ -482,6 +484,18 @@ Delete rather than kill when in mini buffer."
     (skip-chars-backward "\n ")
     (when (= initial-point (point))
       (backward-char 1))))
+
+(defun topiary/smart-sexp-forward ()
+  "When in supported mode, forward sexp."
+  (interactive)
+  (when (topiary/supported-mode-p)
+    (forward-sexp)))
+
+(defun topiary/smart-sexp-backward ()
+  "When in supported mode, backward sexp."
+  (interactive)
+  (when (topiary/supported-mode-p)
+    (backward-sexp)))
 
 (defun topiary/unwrap ()
   "Unwrap the current expression. Works on ()[]{}\".
