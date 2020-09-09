@@ -525,7 +525,7 @@ defaults to current namespace."
         (buffer-name "*React Bundler*"))
     (when (get-buffer buffer-name)
       (kill-buffer buffer-name))
-    (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn cache clean;yarn install;yarn start -- --reset-cache" (generate-new-buffer buffer-name))))
+    (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn cache clean;yarn install;yarn start --reset-cache" (generate-new-buffer buffer-name))))
 
 (defun my/rn-start-ios-simulator ()
   "Run a react-native ios simulator."
