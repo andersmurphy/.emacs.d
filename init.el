@@ -450,6 +450,24 @@
   (prescient-persist-mode t))
 (use-package project
   :straight nil
+  :config
+  (defun my/find-file-in-project-at-point ()
+    "Try to find file at point in project and go to line."
+    (interactive)
+    (setq line-num 0)
+    (setq my/current-thing
+          (replace-regexp-in-string ":.*" "" (thing-at-point 'filename)))
+    (defun my/insert-current-thing ()
+      (insert my/current-thing)
+      (remove-hook 'minibuffer-setup-hook 'my/insert-current-thing))
+    (add-hook 'minibuffer-setup-hook 'my/insert-current-thing)
+    (save-excursion
+      (search-forward-regexp "[^ ]:" (point-max) t)
+      (if (looking-at "[0-9]+")
+          (setq line-num (string-to-number (buffer-substring (match-beginning 0) (match-end 0))))))
+    (project-find-file)
+    (if (not (equal line-num 0))
+        (goto-line line-num)))
   :bind
   ("C-x p" . project-find-file)
   ("C-h" . project-find-file)
