@@ -771,11 +771,6 @@
   (add-to-list 'apheleia-mode-alist '(rjsx-mode . prettier))
   (apheleia-global-mode t))
 ;; Lisp
-(progn ;; Defaults
-  (defun my/check-parens-before-save ()
-    (add-hook 'before-save-hook 'check-parens))
-  (add-hook 'clojure-mode-hook #'my/check-parens-before-save)
-  (add-hook 'emacs-lisp-mode-hook #'my/check-parens-before-save))
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
               ("M-h" . comint-previous-input)))
