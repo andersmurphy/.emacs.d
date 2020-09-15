@@ -465,6 +465,7 @@
       (search-forward-regexp "[^ ]:" (point-max) t)
       (if (looking-at "[0-9]+")
           (setq line-num (string-to-number (buffer-substring (match-beginning 0) (match-end 0))))))
+    (my/other-window)
     (project-find-file)
     (if (not (equal line-num 0))
         (goto-line line-num)))
