@@ -406,11 +406,6 @@ Works from both namespace and test namespace"
              ((partial map second))))
        my/clj-jump)))
 
-(defun my/clj-jump-back ()
-  "Return to point before jump."
-  (interactive)
-  (xref-pop-marker-stack))
-
 (defun my/clj-completions (prefix)
   "Completion function that passes PREFIX to function to compliment.
 Uses the namepsace of the current buffer. If buffer doesn't have namespace

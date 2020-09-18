@@ -408,6 +408,22 @@
   "Open current file in finder."
   (interactive)
   (shell-command "open ."))
+(defun my/jump-to-file-in-project-at-point ()
+  "Try to find file at point in project and go to line."
+  (interactive)
+  (let* ((path (thing-at-point 'filename))
+         (path-without-line-number (replace-regexp-in-string
+                                    ":.*" "" path))
+         (line-num (nth 1 (split-string path ":"))))
+    (defun my/insert-current-thing ()
+      (insert path-without-line-number)
+      (remove-hook 'minibuffer-setup-hook 'my/insert-current-thing))
+    (add-hook 'minibuffer-setup-hook 'my/insert-current-thing)
+    (xref-push-marker-stack)
+    (project-find-file)
+    (when line-num
+      (goto-char (point-min))
+      (forward-line (1- (string-to-number line-num))))))
 (use-package recentf
   :straight nil
   :config
@@ -451,24 +467,6 @@
 (use-package project
   :straight nil
   :config
-  (defun my/find-file-in-project-at-point ()
-    "Try to find file at point in project and go to line."
-    (interactive)
-    (setq line-num 0)
-    (setq my/current-thing
-          (replace-regexp-in-string ":.*" "" (thing-at-point 'filename)))
-    (defun my/insert-current-thing ()
-      (insert my/current-thing)
-      (remove-hook 'minibuffer-setup-hook 'my/insert-current-thing))
-    (add-hook 'minibuffer-setup-hook 'my/insert-current-thing)
-    (save-excursion
-      (search-forward-regexp "[^ ]:" (point-max) t)
-      (if (looking-at "[0-9]+")
-          (setq line-num (string-to-number (buffer-substring (match-beginning 0) (match-end 0))))))
-    (my/other-window)
-    (project-find-file)
-    (if (not (equal line-num 0))
-        (goto-line line-num)))
   :bind
   ("C-x p" . project-find-file)
   ("C-h" . project-find-file)
@@ -562,6 +560,7 @@
     (org-sort-entries nil ?o)
     (org-cycle)
     (org-cycle))
+
 
   ;; Capture templates.
   (setq org-capture-templates
@@ -774,7 +773,9 @@
 ;; Lisp
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
-              ("M-h" . comint-previous-input)))
+              ("M-h" . comint-previous-input)
+              ("M-." . my/jump-to-file-in-project-at-point)
+              ("M-," . xref-pop-marker-stack)))
 ;; SQL
 (defun my/start-postgresql ()
   "Start local postgresql database."
@@ -825,7 +826,7 @@
               ("C-x C-e" . my/clj-eval-last-sexp-with-ns)
               ("M-;" . my/clj-comment-form)
               ("M-." . my/clj-jump-to-symbol)
-              ("M-," . my/clj-jump-back)))
+              ("M-," . xref-pop-marker-stack)))
 (use-package flycheck-clj-kondo
   :ensure t)
 ;; HTTP
