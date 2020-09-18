@@ -504,7 +504,7 @@
            (list (or magit-buffer-refname
                      (magit-get-current-branch)
                      "HEAD"))
-           (list (concat "-G" regex))
+           (list  "--follow" (concat "-G" regex))
            (and file (list file))
            magit-log-buffer-file-locked)
         (user-error "Buffer isn't visiting a file"))))
