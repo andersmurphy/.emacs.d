@@ -509,13 +509,6 @@
            magit-log-buffer-file-locked)
         (user-error "Buffer isn't visiting a file"))))
 
-  (defun my/magit-kill-unstaged-changes ()
-    "Kill all unstaged changes."
-    (interactive)
-    (when (yes-or-no-p "Kill all unstaged changes?")
-      (run-hooks 'magit-credential-hook)
-      (magit-run-git-async "checkout" ".")))
-
   :bind (("C-x g" . magit-status)
          :map magit-status-mode-map
          ("h" . magit-section-backward)
