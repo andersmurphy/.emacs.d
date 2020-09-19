@@ -620,25 +620,17 @@
         (goto-char (car (nth 9 (syntax-ppss)))))
       (hs-toggle-hiding)))
 
-  (defun my/re-toggle-all-folds ()
-    (interactive)
-    (save-excursion
-      (dolist (ov (overlays-in (point-min) (point-max)))
-        (when (overlay-get ov 'hs)
-          (goto-char (overlay-start ov))
-          (when (hs-already-hidden-p)
-            (hs-toggle-hiding)
-            (hs-toggle-hiding))))))
-
   (defvar my/last-flycheck-errors nil)
   (defvar flycheck-current-errors)
 
   (defun my/refresh-folded-code-errors ()
     "Refresh folded code that contains errors to make them visible at the top level."
-    (thread-last
-        (unless (equal flycheck-current-errors my/last-flycheck-errors)
-          (my/re-toggle-all-folds)
-          (setq my/last-flycheck-errors flycheck-current-errors))))
+    (unless (equal flycheck-current-errors my/last-flycheck-errors)
+      (dolist (ov (overlays-in (point-min) (point-max)))
+        (when (and (overlay-get ov 'hs)
+                   (hs-already-hidden-p))
+          (my/display-most-sever-flycheck-error ov)))
+      (setq my/last-flycheck-errors flycheck-current-errors)))
 
   :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
                                              (hs-minor-mode)(hs-hide-all)))
