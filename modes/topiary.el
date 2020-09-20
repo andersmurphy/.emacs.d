@@ -44,6 +44,16 @@
   "Return t if point in empty line."
   (string-match-p "\\`\\s-*$" (thing-at-point 'line)))
 
+(defun topiary/after-empty-pair-p ()
+  "Return t if point is directly after empty pair."
+  (member (buffer-substring-no-properties (- (point) 2) (point))
+          (list "()" "{}" "[]")))
+
+(defun topiary/after-empty-string-p ()
+  "Return t if point is directly after string."
+  (equal (buffer-substring-no-properties (- (point) 2) (point))
+         "\"\""))
+
 (defmacro topiary/if-in-string (then-form else-form)
   "If in string do THEN-FORM otherwise do ELSE-FORM."
   `(lambda ()
@@ -522,26 +532,31 @@ Examples:
 (defun topiary/delete-forward ()
   "Delete forward char doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
-  (if (topiary/supported-mode-p)
-      (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
-             (delete-region (- (point) 1) (+ (point) 1)))
-            ((member (char-after) (string-to-list ")]}"))
-             (save-excursion (forward-char) (topiary/unwrap)))
-            ((not (member (char-after) (string-to-list "\"{[(")))
-             (topiary/hungry-delete-forward)))
-    (topiary/hungry-delete-forward)))
+  (unless (topiary/end-of-buffer-p)
+    (if (and (topiary/supported-mode-p))
+        (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
+               (delete-region (- (point) 1) (+ (point) 1)))
+              ((member (char-after) (string-to-list ")]}"))
+               (save-excursion (forward-char) (topiary/unwrap)))
+              ((not (member (char-after) (string-to-list "\"{[(")))
+               (topiary/hungry-delete-forward)))
+      (topiary/hungry-delete-forward))))
 
 (defun topiary/delete-backward ()
   "Delete backward char doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
-  (if (topiary/supported-mode-p)
-      (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
-             (delete-region (- (point) 1) (+ (point) 1)))
-            ((member (char-before) (string-to-list "{[("))
-             (save-excursion (backward-char) (topiary/unwrap)))
-            ((not (member (char-before) (string-to-list "\")]}")))
-             (topiary/hungry-delete-backward)))
-    (topiary/hungry-delete-backward)))
+  (unless (topiary/beginning-of-buffer-p)
+    (if (and (topiary/supported-mode-p) (not (topiary/beginning-of-buffer-p)))
+        (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
+               (delete-region (- (point) 1) (+ (point) 1)))
+              ((or (topiary/after-empty-pair-p)
+                   (topiary/after-empty-string-p))
+               (delete-region  (- (point) 2) (point)))
+              ((member (char-before) (string-to-list "{[("))
+               (save-excursion (backward-char) (topiary/unwrap)))
+              ((not (member (char-before) (string-to-list "\")]}")))
+               (topiary/hungry-delete-backward)))
+      (topiary/hungry-delete-backward))))
 
 (defun topiary/smart-yank ()
   "Overwrite current smart kill region when yanking."
