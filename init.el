@@ -580,7 +580,17 @@
   (setq tab-always-indent 'complete)
 
   ;; Sentence should end with only a full stop
-  (setq sentence-end-double-space nil))
+  (setq sentence-end-double-space nil)
+
+  (defun my/dedupe-kill (args)
+    "Prevent sequential duplicate items in kill ring."
+    (let ((string (car args))
+          (replace (cdr args))
+          (last (car-safe kill-ring)))
+      (when (equal last string)
+        (setq replace t))
+      (list string replace)))
+  (advice-add 'kill-new :filter-args #'my/dedupe-kill))
 (use-package whitespace
   :straight nil
   :init
