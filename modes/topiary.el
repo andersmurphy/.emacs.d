@@ -49,9 +49,19 @@
   (member (buffer-substring-no-properties (- (point) 2) (point))
           (list "()" "{}" "[]")))
 
+(defun topiary/before-empty-pair-p ()
+  "Return t if point is directly before empty pair."
+  (member (buffer-substring-no-properties (point)  (+ (point) 2))
+          (list "()" "{}" "[]")))
+
 (defun topiary/after-empty-string-p ()
   "Return t if point is directly after string."
   (equal (buffer-substring-no-properties (- (point) 2) (point))
+         "\"\""))
+
+(defun topiary/before-empty-string-p ()
+  "Return t if point is directly before string."
+  (equal (buffer-substring-no-properties (point) (+ (point) 2))
          "\"\""))
 
 (defmacro topiary/if-in-string (then-form else-form)
@@ -533,9 +543,12 @@ Examples:
   "Delete forward char doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
   (unless (topiary/end-of-buffer-p)
-    (if (and (topiary/supported-mode-p))
+    (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
                (delete-region (- (point) 1) (+ (point) 1)))
+              ((or (topiary/before-empty-pair-p)
+                   (topiary/before-empty-string-p))
+               (delete-region  (point)  (+ (point) 2)))
               ((member (char-after) (string-to-list ")]}"))
                (save-excursion (forward-char) (topiary/unwrap)))
               ((not (member (char-after) (string-to-list "\"{[(")))
@@ -546,7 +559,7 @@ Examples:
   "Delete backward char doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
   (unless (topiary/beginning-of-buffer-p)
-    (if (and (topiary/supported-mode-p) (not (topiary/beginning-of-buffer-p)))
+    (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
                (delete-region (- (point) 1) (+ (point) 1)))
               ((or (topiary/after-empty-pair-p)
