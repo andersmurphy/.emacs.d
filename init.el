@@ -612,13 +612,14 @@
                          (flycheck-error-level most-sever-error)))
              (marker-string (concat "*" (format "%s" level) "*"))
              (marker-length (length marker-string)))
-        (when most-sever-error
-          (put-text-property 0 marker-length 'display
-                             (list 'left-fringe
-                                   (flycheck-error-level-fringe-bitmap level)
-                                   (flycheck-error-level-fringe-face level))
-                             marker-string)
-          (overlay-put ov 'before-string marker-string))
+        (if most-sever-error
+            (progn (put-text-property 0 marker-length 'display
+                                      (list 'left-fringe
+                                            (flycheck-error-level-fringe-bitmap level)
+                                            (flycheck-error-level-fringe-face level))
+                                      marker-string)
+                   (overlay-put ov 'before-string marker-string))
+          (overlay-put ov 'before-string nil))
         (overlay-put ov 'display "..."))))
   (setq hs-set-up-overlay 'my/display-most-sever-flycheck-error)
 
@@ -637,8 +638,7 @@
     "Refresh folded code that contains errors to make them visible at the top level."
     (unless (equal flycheck-current-errors my/last-flycheck-errors)
       (dolist (ov (overlays-in (point-min) (point-max)))
-        (when (and (overlay-get ov 'hs)
-                   (hs-already-hidden-p))
+        (when (overlay-get ov 'hs)
           (my/display-most-sever-flycheck-error ov)))
       (setq my/last-flycheck-errors flycheck-current-errors)))
 
