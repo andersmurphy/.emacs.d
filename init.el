@@ -491,9 +491,9 @@
       (forge-create-pullreq (concat "origin/" branch) "origin/master")))
 
   (defun my/magit-search-git-log-for-change ()
-    "Search git log. Default to symbol at point."
+    "Search git log. Default to symbol or sexp at point."
     (interactive)
-    (let* ((sym (thing-at-point 'symbol))
+    (let* ((sym (or (thing-at-point 'symbol) (thing-at-point 'sexp)))
            (regex (read-regexp
                    "Search git change"
                    (and sym (concat "[[{(\s\n]"
