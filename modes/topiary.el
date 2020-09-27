@@ -309,7 +309,7 @@ In the above example the n would be deleted. Handles comments."
   (interactive)
   (let ((initial-point (point)))
     (skip-chars-backward "\n ")
-    (cond ((= initial-point (point)) (delete-char -1 t))
+    (cond ((= initial-point (point)) (delete-char -1))
           ((eq last-command 'kill-region) (kill-region initial-point (point)))
           (t (delete-region initial-point (point))))))
 
@@ -318,7 +318,7 @@ In the above example the n would be deleted. Handles comments."
   (interactive)
   (let ((initial-point (point)))
     (skip-chars-forward "\n ")
-    (cond ((= initial-point (point)) (delete-char 1 t))
+    (cond ((= initial-point (point)) (delete-char 1))
           ((eq last-command 'kill-region) (kill-region (point) initial-point))
           (t (delete-region (point) initial-point)))))
 
