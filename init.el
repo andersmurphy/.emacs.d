@@ -124,6 +124,8 @@
                   (lambda () (interactive)
                     (split-window-right)
                     (other-window 1)))
+  (global-set-key (kbd "C-x -") 'my/zoom-out)
+  (global-set-key (kbd "C-x +") 'my/zoom-in)
 
   ;; Minibuffer binding
   (define-key minibuffer-local-map (kbd "C-v") 'yank)
@@ -355,6 +357,18 @@
 
   (add-hook 'clojure-mode-hook 'my/dim-parens)
   (add-hook 'emacs-lisp-mode-hook 'my/dim-parens))
+(defun my/zoom-in ()
+  "Zoom in all buffers."
+  (interactive)
+  (set-face-attribute
+   'default nil
+   :height (+ (face-attribute 'default :height) 10)))
+(defun my/zoom-out ()
+  "Zoom out all buffers."
+  (interactive)
+  (set-face-attribute
+   'default nil
+   :height (- (face-attribute 'default :height) 10)))
 (load "~/.emacs.d/my-theme.el")
 (use-package my-theme
   ;; Theme changes are made to these packages
