@@ -119,10 +119,15 @@
     (remove-hook 'post-self-insert-hook 'topiary/post-self-insert)))
 
 (defun topiary/supported-mode-p ()
-  "Return t if current mode is supported topiary."
+  "Return t if current mode is supported by topiary."
   (member major-mode '(clojure-mode
                        emacs-lisp-mode
                        lisp-interaction-mode)))
+
+(defun topiary/supported-html-mode-p ()
+  "Return t if current mode is supported by topiary html."
+  (or (provided-mode-derived-p major-mode 'sgml-mode)
+      (member major-mode '(rjsx-mode))))
 
 (defun topiary/back-to-indentation-or-beginning ()
   "Go to first character in line. If already at first character go to beginning of line."
@@ -417,13 +422,15 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-html-tag-forward ()
   "Return bounds of html tag at point forward."
-  (when (and (provided-mode-derived-p major-mode 'sgml-mode) (= (char-after) ?<))
+  (when (and (topiary/supported-html-mode-p)
+             (= (char-after) ?<))
     (save-excursion
       (cons (point) (progn (sgml-skip-tag-forward 1) (point))))))
 
 (defun topiary/bounds-of-html-tag-backward ()
   "Return bounds of html tag at point backward."
-  (when (and (provided-mode-derived-p major-mode 'sgml-mode) (= (char-before) ?>))
+  (when (and (topiary/supported-html-mode-p)
+             (= (char-before) ?>))
     (save-excursion
       (cons (point) (progn (sgml-skip-tag-backward 1) (point))))))
 
