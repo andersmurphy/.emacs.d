@@ -433,6 +433,7 @@
       (insert path-without-line-number)
       (remove-hook 'minibuffer-setup-hook 'my/insert-current-thing))
     (add-hook 'minibuffer-setup-hook 'my/insert-current-thing)
+    (my/other-window)
     (xref-push-marker-stack)
     (project-find-file)
     (when line-num
