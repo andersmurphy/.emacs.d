@@ -933,4 +933,8 @@
   ;; reduces noise on some sites
   (setq shr-discard-aria-hidden t))
 
+;;; Load Project Specific Commands
+
+(load "~/.emacs.d/emacs-sync/project-specific-commands.el")
+
 ;;; init.el ends here
