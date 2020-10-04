@@ -64,13 +64,13 @@
   (equal (buffer-substring-no-properties (point) (+ (point) 2))
          "\"\""))
 
-(defmacro topiary/if-in-string (then-form else-form)
-  "If in string do THEN-FORM otherwise do ELSE-FORM."
+(defmacro topiary/if-in-string (first-form &rest forms)
+  "If in string do FIRST-FORM otherwise do FORMS."
   `(lambda ()
      (interactive)
      (if (in-string-p)
-         ,then-form
-       ,else-form)))
+         ,first-form
+       ,@forms)))
 
 ;;;###autoload
 (define-minor-mode topiary-mode
@@ -103,6 +103,9 @@
             (define-key map (kbd "{")  (topiary/if-in-string
                                         (insert "{")
                                         (topiary/wrap-with-braces)))
+            (define-key map (kbd ")")  (topiary/if-in-string (insert ")")))
+            (define-key map (kbd "]")  (topiary/if-in-string (insert "]")))
+            (define-key map (kbd "}")  (topiary/if-in-string (insert "}")))
             (define-key map (kbd ";")  (topiary/if-in-string
                                         (insert ";")
                                         (topiary/insert-double-semicolon)))
