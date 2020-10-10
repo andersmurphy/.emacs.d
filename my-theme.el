@@ -106,7 +106,12 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(magit-diff-added-highlight ((t (:background "#e9ffe9"))))
    `(magit-diff-added ((t (:background "#e9ffe9"))))
    `(magit-diff-removed-highlight ((t (:background "#ffecec"))))
-   `(magit-diff-removed ((t (:background "#ffecec"))))))
+   `(magit-diff-removed ((t (:background "#ffecec"))))
+   ;; org
+   `(org-level-1 ((t (:foreground ,fg :background ,bg :height 1.5 :weight bold))))
+   `(org-level-2 ((t (:foreground ,fg :background ,bg :height 1.2 :weight normal))))
+   `(org-level-3 ((t (:foreground ,fg :background ,bg :height 1.0 :weight bold))))
+   `(org-level-4 ((t (:foreground ,fg :background ,bg :height 1.0 :weight normal))))))
 
 (provide-theme 'my)
 ;;; my-theme.el ends here
