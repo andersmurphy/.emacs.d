@@ -199,7 +199,7 @@ Optionally CLJ-LISP-PROG can be specified"
   (other-window 1))
 
 (defun my/kill-inferior-lisp-buffer ()
-  "Kill *unferior-lisp* buffer if running."
+  "Kill *inferior-lisp* buffer if running."
   (when (get-buffer "*inferior-lisp*")
     (kill-buffer "*inferior-lisp*")))
 
@@ -208,10 +208,19 @@ Optionally CLJ-LISP-PROG can be specified"
   (my/kill-inferior-lisp-buffer)
   (my/clj-open-repl clj-lisp-prog))
 
-(defun heroku-repl ()
+(defun my/heroku-repl ()
   "Start heroku REPL."
   (interactive)
   (my/start-repl "heroku run lein repl --size=standard-2x"))
+
+(defun my/heroku-rollback ()
+  "Heroku rollback."
+  (interactive)
+  (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
+        (buffer-name "*Heroku Rollback*"))
+    (when (get-buffer buffer-name)
+      (kill-buffer buffer-name))
+    (async-shell-command "heroku rollback" (generate-new-buffer buffer-name))))
 
 (defun my/clj-doc-for-symbol ()
   "Print doc for symbol at point."
