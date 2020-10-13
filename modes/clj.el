@@ -216,11 +216,12 @@ Optionally CLJ-LISP-PROG can be specified"
 (defun my/heroku-rollback ()
   "Heroku rollback."
   (interactive)
-  (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
-        (buffer-name "*Heroku Rollback*"))
-    (when (get-buffer buffer-name)
-      (kill-buffer buffer-name))
-    (async-shell-command "heroku rollback" (generate-new-buffer buffer-name))))
+  (when (y-or-n-p "Do you want to rollback the last Heroku release? ")
+    (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
+          (buffer-name "*Heroku Rollback*"))
+      (when (get-buffer buffer-name)
+        (kill-buffer buffer-name))
+      (async-shell-command "heroku rollback" (generate-new-buffer buffer-name)))))
 
 (defun my/clj-doc-for-symbol ()
   "Print doc for symbol at point."
