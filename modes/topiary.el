@@ -527,7 +527,10 @@ Examples:
   (foo bar baz)|     -> foo bar baz|
   (foo bar)| (baz)   -> foo bar| (baz)
   |(foo bar baz)     -> |foo bar baz
-  |(foo bar) (baz)   -> |foo bar (baz)"
+  |(foo bar) (baz)   -> |foo bar (baz)
+  #{|foo bar baz}    -> |foo bar baz
+  #(|foo %)          -> |foo %
+  "
   (interactive)
   (save-mark-and-excursion
     (condition-case nil
@@ -537,7 +540,9 @@ Examples:
                         (up-list)
                         (topiary/smart-kill-bounds))))
           (goto-char (car bounds))
-          (delete-char 1)
+          (if (equal (char-after) ?\#)
+              (delete-char 2)
+            (delete-char 1))
           (goto-char (- (cdr bounds) 1))
           (delete-char -1))
       (error (message "Can't unwrap top level")))))
