@@ -398,7 +398,7 @@
   (advice-add 'handle-switch-frame :after #'my/mode-line-set-selected-window)
   (advice-add 'select-window :after #'my/mode-line-set-selected-window)
 
-  ;; Custom minimalist mode line with right aligned time and flycheck errors.
+  ;; Custom minimalist mode line with right aligned time
   (setq-default mode-line-end-spaces
                 (list (propertize " " 'display '(space :align-to (- right 16)))
                       'display-time-string))
@@ -481,6 +481,7 @@
   (prescient-persist-mode t))
 (use-package project
   :straight nil
+  :after (eglot)
   :config
   :bind
   ("C-x p" . project-find-file)
@@ -616,27 +617,31 @@
   :straight nil
   :config
   (setq hs-hide-comments-when-hiding-all nil)
-  (defun my/display-most-sever-flycheck-error (ov)
+
+  (defun my/display-most-sever-flymake-error (ov)
     "Display most sever error in folded code block at top level."
     (when (eq 'code (overlay-get ov 'hs))
-      (let* ((most-sever-error (car (sort (flycheck-overlay-errors-in
-                                           (overlay-start ov)
-                                           (overlay-end ov))
-                                          #'flycheck-error-level-<)))
+      (let* ((most-sever-error
+              (car (sort (flymake--overlays :beg (overlay-start ov)
+                                            :end (overlay-end ov))
+                         (lambda (a b) (> (overlay-get a 'severity)
+                                          (overlay-get b 'severity))))))
              (level (and most-sever-error
-                         (flycheck-error-level most-sever-error)))
-             (marker-string (concat "*" (format "%s" level) "*"))
-             (marker-length (length marker-string)))
+                         (overlay-get most-sever-error 'category)))
+             (marker-string (concat "*" (format "%s" level) "*")))
         (if most-sever-error
-            (progn (put-text-property 0 marker-length 'display
-                                      (list 'left-fringe
-                                            (flycheck-error-level-fringe-bitmap level)
-                                            (flycheck-error-level-fringe-face level))
-                                      marker-string)
-                   (overlay-put ov 'before-string marker-string))
+            (overlay-put ov 'before-string
+                         (propertize marker-string
+                                     'display
+                                     (list 'left-fringe
+                                           'my/flymake-fringe-indicator
+                                           (overlay-get most-sever-error 'face))))
           (overlay-put ov 'before-string nil))
         (overlay-put ov 'display "..."))))
-  (setq hs-set-up-overlay 'my/display-most-sever-flycheck-error)
+
+  (setq hs-set-up-overlay 'my/display-most-sever-flymake-error)
+
+  (defvar my/previous-flymake-errors nil)
 
   (defun my/toggle-defun-level-hiding ()
     "Toggle folded code at top level without losing cursor position."
@@ -646,20 +651,20 @@
         (goto-char (car (nth 9 (syntax-ppss)))))
       (hs-toggle-hiding)))
 
-  (defvar my/last-flycheck-errors nil)
-  (defvar flycheck-current-errors)
-
   (defun my/refresh-folded-code-errors ()
     "Refresh folded code that contains errors to make them visible at the top level."
-    (unless (equal flycheck-current-errors my/last-flycheck-errors)
-      (dolist (ov (overlays-in (point-min) (point-max)))
-        (when (overlay-get ov 'hs)
-          (my/display-most-sever-flycheck-error ov)))
-      (setq my/last-flycheck-errors flycheck-current-errors)))
+    (let ((current-flymake-errors (flymake--overlays)))
+      (unless (equal current-flymake-errors my/previous-flymake-errors)
+        (dolist (ov (overlays-in (point-min) (point-max)))
+          (when (overlay-get ov 'hs)
+            (my/display-most-sever-flymake-error ov)))
+        (setq my/previous-flymake-errors current-flymake-errors))))
+
+  (defadvice flymake--handle-report (after refresh-folded-errors activate)
+    (my/refresh-folded-code-errors))
 
   :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
-                                             (hs-minor-mode)(hs-hide-all)))
-         (flycheck-after-syntax-check . my/refresh-folded-code-errors))
+                                             (hs-minor-mode) (hs-hide-all))))
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . (lambda ()
@@ -683,50 +688,35 @@
   (setq ispell-personal-dictionary "~/.emacs.d/setup/dotfiles/.aspell.en.pws")
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode))
-(use-package flycheck
+(use-package flymake :straight nil
   :init
-  (global-flycheck-mode)
-  ;; Change fringe indicator to be a circle
-  (define-fringe-bitmap 'my-flycheck-fringe-indicator
-    (vector #b00000000
-            #b00000000
-            #b00000000
-            #b00000000
-            #b11111111
-            #b11111111
-            #b11111111
-            #b11111111
-            #b11111111
-            #b11111111
-            #b11111111
-            #b11111111
-            #b00000000
-            #b00000000
-            #b00000000
-            #b00000000
-            #b00000000))
-
-  (flycheck-define-error-level 'error
-    :severity 2
-    :overlay-category 'flycheck-error-overlay
-    :fringe-bitmap 'my-flycheck-fringe-indicator
-    :fringe-face 'flycheck-fringe-error)
-
-  (flycheck-define-error-level 'warning
-    :severity 1
-    :overlay-category 'flycheck-warning-overlay
-    :fringe-bitmap 'my-flycheck-fringe-indicator
-    :fringe-face 'flycheck-fringe-warning)
-
-  (flycheck-define-error-level 'info
-    :severity 0
-    :overlay-category 'flycheck-info-overlay
-    :fringe-bitmap 'my-flycheck-fringe-indicator
-    :fringe-face 'flycheck-fringe-info)
-
+  (define-fringe-bitmap 'my/flymake-fringe-indicator
+     (vector #b00000000
+             #b00000000
+             #b00000000
+             #b00000000
+             #b11111111
+             #b11111111
+             #b11111111
+             #b11111111
+             #b11111111
+             #b11111111
+             #b11111111
+             #b11111111
+             #b00000000
+             #b00000000
+             #b00000000
+             #b00000000
+             #b00000000))
+  (setq flymake-error-bitmap '(my/flymake-fringe-indicator flymake-error))
+  (setq flymake-warning-bitmap '(my/flymake-fringe-indicator flymake-warning))
+  (setq flymake-note-bitmap '(my/flymake-fringe-indicator flymake-note))
   :config
-  ;; Make flycheck use current load path
-  (setq-default flycheck-emacs-lisp-load-path 'inherit))
+  (custom-set-variables
+   '(help-at-pt-timer-delay 0.1)
+   '(help-at-pt-display-when-idle '(flymake-diagnostic)))
+  :hook
+  (emacs-lisp-mode . (lambda () (flymake-mode t))))
 
 ;;; Completion & Templates
 (use-package company
@@ -765,12 +755,20 @@
   (show-paren-mode 1)
   (defvar show-paren-delay)
   (setq show-paren-delay 0))
+;; LSP - Language Server Protocol
+(use-package eglot
+  :config
+  (setq eglot-sync-connect 0)
+  (add-to-list 'eglot-server-programs
+               '(clojure-mode . ("bash" "-c" "clojure-lsp")))
+  (add-to-list 'eglot-server-programs
+               '((js-mode typescript-mode) . ("typescript-language-server" "--stdio")))
+  :hook
+  (((clojure-mode rjsx-mode) . eglot-ensure)))
 ;; Lisp
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
-              ("M-h" . comint-previous-input)
-              ("M-." . my/jump-to-file-in-project-at-point)
-              ("M-," . xref-pop-marker-stack)))
+              ("M-h" . comint-previous-input)))
 ;; SQL
 (defun my/start-postgresql ()
   "Start local postgresql database."
@@ -797,13 +795,6 @@
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
 (use-package clojure-mode
-  :config
-  (require 'flycheck-clj-kondo)
-  :hook ((clojure-mode . (lambda ()
-                           (set (make-local-variable 'company-backends)
-                                (list
-                                 (list 'my/clj-completion-backend
-                                       'company-dabbrev-code))))))
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
               ("C-c C-z" . my/clj-open-repl)
@@ -819,11 +810,7 @@
               ("C-c C-t p" . my/clj-run-project-tests)
               ("C-c C-t C-p" . my/clj-run-project-tests)
               ("C-x C-e" . my/clj-eval-last-sexp-with-ns)
-              ("M-;" . my/clj-comment-form)
-              ("M-." . my/clj-jump-to-symbol)
-              ("M-," . xref-pop-marker-stack)))
-(use-package flycheck-clj-kondo
-  :ensure t)
+              ("M-;" . my/clj-comment-form)))
 ;; HTTP
 (use-package restclient
   :defer t
@@ -840,13 +827,7 @@
   (setq js2-mode-show-parse-errors nil)
   (setq js2-strict-trailing-comma-warning nil)
   (setq js2-strict-inconsistent-return-warning nil)
-  (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode))
-  ;; Disable jshint.
-  (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(javascript-jshint)))
-  ;; Use eslint in rjsx-mode.
-  (flycheck-add-mode 'javascript-eslint 'rjsx-mode))
+  (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 (use-package add-node-modules-path
   :hook (rjsx-mode . add-node-modules-path))
 ;; iOS Simulator

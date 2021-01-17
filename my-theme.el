@@ -89,9 +89,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(mode-line-inactive ((t (:foreground ,fg-comment :background ,bg-inactive :weight bold :box (:line-width 4 :color ,bg-inactive) :overline nil :underline nil))))
    `(mode-line-buffer-id ((t nil)))
    `(xref-file-header ((t (:foreground ,fg :weight bold))))
-   `(flycheck-error ((t (:underline (:style line :color ,fg-error) :foreground ,fg-error :weight bold))) )
-   `(flycheck-warning ((t (:underline (:style line :color ,fg-warning) :foreground ,fg-warning :weight bold))) )
-   `(flycheck-info
+   `(flymake-error ((t (:underline (:style line :color ,fg-error) :foreground ,fg-error :weight bold))) )
+   `(flymake-warning ((t (:underline (:style line :color ,fg-warning) :foreground ,fg-warning :weight bold))) )
+   `(flymake-note
      ((t (:underline (:style line :color ,fg-success) :foreground ,fg-success :weight bold))) )
    `(flyspell-incorrect ((t (:underline (:style line :color ,fg-error)))) )
    `(flyspell-duplicate ((t (:underline (:style line :color ,fg-warning)))) )

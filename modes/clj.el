@@ -358,88 +358,6 @@ Works from both namespace and test namespace"
       my/clj-find-implementation-or-test
       find-file))
 
-(defun my/check-first-item-string (list)
-  "Return LIST if first item is a string."
-  (when (stringp (car list))
-    list))
-
-(defun my/clj-run-command-read-edn-output (output-buffer command)
-  "Read output of COMMAND from OUTPUT-BUFFER."
-  (let ((proc (inferior-lisp-proc))
-        (formatted-command (my/clj-format-with-ns command)))
-    (save-excursion
-      (set-buffer (get-buffer-create output-buffer))
-      (erase-buffer)
-      (comint-redirect-send-command-to-process
-       formatted-command output-buffer proc nil t)
-      (set-buffer (process-buffer proc))
-      (while (null comint-redirect-completed)
-        (accept-process-output nil 1))
-      (set-buffer output-buffer)
-      (-> (buffer-substring-no-properties (point-min) (point-max))
-          string-trim
-          read))))
-
-(defun my/clj-get-file-source-path (file)
-  "Return path to FILE source."
-  (let ((source-dir (if (string-match-p "test" file) "test" "src")))
-    (-> (split-string
-         (buffer-file-name)
-         "src\\|test")
-        car
-        (concat source-dir "/" file))))
-
-(defun my/clj-jump (list)
-  "Jump to line and column in file."
-  (if list
-      (let ((col  (nth 0 list))
-            (file (nth 1 list))
-            (line (nth 2 list)))
-        (xref-push-marker-stack)
-        (-> (my/clj-get-file-source-path file)
-            find-file-existing)
-        (goto-line line)
-        (forward-char col))
-    (message "Symbol definition not found!")))
-
-(defun my/clj-jump-to-symbol ()
-  "Jump to symbol definition. If symbol is defined in another file, open that file in a buffer and go to the definition line and column."
-  (interactive)
-  (my/when-repl-running
-   (-> (my/clj-run-command-read-edn-output
-        "*my/clj-jump*"
-        `(-> (var ,(my/clj-symbol-at-point))
-             meta
-             (select-keys [:file :line :column])
-             seq
-             sort
-             ((partial map second))))
-       my/clj-jump)))
-
-(defun my/clj-completions (prefix)
-  "Completion function that passes PREFIX to function to compliment.
-Uses the namepsace of the current buffer. If buffer doesn't have namespace
-defaults to current namespace."
-  (-> (my/clj-run-command-read-edn-output
-       "*my/clj-completions*"
-       `(do (require '[compliment.core])
-            (compliment.core/completions
-             ,prefix
-             {:plain-candidates true})))
-      my/check-first-item-string))
-
-(defun my/clj-completion-backend (command &optional arg &rest ignored)
-  "Completion backend powered by the clojure compliment completion library."
-  (interactive (list 'interactive))
-  (cl-case command
-    (interactive (company-begin-backend 'my/clj-completion-backend))
-    (prefix (and (eq major-mode 'clojure-mode)
-                 (comint-check-proc "*inferior-lisp*")
-                 (not (my/inferior-lisp-program-heroku-p))
-                 (company-grab-symbol)))
-    (candidates (my/clj-completions arg))
-    (sorted t)))
-
 (defvar my/clj-warn-on-reflection-state nil)
 (defun my/clj-toggle-warn-on-reflection ()
   "Toggle warn on reflection."
@@ -539,7 +457,7 @@ defaults to current namespace."
         (buffer-name "*React Native iOS*"))
     (when (get-buffer buffer-name)
       (kill-buffer buffer-name))
-    (async-shell-command "react-native run-ios" (generate-new-buffer buffer-name))))
+    (async-shell-command "react-native run-ios --simulator=\"iPhone 11 Pro Max\"" (generate-new-buffer buffer-name))))
 
 (defun my/lein-run ()
   "Lein run."
