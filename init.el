@@ -759,6 +759,7 @@
 (use-package eglot
   :config
   (setq eglot-sync-connect 0)
+  (setq eglot-ignored-server-capabilites '(:documentHighlightProvider))
   (add-to-list 'eglot-server-programs
                '(clojure-mode . ("bash" "-c" "clojure-lsp")))
   (add-to-list 'eglot-server-programs
