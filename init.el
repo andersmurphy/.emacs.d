@@ -54,7 +54,6 @@
 (use-package elisp-mode
   :straight nil
   :config
-
   (defun my/docs-for-elisp-symbol-at-point ()
     "Show docs for elisp symbol at point."
     (interactive)
@@ -902,7 +901,15 @@
   (setq shr-discard-aria-hidden t))
 
 ;;; Load Project Specific Commands
-
 (load "~/.emacs.d/emacs-sync/project-specific-commands.el")
+
+;;; Set Flymake load path for elisp
+;; Needs to be done at the end of this file after
+;; all elisp dependencies have been loaded.
+;;
+;; This might cause Flymake false positives when working
+;; on separate Emacs lisp projects.
+(setq elisp-flymake-byte-compile-load-path
+      (append (list "./") load-path))
 
 ;;; init.el ends here
