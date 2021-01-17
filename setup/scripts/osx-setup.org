@@ -81,7 +81,8 @@ git config --global color.ui true
 Create global git ignore file.
 
 #+BEGIN_SRC sh
-echo '.DS_Store' > .gitignore
+rm ~/.gitignore
+ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
 #+END_SRC
 
 Set as global ignore file.
@@ -159,16 +160,30 @@ rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 #+END_SRC
 
-Linter.
-
-#+BEGIN_SRC sh
-brew install borkdude/brew/clj-kondo
-#+END_SRC
-
 Formatter.
 
 #+BEGIN_SRC sh
 brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
+#+END_SRC
+
+LSP.
+
+#+BEGIN_SRC sh
+brew install clojure-lsp
+#+END_SRC
+
+* Javascript
+
+Language.
+
+#+BEGIN_SRC sh
+brew install node
+#+END_SRC
+
+LSP.
+
+#+BEGIN_SRC sh
+npm i -g typescript-language-server; npm i -g typescript
 #+END_SRC
 
 * OSX Clear fonts on retina screens
