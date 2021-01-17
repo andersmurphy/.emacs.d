@@ -480,8 +480,7 @@
   (prescient-persist-mode t))
 (use-package project
   :straight nil
-  :after (eglot)
-  :config
+  :after eglot
   :bind
   ("C-x p" . project-find-file)
   ("C-h" . project-find-file)
@@ -756,6 +755,7 @@
   (setq show-paren-delay 0))
 ;; LSP - Language Server Protocol
 (use-package eglot
+  :demand t
   :config
   (setq eglot-sync-connect 0)
   (setq eglot-ignored-server-capabilites
