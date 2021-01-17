@@ -3,6 +3,9 @@
 ;;; Commentary:
 
 ;;; Code:
+
+;; To find out the name of the face you want to customise:
+;; M-x cutomize-face and then search through the list of faces.
 (deftheme my
   "Created 2020-07-20.")
 
