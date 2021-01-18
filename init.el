@@ -555,7 +555,7 @@
   ;; Auto tangle .org files in script folder
   (defun my/tangle-scripts ()
     (when-let ((file-name (buffer-file-name)))
-      (when (string-match "^.*?/\.emacs\.d/scripts/.*\.org$" file-name)
+      (when (string-match "^.*?/\.emacs\.d/setup/scripts/.*\.org$" file-name)
         (org-babel-tangle-file file-name))))
 
   (add-hook 'after-save-hook #'my/tangle-scripts)
