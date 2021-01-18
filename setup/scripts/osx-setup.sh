@@ -23,21 +23,22 @@ git config --global pull.rebase true
 
 git config --global color.ui true
 
-echo '.DS_Store' > .gitignore
+rm ~/.gitignore
+ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
 
 git config --global core.excludesfile '~/.gitignore'
 
 git config --global diff.algorithm histogram
 
 brew tap daviderestivo/emacs-head
-brew install emacs-head@27 --with-cocoa --with-imagemagick --with-jansson --with-xwidgets
+brew install emacs-head@28 --with-cocoa --with-imagemagick --with-jansson --with-xwidgets
 ln -s /usr/local/opt/emacs-head/Emacs.app /Applications
 
 brew install aspell
 
 brew install mpv
 rm ~/.config/mpv/mpv.conf
-ln -s ~/.emacs.d/dotfiles/.mpv/mpv.conf ~/.config/mpv/
+ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 
 brew install multimarkdown
 
@@ -46,12 +47,16 @@ brew cask install adoptopenjdk11
 
 brew install clojure
 rm ~/.clojure/deps.edn
-ln -s ~/.emacs.d/dotfiles/.clojure/deps.edn ~/.clojure/
+ln -s ~/.emacs.d/setup/dotfiles/.clojure/deps.edn ~/.clojure/
 
 brew install leiningen
 rm ~/.lein/profiles.clj
-ln -s ~/.emacs.d/dotfiles/.lein/profiles.clj ~/.lein/
+ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 
-brew install borkdude/brew/clj-kondo
+brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
 
-brew install --build-from-source brew-formulae/clj-zprint.rb
+brew install clojure-lsp
+
+brew install node
+
+npm i -g typescript-language-server; npm i -g typescript
