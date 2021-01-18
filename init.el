@@ -200,7 +200,10 @@
   (global-auto-revert-mode)
 
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t)
+
+  ;; Enable emoji
+  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend))
 (defun my/init ()
   "Open init file (this file)."
   (interactive)
