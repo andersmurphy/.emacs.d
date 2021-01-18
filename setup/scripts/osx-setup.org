@@ -101,7 +101,7 @@ git config --global diff.algorithm histogram
 
 #+BEGIN_SRC sh
 brew tap daviderestivo/emacs-head
-brew install emacs-head@27 --with-cocoa --with-imagemagick --with-jansson --with-xwidgets
+brew install emacs-head@28 --with-cocoa --with-imagemagick --with-jansson --with-xwidgets
 ln -s /usr/local/opt/emacs-head/Emacs.app /Applications
 #+END_SRC
 
