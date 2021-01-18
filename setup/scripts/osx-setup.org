@@ -1,3 +1,4 @@
+#+STARTUP: overview
 #+PROPERTY: header-args :tangle osx-setup.sh
 
 * Show hidden files
