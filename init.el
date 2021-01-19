@@ -674,6 +674,7 @@
                                  (hs-hide-all))))))
 (load "~/.emacs.d/modes/topiary.el")
 (use-package topiary
+
   :straight nil
   :init
   :hook ((text-mode prog-mode comint-mode outline-mode) . topiary-mode))
@@ -768,7 +769,7 @@
   (add-to-list 'eglot-server-programs
                '((js-mode typescript-mode) . ("typescript-language-server" "--stdio")))
   :hook
-  (((clojure-mode rjsx-mode) . eglot-ensure)))
+  (((clojure-mode js-mode) . eglot-ensure)))
 ;; Lisp
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
@@ -822,16 +823,11 @@
 ;; JavaScript
 (use-package json-mode
   :defer t)
-(use-package rjsx-mode
+(use-package js
+  :straight nil
   :config
   (setq indent-tabs-mode nil)
-  (setq js-indent-level 2)
-  (setq js2-basic-offset 2)
-  (setq js2-strict-missing-semi-warning nil)
-  (setq js2-mode-show-parse-errors nil)
-  (setq js2-strict-trailing-comma-warning nil)
-  (setq js2-strict-inconsistent-return-warning nil)
-  (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
+  (setq js-indent-level 2))
 (use-package add-node-modules-path
   :hook (rjsx-mode . add-node-modules-path))
 ;; iOS Simulator
