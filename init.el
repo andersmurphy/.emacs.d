@@ -828,8 +828,6 @@
   :config
   (setq indent-tabs-mode nil)
   (setq js-indent-level 2))
-(use-package add-node-modules-path
-  :hook (rjsx-mode . add-node-modules-path))
 ;; iOS Simulator
 (defvar my/rn-ios-uninstall-app-last-value nil)
 (defun my/rn-ios-uninstall-app (app-bundle-identifier)
