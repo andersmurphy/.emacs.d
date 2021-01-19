@@ -773,7 +773,9 @@
 ;; Lisp
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
-              ("M-h" . comint-previous-input)))
+              ("M-h" . comint-previous-input)
+              ("M-." . my/jump-to-file-in-project-at-point)
+              ("M-," . xref-pop-marker-stack)))
 ;; SQL
 (defun my/start-postgresql ()
   "Start local postgresql database."
