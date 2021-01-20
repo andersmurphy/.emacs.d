@@ -823,8 +823,6 @@
   :defer t
   :mode ("\\.\\(http\\|rest\\)$" . restclient-mode))
 ;; JavaScript
-(use-package json-mode
-  :defer t)
 (use-package js
   :straight nil
   :config
