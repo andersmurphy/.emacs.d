@@ -825,7 +825,7 @@
 (defun my/current-ip ()
   "Return current IP address."
   (interactive)
-  (format-network-address (car (network-interface-info "en0"))))
+  (message (format-network-address (car (network-interface-info "en0")))))
 ;; JavaScript
 (use-package js
   :straight nil
