@@ -2,10 +2,15 @@
 
 ;;; Commentary:
 
-;;; Code:
-
 ;; To find out the name of the face you want to customise:
 ;; M-x cutomize-face and then search through the list of faces.
+;; M-x describe-text-properties to see faces of text at point.
+
+;;; Code:
+
+(require 'cl-lib)
+(require 'subr-x)
+
 (deftheme my
   "Created 2020-07-20.")
 
@@ -139,6 +144,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(magit-diff-removed                   ((t (:background ,red2))))
    `(magit-diffstat-added                 ((t (:foreground ,green))))
    `(magit-diffstat-removed               ((t (:foreground ,red))))
+   `(font-lock-warning-face               ((t (:foreground ,red :weight bold))))
    `(magit-diff-context-highlight         ((t (:background ,bg :foreground ,fg))))
    `(magit-diff-context                   ((t (:background ,bg :foreground ,fg))))
    `(magit-diff-section-heading-highlight ((t (:background ,bg :foreground ,fg))))
