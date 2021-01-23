@@ -45,7 +45,7 @@
   ;; Prevents error if the custom.el file doesn't exist
   (load custom-file 'noerror))
 
-;;; Emacs lisp Extension
+;;; EMACS LISP EXTENSION
 (defmacro comment (&rest _)
   "Ignore BODY, yields nil."
   nil)
@@ -64,7 +64,7 @@
               :map lisp-interaction-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
 
-;;; Controls
+;;; CONTROLS
 (progn ;; Defaults
 
   ;; Disable all arrow keys
@@ -138,7 +138,7 @@
   :config
   (global-disable-mouse-mode))
 
-;;; General
+;;; GENERAL
 (progn ;; Defaults
 
   ;; Start emacs server
@@ -296,7 +296,7 @@
   :config
   (global-so-long-mode t))
 
-;;; Visual
+;;; VISUAL
 (progn ;; Defaults
 
   ;; Hide menu bar.
@@ -419,7 +419,7 @@
         '((propertize (format-time-string "%F %H:%M" now) 'face 'bold)))
   (display-time-mode t))
 
-;;; Meta Navigation
+;;; META NAVIGATION
 (defun my/osx-open-in-finder ()
   "Open current file in finder."
   (interactive)
@@ -581,7 +581,7 @@
            (file+datetree "~/.emacs.d/emacs-sync/org/food.org")
            "* %?"))))
 
-;;; Text Formatting
+;;; TEXT FORMATTING
 (progn ;; Defaults
 
   ;; Enable visual line mode
@@ -679,7 +679,7 @@
   :init
   :hook ((text-mode prog-mode comint-mode outline-mode) . topiary-mode))
 
-;;; Linting
+;;; LINTING
 (use-package flyspell
   :config
   (setq ispell-program-name "aspell"
@@ -720,7 +720,7 @@
   :hook
   (emacs-lisp-mode . (lambda () (flymake-mode t))))
 
-;;; Completion & Templates
+;;; COMPLETION & TEMPLATES
 (use-package company
   :init
   (setq company-idle-delay 0.2)
@@ -752,7 +752,7 @@
   (define-auto-insert "deps.edn$" ["default_deps.edn" my/autoinsert-yas-expand])
   (define-auto-insert ".gitignore" ["default.gitignore" my/autoinsert-yas-expand]))
 
-;;; Programming
+;;; PROGRAMMING
 (progn ;; Defaults
   ;; Show paren mode
   (show-paren-mode 1)
@@ -842,7 +842,7 @@
   (setq my/rn-ios-uninstall-app-last-value app-bundle-identifier)
   (shell-command (concat "xcrun simctl uninstall booted " app-bundle-identifier)))
 
-;;; Media
+;;; MEDIA
 (use-package nov
   :defer t
   :init
@@ -902,7 +902,7 @@
   ;; reduces noise on some sites
   (setq shr-discard-aria-hidden t))
 
-;;; Load Project Specific Commands
+;;; LOAD PROJECT SPECIFIC COMMANDS
 (load "~/.emacs.d/emacs-sync/project-specific-commands.el")
 
 ;;; Set Flymake load path for elisp
