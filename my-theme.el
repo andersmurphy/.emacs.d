@@ -91,7 +91,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                         (my/darken-color bg 0.05)
                       (my/lighten-color bg 0.05)))
        (fg-highlight bg)
-       (bg-highlight fg))
+       (bg-highlight purple)
+       (fg-match     purple))
 
   (custom-theme-set-faces
    'my
@@ -103,7 +104,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(cursor                       ((t (:foreground ,bg :background ,fg))))
    `(isearch      ((t (:foreground ,fg-highlight :background ,bg-highlight))))
    `(isearch-fail ((t (:foreground ,fg :background ,red))))
-   `(lazy-highlight ((t (:foreground ,fg-highlight :background ,bg-highlight ))))
+   `(lazy-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
    `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
    `(eshell-prompt                ((t (:foreground ,fg :weight bold))))
    `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
@@ -128,7 +129,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(flyspell-incorrect          ((t (:underline (:style line :color ,fg-error)))))
    `(flyspell-duplicate          ((t (:underline (:style line :color ,fg-warning)))))
    `(vertical-border             ((t (:foreground ,bg-inactive))))
-
+   `(selectrum-primary-highlight ((t (:foreground ,bg-highlight :weight bold :distant-foreground ,fg-highlight))))
    ;; emms
    `(emms-playlist-track-face    ((t (:foreground ,fg :background ,bg))))
    `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))
@@ -162,7 +163,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(company-tooltip-selection
      ((t (:background ,bg-highlight :foreground ,fg-highlight))))
    `(company-tooltip           ((t (:background ,bg-region))))
-   `(company-tooltip-common    ((t (:foreground nil :weight bold))))
+   `(company-tooltip-common    ((t (:foreground ,fg-match :weight bold  :distant-foreground ,fg-highlight))))
    `(company-preview           ((t (:foreground ,fg-comment :background ,bg))))
    `(company-preview-common    ((t (:foreground ,fg-comment :background ,bg))))
    `(company-tooltip-annotation           ((t (:foreground ,fg))))
