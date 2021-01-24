@@ -82,8 +82,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                       (my/darken-color bg 0.1)
                     (my/lighten-color bg 0.1)))
        (fg-comment (if (my/is-light-color-p bg)
-                       (my/lighten-color fg 0.2)
-                     (my/darken-color fg 0.2)))
+                       (my/lighten-color fg 0.3)
+                     (my/darken-color fg 0.3)))
        (fg-error   red)
        (fg-warning yellow)
        (fg-success green)
@@ -101,7 +101,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(region ((t (:background ,bg-region :distant-foreground ,fg))))
    `(show-paren-match ((t (:foreground ,fg :background ,bg-region :weight bold))))
    `(show-paren-mismatch ((t (:foreground ,fg-error :background ,bg-region :weight bold))))
-   `(cursor                       ((t (:foreground ,bg :background ,fg))))
+   `(cursor                       ((t (:foreground ,bg :background ,bg-highlight))))
    `(isearch      ((t (:foreground ,fg-highlight :background ,bg-highlight))))
    `(isearch-fail ((t (:foreground ,fg :background ,red))))
    `(lazy-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
@@ -157,7 +157,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(magit-branch-local  ((t (:foreground ,blue))))
    `(magit-branch-remote ((t (:foreground ,green))))
    `(magit-hash ((t (:foreground ,fg-comment))))
-   `(magit-hash ((t (:foreground ,fg-comment))))
+   `(magit-log-author ((t (:foreground ,fg-comment))))
+   `(magit-log-date ((t (:foreground ,fg-comment))))
 
    ;; company
    `(company-tooltip-selection
