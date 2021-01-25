@@ -529,8 +529,7 @@ Examples:
   |(foo bar baz)     -> |foo bar baz
   |(foo bar) (baz)   -> |foo bar (baz)
   #{|foo bar baz}    -> |foo bar baz
-  #(|foo %)          -> |foo %
-  "
+  #(|foo %)          -> |foo %"
   (interactive)
   (save-mark-and-excursion
     (condition-case nil
