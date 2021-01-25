@@ -14,6 +14,14 @@
 (deftheme my
   "Created 2020-07-20.")
 
+(defun my/hsl->hex (H S L)
+  "Convert H S L to hex."
+  (apply 'color-rgb-to-hex
+         (color-hsl-to-rgb
+          (/ (float H) 360)
+          (/ (float S) 100)
+          (/ (float L) 100))))
+
 (defun my/hex->rgb (color)
   "Convert hex COLOR to RGB."
   (cl-loop with div = (float (car (tty-color-standard-values "#ffffff")))
@@ -56,10 +64,10 @@ Uses HSP: http://alienryderflex.com/hsp.html"
 (setq my/dark-theme
       '((bg      . "#32302f")
         (fg      . "#d4be98")
-        (red     . "#b85651")
-        (green   . "#72966c")
+        (red     . "#ea6962")
+        (green   . "#89b482")
         (yellow  . "#d8a657")
-        (blue    . "#68948a")
+        (blue    . "#7daea3")
         (purple  . "#ab6c7d")))
 
 (defvar my/active-theme)
@@ -69,15 +77,20 @@ Uses HSP: http://alienryderflex.com/hsp.html"
        (bg      (assoc-default  'bg     my/active-theme))
        (red     (assoc-default  'red    my/active-theme))
        (red2    (if (my/is-light-color-p bg)
-                    (my/lighten-color red 0.4)
-                  (my/darken-color red 0.4)))
+                    (my/lighten-color red 0.3)
+                  (my/darken-color red 0.3)))
+       (red3    (if (my/is-light-color-p bg)
+                    (my/lighten-color red 0.6)
+                  (my/darken-color red 0.6)))
        (green   (assoc-default  'green  my/active-theme))
        (green2 (if (my/is-light-color-p bg)
-                   (my/lighten-color green 0.4)
-                 (my/darken-color green 0.4)))
+                   (my/lighten-color green 0.3)
+                 (my/darken-color green 0.3)))
+       (green3 (if (my/is-light-color-p bg)
+                   (my/lighten-color green 0.6)
+                 (my/darken-color green 0.6)))
        (yellow  (assoc-default  'yellow my/active-theme))
        (blue    (assoc-default  'blue   my/active-theme))
-       (purple  (assoc-default  'purple my/active-theme))
        (bg-region (if (my/is-light-color-p bg)
                       (my/darken-color bg 0.1)
                     (my/lighten-color bg 0.1)))
@@ -91,8 +104,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                         (my/darken-color bg 0.05)
                       (my/lighten-color bg 0.05)))
        (fg-highlight bg)
-       (bg-highlight purple)
-       (fg-match     purple))
+       (bg-highlight blue)
+       (fg-match     blue))
 
   (custom-theme-set-faces
    'my
@@ -135,14 +148,14 @@ Uses HSP: http://alienryderflex.com/hsp.html"
    `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))
 
    ;; diff/magit
-   `(diff-added                           ((t (:background ,green2))))
-   `(diff-removed                         ((t (:background ,red2))))
-   `(diff-refine-added                    ((t (:background ,green))))
-   `(diff-refine-removed                  ((t (:background ,red))))
-   `(magit-diff-added-highlight           ((t (:background ,green2))))
-   `(magit-diff-added                     ((t (:background ,green2))))
-   `(magit-diff-removed-highlight         ((t (:background ,red2))))
-   `(magit-diff-removed                   ((t (:background ,red2))))
+   `(diff-added                           ((t (:background ,green3))))
+   `(diff-removed                         ((t (:background ,red3))))
+   `(diff-refine-added                    ((t (:background ,green2))))
+   `(diff-refine-removed                  ((t (:background ,red2))))
+   `(magit-diff-added-highlight           ((t (:background ,green3))))
+   `(magit-diff-added                     ((t (:background ,green3))))
+   `(magit-diff-removed-highlight         ((t (:background ,red3))))
+   `(magit-diff-removed                   ((t (:background ,red3))))
    `(magit-diffstat-added                 ((t (:foreground ,green))))
    `(magit-diffstat-removed               ((t (:foreground ,red))))
    `(font-lock-warning-face               ((t (:foreground ,red :weight bold))))
