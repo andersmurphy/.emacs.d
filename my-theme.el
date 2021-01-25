@@ -68,7 +68,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
         (green   . "#89b482")
         (yellow  . "#d8a657")
         (blue    . "#7daea3")
-        (purple  . "#ab6c7d")))
+        (purple  . "#d3869b")))
 
 (defvar my/active-theme)
 (setq my/active-theme my/dark-theme)
@@ -91,6 +91,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                  (my/darken-color green 0.6)))
        (yellow  (assoc-default  'yellow my/active-theme))
        (blue    (assoc-default  'blue   my/active-theme))
+       (purple  (assoc-default  'purple   my/active-theme))
        (bg-region (if (my/is-light-color-p bg)
                       (my/darken-color bg 0.1)
                     (my/lighten-color bg 0.1)))
@@ -104,8 +105,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                         (my/darken-color bg 0.05)
                       (my/lighten-color bg 0.05)))
        (fg-highlight bg)
-       (bg-highlight blue)
-       (fg-match     blue))
+       (bg-highlight purple)
+       (fg-match     purple))
 
   (custom-theme-set-faces
    'my
