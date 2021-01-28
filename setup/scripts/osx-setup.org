@@ -102,7 +102,7 @@ git config --global diff.algorithm histogram
 
 #+BEGIN_SRC sh
 brew tap daviderestivo/emacs-head
-brew install emacs-head@28 --with-cocoa --with-imagemagick --with-jansson --with-xwidgets
+brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
 ln -s /usr/local/opt/emacs-head/Emacs.app /Applications
 #+END_SRC
 
@@ -186,7 +186,13 @@ LSP.
 #+BEGIN_SRC sh
 npm i -g typescript-language-server; npm i -g typescript
 #+END_SRC
+* Html
 
+LSP.
+
+#+BEGIN_SRC sh
+npm install -g vscode-html-languageserver-bin
+#+END_SRC
 * OSX Clear fonts on retina screens
 - First, turn OFF “Font smoothing” in System Preferences → General
 - Go to System Preferences → Displays, uncheck Default and select scaled 2× resolution
