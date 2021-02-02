@@ -63,7 +63,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
 (defvar my/dark-theme)
 (setq my/dark-theme
       '((bg      . "#32302f")
-        (fg      . "#d4be98")
+        (fg      . "#f5dfbc")
         (red     . "#ea6962")
         (green   . "#89b482")
         (yellow  . "#d8a657")
