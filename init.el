@@ -678,7 +678,6 @@
                                  (hs-hide-all))))))
 (load "~/.emacs.d/modes/topiary.el")
 (use-package topiary
-
   :straight nil
   :init
   :hook ((text-mode prog-mode comint-mode outline-mode) . topiary-mode))
@@ -812,7 +811,6 @@
               ("C-c C-z" . my/clj-open-repl)
               ("C-c C-d" . my/clj-doc-for-symbol)
               ("C-c C-s" . my/clj-source-for-symbol)
-              ("C-c C-j" . my/clj-javadoc-for-symbol)
               ("C-c C-f" . my/clj-find-doc)
               ("C-c C-l" . my/clj-load-current-ns)
               ("C-c C-b" . my/clj-eval-buffer)
@@ -821,7 +819,7 @@
               ("C-c C-t C-n" . my/clj-run-ns-tests)
               ("C-c C-t p" . my/clj-run-project-tests)
               ("C-c C-t C-p" . my/clj-run-project-tests)
-              ("C-x C-e" . my/clj-eval-last-sexp-with-ns)
+              ("C-x C-e" . my/clj-eval-last-sexp)
               ("M-;" . my/clj-comment-form)))
 ;; HTTP
 (use-package restclient
@@ -889,7 +887,7 @@
               ("C-c C-d" . my/clj-doc-for-symbol)
               ("C-c C-s" . my/clj-source-for-symbol)
               ("C-c C-f" . my/clj-find-doc)
-              ("C-x C-e" . my/clj-eval-last-sexp-with-ns)))
+              ("C-x C-e" . my/clj-eval-last-sexp)))
 (use-package eww
   :straight nil
   :config
