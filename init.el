@@ -766,7 +766,7 @@
   (setq eglot-ignored-server-capabilites
         '(:documentHighlightProvider :hoverProvider))
   (add-to-list 'eglot-server-programs
-               '(clojure-mode . ("bash" "-c" "clojure-lsp")))
+               '((clojure-mode clojurescript-mode) . ("bash" "-c" "clojure-lsp")))
   (add-to-list 'eglot-server-programs
                '((js-mode typescript-mode) . ("typescript-language-server" "--stdio")))
   :hook
