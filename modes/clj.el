@@ -184,6 +184,11 @@ Optionally CLJ-LISP-PROG can be specified"
       (comint-show-maximum-output)))
   (other-window 1))
 
+(defun my/kill-inferior-lisp-buffer ()
+  "Kill *inferior-lisp* buffer if running."
+  (when (get-buffer "*inferior-lisp*")
+    (kill-buffer "*inferior-lisp*")))
+
 (defun my/start-repl (clj-lisp-prog)
   "Kill any running REPL and start new REPL for CLJ-LISP-PROG."
   (my/kill-inferior-lisp-buffer)
