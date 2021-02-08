@@ -21,8 +21,10 @@
     (symbol-at-point)))
 
 (defun my/clj-eval (command)
-  "Evaluate elisp representation of COMMAND."
-  (-> (edn-print-string command)
+  "Evaluate elisp representation of COMMAND or string."
+  (-> (if (stringp command)
+          command
+        (edn-print-string command))
       lisp-eval-string))
 
 (defun my/clj-get-current-namespace-symbol ()
@@ -34,39 +36,23 @@
         (goto-char ns-idx)
         (my/clj-symbol-at-point)))))
 
-(defun my/clj-format-with-ns (command)
-  "Format edn COMMAND to use the current buffer namespace.
-If buffer doesn't have namespace defaults to current namespace.
-Handles both string and edn commands."
-  (let ((ns (my/clj-get-current-namespace-symbol))
-        (string (if (stringp command)
-                    command
-                  (edn-print-string command))))
-    (if ns
-        (format "(do
-               (when-not (find-ns '%s) (require '%s))
-               (binding [*ns* (or (find-ns '%s) *ns*)]
-                 (eval '%s)))"
-                ns ns ns string)
-      (format "(eval '%s)" string))))
-
-(defun my/clj-eval-with-ns (command)
-  "Evaluate COMMAND in the context of the current buffer namespace.
+(defun my/clj-eval-in-ns (command)
+  "Evaluate COMMAND in the current buffer namespace.
 If buffer doesn't have namespace defaults to current namespace."
-  (-> (my/clj-format-with-ns command)
-      lisp-eval-string))
+  (let ((sym (my/clj-get-current-namespace-symbol)))
+    (my/clj-eval `(in-ns ',sym))
+    (my/clj-eval command)))
 
 (defun my/clj-get-last-sexp ()
   "Get last sexp as STRING."
   (interactive)
   (buffer-substring (save-excursion (backward-sexp) (point)) (point)))
 
-(defun my/clj-eval-last-sexp-with-ns ()
-  "Evaluate previous sexp in the context of the current buffer namespace.
-If buffer doesn't have namespace defaults to current namespace."
+(defun my/clj-eval-last-sexp ()
+  "Evaluate previous sexp."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns (my/clj-get-last-sexp))
+   (my/clj-eval-in-ns (my/clj-get-last-sexp))
    (my/show-repl)))
 
 (defun my/->boolean (value)
@@ -154,7 +140,7 @@ Works up directories starting from the current files directory DIRNAME. Optional
           (or clj-lisp-prog "lein repl")))
    ((file-exists-p (concat dirname "deps.edn"))
     (list (concat dirname "deps.edn")
-          "clojure"))
+          (or clj-lisp-prog "clojure -M:dev")))
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
     (list (buffer-file-name) "clojure"))
@@ -198,11 +184,6 @@ Optionally CLJ-LISP-PROG can be specified"
       (comint-show-maximum-output)))
   (other-window 1))
 
-(defun my/kill-inferior-lisp-buffer ()
-  "Kill *inferior-lisp* buffer if running."
-  (when (get-buffer "*inferior-lisp*")
-    (kill-buffer "*inferior-lisp*")))
-
 (defun my/start-repl (clj-lisp-prog)
   "Kill any running REPL and start new REPL for CLJ-LISP-PROG."
   (my/kill-inferior-lisp-buffer)
@@ -227,24 +208,48 @@ Optionally CLJ-LISP-PROG can be specified"
   "Print doc for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns
-    `(clojure.repl/doc ,(my/clj-symbol-at-point)))
+   (my/clj-eval-in-ns
+    (cond ((eq major-mode 'clojure-mode)
+           `(clojure.repl/doc ,(my/clj-symbol-at-point)))
+          ((eq major-mode 'clojurescript-mode)
+           `(cljs.repl/doc ,(my/clj-symbol-at-point)))))
    (my/show-repl)))
 
 (defun my/clj-source-for-symbol ()
   "Print source for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns
-    `(clojure.repl/source ,(my/clj-symbol-at-point)))
+   (my/clj-eval-in-ns
+    (cond ((eq major-mode 'clojure-mode)
+           `(clojure.repl/source ,(my/clj-symbol-at-point)))
+          ((eq major-mode 'clojurescript-mode)
+           `(cljs.repl/source ,(my/clj-symbol-at-point)))))
    (my/show-repl)))
 
-(defun my/clj-javadoc-for-symbol ()
-  "Open javadoc in browser for symbol at point."
+(defun my/clj-apropos ()
+  "Given a regular expression return a list of all definitions in all currently loaded namespaces that match."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns
-    `(clojure.java.javadoc/javadoc ,(my/clj-symbol-at-point)))
+   (my/clj-eval-in-ns
+    (cond ((eq major-mode 'clojure-mode)
+           `(clojure.repl/apropos
+             (re-pattern ,(read-string "Apropos (regex):"))))
+          ((eq major-mode 'clojurescript-mode)
+           `(cljs.repl/apropos
+             (re-pattern ,(read-string "Apropos (regex):"))))))
+   (my/show-repl)))
+
+(defun my/clj-find-doc ()
+  "Given a regular expression print documentation for any vars whose documentation or name contain a match."
+  (interactive)
+  (my/when-repl-running
+   (my/clj-eval-in-ns
+    (cond ((eq major-mode 'clojure-mode)
+           `(clojure.repl/find-doc
+             (re-pattern ,(read-string "Find Doc (regex):"))))
+          ((eq major-mode 'clojurescript-mode)
+           `(cljs.repl/find-doc
+             (re-pattern ,(read-string "Find Doc (regex):"))))))
    (my/show-repl)))
 
 (defun my/clj-load-current-ns ()
@@ -323,22 +328,6 @@ Works from both namespace and test namespace"
         (delete-char -2)
       (insert "#_")
       (backward-char 2))))
-
-(defun my/clj-apropos ()
-  "Given a regular expression return a list of all definitions in all currently loaded namespaces that match."
-  (interactive)
-  (my/when-repl-running
-   (my/clj-eval `(clojure.repl/apropos
-                  (re-pattern ,(read-string "Apropos (regex):"))))
-   (my/show-repl)))
-
-(defun my/clj-find-doc ()
-  "Given a regular expression print documentation for any vars whose documentation or name contain a match."
-  (interactive)
-  (my/when-repl-running
-   (my/clj-eval `(clojure.repl/find-doc
-                  (re-pattern ,(read-string "Find Doc (regex):"))))
-   (my/show-repl)))
 
 (defun my/clj-find-implementation-or-test (file-name)
   "Find coresponding test or implementation file for FILE-NAME."
