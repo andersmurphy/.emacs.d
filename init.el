@@ -490,6 +490,10 @@
   ("C-M-s" . project-find-regexp))
 (use-package magit
   :config
+  (setq magit-diff-highlight-indentation nil)
+  (setq magit-diff-highlight-trailing nil)
+  (setq magit-diff-paint-whitespace nil)
+  (setq magit-revision-insert-related-refs nil)
   (setq magit-save-repository-buffers 'dontask)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
   (setq magit-diff-refine-hunk 'all)
