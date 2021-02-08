@@ -124,6 +124,7 @@
 (defun topiary/supported-mode-p ()
   "Return t if current mode is supported topiary."
   (member major-mode '(clojure-mode
+                       clojurescript-mode
                        emacs-lisp-mode
                        lisp-interaction-mode)))
 
