@@ -254,7 +254,7 @@ If the first item in the list is a member of the smart bracket SYMS list."
 (defun topiary/smart-bracket ()
   "Select appropriate smart-bracket for LISP dialect."
   (interactive)
-  (cond ((equal major-mode 'clojure-mode) (topiary/smart-bracket-clojure))
+  (cond ((member major-mode '(clojure-mode clojurescript-mode)) (topiary/smart-bracket-clojure))
         (t (topiary/smart-bracket-lisp))))
 
 (defun topiary/smart-transpose ()
