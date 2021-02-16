@@ -27,21 +27,10 @@
         (edn-print-string command))
       lisp-eval-string))
 
-(defun my/clj-get-current-namespace-symbol ()
-  "Get symbol for current buffer namespace."
-  (save-excursion
-    (goto-char (point-min))
-    (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
-      (when ns-idx
-        (goto-char ns-idx)
-        (my/clj-symbol-at-point)))))
-
 (defun my/clj-eval-in-ns (command)
   "Evaluate COMMAND in the current buffer namespace.
 If buffer doesn't have namespace defaults to current namespace."
-  (let ((sym (my/clj-get-current-namespace-symbol)))
-    (my/clj-eval `(in-ns ',sym))
-    (my/clj-eval command)))
+  (my/clj-eval command))
 
 (defun my/clj-get-last-sexp ()
   "Get last sexp as STRING."
@@ -52,7 +41,7 @@ If buffer doesn't have namespace defaults to current namespace."
   "Evaluate previous sexp."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-in-ns (my/clj-get-last-sexp))
+   (my/clj-eval (my/clj-get-last-sexp))
    (my/show-repl)))
 
 (defun my/->boolean (value)
@@ -73,37 +62,17 @@ If buffer doesn't have namespace defaults to current namespace."
 
 Sets default printer to pprint for more readable collections.
 
-Sets 'print-length' to prevent the REPL from becoming unresponsive when
-large amounts of data is printed by mistake.
-
-Truncates long strings to prevent the REPL from becoming unresponsive
-when long strings are printed by mistake. The 'string-length' atom
-determines the maximum length of the string that the REPL will
-print. This can be changed by evaluating:
-
-\(reset! user/string-length 100).
-
-Setting string-length to nil prints the whole string."
-  (my/clj-eval `(do
-                 (when-not ,(my/t->true-sym
-                             (my/inferior-lisp-program-heroku-p))
-                           (require (quote [pjstadig.humane-test-output]))
-                           (eval '(pjstadig.humane-test-output/activate!)))
-                 (set! *print-length* 30)
-                 (def string-length (atom 1000))
-                 (clojure.main/repl
-                  :print
-                  (fn [x]
-                      (newline)
-                      (->
-                       (clojure.walk/postwalk
-                        (fn [form] (if (and (string? form)
-                                            (not (nil? @string-length))
-                                            (> (count form) @string-length))
-                                       (str (subs form 0 @string-length) "...")
-                                     form))
-                        x)
-                       clojure.pprint/pprint))))))
+Sets 'print-length' to prevent the REPL from becoming
+unresponsive when large amounts of data is printed by mistake."
+  (when (eq major-mode 'clojure-mode)
+    (my/clj-eval
+     `(do
+          (when-not ,(my/t->true-sym
+                      (my/inferior-lisp-program-heroku-p))
+                    (require (quote [pjstadig.humane-test-output]))
+                    (eval '(pjstadig.humane-test-output/activate!)))
+          (set! *print-length* 30)
+        (clojure.main/repl :print clojure.pprint/pprint)))))
 
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
@@ -213,7 +182,7 @@ Optionally CLJ-LISP-PROG can be specified"
   "Print doc for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-in-ns
+   (my/clj-eval
     (cond ((eq major-mode 'clojure-mode)
            `(clojure.repl/doc ,(my/clj-symbol-at-point)))
           ((eq major-mode 'clojurescript-mode)
@@ -224,7 +193,7 @@ Optionally CLJ-LISP-PROG can be specified"
   "Print source for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-in-ns
+   (my/clj-eval
     (cond ((eq major-mode 'clojure-mode)
            `(clojure.repl/source ,(my/clj-symbol-at-point)))
           ((eq major-mode 'clojurescript-mode)
@@ -235,7 +204,7 @@ Optionally CLJ-LISP-PROG can be specified"
   "Given a regular expression return a list of all definitions in all currently loaded namespaces that match."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-in-ns
+   (my/clj-eval
     (cond ((eq major-mode 'clojure-mode)
            `(clojure.repl/apropos
              (re-pattern ,(read-string "Apropos (regex):"))))
@@ -248,7 +217,7 @@ Optionally CLJ-LISP-PROG can be specified"
   "Given a regular expression print documentation for any vars whose documentation or name contain a match."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-in-ns
+   (my/clj-eval
     (cond ((eq major-mode 'clojure-mode)
            `(clojure.repl/find-doc
              (re-pattern ,(read-string "Find Doc (regex):"))))
@@ -263,8 +232,16 @@ Optionally CLJ-LISP-PROG can be specified"
   (save-buffer)
   (my/when-repl-running
    (let ((sym (my/clj-get-current-namespace-symbol)))
-     (my/clj-eval `(do (require ',sym :reload)
-                       (in-ns ',sym))))
+     ;; temp user ns prevents namespaces getting dirty
+     ;; might not be needed
+     (my/clj-eval `(in-ns 'user))
+     (my/clj-eval `(do (when-not (find-ns ',sym)
+                                 ;; require can take :reload
+                                 ;; to force a reload of the
+                                 ;; on disk file
+                                 (require ',sym)
+                                 nil)))
+     (my/clj-eval `(in-ns ',sym)))
    (message "Namespace loaded.")))
 
 (defun my/clj-eval-buffer ()
