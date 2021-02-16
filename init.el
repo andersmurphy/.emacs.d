@@ -124,7 +124,9 @@
                     (split-window-right)
                     (other-window 1)))
   (global-set-key (kbd "C-x -") 'my/zoom-out)
+  (global-set-key (kbd "C-x C--") 'my/zoom-out)
   (global-set-key (kbd "C-x +") 'my/zoom-in)
+  (global-set-key (kbd "C-x C-+") 'my/zoom-in)
 
   ;; Minibuffer binding
   (define-key minibuffer-local-map (kbd "C-v") 'yank)
