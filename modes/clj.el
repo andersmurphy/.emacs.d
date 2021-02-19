@@ -62,12 +62,7 @@
   (if (and (booleanp value) value) 'true  value))
 
 (defun my/configure-clj-repl ()
-  "Configure global repl settings.
-
-Sets default printer to pprint for more readable collections.
-
-Sets 'print-length' to prevent the REPL from becoming
-unresponsive when large amounts of data is printed by mistake."
+  "Configure global repl settings."
   (my/clj-eval
    `(do
      (when-not ,(my/t->true-sym
@@ -78,13 +73,11 @@ unresponsive when large amounts of data is printed by mistake."
      (clojure.main/repl :print (fn [x] (newline) (clojure.pprint/pprint x))))))
 
 (defun my/configure-cljs-repl ()
-  "Configure global repl settings.
-
-Sets default printer to pprint for more readable collections.
-
-Sets 'print-length' to prevent the REPL from becoming
-unresponsive when large amounts of data is printed by mistake."
-  (my/clj-eval `(do(set! *print-length* 30))))
+  "Configure global repl settings."
+  (my/clj-eval
+   `(do
+     (set! *print-length* 30)
+     (cljs.repl/repl :print (fn [x] (newline) (cljs.pprint/pprint x))))))
 
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
@@ -155,19 +148,20 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
 (defun my/clj-open-repl (&optional clj-lisp-prog)
   "Open REPL in window that is not the current buffer. If there is only the current buffer split window right. Will try to find the project root and open the correct REPL type accordingly. Optionally CLJ-LISP-PROG can be specified."
   (interactive)
-  (when (one-window-p)
-    (split-window-right))
-  (display-buffer-use-some-window (current-buffer) nil)
-  (other-window 1)
-  (previous-buffer)
-  (if (string= (buffer-name) "*inferior-lisp*")
-      (previous-buffer)
-    (progn
-      (next-buffer)
-      (my/try-to-open-clj-project-file clj-lisp-prog)
-      (my/clj-inferior-lisp major-mode)
-      (comint-show-maximum-output)))
-  (other-window 1))
+  (let ((mode  major-mode))
+    (when (one-window-p)
+      (split-window-right))
+    (display-buffer-use-some-window (current-buffer) nil)
+    (other-window 1)
+    (previous-buffer)
+    (if (string= (buffer-name) "*inferior-lisp*")
+        (previous-buffer)
+      (progn
+        (next-buffer)
+        (my/try-to-open-clj-project-file clj-lisp-prog)
+        (my/clj-inferior-lisp mode)
+        (comint-show-maximum-output)))
+    (other-window 1)))
 
 (defun my/kill-inferior-lisp-buffer ()
   "Kill *inferior-lisp* buffer if running."
