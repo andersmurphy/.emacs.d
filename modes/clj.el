@@ -27,10 +27,14 @@
         (edn-print-string command))
       lisp-eval-string))
 
-(defun my/clj-eval-in-ns (command)
-  "Evaluate COMMAND in the current buffer namespace.
-If buffer doesn't have namespace defaults to current namespace."
-  (my/clj-eval command))
+(defun my/clj-get-current-namespace-symbol ()
+  "Get symbol for current buffer namespace."
+  (save-excursion
+    (goto-char (point-min))
+    (let ((ns-idx (re-search-forward clojure-namespace-name-regex nil t)))
+      (when ns-idx
+        (goto-char ns-idx)
+        (my/clj-symbol-at-point)))))
 
 (defun my/clj-get-last-sexp ()
   "Get last sexp as STRING."
