@@ -61,22 +61,30 @@
   "Return symbol true if VALUE is t."
   (if (and (booleanp value) value) 'true  value))
 
-(defun my/configure-repl ()
+(defun my/configure-clj-repl ()
   "Configure global repl settings.
 
 Sets default printer to pprint for more readable collections.
 
 Sets 'print-length' to prevent the REPL from becoming
 unresponsive when large amounts of data is printed by mistake."
-  (when (eq major-mode 'clojure-mode)
-    (my/clj-eval
-     `(do
-          (when-not ,(my/t->true-sym
-                      (my/inferior-lisp-program-heroku-p))
-                    (require (quote [pjstadig.humane-test-output]))
-                    (eval '(pjstadig.humane-test-output/activate!)))
-          (set! *print-length* 30)
-        (clojure.main/repl :print clojure.pprint/pprint)))))
+  (my/clj-eval
+   `(do
+     (when-not ,(my/t->true-sym
+                 (my/inferior-lisp-program-heroku-p))
+               (require (quote [pjstadig.humane-test-output]))
+               (eval '(pjstadig.humane-test-output/activate!)))
+     (set! *print-length* 30)
+     (clojure.main/repl :print (fn [x] (newline) (clojure.pprint/pprint x))))))
+
+(defun my/configure-cljs-repl ()
+  "Configure global repl settings.
+
+Sets default printer to pprint for more readable collections.
+
+Sets 'print-length' to prevent the REPL from becoming
+unresponsive when large amounts of data is printed by mistake."
+  (my/clj-eval `(do(set! *print-length* 30))))
 
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
@@ -132,12 +140,16 @@ Optionally CLJ-LISP-PROG can be specified"
       (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
-(defun my/clj-inferior-lisp ()
-  "Run REPL. If REPL is not running do first prompt behaviour after launch."
+(defun my/clj-inferior-lisp (&optional mode)
+  "Run REPL. If REPL is not running do first prompt behaviour after launch.
+MODE determines dispatch on dialect eg: clojure/clojurescript."
   (interactive)
   (if (get-buffer "*inferior-lisp*")
       (inferior-lisp inferior-lisp-program)
-    (progn (my/do-on-first-prompt 'my/configure-repl)
+    (progn (my/do-on-first-prompt
+            (lambda () (cond ((eq mode 'clojurescript-mode)
+                              (my/configure-cljs-repl))
+                             (t (my/configure-clj-repl)))))
            (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
@@ -153,7 +165,7 @@ Optionally CLJ-LISP-PROG can be specified"
     (progn
       (next-buffer)
       (my/try-to-open-clj-project-file clj-lisp-prog)
-      (my/clj-inferior-lisp)
+      (my/clj-inferior-lisp major-mode)
       (comint-show-maximum-output)))
   (other-window 1))
 
