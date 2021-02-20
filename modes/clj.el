@@ -73,11 +73,7 @@
      (clojure.main/repl :print (fn [x] (newline) (clojure.pprint/pprint x))))))
 
 (defun my/configure-cljs-repl ()
-  "Configure global repl settings."
-  (my/clj-eval
-   `(do
-     (set! *print-length* 30)
-     (cljs.repl/repl :print (fn [x] (newline) (cljs.pprint/pprint x))))))
+  "Configure global repl settings.")
 
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
