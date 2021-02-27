@@ -124,6 +124,7 @@
 (defun topiary/supported-mode-p ()
   "Return t if current mode is supported topiary."
   (member major-mode '(clojure-mode
+                       clojurec-mode
                        clojurescript-mode
                        emacs-lisp-mode
                        lisp-interaction-mode)))
@@ -254,7 +255,7 @@ If the first item in the list is a member of the smart bracket SYMS list."
 (defun topiary/smart-bracket ()
   "Select appropriate smart-bracket for LISP dialect."
   (interactive)
-  (cond ((member major-mode '(clojure-mode clojurescript-mode)) (topiary/smart-bracket-clojure))
+  (cond ((member major-mode '(clojure-mode clojurescript-mode clojurec-mode)) (topiary/smart-bracket-clojure))
         (t (topiary/smart-bracket-lisp))))
 
 (defun topiary/smart-transpose ()
