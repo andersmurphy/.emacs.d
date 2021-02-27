@@ -189,7 +189,7 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
   (interactive)
   (my/when-repl-running
    (my/clj-eval
-    (cond ((eq major-mode 'clojure-mode)
+    (cond ((member major-mode '(clojure-mode clojurec-mode))
            `(clojure.repl/doc ,(my/clj-symbol-at-point)))
           ((eq major-mode 'clojurescript-mode)
            `(cljs.repl/doc ,(my/clj-symbol-at-point)))))
@@ -200,7 +200,7 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
   (interactive)
   (my/when-repl-running
    (my/clj-eval
-    (cond ((eq major-mode 'clojure-mode)
+    (cond ((member major-mode '(clojure-mode clojurec-mode))
            `(clojure.repl/source ,(my/clj-symbol-at-point)))
           ((eq major-mode 'clojurescript-mode)
            `(cljs.repl/source ,(my/clj-symbol-at-point)))))
@@ -211,7 +211,7 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
   (interactive)
   (my/when-repl-running
    (my/clj-eval
-    (cond ((eq major-mode 'clojure-mode)
+    (cond ((member major-mode '(clojure-mode clojurec-mode))
            `(clojure.repl/apropos
              (re-pattern ,(read-string "Apropos (regex):"))))
           ((eq major-mode 'clojurescript-mode)
@@ -224,7 +224,7 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
   (interactive)
   (my/when-repl-running
    (my/clj-eval
-    (cond ((eq major-mode 'clojure-mode)
+    (cond ((member major-mode '(clojure-mode clojurec-mode))
            `(clojure.repl/find-doc
              (re-pattern ,(read-string "Find Doc (regex):"))))
           ((eq major-mode 'clojurescript-mode)
