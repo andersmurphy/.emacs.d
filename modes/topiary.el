@@ -535,16 +535,13 @@ Examples:
   (interactive)
   (save-mark-and-excursion
     (condition-case nil
-        (let ((bounds (if (or (member (char-after) (string-to-list "({[\""))
-                              (member (char-before) (string-to-list ")}]\"")))
-                          (topiary/smart-kill-bounds)
-                        (up-list)
-                        (topiary/smart-kill-bounds))))
+        (let ((bounds (topiary/smart-kill-bounds)))
           (goto-char (car bounds))
           (if (equal (char-after) ?\#)
-              (delete-char 2)
-            (delete-char 1))
-          (goto-char (- (cdr bounds) 1))
+              (progn (delete-char 2)
+                     (goto-char (- (cdr bounds) 2)))
+            (progn (delete-char 1)
+                   (goto-char (- (cdr bounds) 1))))
           (delete-char -1))
       (error (message "Can't unwrap top level")))))
 
