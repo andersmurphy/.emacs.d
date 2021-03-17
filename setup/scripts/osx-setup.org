@@ -143,6 +143,14 @@ brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk11
 #+END_SRC
 
+* Chormium
+
+Install Chromium
+
+#+BEGIN_SRC sh
+brew install --cask chromium
+#+END_SRC
+
 * Clojure
 
 Language.

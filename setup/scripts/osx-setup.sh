@@ -45,6 +45,8 @@ brew install multimarkdown
 brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk11
 
+brew install --cask chromium
+
 brew install clojure
 rm ~/.clojure/deps.edn
 ln -s ~/.emacs.d/setup/dotfiles/.clojure/deps.edn ~/.clojure/
@@ -60,3 +62,5 @@ brew install clojure-lsp
 brew install node
 
 npm i -g typescript-language-server; npm i -g typescript
+
+npm install -g vscode-html-languageserver-bin
