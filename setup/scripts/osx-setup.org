@@ -149,6 +149,7 @@ Install Chromium
 
 #+BEGIN_SRC sh
 brew install --cask chromium
+open -a "Chromium" --args --make-default-browser
 #+END_SRC
 
 * Clojure
