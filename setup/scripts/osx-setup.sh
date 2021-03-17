@@ -62,6 +62,8 @@ brew install clojure-lsp
 
 brew install node
 
+npm install -g yarn
+
 npm i -g typescript-language-server; npm i -g typescript
 
 npm install -g vscode-html-languageserver-bin

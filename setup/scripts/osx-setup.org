@@ -190,11 +190,18 @@ Language.
 brew install node
 #+END_SRC
 
+Yarn.
+
+#+BEGIN_SRC sh
+npm install -g yarn
+#+END_SRC
+
 LSP.
 
 #+BEGIN_SRC sh
 npm i -g typescript-language-server; npm i -g typescript
 #+END_SRC
+
 * Html
 
 LSP.
