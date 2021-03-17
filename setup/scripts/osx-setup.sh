@@ -46,6 +46,7 @@ brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk11
 
 brew install --cask chromium
+open -a "Chromium" --args --make-default-browser
 
 brew install clojure
 rm ~/.clojure/deps.edn
