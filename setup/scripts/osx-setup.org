@@ -103,7 +103,13 @@ git config --global diff.algorithm histogram
 #+BEGIN_SRC sh
 brew tap daviderestivo/emacs-head
 brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
-ln -s /usr/local/opt/emacs-head/Emacs.app /Applications
+#+END_SRC
+
+Allow emacs to be launched from spotlight (the version directory tends to change so the script bellow might need to be updated).
+
+#+BEGIN_SRC sh
+rm /Applications/Emacs.app
+ln -s /usr/local/Cellar/emacs-head@28/28.0.50_1/Emacs.app /Applications
 #+END_SRC
 
 Clone private sync repo.

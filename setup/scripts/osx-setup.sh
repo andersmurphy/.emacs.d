@@ -32,7 +32,9 @@ git config --global diff.algorithm histogram
 
 brew tap daviderestivo/emacs-head
 brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
-ln -s /usr/local/opt/emacs-head/Emacs.app /Applications
+
+rm /Applications/Emacs.app
+ln -s /usr/local/Cellar/emacs-head@28/28.0.50_1/Emacs.app /Applications
 
 brew install aspell
 
