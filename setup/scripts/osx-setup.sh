@@ -1,5 +1,5 @@
 defaults write com.apple.finder AppleShowAllFiles -boolean true ; killall Finder
-
+defaults write -g ApplePressAndHoldEnabled -bool true
 defaults write com.apple.dock autohide -bool true
 
 xcode-select --install
@@ -33,9 +33,6 @@ git config --global diff.algorithm histogram
 brew tap daviderestivo/emacs-head
 brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
 
-rm /Applications/Emacs.app
-ln -s /usr/local/Cellar/emacs-head@28/28.0.50_1/Emacs.app /Applications
-
 brew install aspell
 
 brew install mpv
@@ -60,7 +57,7 @@ ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 
 brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
 
-brew install clojure-lsp
+brew install clojure-lsp/brew/clojure-lsp-native
 
 brew install node
 
