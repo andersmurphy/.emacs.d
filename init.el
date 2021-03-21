@@ -725,7 +725,7 @@
   :hook
   (emacs-lisp-mode . (lambda () (flymake-mode t))))
 
-;;; COMPLETION & TEMPLATES
+;;; COMPLETION
 (use-package company
   :init
   (setq company-idle-delay 0.2)
@@ -736,26 +736,6 @@
               ("C-p" . company-select-previous)
               ("TAB" . company-complete-selection)
               ("C-w" . topiary/smart-kill)))
-(use-package yasnippet
-  :init
-  (yas-global-mode 1)
-  :config
-  (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets")))
-(use-package autoinsert
-  :init
-  (setq auto-insert-query nil
-        auto-insert-alist nil
-        auto-insert-directory (locate-user-emacs-file "templates"))
-  :config
-  (auto-insert-mode 1)
-  (defun my/autoinsert-yas-expand ()
-    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
-  (define-auto-insert "\\.clj$" ["default_clj.clj" my/autoinsert-yas-expand])
-  (define-auto-insert "\\test.clj$" ["default_test_clj.clj" my/autoinsert-yas-expand])
-  (define-auto-insert "\\.cljs$" ["default_cljs.cljs" my/autoinsert-yas-expand])
-  (define-auto-insert "project.clj$" ["default_project.clj" my/autoinsert-yas-expand])
-  (define-auto-insert "deps.edn$" ["default_deps.edn" my/autoinsert-yas-expand])
-  (define-auto-insert ".gitignore" ["default.gitignore" my/autoinsert-yas-expand]))
 
 ;;; PROGRAMMING
 (progn ;; Defaults
