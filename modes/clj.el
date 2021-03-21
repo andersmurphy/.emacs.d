@@ -358,18 +358,6 @@ Works from both namespace and test namespace"
             ;; Use clojure syntax table
             (set-syntax-table clojure-mode-syntax-table)))
 
-(defun my/require-test-src-file ()
-  "Used for generating test templates."
-  (concat "["
-          (->> (clojure-expected-ns)
-            (replace-regexp-in-string "-test" ""))
-          " :as "
-          (->> (buffer-name)
-            file-name-sans-extension
-            (replace-regexp-in-string "_" "-")
-            (replace-regexp-in-string "-test" ""))
-          "]"))
-
 (defun my/try-to-find-git-root (dirname)
   "Will try and find the nearest root for project. Works up directories starting from the current files directory DIRNAME."
   (cond
@@ -406,12 +394,6 @@ Works from both namespace and test namespace"
     (when (get-buffer buffer-name)
       (kill-buffer buffer-name))
     (async-shell-command "lein run" (generate-new-buffer buffer-name))))
-
-(defun my/get-parent-directory-name (filename)
-  "Return parent directory for FILENAME."
-  (-> (file-name-directory filename)
-    directory-file-name
-    file-name-nondirectory))
 
 (provide 'clj)
 ;;; clj.el ends here
