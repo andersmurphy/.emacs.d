@@ -58,6 +58,9 @@ ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
 
 brew install clojure-lsp/brew/clojure-lsp-native
+rm -r ~/.lsp
+mkdir ~/.lsp
+ln -s ~/.emacs.d/setup/dotfiles/.lsp/config.edn ~/.lsp/
 
 brew install node
 

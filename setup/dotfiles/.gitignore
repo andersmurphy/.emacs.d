@@ -7,5 +7,6 @@
 **/.nrepl-port
 **.cpcache
 .clj-kondo/
-.lsp/
+.lsp/*
+!.lsp/config.edn
 projects
