@@ -362,51 +362,13 @@ Works from both namespace and test namespace"
   "Used for generating test templates."
   (concat "["
           (->> (clojure-expected-ns)
-               (replace-regexp-in-string "-test" ""))
+            (replace-regexp-in-string "-test" ""))
           " :as "
           (->> (buffer-name)
-               file-name-sans-extension
-               (replace-regexp-in-string "_" "-")
-               (replace-regexp-in-string "-test" ""))
+            file-name-sans-extension
+            (replace-regexp-in-string "_" "-")
+            (replace-regexp-in-string "-test" ""))
           "]"))
-
-(defun my/create-new-deps-project ()
-  "Create a new deps.edn project."
-  (interactive)
-  (let* ((project-name-path (read-directory-name "Directory:"))
-         (namespace-name (->> (split-string project-name-path "/")
-                              reverse
-                              car
-                              (replace-regexp-in-string "-" "_"))))
-    (make-directory project-name-path)
-    (find-file (concat project-name-path "/deps.edn"))
-    (save-buffer)
-    (find-file (concat project-name-path "/.gitignore"))
-    (save-buffer)
-    (make-directory (concat project-name-path "/src"))
-    (make-directory (concat project-name-path "/src/" namespace-name))
-    (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
-    (save-buffer)
-    (find-file (concat project-name-path "/deps.edn"))))
-
-(defun my/create-new-lein-project ()
-  "Create a new lein project."
-  (interactive)
-  (let* ((project-name-path (read-directory-name "Directory:"))
-         (namespace-name (->> (split-string project-name-path "/")
-                              reverse
-                              car
-                              (replace-regexp-in-string "-" "_"))))
-    (make-directory project-name-path)
-    (find-file (concat project-name-path "/project.clj"))
-    (save-buffer)
-    (find-file (concat project-name-path "/.gitignore"))
-    (save-buffer)
-    (make-directory (concat project-name-path "/src"))
-    (make-directory (concat project-name-path "/src/" namespace-name))
-    (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
-    (save-buffer)
-    (find-file (concat project-name-path "/project.clj"))))
 
 (defun my/try-to-find-git-root (dirname)
   "Will try and find the nearest root for project. Works up directories starting from the current files directory DIRNAME."
@@ -415,8 +377,8 @@ Works from both namespace and test namespace"
         (string= "/" dirname))
     (directory-file-name dirname))
    (t (-> (directory-file-name dirname)
-          file-name-directory
-          my/try-to-find-git-root))))
+        file-name-directory
+        my/try-to-find-git-root))))
 
 (defun my/rn-build-project ()
   "Run a react-native project."
@@ -448,64 +410,8 @@ Works from both namespace and test namespace"
 (defun my/get-parent-directory-name (filename)
   "Return parent directory for FILENAME."
   (-> (file-name-directory filename)
-      directory-file-name
-      file-name-nondirectory))
-
-(defun my/convert-single-quote-strings-to-double-quote-strings (string-data)
-  "Convert single quote strings into double quote strings in STRING-DATA."
-  (replace-regexp-in-string "\\([\"']\\)\\(\\(?:\\\\\\1\\|.\\)*?\\)\\1"
-                            (lambda (s)
-                              (if (string-prefix-p "\"" s)
-                                  s
-                                (->> (replace-regexp-in-string "\"" "\\\"" s nil t)
-                                     (replace-regexp-in-string "\\\\'" "ø&μ@#$%_17")
-                                     (replace-regexp-in-string "'" "\"")
-                                     (replace-regexp-in-string "ø&μ@#$%_17" "'"))))
-                            string-data nil t))
-
-(defun my/json->edn ()
-  "Convert json to edn."
-  (interactive)
-  (topiary/smart-kill)
-  (let ((s (car kill-ring)))
-    (set-text-properties 0 (length s) nil s)
-    (->> s
-         ;; Remove spaces after leading curly bracket
-         (replace-regexp-in-string "\{[\s\n]+"
-                                   "{")
-         ;; Remove spaces before trailing curly bracket
-         (replace-regexp-in-string "[\s\n]+}"
-                                   "}")
-         ;; Remove spaces after leading square bracket
-         (replace-regexp-in-string "\\[[\s\n]+"
-                                   "[")
-         ;; Remove spaces before trailing square bracket
-         (replace-regexp-in-string "[\s\n]+]"
-                                   "]")
-         ;; Remove all commas outside of strings
-         (replace-regexp-in-string "\\(\"[^\"]*\"\\|\\)[\s\n]*,"
-                                   "\\1")
-         ;; Convert string single quotes into string double quotes
-         my/convert-single-quote-strings-to-double-quote-strings
-         ;; Convert null to nil
-         (replace-regexp-in-string  "\\(:.*\\)\\(?:null\\)\\([]}\n\s]\\)"
-                                    "\\1nil\\2")
-         ;; Convert keys and double quote string keys to edn keys
-         (replace-regexp-in-string  "\\(\"\\|\\)\\([^\"':\s\n{]+\\)\\1:"
-                                    ":\\2")
-         insert)))
-
-(defun my/list->list-strings ()
-  "Convert list of words to list of strings."
-  (interactive)
-  (my/smart-kill)
-  (let ((s (car kill-ring)))
-    (set-text-properties 0 (length s) nil s)
-    (->> s
-         ;; surround all words with double quotes
-         (replace-regexp-in-string "\\([^]\[\s\n()]+\\)"
-                                   "\"\\1\"")
-         insert)))
+    directory-file-name
+    file-name-nondirectory))
 
 (provide 'clj)
 ;;; clj.el ends here
