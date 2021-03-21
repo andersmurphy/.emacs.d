@@ -1,0 +1,5 @@
+{:auto-add-ns-to-new-files? true
+ :project-specs [{:project-path "project.clj"
+                  :classpath-cmd ["lein" "classpath"]}
+                 {:project-path "deps.edn"
+                  :classpath-cmd ["clojure" "-Spath"]}]}

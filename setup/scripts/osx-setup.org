@@ -1,11 +1,5 @@
 #+STARTUP: overview
 #+PROPERTY: header-args :tangle osx-setup.sh
-* Show hard drive in finder
-1. While in the Finder, go to the "Finder" menu and select "Preferences".
-2. From the "General" tab, place a check next to "Hard disks"
-   -- this will make your hard drive visible on the Desktop.
-3. From the "Sidebar" tab under "Devices" again place a check next to "Hard disks"
-   -- this will put your hard drive in the sidebar of any finder window, and should also add it to "Open", "Save", and "Save As..." dialog sheets (as well as others)
 * OSX
 
 #+BEGIN_SRC sh
@@ -190,6 +184,9 @@ LSP.
 
 #+BEGIN_SRC sh
 brew install clojure-lsp/brew/clojure-lsp-native
+rm -r ~/.lsp
+mkdir ~/.lsp
+ln -s ~/.emacs.d/setup/dotfiles/.lsp/config.edn ~/.lsp/
 #+END_SRC
 
 * Javascript
@@ -219,7 +216,16 @@ LSP.
 #+BEGIN_SRC sh
 npm install -g vscode-html-languageserver-bin
 #+END_SRC
-* OSX Clear fonts on retina screens
+
+* OSX misc
+** Clear fonts on retina screens
 - First, turn OFF “Font smoothing” in System Preferences → General
 - Go to System Preferences → Displays, uncheck Default and select scaled 2× resolution
 https://tonsky.me/blog/monitors/
+
+** Show hard drive in finder
+1. While in the Finder, go to the "Finder" menu and select "Preferences".
+2. From the "General" tab, place a check next to "Hard disks"
+   -- this will make your hard drive visible on the Desktop.
+3. From the "Sidebar" tab under "Devices" again place a check next to "Hard disks"
+   -- this will put your hard drive in the sidebar of any finder window, and should also add it to "Open", "Save", and "Save As..." dialog sheets (as well as others)
