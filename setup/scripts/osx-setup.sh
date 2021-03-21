@@ -62,6 +62,10 @@ rm -r ~/.lsp
 mkdir ~/.lsp
 ln -s ~/.emacs.d/setup/dotfiles/.lsp/config.edn ~/.lsp/
 
+rm -r ~/.clj-kondo
+mkdir ~/.clj-kondo
+ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
+
 brew install node
 
 npm install -g yarn

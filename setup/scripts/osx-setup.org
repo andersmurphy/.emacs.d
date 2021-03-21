@@ -189,6 +189,14 @@ mkdir ~/.lsp
 ln -s ~/.emacs.d/setup/dotfiles/.lsp/config.edn ~/.lsp/
 #+END_SRC
 
+clj-kondo config (used by LSP).
+
+#+BEGIN_SRC sh
+rm -r ~/.clj-kondo
+mkdir ~/.clj-kondo
+ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
+#+END_SRC
+
 * Javascript
 
 Language.
