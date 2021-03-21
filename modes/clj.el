@@ -352,9 +352,6 @@ Works from both namespace and test namespace"
 
 (add-hook 'inferior-lisp-mode-hook
           (lambda()
-            ;; Add font lock to clojure keywords in REPL
-            (font-lock-add-keywords 'inferior-lisp-mode
-                                    clojure-font-lock-keywords 'end)
             ;; Use clojure syntax table
             (set-syntax-table clojure-mode-syntax-table)))
 
