@@ -36,6 +36,15 @@ Disable analytics.
 
 #+BEGIN_SRC sh
 brew analytics off
+brew tap homebrew/cask
+#+END_SRC
+
+* Fonts
+
+#+BEGIN_SRC sh
+brew install svn
+brew tap homebrew/cask-fonts
+brew install font-dm-mono
 #+END_SRC
 
 * Git
@@ -144,7 +153,7 @@ Installs open jdk.
 
 #+BEGIN_SRC sh
 brew tap AdoptOpenJDK/openjdk
-brew cask install adoptopenjdk11
+brew install adoptopenjdk11
 #+END_SRC
 
 * Chormium
@@ -152,7 +161,7 @@ brew cask install adoptopenjdk11
 Install Chromium
 
 #+BEGIN_SRC sh
-brew install --cask chromium
+brew install chromium
 open -a "Chromium" --args --make-default-browser
 #+END_SRC
 

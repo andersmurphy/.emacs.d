@@ -9,6 +9,11 @@ xcode-select --install
 brew update
 
 brew analytics off
+brew tap homebrew/cask
+
+brew install svn
+brew tap homebrew/cask-fonts
+brew install font-dm-mono
 
 brew install git
 
@@ -42,9 +47,9 @@ ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 brew install multimarkdown
 
 brew tap AdoptOpenJDK/openjdk
-brew cask install adoptopenjdk11
+brew install adoptopenjdk11
 
-brew install --cask chromium
+brew install chromium
 open -a "Chromium" --args --make-default-browser
 
 brew install clojure
