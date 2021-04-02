@@ -177,6 +177,16 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
   (interactive)
   (my/start-repl "heroku run lein repl --size=standard-2x"))
 
+(defun my/try-to-find-git-root (dirname)
+  "Will try and find the nearest root for project. Works up directories starting from the current files directory DIRNAME."
+  (cond
+   ((or (my/dir-contains-git-root-p dirname)
+        (string= "/" dirname))
+    (directory-file-name dirname))
+   (t (-> (directory-file-name dirname)
+        file-name-directory
+        my/try-to-find-git-root))))
+
 (defun my/heroku-rollback ()
   "Heroku rollback."
   (interactive)
@@ -358,33 +368,21 @@ Works from both namespace and test namespace"
             ;; Use clojure syntax table
             (set-syntax-table clojure-mode-syntax-table)))
 
-(defun my/try-to-find-git-root (dirname)
-  "Will try and find the nearest root for project. Works up directories starting from the current files directory DIRNAME."
-  (cond
-   ((or (my/dir-contains-git-root-p dirname)
-        (string= "/" dirname))
-    (directory-file-name dirname))
-   (t (-> (directory-file-name dirname)
-        file-name-directory
-        my/try-to-find-git-root))))
-
 (defun my/rn-build-project ()
   "Run a react-native project."
   (interactive)
   (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
         (buffer-name "*React Bundler*"))
-    (when (get-buffer buffer-name)
-      (kill-buffer buffer-name))
-    (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn cache clean;yarn install;yarn start --reset-cache" (generate-new-buffer buffer-name))))
+    (when (or (not (get-buffer buffer-name)) (kill-buffer buffer-name))
+      (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn cache clean;yarn install;yarn start --reset-cache" (generate-new-buffer buffer-name)))))
 
 (defun my/rn-start-ios-simulator ()
   "Run a react-native ios simulator."
   (interactive)
   (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
         (buffer-name "*React Native iOS*"))
-    (when (get-buffer buffer-name)
-      (kill-buffer buffer-name))
-    (async-shell-command "react-native run-ios --simulator=\"iPhone 11 Pro Max\"" (generate-new-buffer buffer-name))))
+    (when (or (not (get-buffer buffer-name)) (kill-buffer buffer-name))
+      (async-shell-command "react-native run-ios" (generate-new-buffer buffer-name)))))
 
 (defun my/lein-run ()
   "Lein run."
