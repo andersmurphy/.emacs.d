@@ -368,22 +368,6 @@ Works from both namespace and test namespace"
             ;; Use clojure syntax table
             (set-syntax-table clojure-mode-syntax-table)))
 
-(defun my/rn-build-project ()
-  "Run a react-native project."
-  (interactive)
-  (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
-        (buffer-name "*React Bundler*"))
-    (when (or (not (get-buffer buffer-name)) (kill-buffer buffer-name))
-      (async-shell-command "rm -rf node_modules;rm -rf ios/build;rm -rf ios/Pods;pod repo update;yarn cache clean;yarn install;yarn start --reset-cache" (generate-new-buffer buffer-name)))))
-
-(defun my/rn-start-ios-simulator ()
-  "Run a react-native ios simulator."
-  (interactive)
-  (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
-        (buffer-name "*React Native iOS*"))
-    (when (or (not (get-buffer buffer-name)) (kill-buffer buffer-name))
-      (async-shell-command "react-native run-ios" (generate-new-buffer buffer-name)))))
-
 (defun my/lein-run ()
   "Lein run."
   (interactive)
