@@ -817,14 +817,6 @@
   :config
   (setq indent-tabs-mode nil)
   (setq js-indent-level 2))
-;; iOS Simulator
-(defvar my/rn-ios-uninstall-app-last-value nil)
-(defun my/rn-ios-uninstall-app (app-bundle-identifier)
-  "Uninstall app from simulator with APP-BUNDLE-IDENTIFIER."
-  (interactive (list (read-string "App bundle identifier: " nil
-                                  (list my/rn-ios-uninstall-app-last-value))))
-  (setq my/rn-ios-uninstall-app-last-value app-bundle-identifier)
-  (shell-command (concat "xcrun simctl uninstall booted " app-bundle-identifier)))
 
 ;;; MEDIA
 (use-package nov
