@@ -70,8 +70,18 @@ Uses HSP: http://alienryderflex.com/hsp.html"
         (blue    . "#7daea3")
         (purple  . "#d3869b")))
 
+(defvar my/light-theme)
+(setq my/light-theme
+      '((fg      . "#32302f")
+        (bg      . "#f5dfbc")
+        (red     . "#ea6962")
+        (green   . "#89b482")
+        (yellow  . "#d8a657")
+        (blue    . "#7daea3")
+        (purple  . "#d3869b")))
+
 (defvar my/active-theme)
-(setq my/active-theme my/dark-theme)
+(setq my/active-theme my/light-theme)
 
 (let* ((fg      (assoc-default  'fg     my/active-theme))
        (bg      (assoc-default  'bg     my/active-theme))
