@@ -384,8 +384,22 @@
     (dolist (i custom-enabled-themes)
       (disable-theme i)))
 
+  (defvar my/active-theme)
+  (setq my/active-theme my/dark-theme)
+
+  (defun my/toggle-dark-light-theme ()
+    "Toggle theme between dark and light."
+    (interactive)
+    (setq my/active-theme
+          (if (eq my/active-theme my/dark-theme)
+              my/light-theme
+            my/dark-theme))
+    (my/set-theme-faces my/active-theme)
+    (enable-theme 'my))
+
   (my/disable-all-themes)
-  (load-theme 'my t))
+  (my/set-theme-faces my/active-theme)
+  (enable-theme 'my))
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
   (defvar my/mode-line-selected-window (frame-selected-window))
