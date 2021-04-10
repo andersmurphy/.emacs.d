@@ -133,9 +133,9 @@
   (define-key minibuffer-local-map (kbd "C-w") 'topiary/smart-kill)
   (define-key minibuffer-local-map (kbd "C-o") 'my/other-window))
 (defun my/keyboard-firmware-tool ()
-  "Open keyboard firmware configuration tool in browser."
+  "Open keyboard firmware configuration tool."
   (interactive)
-  (browse-url "https://configure.ergodox-ez.com/planck-ez/layouts/ABGGZ/latest/0"))
+  (shell-command "open -a chrysalis"))
 (use-package disable-mouse
   :config
   (global-disable-mouse-mode))
