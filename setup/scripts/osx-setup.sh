@@ -11,6 +11,8 @@ brew update
 brew analytics off
 brew tap homebrew/cask
 
+brew install --cask chrysalis
+
 brew install svn
 brew tap homebrew/cask-fonts
 brew install font-dm-mono

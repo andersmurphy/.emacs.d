@@ -15,7 +15,6 @@ Install command line tools.
 #+BEGIN_SRC sh
 xcode-select --install
 #+END_SRC
-
 * Homebrew
 
 To make homebrew work properly you need to fix ruby script permissions.
@@ -39,6 +38,11 @@ brew analytics off
 brew tap homebrew/cask
 #+END_SRC
 
+* Keyboard
+
+#+BEGIN_SRC sh
+brew install --cask chrysalis
+#+END_SRC
 * Fonts
 
 #+BEGIN_SRC sh
