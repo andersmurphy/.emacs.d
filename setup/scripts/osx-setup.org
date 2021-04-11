@@ -160,15 +160,6 @@ brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk11
 #+END_SRC
 
-* Chormium
-
-Install Chromium
-
-#+BEGIN_SRC sh
-brew install chromium
-open -a "Chromium" --args --make-default-browser
-#+END_SRC
-
 * Clojure
 
 Language.
@@ -236,6 +227,22 @@ LSP.
 
 #+BEGIN_SRC sh
 npm install -g vscode-html-languageserver-bin
+#+END_SRC
+
+* Other apps
+** Chormium
+
+Install Chromium
+
+#+BEGIN_SRC sh
+brew install chromium
+open -a "Chromium" --args --make-default-browser
+#+END_SRC
+
+** Dropbox
+
+#+BEGIN_SRC sh
+brew install --cask dropbox
 #+END_SRC
 
 * OSX misc
