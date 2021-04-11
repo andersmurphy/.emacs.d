@@ -867,7 +867,8 @@
   (setq shr-discard-aria-hidden t))
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
-(load "~/.emacs.d/emacs-sync/project-specific-commands.el")
+(when (file-directory-p "~/.emacs.d/emacs-sync")
+  (load "~/.emacs.d/emacs-sync/project-specific-commands.el"))
 
 ;;; Set Flymake load path for elisp
 ;; Needs to be done at the end of this file after

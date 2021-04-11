@@ -123,12 +123,6 @@ brew tap daviderestivo/emacs-head
 brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
 #+END_SRC
 
-Clone private sync repo.
-
-#+BEGIN_SRC
-git clone https://github.com/andersmurphy/emacs-sync.git .emacs.d/emacs-sync
-#+END_SRC
-
 ** Emacs External Dependencies
 
 Spellcheck depends on aspell.
