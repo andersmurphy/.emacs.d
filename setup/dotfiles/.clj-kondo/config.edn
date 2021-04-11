@@ -1,1 +1,8 @@
-{:lint-as {com.fulcrologic.fulcro.components/defsc clojure.core/defn}}
+{:lint-as {com.fulcrologic.fulcro.components/defsc      clojure.core/defn
+           com.fulcrologic.fulcro.mutations/defmutation clojure.core/defn}
+ :linters {:unresolved-symbol
+           {:exclude
+            [(com.fulcrologic.fulcro.mutations/defmutation)]}}}
+;; https://github.com/clj-kondo/clj-kondo/blob/master/doc/hooks.md
+;; :hooks {:analyze-call {com.fulcrologic.fulcro.mutations/defmutation hooks.fulcro/defmutation}}
+}
