@@ -172,11 +172,6 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
   (my/kill-inferior-lisp-buffer)
   (my/clj-open-repl clj-lisp-prog))
 
-(defun my/heroku-repl ()
-  "Start heroku REPL."
-  (interactive)
-  (my/start-repl "heroku run lein repl --size=standard-2x"))
-
 (defun my/try-to-find-git-root (dirname)
   "Will try and find the nearest root for project. Works up directories starting from the current files directory DIRNAME."
   (cond
@@ -186,16 +181,6 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
    (t (-> (directory-file-name dirname)
         file-name-directory
         my/try-to-find-git-root))))
-
-(defun my/heroku-rollback ()
-  "Heroku rollback."
-  (interactive)
-  (when (y-or-n-p "Do you want to rollback the last Heroku release? ")
-    (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
-          (buffer-name "*Heroku Rollback*"))
-      (when (get-buffer buffer-name)
-        (kill-buffer buffer-name))
-      (async-shell-command "heroku rollback" (generate-new-buffer buffer-name)))))
 
 (defun my/clj-doc-for-symbol ()
   "Print doc for symbol at point."
