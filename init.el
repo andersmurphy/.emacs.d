@@ -88,17 +88,12 @@
   (define-key key-translation-map (kbd ";") (kbd ":"))
   (define-key key-translation-map (kbd ":") (kbd ";"))
 
-  ;; Swap C-m and C-j
-  (define-key key-translation-map (kbd "C-j") (kbd "C-m"))
-  (define-key key-translation-map (kbd "C-m") (kbd "C-j"))
-
   ;; Make return/enter key behave like C-m
   (define-key key-translation-map (kbd "RET") (kbd "C-m"))
 
   ;; Global key bindings
   (global-set-key (kbd "C-x f") 'find-file)
   (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
-  (global-set-key (kbd "C-j") 'newline)
   (global-set-key (kbd "C-z") 'undo)
   (global-set-key (kbd "C-x C-d") 'dired)
   (global-set-key (kbd "M-c") 'org-capture)
