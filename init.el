@@ -91,10 +91,19 @@
   ;; Make return/enter key behave like C-m
   (define-key key-translation-map (kbd "RET") (kbd "C-m"))
 
+  ;; Swap C-p and C-h
+  (define-key key-translation-map (kbd "C-h") (kbd "C-p"))
+  (define-key key-translation-map (kbd "C-p") (kbd "C-h"))
+
+  ;; Swap M-p and M-h
+  (define-key key-translation-map (kbd "M-h") (kbd "M-p"))
+  (define-key key-translation-map (kbd "M-p") (kbd "M-h"))
+
   ;; Global key bindings
   (global-set-key (kbd "C-x f") 'find-file)
   (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
   (global-set-key (kbd "C-z") 'undo)
+  (global-set-key (kbd "C-?") 'help-command)
   (global-set-key (kbd "C-x C-d") 'dired)
   (global-set-key (kbd "M-c") 'org-capture)
   (global-set-key (kbd "C-v") 'yank)
@@ -478,6 +487,7 @@
   :after eglot
   :bind
   ("C-x p" . project-find-file)
+  ("C-h" . project-find-file)
   ("C-M-s" . project-find-regexp))
 (use-package magit
   :config
@@ -521,7 +531,13 @@
            magit-log-buffer-file-locked)
         (user-error "Buffer isn't visiting a file"))))
 
-  :bind (("C-x g" . magit-status))
+  :bind (("C-x g" . magit-status)
+         :map magit-status-mode-map
+         ("h" . magit-section-backward)
+         :map magit-log-mode-map
+         ("h" . magit-section-backward)
+         :map magit-diff-mode-map
+         ("h" . magit-section-backward))
   :hook (after-save . magit-after-save-refresh-status))
 (use-package forge
   :config
