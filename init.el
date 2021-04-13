@@ -270,7 +270,9 @@
   ;; :caused by rename.
   (setq wdired-confirm-overwrite t)
   :bind (:map dired-mode-map
-              ("RET" . dired-find-alternate-file)))
+              ("RET" . dired-find-alternate-file)
+              ("h" . dired-previous-line)
+              ("p" . describe-mode)))
 (use-package ansi-color
   :config
   (progn
@@ -278,6 +280,14 @@
       (let ((inhibit-read-only t))
         (ansi-color-apply-on-region (point-min) (point-max))))
     (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)))
+(use-package eshell
+  :straight nil
+  :init
+  ;; Eshell starts out defining its map as nil and then only sets it to a keymap
+  ;; locally later so :bind won't work
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (define-key eshell-mode-map (kbd "M-h") 'eshell-previous-matching-input-from-input))))
 (use-package so-long
   :straight nil
   :config
