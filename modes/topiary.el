@@ -422,13 +422,17 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-html-tag-forward ()
   "Return bounds of html tag at point forward."
-  (when (and (provided-mode-derived-p major-mode 'sgml-mode) (= (char-after) ?<))
+  (when (and (or (provided-mode-derived-p major-mode 'sgml-mode)
+                 (provided-mode-derived-p major-mode 'js-mode))
+             (= (char-after) ?<))
     (save-excursion
       (cons (point) (progn (sgml-skip-tag-forward 1) (point))))))
 
 (defun topiary/bounds-of-html-tag-backward ()
   "Return bounds of html tag at point backward."
-  (when (and (provided-mode-derived-p major-mode 'sgml-mode) (= (char-before) ?>))
+  (when (and (or (provided-mode-derived-p major-mode 'sgml-mode)
+                 (provided-mode-derived-p major-mode 'js-mode))
+             (= (char-before) ?>))
     (save-excursion
       (cons (point) (progn (sgml-skip-tag-backward 1) (point))))))
 
