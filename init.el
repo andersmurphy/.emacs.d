@@ -368,6 +368,12 @@
   (set-face-attribute
    'default nil
    :height (- (face-attribute 'default :height) 10)))
+(defun my/what-face (pos)
+  "Get face under at POS."
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
 (load "~/.emacs.d/my-theme.el")
 (use-package my-theme
   ;; Theme changes are made to these packages
