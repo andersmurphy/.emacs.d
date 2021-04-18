@@ -14,6 +14,7 @@ Install command line tools.
 
 #+BEGIN_SRC sh
 xcode-select --install
+wait
 #+END_SRC
 * Homebrew
 
@@ -23,12 +24,14 @@ Install.
 
 #+BEGIN_SRC sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+wait
 #+END_SRC
 
 Update.
 
 #+BEGIN_SRC sh
 brew update
+wait
 #+END_SRC
 
 Disable analytics.
@@ -42,13 +45,16 @@ brew tap homebrew/cask
 
 #+BEGIN_SRC sh
 brew install --cask chrysalis
+wait
 #+END_SRC
 * Fonts
 
 #+BEGIN_SRC sh
 brew install svn
+wait
 brew tap homebrew/cask-fonts
 brew install font-dm-mono
+wait
 #+END_SRC
 
 * Git
@@ -57,6 +63,7 @@ Install latest version of git.
 
 #+BEGIN_SRC sh
 brew install git
+wait
 #+END_SRC
 
 Set identity.
@@ -121,6 +128,7 @@ Homebrew Emacs.app launches using a ruby script. As a result, MacOS Catalina use
 #+BEGIN_SRC sh
 brew tap daviderestivo/emacs-head
 brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
+wait
 #+END_SRC
 
 ** Emacs External Dependencies
@@ -129,12 +137,14 @@ Spellcheck depends on aspell.
 
 #+BEGIN_SRC sh
 brew install aspell
+wait
 #+END_SRC
 
 Emms depends on mpv to play music.
 
 #+BEGIN_SRC sh
 brew install mpv
+wait
 rm ~/.config/mpv/mpv.conf
 ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 #+END_SRC
@@ -143,6 +153,7 @@ Markdown mode depends on multimarkdown to preview markdown.
 
 #+BEGIN_SRC sh
 brew install multimarkdown
+wait
 #+END_SRC
 
 * Open jdk
@@ -152,6 +163,7 @@ Installs open jdk.
 #+BEGIN_SRC sh
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk11
+wait
 #+END_SRC
 
 * Clojure
@@ -160,6 +172,7 @@ Language.
 
 #+BEGIN_SRC sh
 brew install clojure
+wait
 rm ~/.clojure/deps.edn
 ln -s ~/.emacs.d/setup/dotfiles/.clojure/deps.edn ~/.clojure/
 #+END_SRC
@@ -168,6 +181,7 @@ Build tool.
 
 #+BEGIN_SRC sh
 brew install leiningen
+wait
 rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 #+END_SRC
@@ -176,12 +190,14 @@ Formatter.
 
 #+BEGIN_SRC sh
 brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
+wait
 #+END_SRC
 
 LSP.
 
 #+BEGIN_SRC sh
 brew install clojure-lsp/brew/clojure-lsp-native
+wait
 rm -r ~/.lsp
 mkdir ~/.lsp
 ln -s ~/.emacs.d/setup/dotfiles/.lsp/config.edn ~/.lsp/
@@ -201,12 +217,14 @@ Language.
 
 #+BEGIN_SRC sh
 brew install node
+wait
 #+END_SRC
 
 Yarn.
 
 #+BEGIN_SRC sh
 npm install -g yarn
+wait
 #+END_SRC
 
 LSP.
@@ -221,6 +239,7 @@ LSP.
 
 #+BEGIN_SRC sh
 npm install -g vscode-html-languageserver-bin
+wait
 #+END_SRC
 
 * Other apps
@@ -230,6 +249,7 @@ Install Chromium
 
 #+BEGIN_SRC sh
 brew install chromium
+wait
 open -a "Chromium" --args --make-default-browser
 #+END_SRC
 
@@ -237,6 +257,7 @@ open -a "Chromium" --args --make-default-browser
 
 #+BEGIN_SRC sh
 brew install --cask dropbox
+wait
 #+END_SRC
 
 * OSX misc
