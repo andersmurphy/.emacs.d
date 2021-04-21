@@ -11,7 +11,18 @@
 ;; M-x emacs-index-search to search Emacs manual.
 
 ;;; Code:
+
+
+;;; PACKAGE MANAGER
 (progn ;;; Setup
+
+  ;; To not increase Emacs startup time, check package modifications when
+  ;; packages edited (with Emacs), instead of checking modifications at startup.
+  (setq straight-check-for-modifications '(check-on-save find-when-checking))
+  ;; Use default depth of 1 when cloning files with git to get
+  ;; saves network bandwidth and disk space.
+  (setq straight-vc-git-default-clone-depth 1)
+
   ;; Bootstrap straight.el package manager
   ;; https://github.com/raxod502/straight.el
   (defvar bootstrap-version)
@@ -209,7 +220,8 @@
   "Update Emacs packages using straight."
   (interactive)
   (straight-pull-all)
-  (straight-freeze-versions))
+  (straight-freeze-versions)
+  (straight-check-all))
 (defun my/reload-init ()
   "Reload init."
   (interactive)
