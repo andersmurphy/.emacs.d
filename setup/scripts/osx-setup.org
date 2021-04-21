@@ -47,16 +47,6 @@ brew tap homebrew/cask
 brew install --cask chrysalis
 wait
 #+END_SRC
-* Fonts
-
-#+BEGIN_SRC sh
-brew install svn
-wait
-brew tap homebrew/cask-fonts
-brew install font-dm-mono
-wait
-#+END_SRC
-
 * Git
 
 Install latest version of git.

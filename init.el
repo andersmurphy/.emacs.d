@@ -334,8 +334,8 @@
   ;; This would cause the cursor to disappear if you pressed C-x C-z by mistake.
   (global-unset-key (kbd "C-x C-z"))
 
-  ;; Sets font and font size.
-  (set-frame-font "DM Mono 14"))
+  ;; Sets font size.
+  (set-face-attribute 'default nil :height 140))
 (progn ;; Dynamic theme changes
 
   ;; To find out the name of the face you want to customise:
