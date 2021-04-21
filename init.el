@@ -496,6 +496,8 @@
   (setq magit-diff-refine-hunk 'all)
   (setq magit-diff-refine-ignore-whitespace t)
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+  ;; Allows q to be used to quite transient buffers
+  (transient-bind-q-to-quit)
 
   (defun my/magit-spin-off-pull-request ()
     "Spin off last commit as a pull request."
