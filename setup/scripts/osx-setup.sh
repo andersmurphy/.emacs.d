@@ -17,12 +17,6 @@ brew tap homebrew/cask
 brew install --cask chrysalis
 wait
 
-brew install svn
-wait
-brew tap homebrew/cask-fonts
-brew install font-dm-mono
-wait
-
 brew install git
 wait
 
