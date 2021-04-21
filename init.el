@@ -78,20 +78,6 @@
 ;;; CONTROLS
 (progn ;; Defaults
 
-  ;; Disable all arrow keys
-  (global-unset-key (kbd "<left>"))
-  (global-unset-key (kbd "<right>"))
-  (global-unset-key (kbd "<up>"))
-  (global-unset-key (kbd "<down>"))
-  (global-unset-key (kbd "<C-left>"))
-  (global-unset-key (kbd "<C-right>"))
-  (global-unset-key (kbd "<C-up>"))
-  (global-unset-key (kbd "<C-down>"))
-  (global-unset-key (kbd "<M-left>"))
-  (global-unset-key (kbd "<M-right>"))
-  (global-unset-key (kbd "<M-up>"))
-  (global-unset-key (kbd "<M-down>"))
-
   ;; Bind cmd (super) key to control
   (setq mac-command-modifier 'control)
 
@@ -102,19 +88,10 @@
   ;; Make return/enter key behave like C-m
   (define-key key-translation-map (kbd "RET") (kbd "C-m"))
 
-  ;; Swap C-p and C-h
-  (define-key key-translation-map (kbd "C-h") (kbd "C-p"))
-  (define-key key-translation-map (kbd "C-p") (kbd "C-h"))
-
-  ;; Swap M-p and M-h
-  (define-key key-translation-map (kbd "M-h") (kbd "M-p"))
-  (define-key key-translation-map (kbd "M-p") (kbd "M-h"))
-
   ;; Global key bindings
   (global-set-key (kbd "C-x f") 'find-file)
   (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
   (global-set-key (kbd "C-z") 'undo)
-  (global-set-key (kbd "C-?") 'help-command)
   (global-set-key (kbd "C-x C-d") 'dired)
   (global-set-key (kbd "M-c") 'org-capture)
   (global-set-key (kbd "C-v") 'yank)
@@ -292,14 +269,6 @@
       (let ((inhibit-read-only t))
         (ansi-color-apply-on-region (point-min) (point-max))))
     (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)))
-(use-package eshell
-  :straight nil
-  :init
-  ;; Eshell starts out defining its map as nil and then only sets it to a keymap
-  ;; locally later so :bind won't work
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (define-key eshell-mode-map (kbd "M-h") 'eshell-previous-matching-input-from-input))))
 (use-package so-long
   :straight nil
   :config
@@ -515,7 +484,6 @@
   :after eglot
   :bind
   ("C-x p" . project-find-file)
-  ("C-h" . project-find-file)
   ("C-M-s" . project-find-regexp))
 (use-package magit
   :config
@@ -559,13 +527,7 @@
            magit-log-buffer-file-locked)
         (user-error "Buffer isn't visiting a file"))))
 
-  :bind (("C-x g" . magit-status)
-         :map magit-status-mode-map
-         ("h" . magit-section-backward)
-         :map magit-log-mode-map
-         ("h" . magit-section-backward)
-         :map magit-diff-mode-map
-         ("h" . magit-section-backward))
+  :bind (("C-x g" . magit-status))
   :hook (after-save . magit-after-save-refresh-status))
 (use-package forge
   :config
@@ -786,7 +748,7 @@
 ;; Lisp
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
-              ("M-h" . comint-previous-input)
+
               ("M-." . my/jump-to-file-in-project-at-point)
               ("M-," . xref-pop-marker-stack)))
 ;; SQL
@@ -805,12 +767,9 @@
   (defun my/sql-toggle-up-down ()
     (interactive)
     (-> (buffer-file-name)
-        my/sql-find-up-or-down
-        find-file))
-  :bind (:map sql-mode-map
-              ("M-g t" . my/sql-toggle-up-down)
-              :map sql-interactive-mode-map
-              ("M-h" . comint-previous-input)))
+      my/sql-find-up-or-down
+      find-file))
+  :bind (:map sql-mode-map ("M-g t" . my/sql-toggle-up-down)))
 ;; Clojure
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
