@@ -789,9 +789,6 @@
               ("C-x C-e" . my/clj-eval-last-sexp)
               ("M-;" . my/clj-comment-form)))
 ;; HTTP
-(use-package restclient
-  :defer t
-  :mode ("\\.\\(http\\|rest\\)$" . restclient-mode))
 (defun my/current-ip ()
   "Return current IP address."
   (interactive)
