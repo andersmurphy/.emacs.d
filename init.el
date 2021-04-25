@@ -193,9 +193,9 @@
 (defun my/update-emacs-packages ()
   "Update Emacs packages using straight."
   (interactive)
+  (straight-check-all)
   (straight-pull-all)
-  (straight-freeze-versions)
-  (straight-check-all))
+  (straight-freeze-versions))
 (defun my/reload-init ()
   "Reload init."
   (interactive)
