@@ -250,6 +250,15 @@ brew install --cask dropbox
 wait
 #+END_SRC
 
+** Calibre
+
+Useful for converting pdf to epub with `ebook-convert input_file output_file`.
+
+#+BEGIN_SRC sh
+brew install --cask calibre
+wait
+#+END_SRC
+
 * OSX misc
 ** Clear fonts on retina screens
 - First, turn OFF “Font smoothing” in System Preferences → General

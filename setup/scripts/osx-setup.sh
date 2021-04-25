@@ -97,3 +97,6 @@ open -a "Chromium" --args --make-default-browser
 
 brew install --cask dropbox
 wait
+
+brew install --cask calibre
+wait
