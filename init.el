@@ -119,9 +119,6 @@
   "Open keyboard firmware configuration tool."
   (interactive)
   (shell-command "open -a chrysalis"))
-(use-package disable-mouse
-  :config
-  (global-disable-mouse-mode))
 
 ;;; GENERAL
 (progn ;; Defaults
