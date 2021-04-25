@@ -822,28 +822,6 @@
   (setq emms-repeat-playlist t)
   (defvar emms-source-file-default-directory)
   (setq emms-source-file-default-directory "~/Dropbox/music/"))
-(use-package markdown-mode
-  :defer t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown")
-  :config
-  (markdown-toggle-fontify-code-blocks-natively)
-
-  (defun my/clj-open-md-block-repl ()
-    (interactive)
-    (setq inferior-lisp-program
-          "clojure -Sdeps {:deps{compliment{:mvn/version\"0.3.8\"}}}")
-    (my/clj-open-repl))
-  :bind (:map markdown-mode-map
-              ("C-c C-a" . my/clj-apropos)
-              ("C-c C-z" . my/clj-open-md-block-repl)
-              ("C-c C-d" . my/clj-doc-for-symbol)
-              ("C-c C-s" . my/clj-source-for-symbol)
-              ("C-c C-f" . my/clj-find-doc)
-              ("C-x C-e" . my/clj-eval-last-sexp)))
 (use-package eww
   :straight nil
   :config
