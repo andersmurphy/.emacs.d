@@ -29,6 +29,8 @@ git config --global core.editor 'emacsclient'
 
 git config --global pull.rebase true
 
+git config --global fetch.prune true
+
 git config --global color.ui true
 
 rm ~/.gitignore
