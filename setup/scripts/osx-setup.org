@@ -80,6 +80,11 @@ Set pull with rebase to be default.
 git config --global pull.rebase true
 #+END_SRC
 
+Prune local branches when fetching changes from remote.
+#+BEGIN_SRC sh
+git config --global fetch.prune true
+#+END_SRC
+
 Set colour ui.
 
 #+BEGIN_SRC sh
