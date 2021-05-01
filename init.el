@@ -821,7 +821,11 @@
   (emms-playing-time-disable-display)
   (setq emms-repeat-playlist t)
   (defvar emms-source-file-default-directory)
-  (setq emms-source-file-default-directory "~/Dropbox/music/"))
+  (setq emms-source-file-default-directory "~/Dropbox/music/")
+  (defun my/emms-kill-mpv ()
+    "Reset mpv when it's misbehaving."
+    (interactive)
+    (shell-command "killall mpv")))
 (use-package eww
   :straight nil
   :config
