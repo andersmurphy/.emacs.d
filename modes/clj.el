@@ -302,19 +302,6 @@ Works from both namespace and test namespace"
          (my/show-repl))
      (message "Command disabled: You shouldn't run tests on Heroku!"))))
 
-(defun my/clj-comment-form ()
-  "Comment or uncomment current form using #_ reader macro."
-  (interactive)
-  (let ((bounds (bounds-of-thing-at-point 'sexp)))
-    (if bounds
-        (progn (goto-char (car bounds))
-               (search-backward "\"" (- (point) 1) t))
-      (clojure-backward-logical-sexp))
-    (if (search-forward "#_" (+ (point) 2) t)
-        (delete-char -2)
-      (insert "#_")
-      (backward-char 2))))
-
 (defun my/clj-find-implementation-or-test (file-name)
   "Find coresponding test or implementation file for FILE-NAME."
   (unless file-name (error "The current buffer is not visiting a file"))
