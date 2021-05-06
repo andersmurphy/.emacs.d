@@ -339,13 +339,17 @@
   (interactive)
   (set-face-attribute
    'default nil
-   :height (+ (face-attribute 'default :height) 10)))
+   :height (+ (face-attribute 'default :height) 10))
+  (when (eq major-mode 'nov-mode)
+    (nov-render-document)))
 (defun my/zoom-out ()
   "Zoom out all buffers."
   (interactive)
   (set-face-attribute
    'default nil
-   :height (- (face-attribute 'default :height) 10)))
+   :height (- (face-attribute 'default :height) 10))
+  (when (eq major-mode 'nov-mode)
+    (nov-render-document)))
 (defun my/what-face (pos)
   "Get face under at POS."
   (interactive "d")
