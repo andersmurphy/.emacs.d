@@ -14,6 +14,9 @@
 ;;; Code:
 
 (require 'subr-x)
+(require 'org)
+(require 'org-inlinetask)
+(require 'sgml-mode)
 
 (defun topiary/end-of-buffer-p ()
   "Return t if point at end of buffer."
