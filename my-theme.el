@@ -143,7 +143,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(mode-line ((t (:foreground ,fg :background ,bg-region :weight bold :box (:line-width 4 :color ,bg-region) :overline nil :underline nil))))
      `(mode-line-inactive ((t (:foreground ,fg-comment :background ,bg-inactive :weight bold :box (:line-width 4 :color ,bg-inactive) :overline nil :underline nil))))
      `(mode-line-buffer-id ((t nil)))
-     `(xref-file-header ((t (:foreground ,fg :weight bold))))
+     `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
      `(xref-match ((t (:foreground ,fg-match :background nil :weight bold))))
      `(flymake-error ((t (:underline (:style line :color ,fg-error) :foreground ,fg-error :weight bold))) )
      `(flymake-warning ((t (:underline (:style line :color ,fg-warning) :foreground ,fg-warning :weight bold))) )
@@ -153,6 +153,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(flyspell-duplicate          ((t (:underline (:style line :color ,fg-warning)))))
      `(vertical-border             ((t (:foreground ,bg-inactive))))
      `(selectrum-primary-highlight ((t (:foreground ,bg-highlight :weight bold :distant-foreground ,fg-highlight))))
+     `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
+
      ;; emms
      `(emms-playlist-track-face    ((t (:foreground ,fg :background ,bg))))
      `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))
