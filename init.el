@@ -341,7 +341,7 @@
    'default nil
    :height (+ (face-attribute 'default :height) 10))
   (when (eq major-mode 'nov-mode)
-    (nov-render-document)))
+    (my/nov-rerender-without-losing-point)))
 (defun my/zoom-out ()
   "Zoom out all buffers."
   (interactive)
@@ -349,7 +349,7 @@
    'default nil
    :height (- (face-attribute 'default :height) 10))
   (when (eq major-mode 'nov-mode)
-    (nov-render-document)))
+    (my/nov-rerender-without-losing-point)))
 (defun my/what-face (pos)
   "Get face under at POS."
   (interactive "d")
@@ -808,10 +808,14 @@
 (use-package nov
   :defer t
   :init
+  (defun my/nov-rerender-without-losing-point ()
+    (let ((point (point)))
+      (nov-render-document)
+      (goto-char point)))
   (defun my/nov-font-setup ()
     (face-remap-add-relative 'variable-pitch
                              :height 1.3)
-    (nov-render-document))
+    (my/nov-rerender-without-losing-point))
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   :config
   (setq nov-text-width 80)
