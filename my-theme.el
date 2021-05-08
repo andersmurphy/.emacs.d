@@ -128,7 +128,6 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(isearch-fail ((t (:foreground ,fg :background ,red))))
      `(lazy-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
-     `(eshell-prompt                ((t (:foreground ,fg :weight bold))))
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-constant-face      ((t (:foreground ,nil))))
      `(font-lock-builtin-face       ((t (:foreground ,nil))))
@@ -143,8 +142,6 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(mode-line ((t (:foreground ,fg :background ,bg-region :weight bold :box (:line-width 4 :color ,bg-region) :overline nil :underline nil))))
      `(mode-line-inactive ((t (:foreground ,fg-comment :background ,bg-inactive :weight bold :box (:line-width 4 :color ,bg-inactive) :overline nil :underline nil))))
      `(mode-line-buffer-id ((t nil)))
-     `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
-     `(xref-match ((t (:foreground ,fg-match :background nil :weight bold))))
      `(flymake-error ((t (:underline (:style line :color ,fg-error) :foreground ,fg-error :weight bold))) )
      `(flymake-warning ((t (:underline (:style line :color ,fg-warning) :foreground ,fg-warning :weight bold))) )
      `(flymake-note
@@ -154,6 +151,14 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(vertical-border             ((t (:foreground ,bg-inactive))))
      `(selectrum-primary-highlight ((t (:foreground ,bg-highlight :weight bold :distant-foreground ,fg-highlight))))
      `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
+
+     ;; xref
+     `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
+     `(xref-match ((t (:foreground ,fg-match :background nil :weight bold))))
+
+     ;; eshell
+     `(eshell-prompt ((t (:foreground ,fg :weight bold))))
+     `(eshell-ls-directory ((t (:foreground ,blue :weight bold))))
 
      ;; emms
      `(emms-playlist-track-face    ((t (:foreground ,fg :background ,bg))))
