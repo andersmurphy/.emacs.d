@@ -740,7 +740,9 @@
   :config
   (setq eglot-sync-connect 0)
   (setq eglot-ignored-server-capabilites
-        '(:documentHighlightProvider :hoverProvider))
+        '(:documentHighlightProvider
+          :hoverProvider
+          :signatureHelpProvider))
   (add-to-list 'eglot-server-programs
                '((clojure-mode clojurescript-mode) . ("bash" "-c" "clojure-lsp")))
   (add-to-list 'eglot-server-programs
