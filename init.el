@@ -725,6 +725,8 @@
   (setq company-format-margin-function nil)
   (global-company-mode)
   :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
               ("TAB" . company-complete-selection)
               ("C-w" . topiary/smart-kill)))
 
