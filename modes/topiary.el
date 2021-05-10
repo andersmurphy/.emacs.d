@@ -34,8 +34,8 @@
 
 (defun topiary/in-empty-string-p ()
   "Return t if point in empty string."
-  (and (not (topiary/beginning-of-buffer-p))
-       (not (topiary/end-of-buffer-p))
+  (and (nth 3 (syntax-ppss))
+       (= (nth 8 (syntax-ppss)) (- (point) 1))
        (= (char-before) (char-after) ?\")))
 
 (defun topiary/in-empty-pair-p ()
@@ -553,6 +553,13 @@ Examples:
           (delete-char -1))
       (error (message "Can't unwrap top level")))))
 
+(defun topiary/delete-escaped-double-quote ()
+  "Delete escaped double quote."
+  (let* ((bounds (topiary/bounds-of-escaped-double-quote-in-string))
+         (beg (car bounds))
+         (end (cdr bounds)))
+    (delete-region beg end)))
+
 (defun topiary/delete-forward ()
   "Delete forward char doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
@@ -563,6 +570,9 @@ Examples:
               ((or (topiary/before-empty-pair-p)
                    (topiary/before-empty-string-p))
                (delete-region  (point)  (+ (point) 2)))
+              ((and (topiary/in-string-p)
+                    (equal (char-after) ?\\))
+               (topiary/delete-escaped-double-quote))
               ((topiary/in-string-p)
                (topiary/hungry-delete-forward))
               ((member (char-after) (string-to-list ")]}"))
@@ -581,6 +591,9 @@ Examples:
               ((or (topiary/after-empty-pair-p)
                    (topiary/after-empty-string-p))
                (delete-region  (- (point) 2) (point)))
+              ((and (topiary/in-string-p)
+                    (equal (char-before) ?\"))
+               (topiary/delete-escaped-double-quote))
               ((topiary/in-string-p)
                (topiary/hungry-delete-backward))
               ((member (char-before) (string-to-list "{[("))
