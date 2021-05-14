@@ -330,10 +330,25 @@
   (defun my/dim-parens ()
     "Make parenthesis less prominent by matching comment face."
     (font-lock-add-keywords nil
-                            '(("(\\|)" . 'font-lock-comment-face))))
+                            '(("(\\|)" . 'font-lock-comment-face)
+                              )))
+
+  (defun my/color-important-words ()
+    "Make important words more prominent."
+    (font-lock-add-keywords
+     nil
+     '(("\\b[Ee]rrors?\\b\\|\\b[Ff]ailures?\\b\\|\\b[Ff]ail\\b\\|\\bERRORS?\\b\\|\\bFAILURES?\\b\\|\\bFAIL\\b"
+        . 'error)
+       ("\\b[Ww]arnings?\\b\\|\\bWARNINGS?\\b"
+        . 'warning)
+       ("\\b[Ss]uccesse?s?\\b\\|\\b[Pp]ass\\b\\|\\bSUCCESSE?S?\\b\\|\\bPASS\\b"
+        . 'success))))
 
   (add-hook 'clojure-mode-hook 'my/dim-parens)
-  (add-hook 'emacs-lisp-mode-hook 'my/dim-parens))
+  (add-hook 'emacs-lisp-mode-hook 'my/dim-parens)
+  (add-hook 'eshell-mode-hook 'my/color-important-words)
+  (add-hook 'inferior-lisp-mode-hook 'my/color-important-words)
+  (add-hook 'shell-mode-hook 'my/color-important-words))
 (defun my/zoom-in ()
   "Zoom in all buffers."
   (interactive)
