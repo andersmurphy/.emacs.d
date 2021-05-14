@@ -154,6 +154,18 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(vertical-border             ((t (:foreground ,bg-inactive))))
      `(selectrum-primary-highlight ((t (:foreground ,bg-highlight :weight bold :distant-foreground ,fg-highlight))))
      `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
+     `(custom-state ((t (:foreground ,green))))
+
+
+     ;; buttons
+     `(custom-button ((t (:weight bold
+                                  :background ,bg-region
+                                  :foreground ,fg
+                                  :box (:line-width 2 :style released-button)))))
+     `(help-key-binding ((t (:weight bold
+                                     :background ,bg-region
+                                     :foreground ,fg
+                                     :box (:line-width 2 :style released-button)))))
 
      ;; xref
      `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
