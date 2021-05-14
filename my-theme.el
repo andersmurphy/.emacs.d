@@ -155,7 +155,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(selectrum-primary-highlight ((t (:foreground ,bg-highlight :weight bold :distant-foreground ,fg-highlight))))
      `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
      `(custom-state ((t (:foreground ,green))))
-
+     `(widget-field ((t (:background ,bg-region
+                                     :box (:line-width 2 :style pressed-button)))))
 
      ;; buttons
      `(custom-button ((t (:weight bold
