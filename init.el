@@ -313,7 +313,7 @@
   (global-unset-key (kbd "C-x C-z"))
 
   ;; Sets font size.
-  (set-face-attribute 'default nil :height 140))
+  (set-face-attribute 'default nil :height 145))
 (progn ;; Dynamic theme changes
 
   ;; To find out the name of the face you want to customise:
