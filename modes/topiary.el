@@ -38,6 +38,14 @@
        (= (nth 8 (syntax-ppss)) (- (point) 1))
        (= (char-before) (char-after) ?\")))
 
+(defun topiary/on-comment-line-p ()
+  "Return t if point in non nestable comment line."
+  (or (nth 4 (syntax-ppss))
+      (save-excursion
+        (skip-chars-forward "^;\n")
+        (forward-char)
+        (nth 4 (syntax-ppss)))))
+
 (defun topiary/in-empty-pair-p ()
   "Return t if point in empty pair."
   (and (member (char-before) (string-to-list "{[("))
@@ -679,16 +687,15 @@ delimiter (after forward char)."
   (cond
    ((topiary/in-empty-line-p) (topiary/hungry-delete-forward))
    ((topiary/supported-mode-p)
-    (let ((line-number (count-lines 1 (point)))
+    (let ((end-of-line (save-excursion
+                         (skip-chars-forward "^\n")
+                         (point)))
           (initial-point (point)))
-      (while (and
-              (progn (skip-chars-forward "\n ")
-                     (not (and (= (char-after) ?\") (topiary/in-string-p))))
-              (ignore-errors (forward-sexp) t)
-              (and (= line-number (count-lines 1 (point)))
-                   (save-excursion
-                     (skip-chars-forward "\n ")
-                     (= line-number (count-lines 1 (point)))))))
+      (cond  ((topiary/in-string-p) (skip-chars-forward "^\n\""))
+             ((topiary/on-comment-line-p) (skip-chars-forward "^\n"))
+             (t (while (and
+                        (ignore-errors (forward-sexp) t)
+                        (> end-of-line (point))))))
       (kill-region initial-point (point))))
    (t (kill-line))))
 
