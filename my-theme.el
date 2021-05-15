@@ -198,7 +198,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(magit-diff-section-heading-highlight ((t (:background ,bg :foreground ,fg))))
      `(magit-diff-section-heading           ((t (:background ,bg :foreground ,fg))))
      `(magit-section-highlight              ((t (:background ,bg :foreground nil))))
-     `(magit-section-heading                ((t (:background ,bg :foreground ,fg :weight bold))))
+     `(magit-section-heading                ((t (:background ,bg :foreground ,fg :weight bold :height ,h2-height))))
      `(magit-diff-hunk-heading-highlight    ((t (:background ,bg-region :foreground ,fg))))
      `(magit-diff-hunk-heading              ((t (:background ,bg-region :foreground ,fg))))
      `(magit-branch-local  ((t (:foreground ,blue))))
