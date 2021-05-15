@@ -115,7 +115,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
                         (my/lighten-color bg 0.05)))
          (fg-highlight bg)
          (bg-highlight purple)
-         (fg-match     purple))
+         (fg-match     purple)
+         (h2-height  (+ (face-attribute 'default :height) 10)))
     (custom-theme-set-faces
      'my
      `(highlight ((t (:foreground ,fg-highlight :background ,bg-highlight))))
@@ -127,7 +128,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(isearch      ((t (:foreground ,fg-highlight :background ,bg-highlight))))
      `(isearch-fail ((t (:foreground ,fg :background ,red))))
      `(lazy-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
-     `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
+     `(minibuffer-prompt            ((t (:foreground ,fg :weight bold :height ,h2-height))))
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-constant-face      ((t (:foreground ,nil))))
      `(font-lock-builtin-face       ((t (:foreground ,nil))))
@@ -173,7 +174,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(xref-match ((t (:foreground ,fg-match :background nil :weight bold))))
 
      ;; eshell
-     `(eshell-prompt ((t (:foreground ,fg :weight bold))))
+     `(eshell-prompt ((t (:foreground ,fg :weight bold :height ,h2-height))))
      `(eshell-ls-directory ((t (:foreground ,blue :weight bold))))
 
      ;; emms
