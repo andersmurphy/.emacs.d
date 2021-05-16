@@ -318,7 +318,8 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-last-sexp ()
   "Get bounds of last sexp."
-  (when (member (char-before) (string-to-list "}])\""))
+  (when (and (not (topiary/in-string-p))
+             (member (char-before) (string-to-list "}])\"")))
     (cons (save-excursion (backward-sexp) (point)) (point))))
 
 (defun topiary/hungry-delete-backward ()
@@ -448,6 +449,11 @@ In the above example the n would be deleted. Handles comments."
     (save-excursion
       (cons (point) (progn (sgml-skip-tag-backward 1) (point))))))
 
+(defun topiary/bounds-of-thing-at-point ()
+  "Like `bounds-of-thing-at-point` but doesn't do anything in strings."
+  (when (not (topiary/in-string-p))
+    (bounds-of-thing-at-point 'sexp)))
+
 (defun topiary/smart-kill-bounds ()
   "Get current smart-kill bounds."
   (or (topiary/bounds-of-active-region)
@@ -464,7 +470,7 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-single-bracket-in-string)
       (topiary/bounds-of-empty-string)
       (topiary/bounds-of-org-subtree)
-      (bounds-of-thing-at-point 'sexp)
+      (topiary/bounds-of-thing-at-point)
       (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
 
