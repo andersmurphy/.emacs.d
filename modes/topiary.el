@@ -38,13 +38,17 @@
        (= (nth 8 (syntax-ppss)) (- (point) 1))
        (= (char-before) (char-after) ?\")))
 
-(defun topiary/on-comment-line-p ()
+(defun topiary/in-comment-p ()
   "Return t if point in non nestable comment line."
-  (or (nth 4 (syntax-ppss))
+  (nth 4 (syntax-ppss)))
+
+(defun topiary/on-comment-line-p ()
+  "Return t if point on non nestable comment line."
+  (or (topiary/in-comment-p)
       (save-excursion
         (skip-chars-forward "^;\n")
         (forward-char)
-        (nth 4 (syntax-ppss)))))
+        (topiary/in-comment-p))))
 
 (defun topiary/in-empty-pair-p ()
   "Return t if point in empty pair."
@@ -454,6 +458,11 @@ In the above example the n would be deleted. Handles comments."
   (when (not (topiary/in-string-p))
     (bounds-of-thing-at-point 'sexp)))
 
+(defun topiary/bounds-of-char-in-comment ()
+  "Return bounds char in comment."
+  (when (topiary/in-comment-p)
+    (cons (point) (- (point) 1))))
+
 (defun topiary/smart-kill-bounds ()
   "Get current smart-kill bounds."
   (or (topiary/bounds-of-active-region)
@@ -466,6 +475,7 @@ In the above example the n would be deleted. Handles comments."
         (bounds-of-thing-at-point 'word))
       (topiary/bounds-of-strings-at-point '(";;" ";;;"))
       (topiary/bounds-of-punctuation-backward)
+      (topiary/bounds-of-char-in-comment)
       (topiary/bounds-of-space-before-opening-paren)
       (topiary/bounds-of-single-bracket-in-string)
       (topiary/bounds-of-empty-string)
@@ -581,14 +591,14 @@ Examples:
     (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
                (delete-region (- (point) 1) (+ (point) 1)))
+              ((or (topiary/in-string-p) (topiary/in-comment-p))
+               (topiary/hungry-delete-forward))
               ((or (topiary/before-empty-pair-p)
                    (topiary/before-empty-string-p))
                (delete-region  (point)  (+ (point) 2)))
               ((and (topiary/in-string-p)
                     (equal (char-after) ?\\))
                (topiary/delete-escaped-double-quote))
-              ((topiary/in-string-p)
-               (topiary/hungry-delete-forward))
               ((member (char-after) (string-to-list ")]}"))
                (save-excursion (forward-char) (topiary/unwrap)))
               ((not (member (char-after) (string-to-list "\"{[(")))
@@ -602,14 +612,14 @@ Examples:
     (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
                (delete-region (- (point) 1) (+ (point) 1)))
+              ((or (topiary/in-string-p) (topiary/in-comment-p))
+               (topiary/hungry-delete-backward))
               ((or (topiary/after-empty-pair-p)
                    (topiary/after-empty-string-p))
                (delete-region  (- (point) 2) (point)))
               ((and (topiary/in-string-p)
                     (equal (char-before) ?\"))
                (topiary/delete-escaped-double-quote))
-              ((topiary/in-string-p)
-               (topiary/hungry-delete-backward))
               ((member (char-before) (string-to-list "{[("))
                (save-excursion (backward-char) (topiary/unwrap)))
               ((not (member (char-before) (string-to-list "\")]}")))
