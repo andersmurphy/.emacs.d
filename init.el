@@ -749,11 +749,6 @@
               ("C-w" . topiary/smart-kill)))
 
 ;;; PROGRAMMING
-(progn ;; Defaults
-  ;; Show paren mode
-  (show-paren-mode 1)
-  (defvar show-paren-delay)
-  (setq show-paren-delay 0))
 ;; LSP - Language Server Protocol
 (use-package eglot
   :demand t
