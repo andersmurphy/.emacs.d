@@ -480,7 +480,30 @@
   (setq isearch-lax-whitespace t)
   (setq isearch-regexp-lax-whitespace nil)
   (setq isearch-lazy-highlight t)
+
+  (defun my/replace-in-buffer ()
+    (interactive)
+    (save-excursion
+      (replace-string
+       isearch-string
+       (read-string (concat "Replace " isearch-string " with: "))
+       nil
+       (point-min)
+       (point-max))))
+
+  (defun my/isearch-prefill ()
+    (interactive)
+    (let* ((bounds (topiary/smart-kill-bounds))
+           (beg (car bounds))
+           (end (cdr bounds)))
+      (goto-char beg)
+      (isearch-forward nil 1)
+      (isearch-yank-string
+       (buffer-substring-no-properties beg end))))
+
   :bind
+  ("C-s" . isearch-forward)
+  ("C-r" . my/isearch-prefill)
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
         ("TAB" . isearch-exit)
@@ -490,7 +513,7 @@
         ("C-p" . isearch-repeat-backward)
         ("C-s" . isearch-forward-symbol-at-point)
         ("C-v" . isearch-yank-kill)
-        ("C-r" . isearch-query-replace)))
+        ("C-r" . my/replace-in-buffer)))
 (use-package selectrum
   :config
   (selectrum-mode t))
