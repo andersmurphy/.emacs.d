@@ -607,15 +607,11 @@
     (org-cycle)
     (org-cycle))
 
-
   ;; Capture templates.
   (setq org-capture-templates
         '(("t" "Todo" entry
            (file+headline "~/.emacs.d/emacs-sync/org/tasks.org" "Tasks")
-           "* TODO %?")
-          ("f" "Food Journal" entry
-           (file+datetree "~/.emacs.d/emacs-sync/org/food.org")
-           "* %?"))))
+           "* TODO %?"))))
 
 ;;; TEXT FORMATTING
 (progn ;; Defaults
