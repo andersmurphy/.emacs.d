@@ -12,7 +12,6 @@
 
 ;;; Code:
 
-
 ;;; PACKAGE MANAGER
 (progn ;;; Setup
 
@@ -589,7 +588,8 @@
         org-src-window-setup 'current-window
         org-src-strip-leading-and-trailing-blank-lines t
         org-src-preserve-indentation t
-        org-src-tab-acts-natively t)
+        org-src-tab-acts-natively t
+        org-adapt-indentation nil)
 
   ;; Auto tangle .org files in script folder
   (defun my/tangle-scripts ()
