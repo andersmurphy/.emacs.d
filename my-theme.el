@@ -116,7 +116,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
          (fg-highlight bg)
          (bg-highlight purple)
          (fg-match     purple)
-         (h2-height  (+ (face-attribute 'default :height) 10)))
+         (h2-height  (lambda (_) (+ (face-attribute 'default :height) 10))))
     (custom-theme-set-faces
      'my
      `(highlight ((t (:foreground ,fg-highlight :background ,bg-highlight))))
@@ -172,6 +172,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      ;; xref
      `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
      `(xref-match ((t (:foreground ,fg-match :background nil :weight bold))))
+
+     ;; comint buffer
+     `(comint-highlight-prompt ((t (:foreground ,fg :weight bold :height ,h2-height))))
 
      ;; eshell
      `(eshell-prompt ((t (:foreground ,fg :weight bold :height ,h2-height))))
