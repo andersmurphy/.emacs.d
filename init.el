@@ -184,9 +184,6 @@
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
 
-  ;; Prevent minibuffer jumping around when contents change
-  (setq resize-mini-windows nil)
-
   ;; Enable emoji
   (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend))
 (defun my/init ()
