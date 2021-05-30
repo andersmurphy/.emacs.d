@@ -128,7 +128,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(isearch      ((t (:foreground ,fg-highlight :background ,bg-highlight))))
      `(isearch-fail ((t (:foreground ,fg :background ,red))))
      `(lazy-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
-     `(minibuffer-prompt            ((t (:foreground ,fg :weight bold :height ,h2-height))))
+     `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-constant-face      ((t (:foreground ,nil))))
      `(font-lock-builtin-face       ((t (:foreground ,nil))))
