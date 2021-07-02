@@ -224,7 +224,10 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(org-level-1 ((t (:foreground ,fg :background ,bg :height 1.5 :weight bold))))
      `(org-level-2 ((t (:foreground ,fg :background ,bg :height 1.2 :weight normal))))
      `(org-level-3 ((t (:foreground ,fg :background ,bg :height 1.0 :weight bold))))
-     `(org-level-4 ((t (:foreground ,fg :background ,bg :height 1.0 :weight normal)))))))
+     `(org-level-4 ((t (:foreground ,fg :background ,bg :height 1.0 :weight normal))))
+     ;; eww
+     `(eww-valid-certificate ((t (:foreground ,fg))))
+     `(eww-invalid-certificate ((t (:foreground ,fg-error)))))))
 
 (provide-theme 'my)
 ;;; my-theme.el ends here
