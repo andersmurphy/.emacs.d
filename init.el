@@ -355,7 +355,9 @@
    'default nil
    :height (+ (face-attribute 'default :height) 10))
   (when (eq major-mode 'nov-mode)
-    (my/nov-rerender-without-losing-point)))
+    (my/nov-rerender-without-losing-point))
+  (when (eq major-mode 'eww-mode)
+    (eww-reload t)))
 (defun my/zoom-out ()
   "Zoom out all buffers."
   (interactive)
@@ -363,7 +365,9 @@
    'default nil
    :height (- (face-attribute 'default :height) 10))
   (when (eq major-mode 'nov-mode)
-    (my/nov-rerender-without-losing-point)))
+    (my/nov-rerender-without-losing-point))
+  (when (eq major-mode 'eww-mode)
+    (eww-reload t)))
 (defun my/what-face (pos)
   "Get face under at POS."
   (interactive "d")
@@ -869,8 +873,6 @@
   :straight nil
   :config
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
-  ;; use default font/text size
-  (setq shr-use-fonts nil)
   ;; ignore html specified colours
   (setq shr-use-colors nil)
   ;; disable images
@@ -879,7 +881,11 @@
   (setq shr-image-animate nil)
   ;; don't render screen reader hidden tags
   ;; reduces noise on some sites
-  (setq shr-discard-aria-hidden t))
+  (setq shr-discard-aria-hidden t)
+  (defun my/eww-font-setup ()
+    (face-remap-add-relative 'variable-pitch
+                             :height 1.3))
+  :hook (eww-mode . my/eww-font-setup))
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
 (when (file-directory-p "~/.emacs.d/emacs-sync")
