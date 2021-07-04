@@ -226,7 +226,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(org-level-3 ((t (:foreground ,fg :background ,bg :height 1.0 :weight bold))))
      `(org-level-4 ((t (:foreground ,fg :background ,bg :height 1.0 :weight normal))))
      ;; eww
-     `(eww-valid-certificate ((t (:foreground ,fg))))
+     `(eww-valid-certificate ((t (:foreground ,fg-success))))
      `(eww-invalid-certificate ((t (:foreground ,fg-error)))))))
 
 (provide-theme 'my)
