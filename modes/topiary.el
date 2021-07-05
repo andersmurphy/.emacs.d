@@ -656,7 +656,7 @@ Otherwise insert double quote."
             (string-match "[[:alnum:]-_/(?!:]" a-char))
       (topiary/wrap-with "\"" "\""))
      ((or   (string-match "[[:alnum:]]" b-char)
-            (string-match "[[:alnum:](]" a-char))
+            (string-match "[[:alnum:]\[(]" a-char))
       (insert "'"))
      (t (topiary/insert-pair "\"\"")))))
 
