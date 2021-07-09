@@ -562,8 +562,9 @@ Examples:
   (foo bar)| (baz)   -> foo bar| (baz)
   |(foo bar baz)     -> |foo bar baz
   |(foo bar) (baz)   -> |foo bar (baz)
-  #{|foo bar baz}    -> |foo bar baz
-  #(|foo %)          -> |foo %"
+  #|{foo bar baz}    -> |foo bar baz
+  #|(foo %)          -> |foo %
+  |\"foo\"           -> |foo"
   (interactive)
   (save-mark-and-excursion
     (condition-case nil
@@ -591,15 +592,17 @@ Examples:
     (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
                (delete-region (- (point) 1) (+ (point) 1)))
-              ((or (topiary/in-string-p) (topiary/in-comment-p))
+              ((and (topiary/in-string-p)
+                    (equal (char-after) ?\\)
+                    (equal (char-after (+ (point) 1)) ?\"))
+               (topiary/delete-escaped-double-quote))
+              ((and (or (topiary/in-string-p) (topiary/in-comment-p))
+                    (not (equal (char-after) ?\")))
                (topiary/hungry-delete-forward))
               ((or (topiary/before-empty-pair-p)
                    (topiary/before-empty-string-p))
                (delete-region  (point)  (+ (point) 2)))
-              ((and (topiary/in-string-p)
-                    (equal (char-after) ?\\))
-               (topiary/delete-escaped-double-quote))
-              ((member (char-after) (string-to-list ")]}"))
+              ((member (char-after) (string-to-list ")]}\""))
                (save-excursion (forward-char) (topiary/unwrap)))
               ((not (member (char-after) (string-to-list "\"{[(")))
                (topiary/hungry-delete-forward)))
@@ -612,15 +615,17 @@ Examples:
     (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
                (delete-region (- (point) 1) (+ (point) 1)))
-              ((or (topiary/in-string-p) (topiary/in-comment-p))
+              ((and (topiary/in-string-p)
+                    (equal (char-before) ?\")
+                    (equal (char-before (- (point) 1)) ?\\))
+               (topiary/delete-escaped-double-quote))
+              ((and (or (topiary/in-string-p) (topiary/in-comment-p))
+                    (not (equal (char-before) ?\")))
                (topiary/hungry-delete-backward))
               ((or (topiary/after-empty-pair-p)
                    (topiary/after-empty-string-p))
                (delete-region  (- (point) 2) (point)))
-              ((and (topiary/in-string-p)
-                    (equal (char-before) ?\"))
-               (topiary/delete-escaped-double-quote))
-              ((member (char-before) (string-to-list "{[("))
+              ((member (char-before) (string-to-list "{[(\""))
                (save-excursion (backward-char) (topiary/unwrap)))
               ((not (member (char-before) (string-to-list "\")]}")))
                (topiary/hungry-delete-backward)))
