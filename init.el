@@ -713,6 +713,10 @@
   :straight nil
   :init
   :hook ((text-mode prog-mode comint-mode outline-mode) . topiary-mode))
+(use-package special-mode
+  :straight nil
+  :bind (:map special-mode-map
+              ("C-w" . topiary/smart-kill)))
 
 ;;; LINTING
 (use-package flyspell
