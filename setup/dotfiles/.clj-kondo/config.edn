@@ -1,5 +1,6 @@
 {:lint-as {com.fulcrologic.fulcro.components/defsc      clojure.core/defn
-           com.fulcrologic.fulcro.mutations/defmutation clojure.core/defn}
+           com.fulcrologic.fulcro.mutations/defmutation clojure.core/defn
+           helix.core/defnc                             clojure.core/defn}
  :linters {:unresolved-symbol
            {:exclude
             [(com.fulcrologic.fulcro.mutations/defmutation)]}}}
