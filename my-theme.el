@@ -104,6 +104,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
          (bg-region (if (my/is-light-color-p bg)
                         (my/darken-color bg 0.1)
                       (my/lighten-color bg 0.1)))
+         (bg-button (if (my/is-light-color-p bg)
+                        (my/darken-color bg-region 0.1)
+                      (my/lighten-color bg-region 0.1)))
          (fg-comment (if (my/is-light-color-p bg)
                          (my/lighten-color fg 0.3)
                        (my/darken-color fg 0.3)))
@@ -157,18 +160,24 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(selectrum-primary-highlight ((t (:foreground ,bg-highlight :weight bold :distant-foreground ,fg-highlight))))
      `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
      `(custom-state ((t (:foreground ,green))))
-     `(widget-field ((t (:background ,bg-region
-                                     :box (:line-width 2 :style pressed-button)))))
 
-     ;; buttons
+     ;; buttons and fields
      `(custom-button ((t (:weight bold
-                                  :background ,bg-region
+                                  :background ,bg-button
                                   :foreground ,fg
                                   :box (:line-width 2 :style released-button)))))
      `(help-key-binding ((t (:weight bold
-                                     :background ,bg-region
+                                     :background ,bg-button
                                      :foreground ,fg
                                      :box (:line-width 2 :style released-button)))))
+     `(widget-field ((t (:background ,bg-button
+                                     :box (:line-width 2 :style pressed-button)))))
+     `(eww-form-submit ((t (:weight bold
+                                    :background ,bg-button
+                                    :foreground ,fg
+                                    :box (:line-width 2 :style released-button)))))
+     `(eww-form-text ((t (:background ,bg-button
+                                      :box (:line-width 2 :style pressed-button)))))
 
      ;; xref
      `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
