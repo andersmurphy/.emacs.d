@@ -890,6 +890,10 @@
     (face-remap-add-relative 'variable-pitch
                              :height 1.3))
   :hook (eww-mode . my/eww-font-setup))
+(use-package elfeed
+  :config
+  (setq elfeed-feeds
+        '(("https://clojure.org/feed.xml" clojure))))
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
 (when (file-directory-p "~/.emacs.d/emacs-sync")
