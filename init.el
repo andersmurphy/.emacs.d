@@ -893,7 +893,7 @@
 (use-package elfeed
   :config
   (setq elfeed-feeds
-        '(("https://clojure.org/feed.xml" clojure)))
+        '(("https://clojure.org/feed.xml" clj)))
   (setq elfeed-db-directory "~/.emacs.d/emacs-sync/elfeed/"))
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
