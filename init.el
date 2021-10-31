@@ -501,6 +501,20 @@
       (isearch-yank-string
        (buffer-substring-no-properties beg end))))
 
+  (defun my/isearch-forward-sexp-at-point ()
+    (interactive)
+    (let ((bounds (bounds-of-thing-at-point 'sexp)))
+      (cond
+       (bounds
+        (when (< (car bounds) (point))
+          (goto-char (car bounds)))
+        (isearch-yank-string
+         (buffer-substring-no-properties (car bounds) (cdr bounds))))
+       (t
+        (setq isearch-error "No symbol or string at point")
+        (isearch-push-state)
+        (isearch-update)))))
+
   :bind
   ("C-s" . isearch-forward)
   ("C-r" . my/isearch-prefill)
@@ -511,7 +525,7 @@
         ("C-g" . isearch-cancel)
         ("C-n" . isearch-repeat-forward)
         ("C-p" . isearch-repeat-backward)
-        ("C-s" . isearch-forward-symbol-at-point)
+        ("C-s" . my/isearch-forward-sexp-at-point)
         ("C-v" . isearch-yank-kill)
         ("C-r" . my/replace-in-buffer)))
 (use-package selectrum
@@ -524,6 +538,12 @@
 (use-package project
   :straight nil
   :after eglot
+  :config
+  ;; Monkey patch project--read-regexp to use sexp rather than symbol
+  (defun project--read-regexp ()
+    (let ((sym (thing-at-point 'sexp t)))
+      (read-regexp "Find regexp" (and sym (regexp-quote sym))
+                   project-regexp-history-variable)))
   :bind
   ("C-x p" . project-find-file)
   ("C-M-s" . project-find-regexp))
