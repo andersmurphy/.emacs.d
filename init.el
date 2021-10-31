@@ -842,6 +842,11 @@
   :config
   (setq indent-tabs-mode nil)
   (setq js-indent-level 2))
+;; Css
+(use-package css-mode
+  :straight nil
+  :config
+  (setq css-indent-offset 2))
 
 ;;; MEDIA
 (use-package nov
