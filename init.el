@@ -798,12 +798,12 @@
   :demand t
   :config
   (setq eglot-sync-connect 0)
-  (setq eglot-ignored-server-capabilites
+  (setq eglot-ignored-server-capabilities
         '(:documentHighlightProvider
           :hoverProvider
           :signatureHelpProvider))
   (add-to-list 'eglot-server-programs
-               '((clojure-mode clojurescript-mode) . ("bash" "-c" "clojure-lsp")))
+               '((clojure-mode clojurescript-mode) . ("clojure-lsp")))
   (add-to-list 'eglot-server-programs
                '((js-mode typescript-mode) . ("typescript-language-server" "--stdio")))
   :hook
