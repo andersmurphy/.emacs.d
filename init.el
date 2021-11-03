@@ -867,6 +867,16 @@
   :straight nil
   :config
   (setq css-indent-offset 2))
+;; Markdown
+(use-package markdown-mode
+  :straight nil
+  :init
+  (defun my/md-font-setup ()
+
+    (face-remap-add-relative 'variable-pitch
+                             :height 1.3))
+  :hook ((markdown-mode . variable-pitch-mode)
+         (markdown-mode . my/md-font-setup)))
 
 ;;; MEDIA
 (use-package nov
