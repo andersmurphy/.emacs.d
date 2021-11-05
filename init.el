@@ -872,9 +872,9 @@
   :straight nil
   :init
   (defun my/md-font-setup ()
-
     (face-remap-add-relative 'variable-pitch
-                             :height 1.3))
+                             :height 1.3)
+    (set-face-attribute 'markdown-code-face nil :height 0.9))
   :hook ((markdown-mode . variable-pitch-mode)
          (markdown-mode . my/md-font-setup)))
 
