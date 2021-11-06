@@ -130,7 +130,6 @@ Optionally CLJ-LISP-PROG can be specified"
     (let ((file-and-prog (my/try-to-find-project-file
                           (file-name-directory (buffer-file-name))
                           clj-lisp-prog)))
-      (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
 (defun my/clj-inferior-lisp (&optional mode)
