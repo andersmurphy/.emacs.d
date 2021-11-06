@@ -102,8 +102,9 @@
 
 (defun my/try-to-find-project-file (dirname &optional clj-lisp-prog)
   "Will try to find the correct project root project.clj/deps.edn file.
-In the case of nested projects will find the nearest project.clj/deps.edn file.
-Works up directories starting from the current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
+In the case of nested projects will find the nearest
+project.clj/deps.edn file. Works up directories starting from the
+current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
   (cond
    ((file-exists-p (concat dirname "project.clj"))
     (list (concat dirname "project.clj")
@@ -145,7 +146,10 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
            (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
-  "Open REPL in window that is not the current buffer. If there is only the current buffer split window right. Will try to find the project root and open the correct REPL type accordingly. Optionally CLJ-LISP-PROG can be specified."
+  "Open REPL in window that is not the current buffer.
+If there is only the current buffer split window right. Will try
+to find the project root and open the correct REPL type
+accordingly. Optionally CLJ-LISP-PROG can be specified."
   (interactive)
   (let ((mode  major-mode))
     (when (one-window-p)
@@ -173,7 +177,8 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
   (my/clj-open-repl clj-lisp-prog))
 
 (defun my/try-to-find-git-root (dirname)
-  "Will try and find the nearest root for project. Works up directories starting from the current files directory DIRNAME."
+  "Will try and find the nearest root for project.
+Works up directories starting from the current files directory DIRNAME."
   (cond
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
@@ -205,7 +210,7 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
    (my/show-repl)))
 
 (defun my/clj-apropos ()
-  "Given a regular expression return a list of all definitions in all currently loaded namespaces that match."
+  "Given a regex return a list of defs in loaded namespaces that match."
   (interactive)
   (my/when-repl-running
    (my/clj-eval
@@ -218,7 +223,7 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
    (my/show-repl)))
 
 (defun my/clj-find-doc ()
-  "Given a regular expression print documentation for any vars whose documentation or name contain a match."
+  "Given a regex print doc for any vars whose doc or name contain a match."
   (interactive)
   (my/when-repl-running
    (my/clj-eval
