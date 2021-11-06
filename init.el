@@ -259,13 +259,6 @@
               ("RET" . dired-find-alternate-file)
               ("h" . dired-previous-line)
               ("p" . describe-mode)))
-(use-package ansi-color
-  :config
-  (progn
-    (defun my/ansi-colorize-buffer ()
-      (let ((inhibit-read-only t))
-        (ansi-color-apply-on-region (point-min) (point-max))))
-    (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)))
 (use-package so-long
   :straight nil
   :config
@@ -348,7 +341,10 @@
   (add-hook 'emacs-lisp-mode-hook 'my/dim-parens)
   (add-hook 'eshell-mode-hook 'my/color-important-words)
   (add-hook 'inferior-lisp-mode-hook 'my/color-important-words)
-  (add-hook 'shell-mode-hook 'my/color-important-words))
+  (add-hook 'inferior-lisp-mode-hook 'ansi-color-for-comint-mode-filter)
+  (add-hook 'shell-mode-hook 'my/color-important-words)
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-filter)
+  (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
 (defun my/zoom-in ()
   "Zoom in all buffers."
   (interactive)
