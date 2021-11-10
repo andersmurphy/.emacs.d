@@ -59,8 +59,8 @@
 (defmacro comment (&rest _)
   "Ignore BODY, yields nil."
   nil)
-(use-package dash)
-(use-package edn)
+(use-package dash) ;; functional helpers
+(use-package edn)  ;; edn parsing
 (use-package elisp-mode
   :straight nil
   :config
@@ -73,6 +73,7 @@
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
               :map lisp-interaction-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
+(use-package pcre2el) ;; regex conversion
 
 ;;; CONTROLS
 (progn ;; Defaults
@@ -555,7 +556,7 @@
   (setq magit-diff-refine-hunk 'all)
   (setq magit-diff-refine-ignore-whitespace t)
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
-  ;; Allows q to be used to quite transient buffers
+  ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
 
   (defun my/magit-spin-off-pull-request ()
@@ -570,20 +571,40 @@
       (forge-create-pullreq (concat "origin/" branch) "origin/master")))
 
   (defun my/magit-search-git-log-for-change ()
-    "Search git log. Default to symbol or sexp at point."
+    "Search git log for current symbol or topiary region.
+
+If region spans multiple lines does regex or of each trimmed line.
+This effectively returns all changes to that set of lines. Or anything
+in the file that matches that one of those lines.
+
+Lines containing common patterns that appear throughout the file can
+lead to unrelated results. For example '(interactive)' in this file
+would lead to a large number of unrelated results as it's a very
+common occurrence.
+
+If this becomes a problem these common lines could be filtered."
     (interactive)
-    (let* ((sym (or (thing-at-point 'symbol) (thing-at-point 'sexp)))
-           (regex (read-regexp
-                   "Search git change"
-                   (and sym (concat "[[{(\s\n]"
-                                    (regexp-quote sym)
-                                    "[]})\s\n]")))))
+    (let* ((bounds (topiary/smart-kill-bounds))
+           (region-str (or
+                        (thing-at-point 'symbol t)
+                        (buffer-substring (car bounds) (cdr bounds))))
+           (pcre-regex (and region-str
+                            (concat
+                             "("
+                             (mapconcat
+                              (lambda (line)
+                                (concat ".?" (string-trim line) ".?"))
+                              (split-string
+                               (rxt-elisp-to-pcre
+                                (regexp-quote region-str)) "\n")
+                              "|")
+                             ")"))))
       (if-let ((file (magit-file-relative-name)))
           (magit-log-setup-buffer
            (list (or magit-buffer-refname
                      (magit-get-current-branch)
                      "HEAD"))
-           (list  "--follow" (concat "-G" regex))
+           (list  "--follow" (concat "-G " pcre-regex))
            (and file (list file))
            magit-log-buffer-file-locked)
         (user-error "Buffer isn't visiting a file"))))
