@@ -51,6 +51,8 @@ cd emacs
 git checkout emacs-28
 ./autogen.sh
 ./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
+
+make -j$(nproc)
 wait
 
 make clean install
