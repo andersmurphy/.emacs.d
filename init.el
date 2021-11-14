@@ -55,6 +55,7 @@
   ;; Prevents error if the custom.el file doesn't exist
   (load custom-file 'noerror))
 
+;; Needs to be called as soon as possible for native compilation
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns x))
   :config
