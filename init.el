@@ -228,6 +228,14 @@
     (other-window 1)
     (switch-to-buffer other-buff)
     (other-window 1)))
+(use-package Info-mode
+  :straight nil
+  :init
+  (defun my/info-font-setup ()
+    (face-remap-add-relative 'variable-pitch
+                             :height 1.3))
+  :hook ((Info-mode . variable-pitch-mode)
+         (Info-mode . my/info-font-setup)))
 (use-package super-save
   :config
   (super-save-mode t)
