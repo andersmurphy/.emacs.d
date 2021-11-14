@@ -30,3 +30,4 @@ emms
 /request/
 /transient/*
 /var/prescient-save.el
+eln-cache/

@@ -40,9 +40,24 @@ git config --global core.excludesfile '~/.gitignore'
 
 git config --global diff.algorithm histogram
 
-brew tap daviderestivo/emacs-head
-brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
+brew install libxml2 gcc libgccjit
 wait
+
+# We clone a single branch for a slightly smaller download
+git clone https://git.savannah.gnu.org/git/emacs.git --branch emacs-28 --single-branch
+wait
+
+cd emacs
+git checkout emacs-28
+./autogen.sh
+./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
+wait
+
+make clean install
+wait
+
+mv nextStep/Emacs.app /Applications
+cd
 
 brew install aspell
 wait

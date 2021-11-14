@@ -112,18 +112,27 @@ git config --global diff.algorithm histogram
 
 * Emacs
 
-Homebrew Emacs.app launches using a ruby script. As a result, MacOS Catalina uses the permissions set for ruby, not the permissions for Emacs.app.
-
-1. Open General Settings -> Security & Privacy -> Privacy
-2. select Full Disk Access in the left pane
-3. click + and add /usr/bin/ruby
-
-/usr is hidden by default on MacOS but you can toggle visibility in Finder by using Shift+Command+Period
+Build emacs from source:
 
 #+BEGIN_SRC sh
-brew tap daviderestivo/emacs-head
-brew install emacs-head@28 --with-cocoa --with-imagemagick --with-xwidgets
+brew install libxml2 gcc libgccjit
 wait
+
+# We clone a single branch for a slightly smaller download
+git clone https://git.savannah.gnu.org/git/emacs.git --branch emacs-28 --single-branch
+wait
+
+cd emacs
+git checkout emacs-28
+./autogen.sh
+./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
+wait
+
+make clean install
+wait
+
+mv nextStep/Emacs.app /Applications
+cd
 #+END_SRC
 
 ** Emacs External Dependencies
@@ -276,3 +285,7 @@ https://tonsky.me/blog/monitors/
    -- this will make your hard drive visible on the Desktop.
 3. From the "Sidebar" tab under "Devices" again place a check next to "Hard disks"
    -- this will put your hard drive in the sidebar of any finder window, and should also add it to "Open", "Save", and "Save As..." dialog sheets (as well as others)
+
+** /Usr
+
+/usr is hidden by default on MacOS but you can toggle visibility in Finder by using Shift+Command+Period

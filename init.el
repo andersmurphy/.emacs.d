@@ -55,6 +55,11 @@
   ;; Prevents error if the custom.el file doesn't exist
   (load custom-file 'noerror))
 
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize))
+
 ;;; EMACS LISP EXTENSION
 (defmacro comment (&rest _)
   "Ignore BODY, yields nil."
@@ -222,10 +227,6 @@
     (other-window 1)
     (switch-to-buffer other-buff)
     (other-window 1)))
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns x))
-  :config
-  (exec-path-from-shell-initialize))
 (use-package super-save
   :config
   (super-save-mode t)
