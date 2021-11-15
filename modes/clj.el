@@ -198,17 +198,6 @@ Works up directories starting from the current files directory DIRNAME."
            `(cljs.repl/doc ,(my/clj-symbol-at-point)))))
    (my/show-repl)))
 
-(defun my/clj-source-for-symbol ()
-  "Print source for symbol at point."
-  (interactive)
-  (my/when-repl-running
-   (my/clj-eval
-    (cond ((member major-mode '(clojure-mode clojurec-mode))
-           `(clojure.repl/source ,(my/clj-symbol-at-point)))
-          ((eq major-mode 'clojurescript-mode)
-           `(cljs.repl/source ,(my/clj-symbol-at-point)))))
-   (my/show-repl)))
-
 (defun my/clj-apropos ()
   "Given a regex return a list of defs in loaded namespaces that match."
   (interactive)
@@ -234,6 +223,56 @@ Works up directories starting from the current files directory DIRNAME."
            `(cljs.repl/find-doc
              (re-pattern ,(read-string "Find Doc (regex):"))))))
    (my/show-repl)))
+
+(defun my/clj-source-for-symbol ()
+  "Open buffer with source code of symbol at point."
+  (interactive)
+  (my/when-repl-running
+   (cond
+    ((member major-mode '(clojure-mode clojurec-mode))
+     (let ((ns (my/clj-symbol-at-point)))
+       (when ns
+         (let ((proc (inferior-lisp-proc))
+               (output-buffer "*CLJ-SOURCE*"))
+           (when (get-buffer output-buffer)
+             (kill-buffer output-buffer))
+           (set-buffer (get-buffer-create output-buffer))
+           (erase-buffer)
+           (comint-redirect-send-command-to-process
+            (my/clj-eval
+             `(try
+               (require (quote ,ns))
+               (some->> (quote ,ns)
+                        ns-publics
+                        vals
+                        first
+                        meta
+                        :file
+                        (.getResourceAsStream (clojure.lang.RT/baseLoader))
+                        slurp
+                        print)
+               (catch Exception e (clojure.repl/source ,ns))))
+            output-buffer
+            proc
+            nil t)
+           ;; Wait for the process to complete
+           (set-buffer (process-buffer proc))
+           (while (null comint-redirect-completed)
+             (accept-process-output nil 1))
+           ;; Collect the output
+           (set-buffer output-buffer)
+           ;; Remove nil from end of buffer
+           (switch-to-buffer output-buffer)
+           (goto-char (point-max))
+           (delete-char -5)
+           (goto-char (point-min))
+           ;; Modes
+           (read-only-mode)
+           (clojure-mode)
+           (kill-buffer-on-q)))))
+    ((eq major-mode 'clojurescript-mode)
+     `(cljs.repl/source ,(my/clj-symbol-at-point)))
+    (t (message "Mode not supported.")))))
 
 (defun my/clj-load-current-ns ()
   "Load current buffer namespace."
