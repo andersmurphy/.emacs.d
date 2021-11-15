@@ -233,7 +233,7 @@
   :init
   (defun my/info-font-setup ()
     (face-remap-add-relative 'variable-pitch
-                             :height 1.3))
+                             :height 1.2))
   :hook ((Info-mode . variable-pitch-mode)
          (Info-mode . my/info-font-setup)))
 (use-package super-save
@@ -905,7 +905,7 @@ If this becomes a problem these common lines could be filtered."
   :init
   (defun my/md-font-setup ()
     (face-remap-add-relative 'variable-pitch
-                             :height 1.3)
+                             :height 1.2)
     (set-face-attribute 'markdown-code-face nil :height 0.9))
   :hook ((markdown-mode . variable-pitch-mode)
          (markdown-mode . my/md-font-setup)))
@@ -955,7 +955,7 @@ If this becomes a problem these common lines could be filtered."
   (setq shr-discard-aria-hidden t)
   (defun my/eww-font-setup ()
     (face-remap-add-relative 'variable-pitch
-                             :height 1.3))
+                             :height 1.2))
   :hook (eww-mode . my/eww-font-setup))
 (use-package elfeed
   :config
