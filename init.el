@@ -274,6 +274,10 @@
   :straight nil
   :config
   (global-so-long-mode t))
+(load "~/.emacs.d/modes/kill-buffer-on-q.el")
+(use-package kill-buffer-on-q
+  ;; Convenience mode for killing buffer on q
+  :straight nil)
 
 ;;; VISUAL
 (progn ;; Defaults
@@ -857,8 +861,8 @@ If this becomes a problem these common lines could be filtered."
   (defun my/sql-toggle-up-down ()
     (interactive)
     (-> (buffer-file-name)
-      my/sql-find-up-or-down
-      find-file))
+        my/sql-find-up-or-down
+        find-file))
   :bind (:map sql-mode-map ("M-g t" . my/sql-toggle-up-down)))
 ;; Clojure
 (load "~/.emacs.d/modes/clj.el")
