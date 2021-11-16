@@ -117,6 +117,8 @@
   (global-set-key (kbd "C-x +") 'my/zoom-in)
   (global-set-key (kbd "C-x C-+") 'my/zoom-in)
   (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
+  ;; Unbind tmm-menubar as it is never used
+  (global-unset-key (kbd "M-`"))
 
   ;; Minibuffer binding
   (define-key minibuffer-local-map (kbd "C-v") 'yank)
