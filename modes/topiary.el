@@ -146,7 +146,8 @@
                        lisp-interaction-mode)))
 
 (defun topiary/back-to-indentation-or-beginning ()
-  "Go to first character in line. If already at first character go to beginning of line."
+  "Go to first character in line.
+If already at first character go to beginning of line."
   (interactive)
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
@@ -292,7 +293,8 @@ If end or beginning of outer sexp reached move point to other bound.
           (t (transpose-sexps 1)))))
 
 (defun topiary/insert-double-semicolon ()
-  "Insert two semicolons. Don't insert if it will break AST. Insert single semicolon if inside string."
+  "Insert two semicolons. Don't insert if it will break AST.
+Insert single semicolon if inside string."
   (interactive)
   (cond ((or (not (topiary/supported-mode-p))
              (topiary/in-string-p))
@@ -586,7 +588,8 @@ Examples:
     (delete-region beg end)))
 
 (defun topiary/delete-forward ()
-  "Delete forward char doesn't delete delimiter unless empty, in which case it deletes both."
+  "Delete forward char.
+Doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
   (unless (topiary/end-of-buffer-p)
     (if (topiary/supported-mode-p)
@@ -609,7 +612,8 @@ Examples:
       (topiary/hungry-delete-forward))))
 
 (defun topiary/delete-backward ()
-  "Delete backward char doesn't delete delimiter unless empty, in which case it deletes both."
+  "Delete backward char.
+Doesn't delete delimiter unless empty, in which case it deletes both."
   (interactive)
   (unless (topiary/beginning-of-buffer-p)
     (if (topiary/supported-mode-p)
