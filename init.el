@@ -210,11 +210,12 @@
   (interactive)
   (save-buffer)
   (load  "~/.emacs.d/init.el"))
+(setq split-width-threshold 80)
 (defun my/other-window ()
   "Switch to another window. If no other window exists create one."
   (interactive)
   (when (one-window-p)
-    (split-window-right))
+    (split-window))
   (other-window 1))
 (defun my/toggle-window-layout-vertical-horizontal ()
   "Switch from a vertical layout to a horizontal layout and vice versa."
