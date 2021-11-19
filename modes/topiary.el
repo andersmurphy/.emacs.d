@@ -548,13 +548,14 @@ Delete rather than kill when in mini buffer."
   "When in supported mode, forward sexp."
   (interactive)
   (when (topiary/supported-mode-p)
-    (forward-sexp)))
+    (or (ignore-errors (forward-sexp) t)
+        (topiary/smart-forward))))
 
 (defun topiary/smart-sexp-backward ()
   "When in supported mode, backward sexp."
   (interactive)
   (when (topiary/supported-mode-p)
-    (backward-sexp)))
+    (or (ignore-errors (backward-sexp) t) (topiary/smart-backward))))
 
 (defun topiary/unwrap ()
   "Unwrap the current expression. Works on ()[]{}\".
