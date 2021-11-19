@@ -718,11 +718,13 @@ delimiter (after forward char)."
                          (skip-chars-forward "^\n")
                          (point)))
           (initial-point (point)))
-      (cond  ((topiary/in-string-p) (skip-chars-forward "^\n\""))
-             ((topiary/on-comment-line-p) (skip-chars-forward "^\n"))
-             (t (while (and
-                        (ignore-errors (forward-sexp) t)
-                        (> end-of-line (point))))))
+      (cond ((= end-of-line (point)) (skip-chars-forward "\n"))
+            ((topiary/in-string-p) (skip-chars-forward "^\n\""))
+            ((topiary/on-comment-line-p) (skip-chars-forward "^\n"))
+            (t (while (and
+                       (ignore-errors (forward-sexp) t)
+                       (> end-of-line (point))))))
+      (skip-chars-forward "\s")
       (kill-region initial-point (point))))
    (t (kill-line))))
 
