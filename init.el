@@ -960,11 +960,6 @@ If this becomes a problem these common lines could be filtered."
     (face-remap-add-relative 'variable-pitch
                              :height 1.2))
   :hook (eww-mode . my/eww-font-setup))
-(use-package elfeed
-  :config
-  (setq elfeed-feeds
-        '(("https://clojure.org/feed.xml" clj)))
-  (setq elfeed-db-directory "~/.emacs.d/emacs-sync/elfeed/"))
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
 (when (file-directory-p "~/.emacs.d/emacs-sync")
