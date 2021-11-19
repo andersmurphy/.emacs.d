@@ -45,11 +45,11 @@
 (defun topiary/on-comment-line-p ()
   "Return t if point on non nestable comment line."
   (or (topiary/in-comment-p)
-      (and (not (= (point-max) (point)))
-           (save-excursion
-             (skip-chars-forward "^;\n")
-             (forward-char)
-             (topiary/in-comment-p)))))
+      (save-excursion
+        (skip-chars-forward "^;\n")
+        (when (not (= (point-max) (point)))
+          (forward-char))
+        (topiary/in-comment-p))))
 
 (defun topiary/in-empty-pair-p ()
   "Return t if point in empty pair."
