@@ -660,7 +660,7 @@ If next character is a alphanumeric or an opening paren insert single quote.
 Otherwise insert double quote."
   (interactive)
   (let ((b-char (if (char-before) (char-to-string (char-before)) ""))
-        (a-char (if (char-before) (char-to-string (char-after)) "")))
+        (a-char (if (char-after) (char-to-string (char-after)) "")))
     (cond
      ((and  (string-match "[[:alnum:]-_/:]" b-char)
             (string-match "[[:alnum:]-_/(?!:]" a-char))
