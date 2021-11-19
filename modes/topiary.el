@@ -716,6 +716,7 @@ delimiter (after forward char)."
    ((topiary/supported-mode-p)
     (let ((end-of-line (save-excursion
                          (skip-chars-forward "^\n")
+                         (skip-chars-backward "\s")
                          (point)))
           (initial-point (point)))
       (cond ((save-excursion
