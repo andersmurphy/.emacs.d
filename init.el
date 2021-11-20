@@ -215,7 +215,7 @@
   "Switch to another window. If no other window exists create one."
   (interactive)
   (when (one-window-p)
-    (split-window))
+    (split-window-sensibly))
   (other-window 1))
 (defun my/toggle-window-layout-vertical-horizontal ()
   "Switch from a vertical layout to a horizontal layout and vice versa."
