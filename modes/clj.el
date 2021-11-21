@@ -70,7 +70,11 @@
                (require (quote [pjstadig.humane-test-output]))
                (eval '(pjstadig.humane-test-output/activate!)))
      (set! *print-length* 30)
-     (clojure.main/repl :print (fn [x] (newline) (clojure.pprint/pprint x))))))
+     (clojure.main/repl :print (fn [x]
+                                   (newline)
+                                   (newline)
+                                   (clojure.pprint/pprint x)
+                                   (newline))))))
 
 (defun my/configure-cljs-repl ()
   "Configure global repl settings.")
