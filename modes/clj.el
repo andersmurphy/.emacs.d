@@ -197,9 +197,15 @@ Works up directories starting from the current files directory DIRNAME."
   (my/when-repl-running
    (my/clj-eval
     (cond ((member major-mode '(clojure-mode clojurec-mode))
-           `(clojure.repl/doc ,(my/clj-symbol-at-point)))
+           `(do
+             (newline)
+             (newline)
+             (clojure.repl/doc ,(my/clj-symbol-at-point))))
           ((eq major-mode 'clojurescript-mode)
-           `(cljs.repl/doc ,(my/clj-symbol-at-point)))))
+           `(do
+             (newline)
+             (newline)
+             (cljs.repl/doc ,(my/clj-symbol-at-point))))))
    (my/show-repl)))
 
 (defun my/clj-apropos ()
