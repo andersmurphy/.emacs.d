@@ -99,8 +99,8 @@
             (define-key map (kbd "C-t") 'topiary/smart-transpose)
             (define-key map (kbd "C-f") 'topiary/smart-forward)
             (define-key map (kbd "C-b") 'topiary/smart-backward)
-            (define-key map (kbd "M-f") 'topiary/smart-sexp-forward)
-            (define-key map (kbd "M-b") 'topiary/smart-sexp-backward)
+            (define-key map (kbd "M-f") 'topiary/smart-bounds-forward)
+            (define-key map (kbd "M-b") 'topiary/smart-bounds-backward)
             (define-key map (kbd "C-M-k") 'kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'topiary/kill-line)
@@ -545,18 +545,29 @@ Delete rather than kill when in mini buffer."
     (when (= initial-point (point))
       (backward-char 1))))
 
-(defun topiary/smart-sexp-forward ()
-  "When in supported mode, forward sexp."
+(defun topiary/smart-bounds-forward ()
+  "Forward topiary highlighted bounds."
   (interactive)
-  (when (topiary/supported-mode-p)
-    (or (ignore-errors (forward-sexp) t)
-        (topiary/smart-forward))))
+  (let* ((bounds (topiary/smart-kill-bounds))
+         (end-of-bounds (cdr bounds)))
+    (cond ((and bounds
+                (> end-of-bounds (point)))
+           (goto-char end-of-bounds))
+          (t (topiary/smart-forward)))))
 
-(defun topiary/smart-sexp-backward ()
-  "When in supported mode, backward sexp."
+(defun topiary/smart-bounds-backward ()
+  "Backward topiary highlighted bounds."
   (interactive)
-  (when (topiary/supported-mode-p)
-    (or (ignore-errors (backward-sexp) t) (topiary/smart-backward))))
+  (let* ((bounds (topiary/smart-kill-bounds))
+         (beginning-of-bounds (car bounds)))
+    (cond ((and bounds
+                (= 1 (abs (- beginning-of-bounds (cdr bounds)))))
+           (topiary/smart-backward)
+           (goto-char (car (topiary/smart-kill-bounds))))
+          ((and bounds
+                (< beginning-of-bounds (point)))
+           (goto-char beginning-of-bounds))
+          (t (topiary/smart-backward)))))
 
 (defun topiary/unwrap ()
   "Unwrap the current expression. Works on ()[]{}\".
