@@ -117,8 +117,11 @@
   (global-set-key (kbd "C-x +") 'my/zoom-in)
   (global-set-key (kbd "C-x C-+") 'my/zoom-in)
   (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
-  ;; Unbind tmm-menubar as it is never used
+  ;; Unbind tmm-menubar as I never use it.
   (global-unset-key (kbd "M-`"))
+  ;; Unbind scroll down as I never use it.
+  ;; Scroll up is also unbound (C-v is bound to something else).
+  (global-unset-key (kbd "M-v"))
 
   ;; Minibuffer binding
   (define-key minibuffer-local-map (kbd "C-v") 'yank)
