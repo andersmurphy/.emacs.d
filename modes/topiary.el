@@ -344,7 +344,8 @@ In the above example the n would be deleted. Handles comments."
   (let ((initial-point (point)))
     (skip-chars-forward "\n ")
     (cond ((= initial-point (point)) (delete-char 1))
-          ((eq last-command 'kill-region) (kill-region (point) initial-point))
+          ((eq last-command 'kill-region)
+           (kill-region initial-point (point)))
           (t (delete-region (point) initial-point)))))
 
 (defun topiary/bounds-of-space-before-opening-paren ()
