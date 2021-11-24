@@ -72,7 +72,6 @@
      (set! *print-length* 30)
      (clojure.main/repl :print (fn [x]
                                    (newline)
-                                   (newline)
                                    (clojure.pprint/pprint x)
                                    (newline))))))
 
