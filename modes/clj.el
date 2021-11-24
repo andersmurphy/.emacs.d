@@ -291,14 +291,14 @@ Works up directories starting from the current files directory DIRNAME."
    (let ((sym (my/clj-get-current-namespace-symbol)))
      ;; temp user ns prevents namespaces getting dirty
      ;; might not be needed
-     (my/clj-eval `(in-ns 'user))
-     (my/clj-eval `(do (when-not (find-ns ',sym)
+     (my/clj-eval `(do (in-ns 'user)
+                       (when-not (find-ns ',sym)
                                  ;; require can take :reload
                                  ;; to force a reload of the
                                  ;; on disk file
                                  (require ',sym)
-                                 nil)))
-     (my/clj-eval `(in-ns ',sym)))
+                                 nil)
+                       (in-ns ',sym))))
    (message "Namespace loaded.")))
 
 (defun my/clj-eval-buffer ()
