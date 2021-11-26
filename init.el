@@ -890,7 +890,10 @@ If this becomes a problem these common lines could be filtered."
            ;; Possibly type or metadata
            "\\(?:#?^\\(?:{[^}]*}\\|\\sw+\\)[ \r\n\t]*\\)*"
            "\\(" clojure--sym-regexp "\\)?")
-         (2 font-lock-function-name-face nil t)))))
+         (2 font-lock-function-name-face nil t))
+        ;; Highlights namespace part of function/keyword
+        (,(concat "\\(" clojure--sym-regexp "?\\)\\(/\\)\\(" clojure--sym-regexp "\\)")
+         (1 font-lock-type-face)))))
 
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
