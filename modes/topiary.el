@@ -578,17 +578,18 @@ Examples:
   (foo bar)| (baz)   -> foo bar| (baz)
   |(foo bar baz)     -> |foo bar baz
   |(foo bar) (baz)   -> |foo bar (baz)
-  #|{foo bar baz}    -> |foo bar baz
-  #|(foo %)          -> |foo %
+  #{|foo bar baz}    -> |foo bar baz
+  #(|foo %)          -> |foo %
   |\"foo\"           -> |foo"
   (interactive)
-  (save-mark-and-excursion
+  (save-excursion
     (condition-case nil
         (let ((bounds (topiary/smart-kill-bounds)))
           (goto-char (car bounds))
           (if (equal (char-after) ?\#)
-              (progn (delete-char 2)
-                     (goto-char (- (cdr bounds) 2)))
+              (progn
+                (delete-char 2)
+                (goto-char (- (cdr bounds) 2)))
             (progn (delete-char 1)
                    (goto-char (- (cdr bounds) 1))))
           (delete-char -1))
@@ -608,7 +609,9 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
   (unless (topiary/end-of-buffer-p)
     (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
-               (delete-region (- (point) 1) (+ (point) 1)))
+               (if (equal (char-before (- (point) 1)) ?\#)
+                   (delete-region (- (point) 2) (+ (point) 1))
+                 (delete-region (- (point) 1) (+ (point) 1))))
               ((and (topiary/in-string-p)
                     (equal (char-after) ?\\)
                     (equal (char-after (+ (point) 1)) ?\"))
@@ -632,7 +635,9 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
   (unless (topiary/beginning-of-buffer-p)
     (if (topiary/supported-mode-p)
         (cond ((or (topiary/in-empty-pair-p) (topiary/in-empty-string-p))
-               (delete-region (- (point) 1) (+ (point) 1)))
+               (if (equal (char-before (- (point) 1)) ?\#)
+                   (delete-region (- (point) 2) (+ (point) 1))
+                 (delete-region (- (point) 1) (+ (point) 1))))
               ((and (topiary/in-string-p)
                     (equal (char-before) ?\")
                     (equal (char-before (- (point) 1)) ?\\))
