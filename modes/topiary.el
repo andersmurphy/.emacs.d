@@ -578,21 +578,26 @@ Examples:
   (foo bar)| (baz)   -> foo bar| (baz)
   |(foo bar baz)     -> |foo bar baz
   |(foo bar) (baz)   -> |foo bar (baz)
-  #{|foo bar baz}    -> |foo bar baz
-  #(|foo %)          -> |foo %
-  |\"foo\"           -> |foo"
+  #|{foo bar baz}    -> |foo bar baz
+  #|(foo %)          -> |foo %
+  |\"foo\"           -> |foo
+  #_|(foo bar baz)   -> |foo bar baz"
   (interactive)
   (save-excursion
     (condition-case nil
-        (let ((bounds (topiary/smart-kill-bounds)))
-          (goto-char (car bounds))
-          (if (equal (char-after) ?\#)
-              (progn
-                (delete-char 2)
-                (goto-char (- (cdr bounds) 2)))
-            (progn (delete-char 1)
-                   (goto-char (- (cdr bounds) 1))))
-          (delete-char -1))
+        (progn
+          (when (and (equal (char-before (- (point) 1)) ?\#)
+                     (equal (char-after (- (point) 1)) ?\_))
+            (delete-char -2))
+          (let ((bounds (topiary/smart-kill-bounds)))
+            (goto-char (car bounds))
+            (if (equal (char-after) ?\#)
+                (progn
+                  (delete-char 2)
+                  (goto-char (- (cdr bounds) 2)))
+              (progn (delete-char 1)
+                     (goto-char (- (cdr bounds) 1))))
+            (delete-char -1)))
       (error (message "Can't unwrap top level")))))
 
 (defun topiary/delete-escaped-double-quote ()
