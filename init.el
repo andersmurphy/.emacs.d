@@ -827,7 +827,8 @@ If this becomes a problem these common lines could be filtered."
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
-              ("TAB" . company-complete-selection)
+              ("TAB" . company-complete)
+              ([tab] . company-complete)
               ("C-w" . topiary/smart-kill)))
 
 ;;; PROGRAMMING
