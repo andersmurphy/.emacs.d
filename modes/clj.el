@@ -246,7 +246,6 @@ Works up directories starting from the current files directory DIRNAME."
            (when (get-buffer output-buffer)
              (kill-buffer output-buffer))
            (set-buffer (get-buffer-create output-buffer))
-           (erase-buffer)
            (comint-redirect-send-command-to-process
             (my/clj-eval
              `(try
@@ -268,12 +267,12 @@ Works up directories starting from the current files directory DIRNAME."
            (set-buffer (process-buffer proc))
            (while (null comint-redirect-completed)
              (accept-process-output nil 1))
-           ;; Collect the output
            (set-buffer output-buffer)
            ;; Remove nil from end of buffer
            (switch-to-buffer output-buffer)
            (goto-char (point-max))
-           (delete-char -5)
+           (skip-chars-backward " \n nil")
+           (delete-region (point) (point-max))
            (goto-char (point-min))
            ;; Modes
            (read-only-mode)
