@@ -75,6 +75,12 @@
     (interactive)
     (describe-function (symbol-at-point)))
 
+  ;; Use function name face on use package declarations
+  (font-lock-add-keywords
+   'emacs-lisp-mode
+   '(("(\\(use-package\\)\\_>[   ']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
+      (2 font-lock-function-name-face nil t))))
+
   :bind (:map emacs-lisp-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
               :map lisp-interaction-mode-map
