@@ -101,7 +101,8 @@
             (define-key map (kbd "C-b") 'topiary/smart-backward)
             (define-key map (kbd "M-f") 'topiary/smart-bounds-forward)
             (define-key map (kbd "M-b") 'topiary/smart-bounds-backward)
-            (define-key map (kbd "C-M-k") 'kill-sexp)
+            (define-key map (kbd "C-M-k") 'topiary/kill-sexp)
+            (define-key map (kbd "M-k")   'topiary/kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'topiary/kill-line)
             (define-key map (kbd "C-d") 'topiary/delete-forward)
@@ -752,6 +753,13 @@ delimiter (after forward char)."
                       (skip-chars-forward "\s"))))
       (kill-region initial-point (point))))
    (t (kill-line))))
+
+(defun topiary/kill-sexp ()
+  "Kill sexp if in topiary supported mode otherwise. Kill sentence."
+  (interactive)
+  (if (topiary/supported-mode-p)
+      (kill-sexp)
+    (kill-sentence)))
 
 (provide 'topiary)
 ;;; topiary.el ends here
