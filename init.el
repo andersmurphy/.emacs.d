@@ -559,6 +559,9 @@
   :config
   (selectrum-prescient-mode t)
   (prescient-persist-mode t))
+(use-package company-prescient
+  :config
+  (company-prescient-mode t))
 (use-package project
   :straight nil
   :after eglot
