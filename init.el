@@ -106,7 +106,6 @@
   (global-set-key (kbd "C-z") 'undo)
   (global-set-key (kbd "C-x C-d") 'dired)
   (global-set-key (kbd "M-c") 'org-capture)
-  (global-set-key (kbd "C-v") 'yank)
   (global-set-key (kbd "C-x o") 'my/other-window)
   (global-set-key (kbd "C-o") 'my/other-window)
   (global-set-key (kbd "C-x k") 'kill-this-buffer)
@@ -130,7 +129,7 @@
   (global-unset-key (kbd "M-v"))
 
   ;; Minibuffer binding
-  (define-key minibuffer-local-map (kbd "C-v") 'yank)
+  (define-key minibuffer-local-map (kbd "C-v") 'topiary/smart-yank)
   (define-key minibuffer-local-map (kbd "C-w") 'topiary/smart-kill)
   (define-key minibuffer-local-map (kbd "C-o") 'my/other-window))
 (defun my/keyboard-firmware-tool ()

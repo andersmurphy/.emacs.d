@@ -106,6 +106,8 @@
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'topiary/kill-line)
             (define-key map (kbd "C-d") 'topiary/delete-forward)
+            (define-key map (kbd "C-y") 'topiary/smart-yank)
+            (global-set-key (kbd "C-v") 'topiary/smart-yank)
             (define-key map (kbd "DEL") 'topiary/delete-backward)
             (define-key map (kbd "C-)") 'topiary/forward-slurp)
             (define-key map (kbd "'")  (topiary/if-in-string
@@ -661,21 +663,18 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
       (topiary/hungry-delete-backward))))
 
 (defun topiary/smart-yank ()
-  "Overwrite current smart kill region when yanking."
+  "Like 'yank'. But calling 'yank' again will call 'yank-pop'."
   (interactive)
-  (unless (or (topiary/bounds-of-empty-string)
-              (topiary/bounds-of-empty-pair)
-              (topiary/bounds-of-punctuation-forward)
-              (topiary/bounds-of-punctuation-backward))
-    (let* ((bounds (topiary/smart-kill-bounds))
-           (bounds-directed (if (and bounds (> (point) (car bounds)))
-                                (cons (cdr bounds) (car bounds))
-                              bounds)))
-      (when bounds
-        (let ((beg (car bounds-directed))
-              (end (cdr bounds-directed)))
-          (delete-region beg end)))))
-  (yank))
+  (if (member last-command '(yank yank-pop))
+      (yank-pop)
+    (yank)))
+
+(defun topiary/kill-sexp ()
+  "Kill sexp if in topiary supported mode otherwise. Kill sentence."
+  (interactive)
+  (if (topiary/supported-mode-p)
+      (kill-sexp)
+    (kill-sentence)))
 
 (defun topiary/smart-quote ()
   "If previous and next character wrap in double quotes.
