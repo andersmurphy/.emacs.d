@@ -590,20 +590,19 @@
   (defun my/magit-spin-off-pull-request ()
     "Spin off last commit as a pull request."
     (interactive)
-    (let* ((commit-name (magit-rev-format
-                         "%s"
-                         (or (magit-get-current-branch) "HEAD")))
-           (branch (magit-read-string-ns
-                    "Spin off branch"
-                    (replace-regexp-in-string
-                     "\\s-+" "-"
-                     (downcase commit-name))))
-           (from (car (last (magit-region-values 'commit)))))
-      (magit--branch-spinoff branch from t)
-      (run-hooks 'magit-credential-hook)
-      (magit-run-git "push" "-u" "origin" branch)
-      (magit-branch-checkout "master")
-      (forge-create-pullreq (concat "origin/" branch) "origin/master")))
+    (when (y-or-n-p "Spin off pull request?")
+      (let* ((commit-name (magit-rev-format
+                           "%s"
+                           (or (magit-get-current-branch) "HEAD")))
+             (branch-name (replace-regexp-in-string
+                           "\\s-+" "-"
+                           (downcase commit-name)))
+             (from (car (last (magit-region-values 'commit)))))
+        (magit--branch-spinoff branch-name from t)
+        (run-hooks 'magit-credential-hook)
+        (magit-run-git "push" "-u" "origin" branch-name)
+        (magit-branch-checkout "master")
+        (forge-create-pullreq (concat "origin/" branch-name) "origin/master"))))
 
   (defun my/magit-search-git-log-for-change ()
     "Search git log for current symbol or topiary region.
