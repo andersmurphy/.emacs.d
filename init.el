@@ -604,6 +604,8 @@
         (magit-branch-checkout "master")
         (forge-create-pullreq (concat "origin/" branch-name) "origin/master"))))
 
+  (message "test")
+
   (defun my/magit-search-git-log-for-change ()
     "Search git log for current symbol or topiary region.
 
