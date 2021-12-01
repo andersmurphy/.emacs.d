@@ -590,8 +590,15 @@
   (defun my/magit-spin-off-pull-request ()
     "Spin off last commit as a pull request."
     (interactive)
-    (let ((branch (magit-read-string-ns "Spin off branch"))
-          (from (car (last (magit-region-values 'commit)))))
+    (let* ((commit-name (magit-rev-format
+                         "%s"
+                         (or (magit-get-current-branch) "HEAD")))
+           (branch (magit-read-string-ns
+                    "Spin off branch"
+                    (replace-regexp-in-string
+                     "\\s-+" "-"
+                     (downcase commit-name))))
+           (from (car (last (magit-region-values 'commit)))))
       (magit--branch-spinoff branch from t)
       (run-hooks 'magit-credential-hook)
       (magit-run-git "push" "-u" "origin" branch)
