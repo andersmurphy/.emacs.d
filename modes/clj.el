@@ -397,10 +397,14 @@ Works from both namespace and test namespace"
                               (replace-regexp-in-string "-" "_"))))
     (make-directory project-name-path)
     (find-file (concat project-name-path "/deps.edn"))
+    (insert "{:paths [\"src\"]
+ :deps {org.clojure/clojure {:mvn/version \"1.10.3\"}}
+ :aliases {}}")
     (save-buffer)
     (make-directory (concat project-name-path "/src"))
     (make-directory (concat project-name-path "/src/" namespace-name))
     (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
+    (clojure-insert-ns-form)
     (save-buffer)
     (find-file (concat project-name-path "/deps.edn"))))
 
