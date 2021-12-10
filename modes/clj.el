@@ -387,6 +387,23 @@ Works from both namespace and test namespace"
                          {'*warn-on-reflection* true}))
        (setq my/clj-warn-on-reflection-state t)))))
 
+(defun my/create-new-deps-project ()
+  "Create a new deps.edn project."
+  (interactive)
+  (let* ((project-name-path (read-directory-name "Directory:"))
+         (namespace-name (->> (split-string project-name-path "/")
+                              reverse
+                              car
+                              (replace-regexp-in-string "-" "_"))))
+    (make-directory project-name-path)
+    (find-file (concat project-name-path "/deps.edn"))
+    (save-buffer)
+    (make-directory (concat project-name-path "/src"))
+    (make-directory (concat project-name-path "/src/" namespace-name))
+    (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
+    (save-buffer)
+    (find-file (concat project-name-path "/deps.edn"))))
+
 (add-hook 'inferior-lisp-mode-hook
           (lambda()
             ;; Use clojure syntax table
