@@ -998,7 +998,8 @@ If this becomes a problem these common lines could be filtered."
   (defun my/eww-font-setup ()
     (face-remap-add-relative 'variable-pitch
                              :height 1.2))
-  :hook (eww-mode . my/eww-font-setup))
+  (add-hook 'eww-after-render-hook 'eww-readable)
+  :hook ((eww-mode . my/eww-font-setup)))
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
 (when (file-directory-p "~/.emacs.d/emacs-sync")
