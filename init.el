@@ -996,10 +996,12 @@ If this becomes a problem these common lines could be filtered."
   ;; reduces noise on some sites
   (setq shr-discard-aria-hidden t)
   (defun my/eww-font-setup ()
+    (interactive)
     (face-remap-add-relative 'variable-pitch
                              :height 1.2))
-  (add-hook 'eww-after-render-hook 'eww-readable)
-  :hook ((eww-mode . my/eww-font-setup)))
+  :hook ((eww-mode . my/eww-font-setup)
+         (eww-mode . variable-pitch-mode)
+         (eww-after-render . eww-readable)))
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
 (when (file-directory-p "~/.emacs.d/emacs-sync")
