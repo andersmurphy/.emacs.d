@@ -401,7 +401,7 @@ In the above example the n would be deleted. Handles comments."
   (when (topiary/in-comment-p)
     (cons (point) (- (point) 1))))
 
-(defun topiary/smart-kill-bounds ()
+(defun topiary/smart-bounds ()
   "Get current smart-kill bounds."
   (or (topiary/bounds-of-active-region)
       (topiary/bounds-of-html-tag-forward)
@@ -436,7 +436,7 @@ In the above example the n would be deleted. Handles comments."
   "Highlight current kill region."
   (interactive)
   (ignore-errors
-    (let ((bounds (topiary/smart-kill-bounds))
+    (let ((bounds (topiary/smart-bounds))
           (overlay     (or topiary/hl-current-kill-region-overlay
                            (topiary/hl-current-kill-region-make-overlay))))
       (if bounds
@@ -483,7 +483,7 @@ Delete rather than kill when in mini buffer."
 (defun topiary/smart-bounds-forward ()
   "Forward topiary highlighted bounds."
   (interactive)
-  (let* ((bounds (topiary/smart-kill-bounds))
+  (let* ((bounds (topiary/smart-bounds))
          (end-of-bounds (cdr bounds)))
     (cond ((and bounds
                 (> end-of-bounds (point)))
@@ -493,12 +493,12 @@ Delete rather than kill when in mini buffer."
 (defun topiary/smart-bounds-backward ()
   "Backward topiary highlighted bounds."
   (interactive)
-  (let* ((bounds (topiary/smart-kill-bounds))
+  (let* ((bounds (topiary/smart-bounds))
          (beginning-of-bounds (car bounds)))
     (cond ((and bounds
                 (= 1 (abs (- beginning-of-bounds (cdr bounds)))))
            (topiary/smart-backward)
-           (goto-char (car (topiary/smart-kill-bounds))))
+           (goto-char (car (topiary/smart-bounds))))
           ((and bounds
                 (< beginning-of-bounds (point)))
            (goto-char beginning-of-bounds))
@@ -508,7 +508,7 @@ Delete rather than kill when in mini buffer."
   "Wrap current symbol or sexp with OPENING-STRING CLOSING-STRING.
 Cursor point stays on the same character despite potential point shift."
   (let ((pair (concat opening-string closing-string))
-        (bounds (topiary/smart-kill-bounds)))
+        (bounds (topiary/smart-bounds)))
     (cond
      ((and (member (char-before) (string-to-list "({[") )
            (member (char-after) (string-to-list "\n ]})")))
@@ -559,7 +559,7 @@ Examples:
           (when (and (equal (char-before (- (point) 1)) ?\#)
                      (equal (char-after (- (point) 1)) ?\_))
             (delete-char -2))
-          (let ((bounds (topiary/smart-kill-bounds)))
+          (let ((bounds (topiary/smart-bounds)))
             (goto-char (car bounds))
             (if (equal (char-after) ?\#)
                 (progn
@@ -749,13 +749,6 @@ delimiter (after forward char)."
                       (skip-chars-forward "\s"))))
       (kill-region initial-point (point))))
    (t (kill-line))))
-
-(defun topiary/kill-sexp ()
-  "Kill sexp if in topiary supported mode otherwise. Kill sentence."
-  (interactive)
-  (if (topiary/supported-mode-p)
-      (kill-sexp)
-    (kill-sentence)))
 
 (provide 'topiary)
 ;;; topiary.el ends here
