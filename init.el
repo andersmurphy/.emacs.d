@@ -129,8 +129,8 @@
   (global-unset-key (kbd "M-v"))
 
   ;; Minibuffer binding
-  (define-key minibuffer-local-map (kbd "C-v") 'topiary/smart-yank)
-  (define-key minibuffer-local-map (kbd "C-w") 'topiary/smart-kill)
+  (define-key minibuffer-local-map (kbd "C-v") 'topiary/yank)
+  (define-key minibuffer-local-map (kbd "C-w") 'topiary/kill)
   (define-key minibuffer-local-map (kbd "C-o") 'my/other-window))
 (defun my/keyboard-firmware-tool ()
   "Open keyboard firmware configuration tool."
@@ -516,7 +516,7 @@
 
   (defun my/isearch-prefill ()
     (interactive)
-    (let* ((bounds (topiary/smart-kill-bounds))
+    (let* ((bounds (topiary/bounds))
            (beg (car bounds))
            (end (cdr bounds)))
       (goto-char beg)
@@ -618,7 +618,7 @@ common occurrence.
 
 If this becomes a problem these common lines could be filtered."
     (interactive)
-    (let* ((bounds (topiary/smart-kill-bounds))
+    (let* ((bounds (topiary/bounds))
            (region-str (or
                         (thing-at-point 'symbol t)
                         (buffer-substring (car bounds) (cdr bounds))))
@@ -711,7 +711,7 @@ If this becomes a problem these common lines could be filtered."
     "Prevent sequential duplicate items in kill ring."
     (let ((string (car args))
           (replace (cdr args))
-          (last (car-safe kill-ring)))
+          (last (kill-ring car-safe)))
       (when (equal last string)
         (setq replace t))
       (list string replace)))
@@ -788,7 +788,7 @@ If this becomes a problem these common lines could be filtered."
 (use-package special-mode
   :straight nil
   :bind (:map special-mode-map
-              ("C-w" . topiary/smart-kill)))
+              ("C-w" . topiary/kill)))
 
 ;;; LINTING
 (use-package flyspell
@@ -843,7 +843,7 @@ If this becomes a problem these common lines could be filtered."
               ("C-p" . company-select-previous)
               ("TAB" . company-complete)
               ([tab] . company-complete)
-              ("C-w" . topiary/smart-kill)))
+              ("C-w" . topiary/kill)))
 
 ;;; PROGRAMMING
 ;; LSP - Language Server Protocol
