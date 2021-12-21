@@ -374,10 +374,21 @@ In the above example the n would be deleted. Handles comments."
     (save-excursion
       (cons (point) (progn (sgml-skip-tag-backward 1) (point))))))
 
-(defun topiary/bounds-of-thing-at-point ()
-  "Like `bounds-of-thing-at-point` but doesn't do anything in strings."
+(defun topiary/bounds-of-sexp-at-point ()
+  "Like (bounds-of-thing-at-point 'sexp) but return nil in strings."
   (when (not (topiary/in-string-p))
     (bounds-of-thing-at-point 'sexp)))
+
+(defun topiary/bounds-of-word-at-point ()
+  "Like (bounds-of-thing-at-point 'word) when in string or comment.
+When not in string or comment only return bounds of word when not at
+edge of word. eg: foo|d would return the bounds of 'food'. But food| would
+ return nil."
+  (when (or (not (or (member (char-after)  (string-to-list "\n ]})"))
+                     (member (char-before) (string-to-list "\n ({["))))
+            (topiary/in-string-p)
+            (topiary/in-comment-p))
+    (bounds-of-thing-at-point 'word)))
 
 (defun topiary/bounds-of-char-in-comment ()
   "Return bounds char in comment."
@@ -393,7 +404,7 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-escaped-double-quote-in-string)
       (topiary/bounds-of-space-forward)
       (when (not (minibufferp))
-        (bounds-of-thing-at-point 'word))
+        (topiary/bounds-of-word-at-point))
       (topiary/bounds-of-strings-at-point '(";;" ";;;"))
       (topiary/bounds-of-punctuation-backward)
       (topiary/bounds-of-char-in-comment)
@@ -401,7 +412,7 @@ In the above example the n would be deleted. Handles comments."
       (topiary/bounds-of-single-bracket-in-string)
       (topiary/bounds-of-empty-string)
       (topiary/bounds-of-org-subtree)
-      (topiary/bounds-of-thing-at-point)
+      (topiary/bounds-of-sexp-at-point)
       (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
 
