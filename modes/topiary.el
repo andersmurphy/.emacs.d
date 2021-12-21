@@ -210,23 +210,6 @@ If the first item in the list is a member of the smart bracket SYMS list."
   "Return non-nil if no vector in SEXP."
   (not (seq-some #'vectorp sexp)))
 
-(defun topiary/smart-transpose ()
-  "Move sexp left if point at beginning. Otherwise move right.
-If end or beginning of outer sexp reached move point to other bound.
-
-\(a| b c) -> (b a| c) -> (b c a|) -> (b c |a) -> (b |a c) -> (|a b c) -> (b| a c)"
-  (interactive)
-  (let ((bounds (bounds-of-thing-at-point 'sexp)))
-    (cond ((not bounds)             (backward-sexp))
-          ((= (point) (car bounds))
-           (forward-sexp)
-           (condition-case nil
-               (progn
-                 (transpose-sexps -1)
-                 (backward-sexp))
-             (error (forward-sexp))))
-          (t (transpose-sexps 1)))))
-
 (defun topiary/insert-double-semicolon ()
   "Insert two semicolons. Don't insert if it will break AST.
 Insert single semicolon if inside string."
@@ -599,6 +582,23 @@ Examples:
   (interactive)
   (cond ((member major-mode '(clojure-mode clojurescript-mode clojurec-mode)) (topiary/smart-bracket-clojure))
         (t (topiary/smart-bracket-lisp))))
+
+(defun topiary/smart-transpose ()
+  "Move sexp left if point at beginning. Otherwise move right.
+If end or beginning of outer sexp reached move point to other bound.
+
+\(a| b c) -> (b a| c) -> (b c a|) -> (b c |a) -> (b |a c) -> (|a b c) -> (b| a c)"
+  (interactive)
+  (let ((bounds (topiary/smart-bounds)))
+    (cond ((not bounds)             (backward-sexp))
+          ((= (point) (car bounds))
+           (forward-sexp)
+           (condition-case nil
+               (progn
+                 (transpose-sexps -1)
+                 (backward-sexp))
+             (error (forward-sexp))))
+          (t (transpose-sexps 1)))))
 
 (defun topiary/delete-escaped-double-quote ()
   "Delete escaped double quote."
