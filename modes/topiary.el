@@ -115,7 +115,7 @@
                                         (topiary/quote)))
             (define-key map (kbd "(")  (topiary/if-in-string
                                         (insert "(")
-                                        (topiary/bracket)))
+                                        (topiary/wrap-with-parens)))
             (define-key map (kbd "[")  (topiary/if-in-string
                                         (insert "[")
                                         (topiary/wrap-with-brackets)))
@@ -156,59 +156,10 @@ If already at first character go to beginning of line."
   (if (= (point) (progn (back-to-indentation) (point)))
       (beginning-of-line)))
 
-(defun topiary/symbols-in-sexp ()
-  "Return list of strings before point in sexp."
-  (ignore-errors
-    (thread-last
-        (buffer-substring
-         (save-excursion (backward-up-list) (point))
-         (save-excursion (backward-up-list) (forward-sexp) (point)))
-      (replace-regexp-in-string "{" "(")
-      (replace-regexp-in-string "}" ")")
-      (replace-regexp-in-string "#" "")
-      read-from-string
-      car)))
-
-(defun topiary/symbols-in-outer-sexp ()
-  "Return list of strings before point in outer sexp."
-  (ignore-errors
-    (thread-last
-        (buffer-substring
-         (save-excursion (backward-up-list) (backward-up-list) (point))
-         (save-excursion (backward-up-list) (backward-up-list) (forward-sexp) (point)))
-      read-from-string
-      car
-      (seq-remove #'vectorp))))
-
 (defun topiary/insert-pair (pair)
   "Insert PAIR."
   (insert pair)
   (backward-char 1))
-
-(defvar topiary/sb-depth-1-syms
-  '(fn defn let defmacro if-let when-let binding assoc-in update-in
-       get-in select-keys defmethod with-redefs :keys :strs loop
-       when-some if-some letfn)
-  "List of symbols that trigger bracket at paren depth 1.")
-
-(defvar topiary/sb-depth-2-syms
-  '(fn defn defmacro defmethod :require :import)
-  "List of symbols that trigger  bracket at paren depth 2.")
-
-(defvar topiary/sb-always-bracket-syms
-  '(:require :import)
-  "List of symbols that's should always bracket.")
-
-(defun topiary/sb-p (syms sexp)
-  "Return t if SEXP satisfies bracket heuristic.
-If the first item in the list is a member of the bracket SYMS list."
-  (ignore-errors
-    (thread-first (car sexp)
-      (member syms))))
-
-(defun topiary/no-vector-in-sexp (sexp)
-  "Return non-nil if no vector in SEXP."
-  (not (seq-some #'vectorp sexp)))
 
 (defun topiary/insert-double-semicolon ()
   "Insert two semicolons. Don't insert if it will break AST.
@@ -564,30 +515,6 @@ Examples:
             (delete-char -1)))
       (error (message "Can't unwrap top level")))))
 
-(defun topiary/bracket-clojure ()
-  "Contextually insert [] when typing ()."
-  (interactive)
-  (let ((sexp (topiary/symbols-in-sexp))
-        (outer-sexp (topiary/symbols-in-outer-sexp)))
-    (cond ((or (bounds-of-thing-at-point 'sexp)
-               (bounds-of-thing-at-point 'symbol))
-           (topiary/wrap-with-parens))
-          ((or (topiary/sb-p topiary/sb-always-bracket-syms sexp)
-               (and (topiary/sb-p topiary/sb-depth-1-syms sexp)
-                    (topiary/no-vector-in-sexp sexp))
-               (and
-                (vectorp sexp)
-                (topiary/sb-p topiary/sb-depth-2-syms outer-sexp)))
-           (topiary/insert-pair "[]"))
-          (t (topiary/insert-pair "()")))))
-
-(defun topiary/bracket-lisp ()
-  "Wrap in parens if sexp otherwise insert parens."
-  (interactive)
-  (if (or (symbol-at-point) (sexp-at-point))
-      (topiary/wrap-with-parens)
-    (topiary/insert-pair "()")))
-
 (defun topiary/transpose ()
   "Move sexp left if point at beginning. Otherwise move right.
 If end or beginning of outer sexp reached move point to other bound.
@@ -604,12 +531,6 @@ If end or beginning of outer sexp reached move point to other bound.
                  (backward-sexp))
              (error (forward-sexp))))
           (t (transpose-sexps 1)))))
-
-(defun topiary/bracket ()
-  "Select appropriate bracket for LISP dialect."
-  (interactive)
-  (cond ((member major-mode '(clojure-mode clojurescript-mode clojurec-mode)) (topiary/bracket-clojure))
-        (t (topiary/bracket-lisp))))
 
 (defun topiary/delete-escaped-double-quote ()
   "Delete escaped double quote."
