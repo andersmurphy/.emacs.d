@@ -95,34 +95,34 @@
   :lighter " TP"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-a") 'topiary/back-to-indentation-or-beginning)
-            (define-key map (kbd "C-w") 'topiary/smart-kill)
-            (define-key map (kbd "C-t") 'topiary/smart-transpose)
-            (define-key map (kbd "C-f") 'topiary/smart-forward)
-            (define-key map (kbd "C-b") 'topiary/smart-backward)
-            (define-key map (kbd "M-f") 'topiary/smart-bounds-forward)
-            (define-key map (kbd "M-b") 'topiary/smart-bounds-backward)
+            (define-key map (kbd "C-w") 'topiary/kill)
+            (define-key map (kbd "C-t") 'topiary/transpose)
+            (define-key map (kbd "C-f") 'topiary/forward)
+            (define-key map (kbd "C-b") 'topiary/backward)
+            (define-key map (kbd "M-f") 'topiary/bounds-forward)
+            (define-key map (kbd "M-b") 'topiary/bounds-backward)
             (define-key map (kbd "C-M-k") 'topiary/kill-sexp)
             (define-key map (kbd "M-k")   'topiary/kill-sexp)
             (define-key map (kbd "C-M-h") 'backward-sexp)
             (define-key map (kbd "C-k") 'topiary/kill-line)
             (define-key map (kbd "C-d") 'topiary/delete-forward)
-            (define-key map (kbd "C-y") 'topiary/smart-yank)
-            (global-set-key (kbd "C-v") 'topiary/smart-yank)
+            (define-key map (kbd "C-y") 'topiary/yank)
+            (global-set-key (kbd "C-v") 'topiary/yank)
             (define-key map (kbd "DEL") 'topiary/delete-backward)
             (define-key map (kbd "C-)") 'topiary/forward-slurp)
             (define-key map (kbd "'")  (topiary/if-in-string
                                         (insert "'")
-                                        (topiary/smart-quote)))
+                                        (topiary/quote)))
             (define-key map (kbd "(")  (topiary/if-in-string
                                         (insert "(")
-                                        (topiary/smart-bracket)))
+                                        (topiary/bracket)))
             (define-key map (kbd "[")  (topiary/if-in-string
                                         (insert "[")
                                         (topiary/wrap-with-brackets)))
             (define-key map (kbd "{")  (topiary/if-in-string
                                         (insert "{")
                                         (topiary/wrap-with-braces)))
-            (define-key map (kbd "SPC")  'topiary/smart-space)
+            (define-key map (kbd "SPC")  'topiary/space)
             (define-key map (kbd ")")  (topiary/if-in-string (insert ")")))
             (define-key map (kbd "]")  (topiary/if-in-string (insert "]")))
             (define-key map (kbd "}")  (topiary/if-in-string (insert "}")))
@@ -189,19 +189,19 @@ If already at first character go to beginning of line."
   '(fn defn let defmacro if-let when-let binding assoc-in update-in
        get-in select-keys defmethod with-redefs :keys :strs loop
        when-some if-some letfn)
-  "List of symbols that trigger smart bracket at paren depth 1.")
+  "List of symbols that trigger bracket at paren depth 1.")
 
 (defvar topiary/sb-depth-2-syms
   '(fn defn defmacro defmethod :require :import)
-  "List of symbols that trigger smart bracket at paren depth 2.")
+  "List of symbols that trigger  bracket at paren depth 2.")
 
 (defvar topiary/sb-always-bracket-syms
   '(:require :import)
   "List of symbols that's should always bracket.")
 
 (defun topiary/sb-p (syms sexp)
-  "Return t if SEXP satisfies smart bracket heuristic.
-If the first item in the list is a member of the smart bracket SYMS list."
+  "Return t if SEXP satisfies bracket heuristic.
+If the first item in the list is a member of the bracket SYMS list."
   (ignore-errors
     (thread-first (car sexp)
       (member syms))))
@@ -384,8 +384,8 @@ In the above example the n would be deleted. Handles comments."
   (when (topiary/in-comment-p)
     (cons (point) (- (point) 1))))
 
-(defun topiary/smart-bounds ()
-  "Get current smart-kill bounds."
+(defun topiary/bounds ()
+  "Get current kill bounds."
   (or (topiary/bounds-of-active-region)
       (topiary/bounds-of-html-tag-forward)
       (topiary/bounds-of-html-tag-backward)
@@ -419,7 +419,7 @@ In the above example the n would be deleted. Handles comments."
   "Highlight current kill region."
   (interactive)
   (ignore-errors
-    (let ((bounds (topiary/smart-bounds))
+    (let ((bounds (topiary/bounds))
           (overlay     (or topiary/hl-current-kill-region-overlay
                            (topiary/hl-current-kill-region-make-overlay))))
       (if bounds
@@ -429,7 +429,7 @@ In the above example the n would be deleted. Handles comments."
                         (current-buffer))
         (delete-overlay topiary/hl-current-kill-region-overlay)))))
 
-(defun topiary/smart-kill ()
+(defun topiary/kill ()
   "Kill current topiary overlay. If neither hungry delete backward.
 Delete rather than kill when in mini buffer."
   (interactive)
@@ -447,7 +447,7 @@ Delete rather than kill when in mini buffer."
             (kill-region beg end)))
       (topiary/hungry-delete-backward))))
 
-(defun topiary/smart-forward ()
+(defun topiary/forward ()
   "Move forward skips over whitespace."
   (interactive)
   (let ((initial-point (point)))
@@ -455,7 +455,7 @@ Delete rather than kill when in mini buffer."
     (when (= initial-point (point))
       (forward-char 1))))
 
-(defun topiary/smart-backward ()
+(defun topiary/backward ()
   "Move backward skip over whitespace."
   (interactive)
   (let ((initial-point (point)))
@@ -463,35 +463,35 @@ Delete rather than kill when in mini buffer."
     (when (= initial-point (point))
       (backward-char 1))))
 
-(defun topiary/smart-bounds-forward ()
+(defun topiary/bounds-forward ()
   "Forward topiary highlighted bounds."
   (interactive)
-  (let* ((bounds (topiary/smart-bounds))
+  (let* ((bounds (topiary/bounds))
          (end-of-bounds (cdr bounds)))
     (cond ((and bounds
                 (> end-of-bounds (point)))
            (goto-char end-of-bounds))
-          (t (topiary/smart-forward)))))
+          (t (topiary/forward)))))
 
-(defun topiary/smart-bounds-backward ()
+(defun topiary/bounds-backward ()
   "Backward topiary highlighted bounds."
   (interactive)
-  (let* ((bounds (topiary/smart-bounds))
+  (let* ((bounds (topiary/bounds))
          (beginning-of-bounds (car bounds)))
     (cond ((and bounds
                 (= 1 (abs (- beginning-of-bounds (cdr bounds)))))
-           (topiary/smart-backward)
-           (goto-char (car (topiary/smart-bounds))))
+           (topiary/backward)
+           (goto-char (car (topiary/bounds))))
           ((and bounds
                 (< beginning-of-bounds (point)))
            (goto-char beginning-of-bounds))
-          (t (topiary/smart-backward)))))
+          (t (topiary/backward)))))
 
 (defun topiary/wrap-with (opening-string closing-string)
   "Wrap current symbol or sexp with OPENING-STRING CLOSING-STRING.
 Cursor point stays on the same character despite potential point shift."
   (let ((pair (concat opening-string closing-string))
-        (bounds (topiary/smart-bounds)))
+        (bounds (topiary/bounds)))
     (cond
      ((and (member (char-before) (string-to-list "({[") )
            (member (char-after) (string-to-list "\n ]})")))
@@ -542,7 +542,7 @@ Examples:
           (when (and (equal (char-before (- (point) 1)) ?\#)
                      (equal (char-after (- (point) 1)) ?\_))
             (delete-char -2))
-          (let ((bounds (topiary/smart-bounds)))
+          (let ((bounds (topiary/bounds)))
             (goto-char (car bounds))
             (if (equal (char-after) ?\#)
                 (progn
@@ -553,7 +553,7 @@ Examples:
             (delete-char -1)))
       (error (message "Can't unwrap top level")))))
 
-(defun topiary/smart-bracket-clojure ()
+(defun topiary/bracket-clojure ()
   "Contextually insert [] when typing ()."
   (interactive)
   (let ((sexp (topiary/symbols-in-sexp))
@@ -570,26 +570,20 @@ Examples:
            (topiary/insert-pair "[]"))
           (t (topiary/insert-pair "()")))))
 
-(defun topiary/smart-bracket-lisp ()
+(defun topiary/bracket-lisp ()
   "Wrap in parens if sexp otherwise insert parens."
   (interactive)
   (if (or (symbol-at-point) (sexp-at-point))
       (topiary/wrap-with-parens)
     (topiary/insert-pair "()")))
 
-(defun topiary/smart-bracket ()
-  "Select appropriate smart-bracket for LISP dialect."
-  (interactive)
-  (cond ((member major-mode '(clojure-mode clojurescript-mode clojurec-mode)) (topiary/smart-bracket-clojure))
-        (t (topiary/smart-bracket-lisp))))
-
-(defun topiary/smart-transpose ()
+(defun topiary/transpose ()
   "Move sexp left if point at beginning. Otherwise move right.
 If end or beginning of outer sexp reached move point to other bound.
 
 \(a| b c) -> (b a| c) -> (b c a|) -> (b c |a) -> (b |a c) -> (|a b c) -> (b| a c)"
   (interactive)
-  (let ((bounds (topiary/smart-bounds)))
+  (let ((bounds (topiary/bounds)))
     (cond ((not bounds)             (backward-sexp))
           ((= (point) (car bounds))
            (forward-sexp)
@@ -599,6 +593,12 @@ If end or beginning of outer sexp reached move point to other bound.
                  (backward-sexp))
              (error (forward-sexp))))
           (t (transpose-sexps 1)))))
+
+(defun topiary/bracket ()
+  "Select appropriate bracket for LISP dialect."
+  (interactive)
+  (cond ((member major-mode '(clojure-mode clojurescript-mode clojurec-mode)) (topiary/bracket-clojure))
+        (t (topiary/bracket-lisp))))
 
 (defun topiary/delete-escaped-double-quote ()
   "Delete escaped double quote."
@@ -659,7 +659,7 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
                (topiary/hungry-delete-backward)))
       (topiary/hungry-delete-backward))))
 
-(defun topiary/smart-yank ()
+(defun topiary/yank ()
   "Like 'yank'. But calling 'yank' again will call 'yank-pop'."
   (interactive)
   (if (member last-command '(yank yank-pop))
@@ -673,7 +673,7 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
       (kill-sexp)
     (kill-sentence)))
 
-(defun topiary/smart-quote ()
+(defun topiary/quote ()
   "If previous and next character wrap in double quotes.
 If previous character is a alphanumeric insert single quote.
 If next character is a alphanumeric or an opening paren insert single quote.
@@ -690,7 +690,7 @@ Otherwise insert double quote."
       (insert "'"))
      (t (topiary/insert-pair "\"\"")))))
 
-(defun topiary/smart-space ()
+(defun topiary/space ()
   "If previous char is space and next char is closing delimiter.
 Hungry delete space and skip the delimiter (forward char).
 Insert space automatically if following char is a closing
