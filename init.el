@@ -711,7 +711,7 @@ If this becomes a problem these common lines could be filtered."
     "Prevent sequential duplicate items in kill ring."
     (let ((string (car args))
           (replace (cdr args))
-          (last (kill-ring car-safe)))
+          (last (car-safe kill-ring)))
       (when (equal last string)
         (setq replace t))
       (list string replace)))
