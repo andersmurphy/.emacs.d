@@ -185,45 +185,6 @@ If already at first character go to beginning of line."
   (insert pair)
   (backward-char 1))
 
-(defun topiary/wrap-with (opening-string closing-string)
-  "Wrap current symbol or sexp with OPENING-STRING CLOSING-STRING.
-Cursor point stays on the same character despite potential point shift."
-  (let ((pair (concat opening-string closing-string))
-        (bounds (or (bounds-of-thing-at-point 'sexp)
-                    (and
-                     (not (member (char-before) (string-to-list "#@")))
-                     (bounds-of-thing-at-point 'symbol)))))
-    (cond
-     ((and (member (char-before) (string-to-list "({[") )
-           (member (char-after) (string-to-list "\n ]})")))
-      (topiary/insert-pair pair))
-     (bounds
-      (progn
-        (save-excursion
-          (goto-char (car bounds))
-          (insert opening-string)
-          (goto-char (+ (cdr bounds) 1))
-          (insert closing-string))
-        (when (> (+ (car bounds) 1) (point))
-          (forward-char 1))))
-     (t
-      (topiary/insert-pair pair)))))
-
-(defun topiary/wrap-with-parens ()
-  "Wrap current symbol with parens."
-  (interactive)
-  (topiary/wrap-with "(" ")"))
-
-(defun topiary/wrap-with-brackets ()
-  "Wrap current symbol with parens."
-  (interactive)
-  (topiary/wrap-with "[" "]"))
-
-(defun topiary/wrap-with-braces ()
-  "Wrap current symbol with parens."
-  (interactive)
-  (topiary/wrap-with "{" "}"))
-
 (defvar topiary/sb-depth-1-syms
   '(fn defn let defmacro if-let when-let binding assoc-in update-in
        get-in select-keys defmethod with-redefs :keys :strs loop
@@ -248,36 +209,6 @@ If the first item in the list is a member of the smart bracket SYMS list."
 (defun topiary/no-vector-in-sexp (sexp)
   "Return non-nil if no vector in SEXP."
   (not (seq-some #'vectorp sexp)))
-
-(defun topiary/smart-bracket-clojure ()
-  "Contextually insert [] when typing ()."
-  (interactive)
-  (let ((sexp (topiary/symbols-in-sexp))
-        (outer-sexp (topiary/symbols-in-outer-sexp)))
-    (cond ((or (bounds-of-thing-at-point 'sexp)
-               (bounds-of-thing-at-point 'symbol))
-           (topiary/wrap-with-parens))
-          ((or (topiary/sb-p topiary/sb-always-bracket-syms sexp)
-               (and (topiary/sb-p topiary/sb-depth-1-syms sexp)
-                    (topiary/no-vector-in-sexp sexp))
-               (and
-                (vectorp sexp)
-                (topiary/sb-p topiary/sb-depth-2-syms outer-sexp)))
-           (topiary/insert-pair "[]"))
-          (t (topiary/insert-pair "()")))))
-
-(defun topiary/smart-bracket-lisp ()
-  "Wrap in parens if sexp otherwise insert parens."
-  (interactive)
-  (if (or (symbol-at-point) (sexp-at-point))
-      (topiary/wrap-with-parens)
-    (topiary/insert-pair "()")))
-
-(defun topiary/smart-bracket ()
-  "Select appropriate smart-bracket for LISP dialect."
-  (interactive)
-  (cond ((member major-mode '(clojure-mode clojurescript-mode clojurec-mode)) (topiary/smart-bracket-clojure))
-        (t (topiary/smart-bracket-lisp))))
 
 (defun topiary/smart-transpose ()
   "Move sexp left if point at beginning. Otherwise move right.
@@ -573,6 +504,42 @@ Delete rather than kill when in mini buffer."
            (goto-char beginning-of-bounds))
           (t (topiary/smart-backward)))))
 
+(defun topiary/wrap-with (opening-string closing-string)
+  "Wrap current symbol or sexp with OPENING-STRING CLOSING-STRING.
+Cursor point stays on the same character despite potential point shift."
+  (let ((pair (concat opening-string closing-string))
+        (bounds (topiary/smart-kill-bounds)))
+    (cond
+     ((and (member (char-before) (string-to-list "({[") )
+           (member (char-after) (string-to-list "\n ]})")))
+      (topiary/insert-pair pair))
+     (bounds
+      (progn
+        (save-excursion
+          (goto-char (car bounds))
+          (insert opening-string)
+          (goto-char (+ (cdr bounds) 1))
+          (insert closing-string))
+        (when (> (+ (car bounds) 1) (point))
+          (forward-char 1))))
+     (t
+      (topiary/insert-pair pair)))))
+
+(defun topiary/wrap-with-parens ()
+  "Wrap current symbol with parens."
+  (interactive)
+  (topiary/wrap-with "(" ")"))
+
+(defun topiary/wrap-with-brackets ()
+  "Wrap current symbol with parens."
+  (interactive)
+  (topiary/wrap-with "[" "]"))
+
+(defun topiary/wrap-with-braces ()
+  "Wrap current symbol with parens."
+  (interactive)
+  (topiary/wrap-with "{" "}"))
+
 (defun topiary/unwrap ()
   "Unwrap the current expression. Works on ()[]{}\".
 
@@ -602,6 +569,36 @@ Examples:
                      (goto-char (- (cdr bounds) 1))))
             (delete-char -1)))
       (error (message "Can't unwrap top level")))))
+
+(defun topiary/smart-bracket-clojure ()
+  "Contextually insert [] when typing ()."
+  (interactive)
+  (let ((sexp (topiary/symbols-in-sexp))
+        (outer-sexp (topiary/symbols-in-outer-sexp)))
+    (cond ((or (bounds-of-thing-at-point 'sexp)
+               (bounds-of-thing-at-point 'symbol))
+           (topiary/wrap-with-parens))
+          ((or (topiary/sb-p topiary/sb-always-bracket-syms sexp)
+               (and (topiary/sb-p topiary/sb-depth-1-syms sexp)
+                    (topiary/no-vector-in-sexp sexp))
+               (and
+                (vectorp sexp)
+                (topiary/sb-p topiary/sb-depth-2-syms outer-sexp)))
+           (topiary/insert-pair "[]"))
+          (t (topiary/insert-pair "()")))))
+
+(defun topiary/smart-bracket-lisp ()
+  "Wrap in parens if sexp otherwise insert parens."
+  (interactive)
+  (if (or (symbol-at-point) (sexp-at-point))
+      (topiary/wrap-with-parens)
+    (topiary/insert-pair "()")))
+
+(defun topiary/smart-bracket ()
+  "Select appropriate smart-bracket for LISP dialect."
+  (interactive)
+  (cond ((member major-mode '(clojure-mode clojurescript-mode clojurec-mode)) (topiary/smart-bracket-clojure))
+        (t (topiary/smart-bracket-lisp))))
 
 (defun topiary/delete-escaped-double-quote ()
   "Delete escaped double quote."
