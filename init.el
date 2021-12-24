@@ -514,17 +514,7 @@
        (point-min)
        (point-max))))
 
-  (defun my/isearch-prefill ()
-    (interactive)
-    (let* ((bounds (topiary/bounds))
-           (beg (car bounds))
-           (end (cdr bounds)))
-      (goto-char beg)
-      (isearch-forward nil 1)
-      (isearch-yank-string
-       (buffer-substring-no-properties beg end))))
-
-  (defun my/isearch-forward-sexp-at-point ()
+  (defun my/isearch-forward-thing-at-point ()
     (interactive)
     (let ((bounds (topiary/bounds)))
       (cond
@@ -534,13 +524,26 @@
         (isearch-yank-string
          (buffer-substring-no-properties (car bounds) (cdr bounds))))
        (t
-        (setq isearch-error "No symbol or string at point")
+        (setq isearch-error "No thing at point")
         (isearch-push-state)
         (isearch-update)))))
 
+  (defun my/replace-thing-at-point-in-buffer ()
+    (interactive)
+    (let* ((bounds (topiary/bounds))
+           (string
+            (buffer-substring-no-properties (car bounds) (cdr bounds))))
+      (save-excursion
+        (replace-string
+         string
+         (read-string (concat "Replace " string " with: "))
+         nil
+         (point-min)
+         (point-max)))))
+
   :bind
   ("C-s" . isearch-forward)
-  ("C-r" . my/isearch-prefill)
+  ("C-r" . my/replace-thing-at-point-in-buffer)
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
         ("TAB" . isearch-exit)
@@ -548,7 +551,7 @@
         ("C-g" . isearch-cancel)
         ("C-n" . isearch-repeat-forward)
         ("C-p" . isearch-repeat-backward)
-        ("C-s" . my/isearch-forward-sexp-at-point)
+        ("C-s" . my/isearch-forward-thing-at-point)
         ("C-v" . isearch-yank-kill)
         ("C-r" . my/replace-in-buffer)))
 (use-package selectrum
