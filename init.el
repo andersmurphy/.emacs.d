@@ -526,7 +526,7 @@
 
   (defun my/isearch-forward-sexp-at-point ()
     (interactive)
-    (let ((bounds (bounds-of-thing-at-point 'sexp)))
+    (let ((bounds (topiary/bounds)))
       (cond
        (bounds
         (when (< (car bounds) (point))
