@@ -248,8 +248,12 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-punctuation-backward ()
   "Get bounds of - / character if  before cursor."
-  (when  (member (char-before) (string-to-list "=_-/?!>,.<"))
-    (cons (point) (- (point) 1))))
+  (when (or (not (or (member (char-after) (string-to-list "\n ]})"))
+                     (member (char-before) (string-to-list "\n ({["))))
+            (topiary/in-string-p)
+            (topiary/in-comment-p))
+    (when  (member (char-before) (string-to-list "=_-/?!>,.<"))
+      (cons (point) (- (point) 1)))))
 
 (defun topiary/bounds-of-space-forward ()
   "Get bounds of - / character if  before cursor."
