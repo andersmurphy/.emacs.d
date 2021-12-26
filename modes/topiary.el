@@ -136,9 +136,9 @@
             map)
   (if topiary-mode
       (progn
-        (add-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay)
+        (add-hook 'post-command-hook #'topiary/hl-bounds-overlay)
         (add-hook 'post-self-insert-hook 'topiary/post-self-insert))
-    (remove-hook 'post-command-hook #'topiary/hl-current-kill-region-overlay)
+    (remove-hook 'post-command-hook #'topiary/hl-bounds-overlay)
     (remove-hook 'post-self-insert-hook 'topiary/post-self-insert)))
 
 (defun topiary/supported-mode-p ()
@@ -350,8 +350,8 @@ edge of word. eg: foo|d would return the bounds of 'food'. But food| would
   (when (topiary/in-comment-p)
     (cons (point) (- (point) 1))))
 
-(defun topiary/bounds ()
-  "Get current kill bounds."
+(defun topiary/compute-bounds ()
+  "Get compute topiary bounds."
   (or (topiary/bounds-of-active-region)
       (topiary/bounds-of-html-tag-forward)
       (topiary/bounds-of-html-tag-backward)
@@ -371,37 +371,42 @@ edge of word. eg: foo|d would return the bounds of 'food'. But food| would
       (topiary/bounds-of-empty-pair)
       (topiary/bounds-of-last-sexp)))
 
-(defvar topiary/hl-current-kill-region-overlay nil
-  "Overlay for highlighting current kill region.")
+(defvar topiary/hl-bounds-overlay nil
+  "Overlay for highlighting bounds.")
 
-(defun topiary/hl-current-kill-region-make-overlay ()
-  "Create overlay for current kill region."
+(defun topiary/hl-bounds-make-overlay ()
+  "Create overlay for bounds."
   (let ((overlay (make-overlay 1 1)))
     (overlay-put overlay 'face 'region)
-    (setq topiary/hl-current-kill-region-overlay overlay)
+    (setq topiary/hl-bounds-overlay overlay)
     overlay))
 
-(defun topiary/hl-current-kill-region-overlay ()
-  "Highlight current kill region."
+(defun topiary/hl-bounds-overlay ()
+  "Highlight topiary bounds."
   (interactive)
   (ignore-errors
-    (let ((bounds (topiary/bounds))
-          (overlay     (or topiary/hl-current-kill-region-overlay
-                           (topiary/hl-current-kill-region-make-overlay))))
+    (let ((bounds (topiary/compute-bounds))
+          (overlay     (or topiary/hl-bounds-overlay
+                           (topiary/hl-bounds-make-overlay))))
       (if bounds
           (move-overlay overlay
                         (car bounds)
                         (cdr bounds)
                         (current-buffer))
-        (delete-overlay topiary/hl-current-kill-region-overlay)))))
+        (delete-overlay topiary/hl-bounds-overlay)))))
+
+(defun topiary/bounds ()
+  "Return current topiary bounds (doesn't compute new bounds)."
+  (let* ((start (overlay-start topiary/hl-bounds-overlay))
+         (end (overlay-end topiary/hl-bounds-overlay))
+         (bounds (when (and start end) (cons start end))))
+    bounds))
 
 (defun topiary/kill ()
-  "Kill current topiary overlay. If neither hungry delete backward.
-Delete rather than kill when in mini buffer."
+  "Kill topiary bounds. If neither hungry delete backward.
+Delete rather then kill when in mini buffer."
   (interactive)
-  (let* ((start (overlay-start topiary/hl-current-kill-region-overlay))
-         (end (overlay-end topiary/hl-current-kill-region-overlay))
-         (bounds (when (and start end) (cons start end)))
+  (let* ((bounds (topiary/bounds))
          (bounds-directed (if (and bounds (> (point) (car bounds)))
                               (cons (cdr bounds) (car bounds))
                             bounds)))
