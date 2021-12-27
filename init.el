@@ -509,7 +509,8 @@
     (save-excursion
       (replace-string
        isearch-string
-       (read-string (concat "Replace " isearch-string " with: "))
+       (read-string (concat "Replace " isearch-string " with: ")
+                    isearch-string)
        nil
        (point-min)
        (point-max))))
@@ -536,7 +537,8 @@
       (save-excursion
         (replace-string
          string
-         (read-string (concat "Replace " string " with: "))
+         (read-string (concat "Replace " string " with: ")
+                      string)
          nil
          (point-min)
          (point-max)))))
