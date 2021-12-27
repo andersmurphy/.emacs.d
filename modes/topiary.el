@@ -514,7 +514,7 @@ Examples:
           (when (and (equal (char-before (- (point) 1)) ?\#)
                      (equal (char-after (- (point) 1)) ?\_))
             (delete-char -2))
-          (let ((bounds (topiary/bounds)))
+          (let ((bounds (topiary/compute-bounds)))
             (goto-char (car bounds))
             (if (equal (char-after) ?\#)
                 (progn
