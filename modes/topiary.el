@@ -339,7 +339,9 @@ In the above example the n would be deleted. Handles comments."
 When not in string or comment only return bounds of word when not at
 edge of word. eg: foo|d would return the bounds of 'food'. But food| would
  return nil."
-  (when (or (not (or (member (char-after)  (string-to-list "\n ]})"))
+  (when (or (not (or (topiary/end-of-buffer-p)
+                     (topiary/beginning-of-buffer-p)
+                     (member (char-after)  (string-to-list "\n ]})"))
                      (member (char-before) (string-to-list "\n ({["))))
             (topiary/in-string-p)
             (topiary/in-comment-p))
@@ -358,8 +360,7 @@ edge of word. eg: foo|d would return the bounds of 'food'. But food| would
       (topiary/bounds-of-punctuation-forward)
       (topiary/bounds-of-escaped-double-quote-in-string)
       (topiary/bounds-of-space-forward)
-      (when (not (minibufferp))
-        (topiary/bounds-of-word-at-point))
+      (topiary/bounds-of-word-at-point)
       (topiary/bounds-of-strings-at-point '(";;" ";;;"))
       (topiary/bounds-of-punctuation-backward)
       (topiary/bounds-of-char-in-comment)
