@@ -218,27 +218,31 @@
   (interactive)
   (save-buffer)
   (load  "~/.emacs.d/init.el"))
-(setq split-width-threshold 80)
-(defun my/other-window ()
-  "Switch to another window. If no other window exists create one."
-  (interactive)
-  (when (one-window-p)
-    (split-window-sensibly))
-  (other-window 1))
-(defun my/toggle-window-layout-vertical-horizontal ()
-  "Switch from a vertical layout to a horizontal layout and vice versa."
-  (interactive)
-  (let* ((current-window-x (car (window-edges)))
-         (_ (other-window 1))
-         (other-buff (buffer-name))
-         (other-window-x (car (window-edges))))
-    (delete-window)
-    (if (= current-window-x other-window-x)
-        (split-window-right)
-      (split-window-below))
-    (other-window 1)
-    (switch-to-buffer other-buff)
-    (other-window 1)))
+(progn ;; Window behaviour
+
+  (setq split-width-threshold 80)
+
+  (defun my/other-window ()
+    "Switch to another window. If no other window exists create one."
+    (interactive)
+    (when (one-window-p)
+      (split-window-sensibly))
+    (other-window 1))
+
+  (defun my/reset-window-layout (_)
+    "Reset window layout on width change. Triggers width threshold.
+This can be used to make the window layout change based on frame size."
+    (unless (= (window-old-pixel-width) (window-pixel-width))
+      (let* ((_ (other-window 1))
+             (other-buff (buffer-name)))
+        (delete-window)
+        (split-window-sensibly)
+        (other-window 1)
+        (switch-to-buffer other-buff)
+        (other-window 1))))
+
+  ;;  Automatically change window layout on frame resize.
+  (setq window-size-change-functions '(my/reset-window-layout)))
 (use-package Info-mode
   :straight nil
   :init
