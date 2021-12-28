@@ -506,7 +506,8 @@ Examples:
   #|{foo bar baz}    -> |foo bar baz
   #|(foo %)          -> |foo %
   |\"foo\"           -> |foo
-  #_|(foo bar baz)   -> |foo bar baz"
+  #_|(foo bar baz)   -> |foo bar baz
+  '|(foo bar baz)    -> |foo bar baz"
   (interactive)
   (save-excursion
     (condition-case nil
@@ -516,7 +517,7 @@ Examples:
             (delete-char -2))
           (let ((bounds (topiary/compute-bounds)))
             (goto-char (car bounds))
-            (if (equal (char-after) ?\#)
+            (if (member (char-after) (string-to-list "#'"))
                 (progn
                   (delete-char 2)
                   (goto-char (- (cdr bounds) 2)))
