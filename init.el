@@ -614,7 +614,7 @@
 
 If region spans multiple lines does regex or of each trimmed line.
 This effectively returns all changes to that set of lines. Or anything
-in the file that matches that one of those lines.
+in the file that matches one of those lines.
 
 Lines containing common patterns that appear throughout the file can
 lead to unrelated results. For example '(interactive)' in this file
