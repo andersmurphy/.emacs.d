@@ -62,22 +62,26 @@
 
 (defun topiary/after-empty-pair-p ()
   "Return t if point is directly after empty pair."
-  (member (buffer-substring-no-properties (- (point) 2) (point))
+  (member (ignore-errors
+            (buffer-substring-no-properties (- (point) 2) (point)))
           (list "()" "{}" "[]")))
 
 (defun topiary/before-empty-pair-p ()
   "Return t if point is directly before empty pair."
-  (member (buffer-substring-no-properties (point)  (+ (point) 2))
+  (member (ignore-errors
+            (buffer-substring-no-properties (point)  (+ (point) 2)))
           (list "()" "{}" "[]")))
 
 (defun topiary/after-empty-string-p ()
   "Return t if point is directly after string."
-  (equal (buffer-substring-no-properties (- (point) 2) (point))
+  (equal (ignore-errors
+           (buffer-substring-no-properties (- (point) 2) (point)))
          "\"\""))
 
 (defun topiary/before-empty-string-p ()
   "Return t if point is directly before string."
-  (equal (buffer-substring-no-properties (point) (+ (point) 2))
+  (equal (ignore-errors
+           (buffer-substring-no-properties (point) (+ (point) 2)))
          "\"\""))
 
 (defmacro topiary/if-in-string (first-form &rest forms)
@@ -510,21 +514,18 @@ Examples:
   '|(foo bar baz)    -> |foo bar baz"
   (interactive)
   (save-excursion
-    (condition-case nil
-        (progn
-          (when (and (equal (char-before (- (point) 1)) ?\#)
-                     (equal (char-after (- (point) 1)) ?\_))
-            (delete-char -2))
-          (let ((bounds (topiary/compute-bounds)))
-            (goto-char (car bounds))
-            (if (member (char-after) (string-to-list "#'"))
-                (progn
-                  (delete-char 2)
-                  (goto-char (- (cdr bounds) 2)))
-              (progn (delete-char 1)
-                     (goto-char (- (cdr bounds) 1))))
-            (delete-char -1)))
-      (error (message "Can't unwrap top level")))))
+    (when (and (equal (char-before (- (point) 1)) ?\#)
+               (equal (char-after (- (point) 1)) ?\_))
+      (delete-char -2))
+    (let ((bounds (topiary/compute-bounds)))
+      (goto-char (car bounds))
+      (if (member (char-after) (string-to-list "#'"))
+          (progn
+            (delete-char 2)
+            (goto-char (- (cdr bounds) 2)))
+        (progn (delete-char 1)
+               (goto-char (- (cdr bounds) 1))))
+      (delete-char -1))))
 
 (defun topiary/transpose ()
   "Move sexp left if point at beginning. Otherwise move right.
