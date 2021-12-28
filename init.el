@@ -623,7 +623,7 @@ common occurrence.
 
 If this becomes a problem these common lines could be filtered."
     (interactive)
-    (let* ((bounds (topiary/bounds))
+    (let* ((bounds (topiary/compute-bounds))
            (region-str (or
                         (thing-at-point 'symbol t)
                         (buffer-substring (car bounds) (cdr bounds))))
