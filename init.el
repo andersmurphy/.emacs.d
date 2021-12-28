@@ -789,7 +789,7 @@ If this becomes a problem these common lines could be filtered."
 (use-package topiary
   :straight nil
   :init
-  :hook ((text-mode prog-mode comint-mode outline-mode info-mode) . topiary-mode))
+  :hook ((text-mode prog-mode comint-mode outline-mode Info-mode) . topiary-mode))
 (use-package special-mode
   :straight nil
   :bind (:map special-mode-map
