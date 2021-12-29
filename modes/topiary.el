@@ -135,7 +135,7 @@
                                         (topiary/insert-double-semicolon)))
             (define-key map (kbd "\"") (topiary/if-in-string
                                         (insert "\\\"")
-                                        (insert "'")))
+                                        (topiary/quote t)))
             (define-key map (kbd "\\") (lambda () (interactive) (insert "\\")))
             map)
   (if topiary-mode
@@ -623,22 +623,28 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
       (kill-sexp)
     (kill-sentence)))
 
-(defun topiary/quote ()
+(defun topiary/quote (&optional invert)
   "If previous and next character wrap in double quotes.
 If previous character is a alphanumeric insert single quote.
 If next character is a alphanumeric or an opening paren insert single quote.
-Otherwise insert double quote."
+Otherwise insert double quote. If INVERT is non nil invert the behaviour."
   (interactive)
   (let ((b-char (if (char-before) (char-to-string (char-before)) ""))
         (a-char (if (char-after) (char-to-string (char-after)) "")))
     (cond
      ((and  (string-match "[[:alnum:]-_/:]" b-char)
             (string-match "[[:alnum:]-_/(?!:]" a-char))
-      (topiary/wrap-with "\"" "\""))
+      (if invert
+          (insert "'")
+        (topiary/wrap-with "\"" "\"")))
      ((or   (string-match "[[:alnum:]]" b-char)
             (string-match "[[:alnum:]\[(]" a-char))
-      (insert "'"))
-     (t (topiary/insert-pair "\"\"")))))
+      (if invert
+          (topiary/wrap-with "\"" "\"")
+        (insert "'")))
+     (t (if invert
+            (insert "'")
+          (topiary/insert-pair "\"\""))))))
 
 (defun topiary/space ()
   "If previous char is space and next char is closing delimiter.
