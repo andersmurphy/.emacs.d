@@ -132,7 +132,7 @@
                                         (topiary/insert-double-semicolon)))
             (define-key map (kbd "\"") (topiary/if-in-string
                                         (insert "\\\"")
-                                        (topiary/insert-pair "\"\"")))
+                                        (topiary/wrap-with-quotes)))
             (define-key map (kbd "\\") (lambda () (interactive)
                                          (insert "\\")))
             map)
@@ -496,6 +496,11 @@ Cursor point stays on the same character despite potential point shift."
   "Wrap current symbol with parens."
   (interactive)
   (topiary/wrap-with "{" "}"))
+
+(defun topiary/wrap-with-quotes ()
+  "Wrap current symbol with quotes."
+  (interactive)
+  (topiary/wrap-with "\"" "\""))
 
 (defun topiary/unwrap ()
   "Unwrap the current expression. Works on ()[]{}\".
