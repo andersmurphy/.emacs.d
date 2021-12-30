@@ -114,9 +114,6 @@
             (global-set-key (kbd "C-v") 'topiary/yank)
             (define-key map (kbd "DEL") 'topiary/delete-backward)
             (define-key map (kbd "C-)") 'topiary/forward-slurp)
-            (define-key map (kbd "'")  (topiary/if-in-string
-                                        (insert "'")
-                                        (topiary/quote)))
             (define-key map (kbd "(")  (topiary/if-in-string
                                         (insert "(")
                                         (topiary/wrap-with-parens)))
@@ -135,8 +132,9 @@
                                         (topiary/insert-double-semicolon)))
             (define-key map (kbd "\"") (topiary/if-in-string
                                         (insert "\\\"")
-                                        (topiary/quote t)))
-            (define-key map (kbd "\\") (lambda () (interactive) (insert "\\")))
+                                        (topiary/insert-pair "\"\"")))
+            (define-key map (kbd "\\") (lambda () (interactive)
+                                         (insert "\\")))
             map)
   (if topiary-mode
       (progn
@@ -622,29 +620,6 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
   (if (topiary/supported-mode-p)
       (kill-sexp)
     (kill-sentence)))
-
-(defun topiary/quote (&optional invert)
-  "If previous and next character wrap in double quotes.
-If previous character is a alphanumeric insert single quote.
-If next character is a alphanumeric or an opening paren insert single quote.
-Otherwise insert double quote. If INVERT is non nil invert the behaviour."
-  (interactive)
-  (let ((b-char (if (char-before) (char-to-string (char-before)) ""))
-        (a-char (if (char-after) (char-to-string (char-after)) "")))
-    (cond
-     ((and  (string-match "[[:alnum:]-_/:]" b-char)
-            (string-match "[[:alnum:]-_/(?!:]" a-char))
-      (if invert
-          (insert "'")
-        (topiary/wrap-with "\"" "\"")))
-     ((or   (string-match "[[:alnum:]]" b-char)
-            (string-match "[[:alnum:]\[(]" a-char))
-      (if invert
-          (topiary/wrap-with "\"" "\"")
-        (insert "'")))
-     (t (if invert
-            (insert "'")
-          (topiary/insert-pair "\"\""))))))
 
 (defun topiary/space ()
   "If previous char is space and next char is closing delimiter.
