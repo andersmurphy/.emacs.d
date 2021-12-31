@@ -942,7 +942,6 @@ If this becomes a problem these common lines could be filtered."
 (use-package js
   :straight nil
   :config
-  (setq indent-tabs-mode nil)
   (setq js-indent-level 2))
 ;; Css
 (use-package css-mode
