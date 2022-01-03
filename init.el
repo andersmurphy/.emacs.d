@@ -520,17 +520,19 @@ This can be used to make the window layout change based on frame size."
 
   (defun my/isearch-thing-at-point ()
     (interactive)
-    (let ((bounds (topiary/bounds)))
-      (cond
-       (bounds
-        (when (< (car bounds) (point))
-          (goto-char (car bounds)))
-        (isearch-yank-string
-         (buffer-substring-no-properties (car bounds) (cdr bounds))))
-       (t
-        (setq isearch-error "No thing at point")
-        (isearch-push-state)
-        (isearch-update)))))
+    (if (string-empty-p isearch-string)
+        (let ((bounds (topiary/bounds)))
+          (cond
+           (bounds
+            (when (< (car bounds) (point))
+              (goto-char (car bounds)))
+            (isearch-yank-string
+             (buffer-substring-no-properties (car bounds) (cdr bounds))))
+           (t
+            (setq isearch-error "No thing at point")
+            (isearch-push-state)
+            (isearch-update))))
+      (isearch-update)))
 
   :bind
   (:map isearch-mode-map
