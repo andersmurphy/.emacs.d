@@ -1010,6 +1010,14 @@ If this becomes a problem these common lines could be filtered."
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
 
+;;; ANALYTICS
+(use-package keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
+  (setq keyfreq-excluded-commands
+        '(self-insert-command)))
+
 ;;; LOAD PROJECT SPECIFIC COMMANDS
 (when (file-directory-p "~/.emacs.d/emacs-sync")
   (load "~/.emacs.d/emacs-sync/project-specific-commands.el"))
