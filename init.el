@@ -518,7 +518,7 @@ This can be used to make the window layout change based on frame size."
        (point-min)
        (point-max))))
 
-  (defun my/isearch-forward-thing-at-point ()
+  (defun my/isearch-thing-at-point ()
     (interactive)
     (let ((bounds (topiary/bounds)))
       (cond
@@ -532,23 +532,9 @@ This can be used to make the window layout change based on frame size."
         (isearch-push-state)
         (isearch-update)))))
 
-  (defun my/replace-thing-at-point-in-buffer ()
-    (interactive)
-    (let* ((bounds (topiary/bounds))
-           (string
-            (buffer-substring-no-properties (car bounds) (cdr bounds))))
-      (save-excursion
-        (replace-string
-         string
-         (read-string (concat "Replace " string " with: ")
-                      string)
-         nil
-         (point-min)
-         (point-max)))))
-
   :bind
   ("C-s" . isearch-forward)
-  ("C-r" . my/replace-thing-at-point-in-buffer)
+  ("C-r" . isearch-backward)
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
         ("TAB" . isearch-exit)
@@ -556,9 +542,9 @@ This can be used to make the window layout change based on frame size."
         ("C-g" . isearch-cancel)
         ("C-n" . isearch-repeat-forward)
         ("C-p" . isearch-repeat-backward)
-        ("C-s" . my/isearch-forward-thing-at-point)
-        ("C-v" . isearch-yank-kill)
-        ("C-r" . my/replace-in-buffer)))
+        ("C-s" . my/isearch-thing-at-point)
+        ("C-r" . my/replace-in-buffer)
+        ("C-v" . isearch-yank-kill)))
 (use-package selectrum
   :config
   (selectrum-mode t))
