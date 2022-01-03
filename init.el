@@ -533,8 +533,6 @@ This can be used to make the window layout change based on frame size."
         (isearch-update)))))
 
   :bind
-  ("C-s" . isearch-forward)
-  ("C-r" . isearch-backward)
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
         ("TAB" . isearch-exit)
