@@ -49,7 +49,7 @@
   (setq straight-use-package-by-default t)
   (require 'use-package)
 
-  ;; Forces Custom to save all customizations in a seperate file
+  ;; Forces Custom to save all customizations in a separate file
   (setq custom-file "~/.emacs.d/custom.el")
 
   ;; Prevents error if the custom.el file doesn't exist
@@ -534,6 +534,25 @@ This can be used to make the window layout change based on frame size."
             (isearch-update))))
       (isearch-update)))
 
+  (defun my/goto-match-end ()
+    (when (and (not isearch-forward)
+               isearch-other-end
+               (not isearch-mode-end-hook-quit))
+      (goto-char isearch-other-end)))
+
+  (defun my/isearch-repeat-backward ()
+    (interactive)
+    (let ((previous-point (point)))
+      (isearch-repeat-backward)
+      (when (not (= (point) isearch-other-end))
+        (goto-char isearch-other-end))
+      (when (and (not isearch-error)
+                 isearch-success
+                 (= (point) previous-point))
+        (my/isearch-repeat-backward))))
+
+  :hook
+  (('isearch-mode-end . my/goto-match-end))
   :bind
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
@@ -541,7 +560,7 @@ This can be used to make the window layout change based on frame size."
         ("C-w" . isearch-del-char)
         ("C-g" . isearch-cancel)
         ("C-n" . isearch-repeat-forward)
-        ("C-p" . isearch-repeat-backward)
+        ("C-p" . my/isearch-repeat-backward)
         ("C-s" . my/isearch-thing-at-point)
         ("C-r" . my/replace-in-buffer)
         ("C-v" . isearch-yank-kill)))
