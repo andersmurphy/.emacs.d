@@ -88,7 +88,7 @@
   "If in string do FIRST-FORM otherwise do FORMS."
   `(lambda ()
      (interactive)
-     (if (in-string-p)
+     (if (topiary/in-string-p)
          ,first-form
        ,@forms)))
 
