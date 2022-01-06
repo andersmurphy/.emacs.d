@@ -97,6 +97,10 @@
   (define-key key-translation-map (kbd ";") (kbd ":"))
   (define-key key-translation-map (kbd ":") (kbd ";"))
 
+  ;; Swap ' and "
+  (define-key key-translation-map (kbd "'")  (kbd "\""))
+  (define-key key-translation-map (kbd "\"") (kbd "'"))
+
   ;; Make return/enter key behave like C-m
   (define-key key-translation-map (kbd "RET") (kbd "C-m"))
 
