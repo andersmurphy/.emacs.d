@@ -130,9 +130,8 @@
             (define-key map (kbd ";")  (topiary/if-in-string
                                         (insert ";")
                                         (topiary/insert-double-semicolon)))
-            (define-key map (kbd "\"") (topiary/if-in-string
-                                        (insert "\\\"")
-                                        (topiary/wrap-with-quotes)))
+            (define-key map (kbd "'")  'topiary/insert-quote)
+            (define-key map (kbd "\"") 'topiary/insert-double-quote)
             (define-key map (kbd "\\") (lambda () (interactive)
                                          (insert "\\")))
             map)
@@ -497,7 +496,7 @@ Cursor point stays on the same character despite potential point shift."
   (interactive)
   (topiary/wrap-with "{" "}"))
 
-(defun topiary/wrap-with-quotes ()
+(defun topiary/wrap-with-double-quotes ()
   "Wrap current symbol with quotes."
   (interactive)
   (topiary/wrap-with "\"" "\""))
@@ -685,6 +684,27 @@ delimiter (after forward char)."
                       (skip-chars-forward "\s"))))
       (kill-region initial-point (point))))
    (t (kill-line))))
+
+(defun topiary/insert-quote ()
+  "Insert single quote if in supported mode or in string or in comment.
+Otherwise wrap with double quotes."
+  (interactive)
+  (if (or (not (topiary/supported-mode-p))
+          (topiary/in-string-p)
+          (topiary/in-comment-p))
+      (insert "'")
+    (topiary/wrap-with-double-quotes)))
+
+(defun topiary/insert-double-quote ()
+  "Insert double quote if in supported mode or in comment.
+In string insert escaped double quote.
+Otherwise insert single quote."
+  (interactive)
+  (cond ((or (not (topiary/supported-mode-p))
+             (topiary/in-comment-p))
+         (insert "\""))
+        ((topiary/in-string-p) (insert "\\\""))
+        (t (insert "'"))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
