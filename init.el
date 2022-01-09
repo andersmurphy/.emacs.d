@@ -484,6 +484,14 @@ This can be used to make the window layout change based on frame size."
     (when line-num
       (goto-char (point-min))
       (forward-line (1- (string-to-number line-num))))))
+(progn ;; Mark
+  (defun my/exchange-point-and-mark-no-region ()
+    "Identical to \\[exchange-point-and-mark] but will not activate the region."
+    (interactive)
+    (exchange-point-and-mark)
+    (deactivate-mark nil))
+
+  (define-key global-map [remap exchange-point-and-mark] 'my/exchange-point-and-mark-no-region))
 (use-package recentf
   :straight nil
   :config
