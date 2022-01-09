@@ -134,6 +134,10 @@
             (define-key map (kbd "\"") 'topiary/insert-double-quote)
             (define-key map (kbd "\\") (lambda () (interactive)
                                          (insert "\\")))
+            (define-key map (kbd "\\") (lambda () (interactive)
+                                         (insert "\\")))
+            (define-key map (kbd "M-l") 'topiary/downcase)
+            (define-key map (kbd "M-u") 'topiary/upcase)
             map)
   (if topiary-mode
       (progn
@@ -704,6 +708,18 @@ Otherwise insert single quote."
          (insert "\""))
         ((topiary/in-string-p) (insert "\\\""))
         (t (insert "'"))))
+
+(defun topiary/upcase ()
+  "Upcase topiary bounds."
+  (interactive)
+  (let ((bounds (topiary/bounds)))
+    (upcase-region (car bounds) (cdr bounds))))
+
+(defun topiary/downcase ()
+  "Downcase topiary bounds."
+  (interactive)
+  (let ((bounds (topiary/bounds)))
+    (downcase-region (car bounds) (cdr bounds))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
