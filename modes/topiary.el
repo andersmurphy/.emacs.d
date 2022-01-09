@@ -671,19 +671,15 @@ delimiter (after forward char)."
   (cond
    ((topiary/in-empty-line-p) (topiary/hungry-delete-forward))
    ((topiary/supported-mode-p)
-    (let ((end-of-line (save-excursion
-                         (skip-chars-forward "^\n")
-                         (skip-chars-backward "\s")
-                         (point)))
-          (initial-point (point)))
+    (let ((initial-point (point)))
       (cond ((save-excursion
                (skip-chars-forward "\s")
-               (= end-of-line (point))) (skip-chars-forward "\s\n"))
+               (= (line-end-position) (point))) (skip-chars-forward "\s\n"))
             ((topiary/in-string-p) (skip-chars-forward "^\n\""))
             ((topiary/on-comment-line-p) (skip-chars-forward "^\n"))
             (t (progn (while (and
                               (ignore-errors (forward-sexp) t)
-                              (> end-of-line (point))))
+                              (> (line-end-position) (point))))
                       (skip-chars-forward "\s"))))
       (kill-region initial-point (point))))
    (t (kill-line))))
