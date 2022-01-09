@@ -452,7 +452,7 @@ Delete rather then kill when in mini buffer."
   (let* ((bounds (topiary/bounds))
          (beginning-of-bounds (car bounds)))
     (cond ((and bounds
-                (= 1 (abs (- beginning-of-bounds (cdr bounds)))))
+                (= 0 (abs (- beginning-of-bounds (cdr bounds)))))
            (topiary/backward)
            (goto-char (car (topiary/bounds))))
           ((and bounds
