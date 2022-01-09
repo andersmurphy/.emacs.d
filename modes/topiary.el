@@ -169,9 +169,12 @@ Insert single semicolon if inside string."
   (cond ((or (not (topiary/supported-mode-p))
              (topiary/in-string-p))
          (insert ";"))
-        ((ignore-errors
-           (or (= (save-excursion (forward-sexp) (point)) (line-end-position))
-               (= (point) (line-end-position))))
+        ((save-excursion
+           (progn (while (and
+                          (> (line-end-position) (point))
+                          (ignore-errors (forward-sexp) t)))
+                  (skip-chars-forward "\s"))
+           (= (point) (line-end-position)))
          (insert ";; "))))
 
 (defun topiary/strict-insert ()
