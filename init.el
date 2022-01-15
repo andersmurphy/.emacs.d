@@ -1023,6 +1023,26 @@ If this becomes a problem these common lines could be filtered."
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
 
+(progn ;; Text to speech
+  (let ((buffer-name "*Speak Region*"))
+
+    (defun my/speak-region ()
+      "Convert text in region to audio."
+      (interactive)
+      (let ((text (buffer-substring-no-properties (region-beginning)
+                                                  (region-end))))
+        (when (get-buffer buffer-name)
+          (kill-buffer buffer-name))
+        (start-process
+         "say"
+         (generate-new-buffer buffer-name)
+         "say"
+         (shell-quote-argument text))))
+
+    (add-to-list
+     'display-buffer-alist
+     `(,buffer-name display-buffer-no-window (nil)))))
+
 ;;; ANALYTICS
 (use-package keyfreq
   :config
