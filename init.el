@@ -589,7 +589,8 @@ This can be used to make the window layout change based on frame size."
   ;; Monkey patch project--read-regexp to use sexp rather than symbol
   (defun project--read-regexp ()
     (let ((sym (thing-at-point 'sexp t)))
-      (read-regexp "Find regexp" (and sym (regexp-quote sym))
+      (read-regexp "Find regexp"
+                   (and sym (regexp-quote (car (split-string sym "\n"))))
                    project-regexp-history-variable)))
   :bind
   ("C-x p" . project-find-file)
