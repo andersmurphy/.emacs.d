@@ -932,6 +932,13 @@ If this becomes a problem these common lines could be filtered."
         (,(concat "\\(" clojure--sym-regexp "?\\)\\(/\\)\\(" clojure--sym-regexp "\\)")
          (1 font-lock-type-face)))))
 
+  (defun my/clojure-align-before-save ()
+    "Vertically align the contents of the sexp around point on save."
+    (when (eq major-mode 'clojure-mode)
+      (clojure-align (point-min) (point-max))))
+
+  :hook (before-save . my/clojure-align-before-save)
+
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
               ("C-c C-z" . my/clj-open-repl)
