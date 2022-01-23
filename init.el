@@ -743,6 +743,16 @@ If this becomes a problem these common lines could be filtered."
   :init
   (add-hook 'before-save-hook #'whitespace-cleanup))
 (use-package aggressive-indent
+  :config
+  (defun my/aggresive-indent-region-function (beg end)
+    "In clojure mode vertically align the contents of the sexp around point."
+    (indent-region beg end)
+    (when (eq major-mode 'clojure-mode)
+      (call-interactively 'clojure-align)))
+
+  (setq aggressive-indent-region-function
+        'my/aggresive-indent-region-function)
+
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 (use-package hideshow
   :straight nil
@@ -931,13 +941,6 @@ If this becomes a problem these common lines could be filtered."
         ;; Highlights namespace part of function/keyword
         (,(concat "\\(" clojure--sym-regexp "?\\)\\(/\\)\\(" clojure--sym-regexp "\\)")
          (1 font-lock-type-face)))))
-
-  (defun my/clojure-align-before-save ()
-    "Vertically align the contents of the sexp around point on save."
-    (when (eq major-mode 'clojure-mode)
-      (clojure-align (point-min) (point-max))))
-
-  :hook (before-save . my/clojure-align-before-save)
 
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
