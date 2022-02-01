@@ -31,3 +31,5 @@ sorcerous
 integrations
 parallelization
 interop
+truthy
+falsey
