@@ -162,6 +162,13 @@ brew install multimarkdown
 wait
 #+END_SRC
 
+Pandoc useful for converting between different file formats
+
+#+BEGIN_SRC sh
+brew install pandoc
+wait
+#+END_SRC
+
 * Open jdk
 
 Installs open jdk.
@@ -190,13 +197,6 @@ brew install leiningen
 wait
 rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
-#+END_SRC
-
-Formatter.
-
-#+BEGIN_SRC sh
-brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
-wait
 #+END_SRC
 
 LSP.
@@ -249,16 +249,6 @@ wait
 #+END_SRC
 
 * Other apps
-** Chormium
-
-Install Chromium
-
-#+BEGIN_SRC sh
-brew install chromium
-wait
-open -a "Chromium" --args --make-default-browser
-#+END_SRC
-
 ** Dropbox
 
 #+BEGIN_SRC sh

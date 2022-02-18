@@ -697,13 +697,29 @@ If this becomes a problem these common lines could be filtered."
 
   (add-hook 'after-save-hook #'my/tangle-scripts)
 
-  ;; Sort sections by TODO.
+  (defun markdown-convert-buffer-to-org ()
+    "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
+    (interactive)
+    (shell-command-on-region (point-min) (point-max)
+                             (format "pandoc -f markdown -t org -o %s"
+                                     (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
+
   (defun my/org-todo-sort ()
+    "Sort sections by TODO."
     (interactive)
     (ignore-errors (outline-up-heading 10))
     (org-sort-entries nil ?o)
     (org-cycle)
     (org-cycle))
+
+  (defun my/markdown-convert-buffer-to-org ()
+    "Convert the current buffer's content from .md to .org format.
+ Save with the current file name but with .org extension."
+    (interactive)
+    (shell-command-on-region
+     (point-min) (point-max)
+     (format "pandoc -f markdown -t org -o %s"
+             (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
 
   ;; Capture templates.
   (setq org-capture-templates
@@ -1033,6 +1049,7 @@ If this becomes a problem these common lines could be filtered."
   :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
+
 
 (progn ;; Text to speech
   (let ((buffer-name "*Speak Region*"))
