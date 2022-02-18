@@ -72,6 +72,9 @@ ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 brew install multimarkdown
 wait
 
+brew install pandoc
+wait
+
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk11
 wait
@@ -85,9 +88,6 @@ brew install leiningen
 wait
 rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
-
-brew install --build-from-source ~/.emacs.d/setup/brew-formulae/clj-zprint.rb
-wait
 
 brew install clojure-lsp/brew/clojure-lsp-native
 wait
@@ -109,10 +109,6 @@ npm i -g typescript-language-server; npm i -g typescript
 
 npm install -g vscode-html-languageserver-bin
 wait
-
-brew install chromium
-wait
-open -a "Chromium" --args --make-default-browser
 
 brew install --cask dropbox
 wait
