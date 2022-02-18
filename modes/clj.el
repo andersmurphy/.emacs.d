@@ -109,21 +109,21 @@ In the case of nested projects will find the nearest
 project.clj/deps.edn file. Works up directories starting from the
 current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
   (cond
-   ((file-exists-p (concat dirname "project.clj"))
-    (list (concat dirname "project.clj")
-          (or clj-lisp-prog "lein repl")))
    ((file-exists-p (concat dirname "shadow-cljs.edn"))
     (list (concat dirname "shadow-cljs.edn")
           (or clj-lisp-prog "yarn shadow-cljs clj-repl")))
    ((file-exists-p (concat dirname "deps.edn"))
     (list (concat dirname "deps.edn")
           (or clj-lisp-prog "clojure -M:dev")))
+   ((file-exists-p (concat dirname "project.clj"))
+    (list (concat dirname "project.clj")
+          (or clj-lisp-prog "lein repl")))
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
     (list (buffer-file-name) "clojure"))
    (t (-> (directory-file-name dirname)
-        file-name-directory
-        (my/try-to-find-project-file clj-lisp-prog)))))
+          file-name-directory
+          (my/try-to-find-project-file clj-lisp-prog)))))
 
 (defun my/try-to-open-clj-project-file (&optional clj-lisp-prog)
   "Will try to open the correct project root project.clj/deps.edn file.
