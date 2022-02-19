@@ -820,14 +820,20 @@ If this becomes a problem these common lines could be filtered."
   (defadvice flymake--handle-report (after refresh-folded-errors activate)
     (my/refresh-folded-code-errors))
 
+  (defun my/hs-toggle-all (&optional e)
+    "Toggle between hide Pand show all."
+    (interactive)
+    (save-excursion
+      (if (hs-already-hidden-p)
+          (hs-show-all)
+        (hs-hide-all))))
+
   :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
                                              (hs-minor-mode) (hs-hide-all))))
+
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
-              ("<backtab>" . (lambda ()
-                               (interactive)
-                               (save-excursion
-                                 (hs-hide-all))))))
+              ("<backtab>" . my/hs-toggle-all)))
 (load "~/.emacs.d/modes/topiary.el")
 (use-package topiary
   :straight nil
