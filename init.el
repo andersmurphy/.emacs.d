@@ -510,6 +510,7 @@ This can be used to make the window layout change based on frame size."
   :straight nil
   :config
   (setq search-highlight t)
+  (setq isearch-invisible nil)
   (setq search-whitespace-regexp ".*?")
   (setq isearch-lax-whitespace t)
   (setq isearch-regexp-lax-whitespace nil)
@@ -773,6 +774,7 @@ If this becomes a problem these common lines could be filtered."
 (use-package hideshow
   :straight nil
   :config
+  (setq hs-isearch-open nil)
   (setq hs-hide-comments-when-hiding-all nil)
 
   (defun my/display-most-sever-flymake-error (ov)
