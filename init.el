@@ -620,12 +620,14 @@ This can be used to make the window layout change based on frame size."
              (branch-name (replace-regexp-in-string
                            "\\s-+" "-"
                            (downcase commit-name)))
-             (from (car (last (magit-region-values 'commit)))))
+             (from (car (last (magit-region-values 'commit))))
+             (master-name (car (seq-filter (lambda (n) (or (equal n "master") (equal n "main")))
+                                           (magit-list-branch-names)))))
         (magit--branch-spinoff branch-name from t)
         (run-hooks 'magit-credential-hook)
         (magit-run-git "push" "-u" "origin" branch-name)
-        (magit-branch-checkout "master")
-        (forge-create-pullreq (concat "origin/" branch-name) "origin/master"))))
+        (magit-branch-checkout master-name)
+        (forge-create-pullreq (concat "origin/" branch-name) (concat "origin/" master-name)))))
 
   (defun my/magit-search-git-log-for-change ()
     "Search git log for current symbol or topiary region.
