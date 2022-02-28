@@ -913,10 +913,6 @@ If this becomes a problem these common lines could be filtered."
         '(:documentHighlightProvider
           :hoverProvider
           :signatureHelpProvider))
-  (add-to-list 'eglot-server-programs
-               '((clojure-mode clojurescript-mode) . ("clojure-lsp")))
-  (add-to-list 'eglot-server-programs
-               '((js-mode typescript-mode) . ("typescript-language-server" "--stdio")))
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
 ;; Lisp
