@@ -90,10 +90,6 @@ rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 
 brew install clojure-lsp/brew/clojure-lsp-native
-wait
-rm -r ~/.lsp
-mkdir ~/.lsp
-ln -s ~/.emacs.d/setup/dotfiles/.lsp/config.edn ~/.lsp/
 
 rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
