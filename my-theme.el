@@ -237,7 +237,10 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(org-level-4 ((t (:foreground ,fg :background ,bg :height 1.0 :weight normal))))
      ;; eww
      `(eww-valid-certificate ((t (:foreground ,fg-success))))
-     `(eww-invalid-certificate ((t (:foreground ,fg-error)))))))
+     `(eww-invalid-certificate ((t (:foreground ,fg-error))))
+     ;; eglot
+     `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-comment))))
+     )))
 
 (provide-theme 'my)
 ;;; my-theme.el ends here
