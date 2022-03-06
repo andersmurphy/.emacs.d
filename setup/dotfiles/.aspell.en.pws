@@ -38,4 +38,5 @@ namespaces
 namespaced
 uuid
 UUID
-composable
+composabledeeplink
+deeplinks
