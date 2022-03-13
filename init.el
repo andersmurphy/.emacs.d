@@ -510,7 +510,6 @@ This can be used to make the window layout change based on frame size."
   :straight nil
   :config
   (setq search-highlight t)
-  (setq isearch-invisible nil)
   (setq search-whitespace-regexp ".*?")
   (setq isearch-lax-whitespace t)
   (setq isearch-regexp-lax-whitespace nil)
@@ -776,7 +775,6 @@ If this becomes a problem these common lines could be filtered."
 (use-package hideshow
   :straight nil
   :config
-  (setq hs-isearch-open nil)
   (setq hs-hide-comments-when-hiding-all nil)
 
   (defun my/display-most-sever-flymake-error (ov)
@@ -824,20 +822,12 @@ If this becomes a problem these common lines could be filtered."
   (defadvice flymake--handle-report (after refresh-folded-errors activate)
     (my/refresh-folded-code-errors))
 
-  (defun my/hs-toggle-all (&optional e)
-    "Toggle between hide Pand show all."
-    (interactive)
-    (save-excursion
-      (if (hs-already-hidden-p)
-          (hs-show-all)
-        (hs-hide-all))))
-
   :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
                                              (hs-minor-mode) (hs-hide-all))))
 
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
-              ("<backtab>" . my/hs-toggle-all)))
+              ("<backtab>" . hs-hide-all)))
 (load "~/.emacs.d/modes/topiary.el")
 (use-package topiary
   :straight nil
