@@ -292,6 +292,10 @@ This can be used to make the window layout change based on frame size."
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
   :straight nil)
+(defun my/eshell-new ()
+  "Open a new instance of eshell."
+  (interactive)
+  (eshell 'N))
 
 ;;; VISUAL
 (progn ;; Defaults
@@ -1045,7 +1049,6 @@ If this becomes a problem these common lines could be filtered."
   :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
-
 
 (progn ;; Text to speech
   (let ((buffer-name "*Speak Region*"))
