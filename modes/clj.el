@@ -398,7 +398,7 @@ Works from both namespace and test namespace"
     (make-directory project-name-path)
     (find-file (concat project-name-path "/deps.edn"))
     (insert "{:paths [\"src\"]
- :deps {org.clojure/clojure {:mvn/version \"1.11.0\"}}
+ :deps {org.clojure/clojure {:mvn/version \"1.11.1\"}}
  :aliases {}}")
     (save-buffer)
     (make-directory (concat project-name-path "/src"))
