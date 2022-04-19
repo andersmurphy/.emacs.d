@@ -973,6 +973,8 @@ If this becomes a problem these common lines could be filtered."
               ("C-c C-t p"   . my/clj-run-project-tests)
               ("C-c C-t C-n" . my/clj-run-ns-tests)
               ("C-c C-t C-p" . my/clj-run-project-tests)))
+(use-package html-to-hiccup
+  :ensure t)
 ;; HTTP
 (defun my/current-ip ()
   "Return current IP address."
