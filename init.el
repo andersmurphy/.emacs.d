@@ -918,7 +918,7 @@ If this becomes a problem these common lines could be filtered."
 (defun my/start-postgresql ()
   "Start local postgresql database."
   (interactive)
-  (async-shell-command "pg_ctl -D /usr/local/var/postgresql@10 start" (generate-new-buffer "*postgresql*")))
+  (async-shell-command "pg_ctl -D /usr/local/var/postgresql@13 start" (generate-new-buffer "*postgresql*")))
 (use-package sql
   :config
   (defun my/sql-find-up-or-down (file-name)
