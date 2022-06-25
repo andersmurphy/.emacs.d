@@ -902,6 +902,7 @@ If this becomes a problem these common lines could be filtered."
 (use-package eglot
   :demand t
   :config
+  (setq eglot-confirm-server-initiated-edits nil)
   (setq eglot-sync-connect 0)
   (setq eglot-ignored-server-capabilities
         '(:documentHighlightProvider
