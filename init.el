@@ -895,6 +895,8 @@ If this becomes a problem these common lines could be filtered."
               ("C-p" . company-select-previous)
               ("TAB" . company-complete)
               ([tab] . company-complete)
+              ([return] . nil)
+              ("RET"    . nil)
               ("C-w" . topiary/kill)))
 
 ;;; PROGRAMMING
