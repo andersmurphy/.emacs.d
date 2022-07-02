@@ -613,6 +613,15 @@ This can be used to make the window layout change based on frame size."
   ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
 
+  (defun my/forge-create-pullreq (source target)
+    "Create a new pull-request for the current repository."
+    (interactive (forge-create-pullreq--read-args))
+    (let* ((repo (forge-get-repository t)))
+      (forge--submit-create-pullreq
+       (forge-get-repository repo)
+       repo)
+      (message "PR submitted!")))
+
   (defun my/magit-spin-off-pull-request ()
     "Spin off last commit as a pull request."
     (interactive)
@@ -630,8 +639,8 @@ This can be used to make the window layout change based on frame size."
         (run-hooks 'magit-credential-hook)
         (magit-run-git "push" "-u" "origin" branch-name)
         (magit-branch-checkout master-name)
-        (forge-create-pullreq (concat "origin/" branch-name)
-                              (concat "origin/" master-name))
+        (my/forge-create-pullreq (concat "origin/" branch-name)
+                                 (concat "origin/" master-name))
         (call-interactively 'forge-post-submit))))
 
   (defun my/magit-search-git-log-for-change ()
