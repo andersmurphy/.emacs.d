@@ -632,7 +632,7 @@ This can be used to make the window layout change based on frame size."
         (magit-branch-checkout master-name)
         (forge-create-pullreq (concat "origin/" branch-name)
                               (concat "origin/" master-name))
-        (call-interactively 'forge--submit-create-pullreq))))
+        (call-interactively 'forge-post-submit))))
 
   (defun my/magit-search-git-log-for-change ()
     "Search git log for current symbol or topiary region.
