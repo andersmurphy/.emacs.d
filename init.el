@@ -842,6 +842,10 @@ If this becomes a problem these common lines could be filtered."
               ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . hs-hide-all)))
 (load "~/.emacs.d/modes/topiary.el")
+(use-package subword
+  :straight nil
+  :init
+  (global-subword-mode))
 (use-package topiary
   :straight nil
   :init
