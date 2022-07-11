@@ -31,3 +31,5 @@ emms
 /transient/*
 /var/prescient-save.el
 eln-cache/
+/code-review-db-file.sqlite
+/code-review-error.log

@@ -693,6 +693,9 @@ If this becomes a problem these common lines could be filtered."
                     "\n"))
     (save-buffer))
   :after magit)
+(use-package code-review
+  :config
+  (setq code-review-auth-login-marker 'forge))
 (use-package org
   :straight nil
   :config
@@ -1061,7 +1064,6 @@ If this becomes a problem these common lines could be filtered."
   ;; reduces noise on some sites
   (setq shr-discard-aria-hidden t)
   (defun my/eww-font-setup ()
-    (interactive)
     (face-remap-add-relative 'variable-pitch
                              :height 1.2))
   :hook ((eww-mode . my/eww-font-setup)
