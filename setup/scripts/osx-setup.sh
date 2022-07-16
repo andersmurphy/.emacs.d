@@ -17,7 +17,7 @@ brew tap homebrew/cask
 brew install --cask chrysalis
 wait
 
-brew install git
+brew install --with-pcre2 git
 wait
 
 git config --global user.name "andersmurphy"
