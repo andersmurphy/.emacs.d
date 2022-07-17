@@ -52,7 +52,7 @@ wait
 Install latest version of git.
 
 #+BEGIN_SRC sh
-brew install --with-pcre2 git
+brew install git
 wait
 #+END_SRC
 

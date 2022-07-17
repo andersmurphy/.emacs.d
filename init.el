@@ -696,6 +696,10 @@ If this becomes a problem these common lines could be filtered."
 (use-package code-review
   :config
   (setq code-review-auth-login-marker 'forge))
+(use-package magit-todos
+  :after magit
+  :config
+  (magit-todos-mode))
 (use-package org
   :straight nil
   :config
