@@ -68,7 +68,8 @@
      (when-not ,(my/t->true-sym
                  (my/inferior-lisp-program-heroku-p))
                (require (quote [pjstadig.humane-test-output]))
-               (eval '(pjstadig.humane-test-output/activate!)))
+               (eval '(pjstadig.humane-test-output/activate!))
+               (set! *warn-on-reflection* true))
      (set! *print-length* 30)
      (clojure.main/repl :print (fn [x]
                                    (newline)
@@ -371,21 +372,6 @@ Works from both namespace and test namespace"
   (-> (buffer-file-name)
       my/clj-find-implementation-or-test
       find-file))
-
-(defvar my/clj-warn-on-reflection-state nil)
-(defun my/clj-toggle-warn-on-reflection ()
-  "Toggle warn on reflection."
-  (interactive)
-  (my/when-repl-running
-   (if my/clj-warn-on-reflection-state
-       (progn
-         (my/clj-eval `(do (set! *warn-on-reflection* false)
-                           {'*warn-on-reflection* false}))
-         (setq my/clj-warn-on-reflection-state nil))
-     (progn
-       (my/clj-eval `(do (set! *warn-on-reflection* true)
-                         {'*warn-on-reflection* true}))
-       (setq my/clj-warn-on-reflection-state t)))))
 
 (defun my/create-new-deps-project ()
   "Create a new deps.edn project."
