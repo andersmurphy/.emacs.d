@@ -545,7 +545,7 @@ If end or beginning of outer sexp reached move point to other bound.
 \(a| b c) -> (b a| c) -> (b c a|) -> (b c |a) -> (b |a c) -> (|a b c) -> (b| a c)"
   (interactive)
   (let ((bounds (topiary/bounds)))
-    (cond ((not bounds)             (backward-sexp))
+    (cond ((member (char-after) (string-to-list ")]}")) (backward-sexp))
           ((= (point) (car bounds))
            (forward-sexp)
            (condition-case nil
