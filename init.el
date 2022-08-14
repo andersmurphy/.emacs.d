@@ -601,6 +601,7 @@ This can be used to make the window layout change based on frame size."
   ("C-M-s" . project-find-regexp))
 (use-package magit
   :config
+  (magit-wip-mode)
   (setq magit-diff-highlight-indentation nil)
   (setq magit-diff-highlight-trailing nil)
   (setq magit-diff-paint-whitespace nil)
