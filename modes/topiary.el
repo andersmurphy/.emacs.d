@@ -251,7 +251,9 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-punctuation-forward ()
   "Get bounds of - / character if after cursor."
-  (when (member (char-after) (string-to-list "=_-/?!#>,.@'<"))
+  (when (and (member (char-after) (string-to-list "=_-/?!#>,.@'<"))
+             (not (member (char-after (+ (point) 1))
+                          (string-to-list "[\"({"))))
     (cons (point) (+ (point) 1))))
 
 (defun topiary/bounds-of-punctuation-backward ()
