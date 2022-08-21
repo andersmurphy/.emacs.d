@@ -701,6 +701,12 @@ If this becomes a problem these common lines could be filtered."
   :after magit
   :config
   (magit-todos-mode))
+(use-package browse-at-remote
+  :config
+  (defun my/git-url-for-region ()
+    (interactive)
+    (browse-at-remote-kill)
+    (message "git url for region copied!")))
 (use-package org
   :straight nil
   :config
