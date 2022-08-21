@@ -706,7 +706,7 @@ If this becomes a problem these common lines could be filtered."
   (defun my/git-url-for-region ()
     (interactive)
     (browse-at-remote-kill)
-    (message "git url for region copied!")))
+    (message "git url for region yanked!")))
 (use-package org
   :straight nil
   :config
