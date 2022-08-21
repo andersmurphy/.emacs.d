@@ -943,6 +943,23 @@ If this becomes a problem these common lines could be filtered."
         '(:documentHighlightProvider
           :hoverProvider
           :signatureHelpProvider))
+
+  (defun my/filter-keywords (candidate-fun input)
+    "Filters CANDIDATE-FUN results that start with : .
+Unless the INPUT starts with :.
+
+This is to get around behaviour in clojure-lsp that returns
+keywords even if you don't type a : ."
+    (let ((res (funcall candidate-fun input)))
+      (if (string-prefix-p ":" input)
+          res
+        (seq-filter
+         (lambda (candidate)
+           (not (string-prefix-p ":" candidate)))
+         res))))
+
+  (advice-add 'company-capf--candidates :around #'my/filter-keywords)
+
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
 ;; Lisp
