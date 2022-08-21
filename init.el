@@ -449,7 +449,13 @@ This can be used to make the window layout change based on frame size."
 
   ;; Custom minimalist mode line with right aligned time
   (setq-default mode-line-end-spaces
-                (list (propertize " " 'display '(space :align-to (- right 16)))
+                (list (propertize
+                       " " 'display
+                       `(space :align-to
+                               (- right
+                                  ,(+ (length battery-mode-line-string)
+                                      (length display-time-string)))))
+                      'battery-mode-line-string
                       'display-time-string))
 
   (setq-default mode-line-format
@@ -464,7 +470,10 @@ This can be used to make the window layout change based on frame size."
   (defvar display-time-string-forms)
   (setq display-time-string-forms
         '((propertize (format-time-string "%F %H:%M" now) 'face 'bold)))
-  (display-time-mode t))
+  (display-time-mode t)
+
+  ;; Display battery
+  (display-battery-mode 1))
 
 ;;; META NAVIGATION
 (defun my/osx-open-in-finder ()
