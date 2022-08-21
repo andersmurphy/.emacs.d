@@ -447,22 +447,21 @@ This can be used to make the window layout change based on frame size."
   (advice-add 'handle-switch-frame :after #'my/mode-line-set-selected-window)
   (advice-add 'select-window :after #'my/mode-line-set-selected-window)
 
-  ;; Custom minimalist mode line with right aligned time
-  (setq-default mode-line-end-spaces
-                (list (propertize
-                       " " 'display
-                       `(space :align-to
-                               (- right
-                                  ,(+ (length battery-mode-line-string)
-                                      (length display-time-string)))))
-                      'battery-mode-line-string
-                      'display-time-string))
-
+  ;; Custom minimalist mode line with right aligned time and battery
   (setq-default mode-line-format
                 '("%e" mode-line-front-space
                   mode-line-buffer-identification
-                  (:eval (when (my/mode-line-selected-active-p)
-                           mode-line-end-spaces))))
+                  (:eval
+                   (when (my/mode-line-selected-active-p)
+                     (list (propertize
+                            " " 'display
+                            `(space
+                              :align-to
+                              (- right
+                                 ,(+ (length battery-mode-line-string)
+                                     (length display-time-string)))))
+                           'battery-mode-line-string
+                           'display-time-string)))))
 
   ;; Display time in mode line.
   (defvar display-time-default-load-average)
