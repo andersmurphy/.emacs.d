@@ -704,7 +704,10 @@ If this becomes a problem these common lines could be filtered."
   :after magit)
 (use-package code-review
   :config
-  (setq code-review-auth-login-marker 'forge))
+  (setq code-review-auth-login-marker 'forge)
+  :bind
+  (:map magit-status-mode-map
+        ("C-c r" . code-review-forge-pr-at-point)))
 (use-package magit-todos
   :after magit
   :config
