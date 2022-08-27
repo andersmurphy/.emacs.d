@@ -373,7 +373,7 @@ Works from both namespace and test namespace"
       my/clj-find-implementation-or-test
       find-file))
 
-(defun my/create-new-deps-project ()
+(defun my/clj-create-new-deps-project ()
   "Create a new deps.edn project."
   (interactive)
   (let* ((project-name-path (read-directory-name "Directory:"))
