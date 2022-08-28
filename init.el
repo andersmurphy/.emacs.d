@@ -990,6 +990,8 @@ keywords even if you don't type a : ."
         my/sql-find-up-or-down
         find-file))
   :bind (:map sql-mode-map ("M-g t" . my/sql-toggle-up-down)))
+(use-package sql-indent
+  :after sql)
 ;; Clojure
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
