@@ -66,16 +66,9 @@ If buffer doesn't have namespace defaults to current namespace."
 (defun my/clj-eval-last-sexp ()
   "Evaluate previous sexp."
   (interactive)
-  (cond
-   ((member major-mode '(clojure-mode clojurec-mode))
-    (my/when-repl-running
-     (my/clj-eval-with-ns (my/clj-get-last-sexp))
-     (my/show-repl)))
-   ((eq major-mode 'clojurescript-mode)
-    (my/when-repl-running
-     (my/clj-eval (my/clj-get-last-sexp))
-     (my/show-repl)))
-   (t (message "Mode not supported."))))
+  (my/when-repl-running
+   (my/clj-eval-with-ns (my/clj-get-last-sexp))
+   (my/show-repl)))
 
 (defun my/->boolean (value)
   "Convert turthy/falsy VALUE to boolean."
@@ -104,9 +97,6 @@ If buffer doesn't have namespace defaults to current namespace."
                                    (newline)
                                    (clojure.pprint/pprint x)
                                    (newline))))))
-
-(defun my/configure-cljs-repl ()
-  "Configure global repl settings.")
 
 (defun my/do-on-first-prompt (thunk)
   "Evaluate THUNK on first REPL prompt."
@@ -139,9 +129,6 @@ In the case of nested projects will find the nearest
 project.clj/deps.edn file. Works up directories starting from the
 current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
   (cond
-   ((file-exists-p (concat dirname "shadow-cljs.edn"))
-    (list (concat dirname "shadow-cljs.edn")
-          (or clj-lisp-prog "yarn shadow-cljs clj-repl")))
    ((file-exists-p (concat dirname "deps.edn"))
     (list (concat dirname "deps.edn")
           (or clj-lisp-prog "clojure -M:dev")))
@@ -168,14 +155,12 @@ Optionally CLJ-LISP-PROG can be specified"
 
 (defun my/clj-inferior-lisp (&optional mode)
   "Run REPL. If REPL is not running do first prompt behaviour after launch.
-MODE determines dispatch on dialect eg: clojure/clojurescript."
+MODE determines dispatch on dialect eg: clojure."
   (interactive)
   (if (get-buffer "*inferior-lisp*")
       (inferior-lisp inferior-lisp-program)
     (progn (my/do-on-first-prompt
-            (lambda () (cond ((eq mode 'clojurescript-mode)
-                              (my/configure-cljs-repl))
-                             (t (my/configure-clj-repl)))))
+            (lambda () (my/configure-clj-repl)))
            (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
@@ -224,93 +209,38 @@ Works up directories starting from the current files directory DIRNAME."
   "Print doc for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval
-    (cond ((member major-mode '(clojure-mode clojurec-mode))
-           `(do
-             (newline)
-             (newline)
-             (clojure.repl/doc ,(my/clj-symbol-at-point))))
-          ((eq major-mode 'clojurescript-mode)
-           `(do
-             (newline)
-             (newline)
-             (cljs.repl/doc ,(my/clj-symbol-at-point))))))
+   (my/clj-eval-with-ns
+    `(do
+      (newline)
+      (newline)
+      (clojure.repl/doc ,(my/clj-symbol-at-point))))
    (my/show-repl)))
 
 (defun my/clj-apropos ()
   "Given a regex return a list of defs in loaded namespaces that match."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval
-    (cond ((member major-mode '(clojure-mode clojurec-mode))
-           `(clojure.repl/apropos
-             (re-pattern ,(read-string "Apropos (regex):"))))
-          ((eq major-mode 'clojurescript-mode)
-           `(cljs.repl/apropos
-             (re-pattern ,(read-string "Apropos (regex):"))))))
+   (my/clj-eval-with-ns
+    `(clojure.repl/apropos
+      (re-pattern ,(read-string "Apropos (regex):"))))
    (my/show-repl)))
 
 (defun my/clj-find-doc ()
   "Given a regex print doc for any vars whose doc or name contain a match."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval
-    (cond ((member major-mode '(clojure-mode clojurec-mode))
-           `(clojure.repl/find-doc
-             (re-pattern ,(read-string "Find Doc (regex):"))))
-          ((eq major-mode 'clojurescript-mode)
-           `(cljs.repl/find-doc
-             (re-pattern ,(read-string "Find Doc (regex):"))))))
+   (my/clj-eval-with-ns
+    `(clojure.repl/find-doc
+      (re-pattern ,(read-string "Find Doc (regex):"))))
    (my/show-repl)))
 
 (defun my/clj-source-for-symbol ()
-  "Open buffer with source code of symbol at point."
+  "Show source for symbol at point."
   (interactive)
   (my/when-repl-running
-   (cond
-    ((member major-mode '(clojure-mode clojurec-mode))
-     (let ((ns (my/clj-symbol-at-point)))
-       (when ns
-         (let ((proc (inferior-lisp-proc))
-               (output-buffer "*CLJ-SOURCE*"))
-           (when (get-buffer output-buffer)
-             (kill-buffer output-buffer))
-           (set-buffer (get-buffer-create output-buffer))
-           (comint-redirect-send-command-to-process
-            (my/clj-eval
-             `(try
-               (require (quote ,ns))
-               (some->> (quote ,ns)
-                        ns-publics
-                        vals
-                        first
-                        meta
-                        :file
-                        (.getResourceAsStream (clojure.lang.RT/baseLoader))
-                        slurp
-                        print)
-               (catch Exception e (clojure.repl/source ,ns))))
-            output-buffer
-            proc
-            nil t)
-           ;; Wait for the process to complete
-           (set-buffer (process-buffer proc))
-           (while (null comint-redirect-completed)
-             (accept-process-output nil 1))
-           (set-buffer output-buffer)
-           ;; Remove nil from end of buffer
-           (switch-to-buffer output-buffer)
-           (goto-char (point-max))
-           (skip-chars-backward " \n nil")
-           (delete-region (point) (point-max))
-           (goto-char (point-min))
-           ;; Modes
-           (read-only-mode)
-           (clojure-mode)
-           (kill-buffer-on-q)))))
-    ((eq major-mode 'clojurescript-mode)
-     `(cljs.repl/source ,(my/clj-symbol-at-point)))
-    (t (message "Mode not supported.")))))
+   (my/clj-eval-with-ns
+    `(clojuse.repl/source ,(my/clj-symbol-at-point)))
+   (my/show-repl)))
 
 (defun my/clj-load-current-ns ()
   "Load current buffer namespace."
@@ -427,15 +357,6 @@ Works from both namespace and test namespace"
           (lambda()
             ;; Use clojure syntax table
             (set-syntax-table clojure-mode-syntax-table)))
-
-(defun my/lein-run ()
-  "Lein run."
-  (interactive)
-  (let ((default-directory (my/try-to-find-git-root (file-name-directory (buffer-file-name))))
-        (buffer-name "*Lein Run*"))
-    (when (get-buffer buffer-name)
-      (kill-buffer buffer-name))
-    (async-shell-command "lein run" (generate-new-buffer buffer-name))))
 
 (provide 'clj)
 ;;; clj.el ends here
