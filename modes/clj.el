@@ -41,12 +41,41 @@
   (interactive)
   (buffer-substring (save-excursion (backward-sexp) (point)) (point)))
 
+(defun my/clj-format-with-ns (command)
+  "Format edn COMMAND to use the current buffer namespace.
+If buffer doesn't have namespace defaults to current namespace.
+Handles both string and edn commands."
+  (let ((ns (my/clj-get-current-namespace-symbol))
+        (string (if (stringp command)
+                    command
+                  (edn-print-string command))))
+    (if ns
+        (format "(do
+               (when-not (find-ns '%s) (require '%s))
+               (binding [*ns* (or (find-ns '%s) *ns*)]
+                 (eval '%s)))"
+                ns ns ns string)
+      (format "(eval '%s)" string))))
+
+(defun my/clj-eval-with-ns (command)
+  "Evaluate COMMAND in the context of the current buffer namespace.
+If buffer doesn't have namespace defaults to current namespace."
+  (-> (my/clj-format-with-ns command)
+      lisp-eval-string))
+
 (defun my/clj-eval-last-sexp ()
   "Evaluate previous sexp."
   (interactive)
-  (my/when-repl-running
-   (my/clj-eval (my/clj-get-last-sexp))
-   (my/show-repl)))
+  (cond
+   ((member major-mode '(clojure-mode clojurec-mode))
+    (my/when-repl-running
+     (my/clj-eval-with-ns (my/clj-get-last-sexp))
+     (my/show-repl)))
+   ((eq major-mode 'clojurescript-mode)
+    (my/when-repl-running
+     (my/clj-eval (my/clj-get-last-sexp))
+     (my/show-repl)))
+   (t (message "Mode not supported."))))
 
 (defun my/->boolean (value)
   "Convert turthy/falsy VALUE to boolean."
@@ -188,8 +217,8 @@ Works up directories starting from the current files directory DIRNAME."
         (string= "/" dirname))
     (directory-file-name dirname))
    (t (-> (directory-file-name dirname)
-        file-name-directory
-        my/try-to-find-git-root))))
+          file-name-directory
+          my/try-to-find-git-root))))
 
 (defun my/clj-doc-for-symbol ()
   "Print doc for symbol at point."
