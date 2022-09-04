@@ -169,6 +169,13 @@ brew install pandoc
 wait
 #+END_SRC
 
+Jet conversion between json and edn
+
+#+BEGIN_SRC sh
+brew install borkdude/brew/jet
+wait
+#+END_SRC
+
 * Open jdk
 
 Installs open jdk.

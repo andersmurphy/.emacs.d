@@ -75,6 +75,9 @@ wait
 brew install pandoc
 wait
 
+brew install borkdude/brew/jet
+wait
+
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk11
 wait
