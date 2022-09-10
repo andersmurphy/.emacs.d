@@ -79,7 +79,7 @@ brew install borkdude/brew/jet
 wait
 
 brew tap AdoptOpenJDK/openjdk
-brew install adoptopenjdk11
+brew install adoptopenjdk17
 wait
 
 brew install clojure

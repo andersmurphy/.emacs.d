@@ -182,7 +182,7 @@ Installs open jdk.
 
 #+BEGIN_SRC sh
 brew tap AdoptOpenJDK/openjdk
-brew install adoptopenjdk11
+brew install adoptopenjdk17
 wait
 #+END_SRC
 
