@@ -1034,6 +1034,19 @@ keywords even if you don't type a : ."
               ("C-c C-t C-p" . my/clj-run-project-tests)))
 (use-package html-to-hiccup
   :ensure t)
+(defun my/json-to-edn ()
+  "Convert topiary region json to edn."
+  (interactive)
+  (let ((jet (when (executable-find "jet")
+               "jet --pretty --keywordize keyword --from json --to edn")))
+    (save-excursion
+      (if jet
+          (let ((bounds (topiary/compute-bounds)))
+            (shell-command-on-region
+             (car bounds)
+             (cdr bounds)
+             jet (current-buffer) t))
+        (user-error "Could not find jet install")))))
 ;; HTTP
 (defun my/current-ip ()
   "Return current IP address."
