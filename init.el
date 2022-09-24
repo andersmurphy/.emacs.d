@@ -1034,19 +1034,38 @@ keywords even if you don't type a : ."
               ("C-c C-t C-p" . my/clj-run-project-tests)))
 (use-package html-to-hiccup
   :ensure t)
+(defun my/js-to-json ()
+  "Convert topiary region js to json."
+  (interactive)
+  (let* ((bounds (topiary/compute-bounds))
+         (output (->> (buffer-substring-no-properties
+                       (car bounds)
+                       (cdr bounds))
+                      (replace-regexp-in-string
+                       (pcre-to-elisp
+                        "(\\w+)(\\s*:)")
+                       "\"\\1\"\\2")
+                      (replace-regexp-in-string
+                       "'" "\"")
+                      (replace-regexp-in-string
+                       (pcre-to-elisp ",([\n\r\s]*)}")
+                       "\\1}"))))
+    (kill-region (car bounds) (cdr bounds))
+    (insert output)))
 (defun my/json-to-edn ()
-  "Convert topiary region json to edn."
+  "Convert topiary region js/json to edn."
   (interactive)
   (let ((jet (when (executable-find "jet")
                "jet --pretty --keywordize keyword --from json --to edn")))
-    (save-excursion
-      (if jet
-          (let ((bounds (topiary/compute-bounds)))
+    (if jet
+        (progn
+          (my/js-to-json)
+          (let* ((bounds (topiary/compute-bounds)))
             (shell-command-on-region
              (car bounds)
              (cdr bounds)
-             jet (current-buffer) t))
-        (user-error "Could not find jet install")))))
+             jet (current-buffer) t)))
+      (user-error "Could not find jet installed"))))
 ;; HTTP
 (defun my/current-ip ()
   "Return current IP address."
