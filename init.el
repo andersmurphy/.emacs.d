@@ -1038,20 +1038,23 @@ keywords even if you don't type a : ."
   "Convert topiary region js to json."
   (interactive)
   (let* ((bounds (topiary/compute-bounds))
-         (output (->> (buffer-substring-no-properties
-                       (car bounds)
-                       (cdr bounds))
-                      (replace-regexp-in-string
-                       (pcre-to-elisp
-                        "(\\w+)(\\s*:)")
-                       "\"\\1\"\\2")
-                      (replace-regexp-in-string
-                       "'" "\"")
-                      (replace-regexp-in-string
-                       (pcre-to-elisp ",([\n\r\s]*)}")
-                       "\\1}"))))
-    (kill-region (car bounds) (cdr bounds))
-    (insert output)))
+         (node (when (executable-find "node")
+                 (format "node -e 'console.log(JSON.stringify(%s, null, 2))'"
+                         (->> (buffer-substring-no-properties
+                               (car bounds)
+                               (cdr bounds))
+                              (replace-regexp-in-string
+                               "'" "\"")
+                              (replace-regexp-in-string
+                               (pcre-to-elisp ",([\n\r\s]*)}")
+                               "\\1}"))))))
+    (if node
+        (shell-command-on-region
+         (car bounds)
+         (cdr bounds)
+         node
+         (current-buffer) t)
+      (user-error "Could not find node install"))))
 (defun my/json-to-edn ()
   "Convert topiary region js/json to edn."
   (interactive)
