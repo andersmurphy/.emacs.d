@@ -938,6 +938,7 @@ If this becomes a problem these common lines could be filtered."
 ;;; PROGRAMMING
 ;; LSP - Language Server Protocol
 (use-package eglot
+  :straight nil
   :demand t
   :config
   (setq eglot-confirm-server-initiated-edits nil)
@@ -965,6 +966,9 @@ keywords even if you don't type a : ."
 
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
+(use-package jarchive
+  :init
+  (jarchive-setup))
 ;; Lisp
 (use-package inf-lisp
   :bind (:map inferior-lisp-mode-map
