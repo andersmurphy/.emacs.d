@@ -1000,27 +1000,6 @@ keywords even if you don't type a : ."
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
 (use-package clojure-mode
-  :config
-
-  (defconst clojure-font-lock-keywords
-    ;; Define our own font lock keywords.
-    ;; Monochrome theme means we only care about declarations.
-    ;; By simplifying font locking we get better performance in large files.
-    (eval-when-compile
-      `(;; def..., fn and ns
-        (,(concat
-           ;; Declaration
-           "(\\(def[^ \r\n\t]*\\>\\|ns\\|fn\\)"
-           ;; Any whitespace
-           "[ \r\n\t]*"
-           ;; Possibly type or metadata
-           "\\(?:#?^\\(?:{[^}]*}\\|\\sw+\\)[ \r\n\t]*\\)*"
-           "\\(" clojure--sym-regexp "\\)?")
-         (2 font-lock-function-name-face nil t))
-        ;; Highlights namespace part of function/keyword
-        (,(concat "\\(" clojure--sym-regexp "?\\)\\(/\\)\\(" clojure--sym-regexp "\\)")
-         (1 font-lock-type-face)))))
-
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
               ("C-c C-z" . my/clj-open-repl)
