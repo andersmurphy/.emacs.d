@@ -40,7 +40,7 @@ git config --global core.excludesfile '~/.gitignore'
 
 git config --global diff.algorithm histogram
 
-brew install libxml2 gcc libgccjit
+brew install libxml2 gcc libgccjit cairo
 wait
 
 # We clone a single branch for a slightly smaller download
