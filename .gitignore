@@ -33,3 +33,5 @@ emms
 eln-cache/
 /code-review-db-file.sqlite
 /code-review-error.log
+/forge-database*.sql
+/tramp
