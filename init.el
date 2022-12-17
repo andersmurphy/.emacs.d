@@ -1127,8 +1127,31 @@ keywords even if you don't type a : ."
   :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
-
-(progn ;; Text to speech
+;; QR codes
+(defun my/qr-encode (str &optional buf)
+  "Encode STR as a QR code. Return a new buffer or BUF with the code in it."
+  (interactive "MString to encode: ")
+  (let ((buffer (get-buffer-create (or buf "*QR Code*")))
+        (inhibit-read-only t))
+    (with-current-buffer buffer
+      (delete-region (point-min) (point-max)))
+    (make-process
+     :name "qrencode" :buffer buffer
+     ;; "-o -" sends output to stdout
+     :command `("qrencode" ,str "-t" "PNG" "-o" "-")
+     ;; Don't encode stdout as string
+     :coding 'no-conversion
+     :sentinel (lambda (process change)
+                 (when (string= change "finished\n")
+                   (with-current-buffer
+                       (process-buffer process)
+                     (image-mode)
+                     (image-transform-fit-to-window)))))
+    (when (called-interactively-p 'interactive)
+      (display-buffer buffer))
+    buffer))
+;; Text to speech
+(progn
   (let ((buffer-name "*Speak Region*"))
 
     (defun my/speak-region ()

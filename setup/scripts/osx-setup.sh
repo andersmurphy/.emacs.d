@@ -40,7 +40,7 @@ git config --global core.excludesfile '~/.gitignore'
 
 git config --global diff.algorithm histogram
 
-brew install libxml2 gcc libgccjit cairo
+brew install libxml2 gcc libgccjit
 wait
 
 # We clone a single branch for a slightly smaller download
@@ -77,6 +77,8 @@ wait
 
 brew install borkdude/brew/jet
 wait
+
+brew install qrencode
 
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk17

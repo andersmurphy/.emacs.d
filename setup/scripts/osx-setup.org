@@ -162,18 +162,24 @@ brew install multimarkdown
 wait
 #+END_SRC
 
-Pandoc useful for converting between different file formats
+Pandoc useful for converting between different file formats.
 
 #+BEGIN_SRC sh
 brew install pandoc
 wait
 #+END_SRC
 
-Jet conversion between json and edn
+Jet conversion between json and edn.
 
 #+BEGIN_SRC sh
 brew install borkdude/brew/jet
 wait
+#+END_SRC
+
+qrencode for generating QR codes.
+
+#+BEGIN_SRC sh
+brew install qrencode
 #+END_SRC
 
 * Open jdk
