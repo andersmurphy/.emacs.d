@@ -121,6 +121,9 @@
   (global-set-key (kbd "C-x C--") 'my/zoom-out)
   (global-set-key (kbd "C-x +") 'my/zoom-in)
   (global-set-key (kbd "C-x C-+") 'my/zoom-in)
+  ;; C-M-\ is a bit awkward and C-\ (toggle input method)
+  ;; is not something I use.
+  (global-set-key (kbd "C-\\") 'indent-region)
   ;; Unbind tmm-menubar as I never use it.
   (global-unset-key (kbd "M-`"))
   ;; Unbind scroll down as I never use it.
