@@ -44,11 +44,11 @@ brew install libxml2 gcc libgccjit
 wait
 
 # We clone a single branch for a slightly smaller download
-git clone https://git.savannah.gnu.org/git/emacs.git --branch master --single-branch
+git clone https://git.savannah.gnu.org/git/emacs.git --branch emacs-29 --single-branch
 wait
 
 cd emacs
-git checkout master
+git checkout emacs-29
 ./autogen.sh
 ./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
 
