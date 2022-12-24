@@ -836,8 +836,7 @@ If this becomes a problem these common lines could be filtered."
                                      (list 'left-fringe
                                            'my/flymake-fringe-indicator
                                            (overlay-get most-sever-error 'face))))
-          (overlay-put ov 'before-string nil))
-        (overlay-put ov 'display "..."))))
+          (overlay-put ov 'before-string nil)))))
 
   (setq hs-set-up-overlay 'my/display-most-sever-flymake-error)
 
