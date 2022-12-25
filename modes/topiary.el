@@ -138,6 +138,8 @@
                                          (insert "\\")))
             (define-key map (kbd "M-l") 'topiary/downcase)
             (define-key map (kbd "M-u") 'topiary/upcase)
+            (define-key map (kbd "C-\\") 'topiary/indent-region)
+            (define-key map (kbd "C-M-\\") 'topiary/indent-region)
             map)
   (if topiary-mode
       (progn
@@ -722,6 +724,14 @@ Otherwise insert single quote."
   (interactive)
   (let ((bounds (topiary/bounds)))
     (downcase-region (car bounds) (cdr bounds))))
+
+(defun topiary/indent-region ()
+  "Indent topiary bounds. If no bounds indent region."
+  (interactive)
+  (let ((bounds (topiary/bounds)))
+    (if bounds
+        (indent-region (car bounds) (cdr bounds) nil)
+      (indent-region (point-min) (point-max) nil))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
