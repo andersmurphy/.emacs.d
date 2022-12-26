@@ -802,16 +802,6 @@ If this becomes a problem these common lines could be filtered."
   :init
   (add-hook 'before-save-hook #'whitespace-cleanup))
 (use-package aggressive-indent
-  :config
-  (defun my/aggresive-indent-region-function (beg end)
-    "In clojure mode vertically align the contents of the sexp around point."
-    (indent-region beg end)
-    (when (eq major-mode 'clojure-mode)
-      (call-interactively 'clojure-align)))
-
-  (setq aggressive-indent-region-function
-        'my/aggresive-indent-region-function)
-
   :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 (use-package hideshow
   :straight nil
@@ -1002,6 +992,8 @@ keywords even if you don't type a : ."
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
 (use-package clojure-mode
+  :config
+  (setq clojure-align-forms-automatically t)
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
               ("C-c C-z" . my/clj-open-repl)
