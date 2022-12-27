@@ -726,12 +726,17 @@ Otherwise insert single quote."
     (downcase-region (car bounds) (cdr bounds))))
 
 (defun topiary/indent-region ()
-  "Indent topiary bounds. If no bounds indent region."
+  "Indent topiary bounds. If no bounds indent region.
+Also cleans up whitespace."
   (interactive)
   (let ((bounds (topiary/bounds)))
     (if bounds
-        (indent-region (car bounds) (cdr bounds) nil)
-      (indent-region (point-min) (point-max) nil))))
+        (progn
+          (whitespace-cleanup-region (car bounds) (cdr bounds))
+          (indent-region (car bounds) (cdr bounds) nil))
+      (progn
+        (whitespace-cleanup-region (point-min) (point-max))
+        (indent-region (point-min) (point-max) nil)))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
