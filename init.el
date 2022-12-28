@@ -801,8 +801,6 @@ If this becomes a problem these common lines could be filtered."
   :straight nil
   :init
   (add-hook 'before-save-hook #'whitespace-cleanup))
-(use-package aggressive-indent
-  :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 (use-package hideshow
   :straight nil
   :config
