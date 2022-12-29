@@ -797,10 +797,6 @@ If this becomes a problem these common lines could be filtered."
         (setq replace t))
       (list string replace)))
   (advice-add 'kill-new :filter-args #'my/dedupe-kill))
-(use-package whitespace
-  :straight nil
-  :init
-  (add-hook 'before-save-hook #'whitespace-cleanup))
 (use-package hideshow
   :straight nil
   :config
