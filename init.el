@@ -204,7 +204,10 @@
   (setq enable-recursive-minibuffers t)
 
   ;; Enable emoji
-  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend))
+  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+
+  ;; Remove duplicates in history
+  (setq history-delete-duplicates t))
 (defun my/init ()
   "Open init file (this file)."
   (interactive)
