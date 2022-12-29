@@ -321,7 +321,7 @@ In the above example the n would be deleted. Handles comments."
   (save-excursion
     (skip-chars-backward "[:graph:]")
     (when (thread-last
-              (seq-map (lambda (string) (concat string "[\s\n]" )) strings)
+            (seq-map (lambda (string) (concat string "[\s\n]" )) strings)
             (seq-some #'looking-at))
       (cons (point) (progn (skip-chars-forward "[:graph:]") (point))))))
 
@@ -342,14 +342,14 @@ In the above example the n would be deleted. Handles comments."
       (cons (point) (progn (sgml-skip-tag-backward 1) (point))))))
 
 (defun topiary/bounds-of-sexp-at-point ()
-  "Like (bounds-of-thing-at-point 'sexp) but return nil in strings."
+  "Like (bounds-of-thing-at-point \\'sexp) but return nil in strings."
   (when (not (topiary/in-string-p))
     (bounds-of-thing-at-point 'sexp)))
 
 (defun topiary/bounds-of-word-at-point ()
-  "Like (bounds-of-thing-at-point 'word) when in string or comment.
+  "Like (bounds-of-thing-at-point \\'word) when in string or comment.
 When not in string or comment only return bounds of word when not at
-edge of word. eg: foo|d would return the bounds of 'food'. But food| would
+edge of word. eg: foo|d would return the bounds of \\'food\\'. But food| would
  return nil."
   (when (or (not (or (topiary/end-of-buffer-p)
                      (topiary/beginning-of-buffer-p)
