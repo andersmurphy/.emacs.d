@@ -140,6 +140,7 @@
             (define-key map (kbd "M-u") 'topiary/upcase)
             (define-key map (kbd "C-\\") 'topiary/indent-region)
             (define-key map (kbd "C-M-\\") 'topiary/indent-region)
+            (define-key map (kbd "M-;") 'topiary/comment-region)
             map)
   (if topiary-mode
       (progn
@@ -623,7 +624,7 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
       (topiary/hungry-delete-backward))))
 
 (defun topiary/yank ()
-  "Like 'yank'. But calling 'yank' again will call 'yank-pop'."
+  "Like \\'yank\\'. But calling \\'yank\\' again will call \\'yank-pop\\'."
   (interactive)
   (if (member last-command '(yank yank-pop))
       (yank-pop)
@@ -737,6 +738,42 @@ Also cleans up whitespace."
       (progn
         (whitespace-cleanup-region (point-min) (point-max))
         (indent-region (point-min) (point-max) nil)))))
+
+(defun topiary/compute-bounds-for-uncomment ()
+  "Get compute topiary bounds for uncomment."
+  (or (topiary/bounds-of-active-region)
+      (let* ((start (point))
+             (end (overlay-start show-paren--overlay))
+             (bounds-directed (when (and start end)
+                                (if (> start end)
+                                    (cons end start)
+                                  (cons start end))))
+             (bounds+leading-comment
+              (when bounds-directed
+                (cons
+                 (save-excursion
+                   (goto-char (car bounds-directed))
+                   (skip-chars-backward "; ")
+                   (point))
+                 (cdr bounds-directed)))))
+        bounds+leading-comment)
+      (cons (save-excursion
+              (skip-chars-backward "; ")
+              (point))
+            (point))))
+
+(defun topiary/comment-region ()
+  "Indent topiary bounds. If no bounds indent region.
+Also cleans up whitespace."
+  (interactive)
+  (let ((bounds (topiary/bounds)))
+    (cond ((topiary/on-comment-line-p)
+           (let ((bounds (topiary/compute-bounds-for-uncomment)))
+             (when bounds
+               (uncomment-region (car bounds) (cdr bounds)))))
+          (bounds
+           (comment-region (car bounds) (cdr bounds))
+           (skip-chars-forward "; ")))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
