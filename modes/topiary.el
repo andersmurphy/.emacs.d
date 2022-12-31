@@ -46,7 +46,7 @@
   "Return t if point on non nestable comment line."
   (or (topiary/in-comment-p)
       (save-excursion
-        (skip-chars-forward "^;\n")
+        (skip-chars-forward (concat "^" comment-start  "\n"))
         (when (not (= (point-max) (point)))
           (forward-char))
         (topiary/in-comment-p))))
@@ -127,9 +127,7 @@
             (define-key map (kbd ")")  (topiary/if-in-string (insert ")")))
             (define-key map (kbd "]")  (topiary/if-in-string (insert "]")))
             (define-key map (kbd "}")  (topiary/if-in-string (insert "}")))
-            (define-key map (kbd ";")  (topiary/if-in-string
-                                        (insert ";")
-                                        (topiary/insert-double-semicolon)))
+            (define-key map (kbd ";")  'topiary/insert-semicolon)
             (define-key map (kbd "'")  'topiary/insert-quote)
             (define-key map (kbd "\"") 'topiary/insert-double-quote)
             (define-key map (kbd "\\") (lambda () (interactive)
@@ -169,20 +167,14 @@ If already at first character go to beginning of line."
   (insert pair)
   (backward-char 1))
 
-(defun topiary/insert-double-semicolon ()
-  "Insert two semicolons. Don't insert if it will break AST.
-Insert single semicolon if inside string."
+(defun topiary/insert-semicolon ()
+  "Don't insert if it will break AST."
   (interactive)
-  (cond ((or (not (topiary/supported-mode-p))
-             (topiary/in-string-p))
-         (insert ";"))
-        ((save-excursion
-           (progn (while (and
-                          (> (line-end-position) (point))
-                          (ignore-errors (forward-sexp) t)))
-                  (skip-chars-forward "\s"))
-           (= (point) (line-end-position)))
-         (insert ";; "))))
+  (when (or (not (topiary/supported-mode-p))
+            (topiary/in-string-p)
+            (topiary/in-comment-p)
+            (= (point) (line-end-position)))
+    (insert ";")))
 
 (defun topiary/strict-insert ()
   "If to level and the last entered character is not a valid insert delete it.
@@ -753,12 +745,14 @@ Also cleans up whitespace."
                 (cons
                  (save-excursion
                    (goto-char (car bounds-directed))
-                   (skip-chars-backward "; ")
+                   (skip-chars-backward (concat "^" comment-start  "\n"))
+                   (skip-chars-backward comment-start)
                    (point))
                  (cdr bounds-directed)))))
         bounds+leading-comment)
       (cons (save-excursion
-              (skip-chars-backward "; ")
+              (skip-chars-backward (concat "^" comment-start  "\n"))
+              (skip-chars-backward comment-start)
               (point))
             (point))))
 
@@ -773,7 +767,9 @@ Also cleans up whitespace."
                (uncomment-region (car bounds) (cdr bounds)))))
           (bounds
            (comment-region (car bounds) (cdr bounds))
-           (skip-chars-forward "; ")))))
+           (skip-chars-forward (concat comment-start  " ")))
+          ((= (point) (line-end-position))
+           (insert (comment-padright comment-start (comment-add nil)))))))
 
 (provide 'topiary)
 ;;; topiary.el ends here
