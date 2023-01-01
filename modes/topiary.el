@@ -42,6 +42,12 @@
   "Return t if point in non nestable comment line."
   (nth 4 (syntax-ppss)))
 
+(defun topiary/beginning-of-comment-p ()
+  "Return t if point at comment start."
+  (and
+   (member (char-before) (string-to-list "\n "))
+   (looking-at-p comment-start)))
+
 (defun topiary/on-comment-line-p ()
   "Return t if point on non nestable comment line."
   (or (topiary/in-comment-p)
@@ -357,6 +363,14 @@ edge of word. eg: foo|d would return the bounds of \\'food\\'. But food| would
   (when (topiary/in-comment-p)
     (cons (point) (- (point) 1))))
 
+(defun topiary/bounds-of-comment ()
+  "Return bounds of comment."
+  (when (topiary/beginning-of-comment-p)
+      (cons (point)
+            (save-excursion
+             (end-of-line)
+             (point)))))
+
 (defun topiary/compute-bounds ()
   "Get compute topiary bounds."
   (or (topiary/bounds-of-active-region)
@@ -366,6 +380,7 @@ edge of word. eg: foo|d would return the bounds of \\'food\\'. But food| would
       (topiary/bounds-of-escaped-double-quote-in-string)
       (topiary/bounds-of-space-forward)
       (topiary/bounds-of-word-at-point)
+      (topiary/bounds-of-comment)
       (topiary/bounds-of-strings-at-point '(";;" ";;;"))
       (topiary/bounds-of-punctuation-backward)
       (topiary/bounds-of-char-in-comment)
