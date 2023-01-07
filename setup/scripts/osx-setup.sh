@@ -80,6 +80,8 @@ wait
 
 brew install qrencode
 
+brew install inetutils
+
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk17
 wait

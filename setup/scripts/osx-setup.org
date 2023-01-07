@@ -182,6 +182,12 @@ qrencode for generating QR codes.
 brew install qrencode
 #+END_SRC
 
+ftp and other network utils (no longer installed on OSX by default).
+
+#+BEGIN_SRC sh
+brew install inetutils
+#+END_SRC
+
 * Open jdk
 
 Installs open jdk.
