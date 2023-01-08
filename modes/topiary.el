@@ -109,6 +109,8 @@
             (define-key map (kbd "C-t") 'topiary/transpose)
             (define-key map (kbd "C-f") 'topiary/forward)
             (define-key map (kbd "C-b") 'topiary/backward)
+            (define-key map (kbd "C-n") 'topiary/next)
+            (define-key map (kbd "C-p") 'topiary/previous)
             (define-key map (kbd "M-f") 'topiary/bounds-forward)
             (define-key map (kbd "M-b") 'topiary/bounds-backward)
             (define-key map (kbd "C-M-k") 'topiary/kill-sexp)
@@ -366,10 +368,10 @@ edge of word. eg: foo|d would return the bounds of \\'food\\'. But food| would
 (defun topiary/bounds-of-comment ()
   "Return bounds of comment."
   (when (topiary/beginning-of-comment-p)
-      (cons (point)
-            (save-excursion
-             (end-of-line)
-             (point)))))
+    (cons (point)
+          (save-excursion
+            (end-of-line)
+            (point)))))
 
 (defun topiary/compute-bounds ()
   "Get compute topiary bounds."
@@ -478,6 +480,55 @@ Delete rather then kill when in mini buffer."
                 (< beginning-of-bounds (point)))
            (goto-char beginning-of-bounds))
           (t (topiary/backward)))))
+
+(defun topiary/next ()
+  "Like next line except sticks to first/last char."
+  (interactive)
+  (cond ((= (point) (save-excursion
+                      (beginning-of-visual-line)
+                      (skip-chars-forward " ")
+                      (point)))
+         (progn
+           (call-interactively 'next-line)
+           (when (topiary/in-empty-line-p)
+             (call-interactively 'next-line))
+           (beginning-of-visual-line)
+           (skip-chars-forward " ")))
+        ((= (point) (save-excursion
+                      (end-of-visual-line)
+                      (skip-chars-backward " ")
+                      (point)))
+         (progn
+           (call-interactively 'next-line)
+           (when (topiary/in-empty-line-p)
+             (call-interactively 'next-line))
+           (end-of-visual-line)
+           (skip-chars-backward " ")))
+        (t (call-interactively 'next-line))))
+
+(defun topiary/previous ()
+  "Like previous line except sticks to first/last char."
+  (interactive)
+  (cond ((= (point) (save-excursion
+                      (beginning-of-visual-line)
+                      (skip-chars-forward " ")
+                      (point)))
+         (progn
+           (call-interactively 'previous-line)
+           (when (topiary/in-empty-line-p)
+             (call-interactively 'previous-line))
+           (beginning-of-visual-line)
+           (skip-chars-forward " ")))
+        ((= (point) (save-excursion
+                      (end-of-visual-line)
+                      (skip-chars-backward " ") (point)))
+         (progn
+           (call-interactively 'previous-line)
+           (when (topiary/in-empty-line-p)
+             (call-interactively 'previous-line))
+           (end-of-visual-line)
+           (skip-chars-backward " ")))
+        (t (call-interactively 'previous-line))))
 
 (defun topiary/wrap-with (opening-string closing-string)
   "Wrap current symbol or sexp with OPENING-STRING CLOSING-STRING.
