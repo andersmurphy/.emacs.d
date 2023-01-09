@@ -167,8 +167,10 @@
   "Go to first character in line.
 If already at first character go to beginning of line."
   (interactive)
-  (if (= (point) (progn (back-to-indentation) (point)))
-      (beginning-of-line)))
+  (if (= (point) (save-excursion (back-to-indentation) (point)))
+      (beginning-of-visual-line)
+    (progn (beginning-of-visual-line)
+           (back-to-indentation))))
 
 (defun topiary/insert-pair (pair)
   "Insert PAIR."
@@ -482,7 +484,7 @@ Delete rather then kill when in mini buffer."
           (t (topiary/backward)))))
 
 (defun topiary/next ()
-  "Like next line except sticks to first/last char."
+  "Like next line except sticks to first/last char. Skips empty lines."
   (interactive)
   (cond ((= (point) (save-excursion
                       (beginning-of-visual-line)
@@ -507,7 +509,7 @@ Delete rather then kill when in mini buffer."
         (t (call-interactively 'next-line))))
 
 (defun topiary/previous ()
-  "Like previous line except sticks to first/last char."
+  "Like previous line except sticks to first/last char. Skips empty lines."
   (interactive)
   (cond ((= (point) (save-excursion
                       (beginning-of-visual-line)
