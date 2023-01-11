@@ -613,6 +613,24 @@ This can be used to make the window layout change based on frame size."
   :bind
   ("C-x p" . project-find-file)
   ("C-M-s" . project-find-regexp))
+(use-package auth-source
+  :straight nil
+  :config
+  (setq auth-sources (quote (macos-keychain-internet
+                             macos-keychain-generic)))
+
+  "For generating tokens see: https://github.com/settings/tokens"
+  
+  (defun my/add-osx-keychain-creds ()
+    "Add credentials to osx keychain."
+    (interactive)
+    (let ((host (read-string "Host: "))
+          (account (read-string "Account: "))
+          (password (read-passwd "Password: ")))
+      (shell-command (format "security add-internet-password -a %s -s %s -w %s -U"
+                             account
+                             host
+                             password)))))
 (use-package magit
   :config
   (magit-wip-mode)
@@ -698,15 +716,6 @@ If this becomes a problem these common lines could be filtered."
   :bind (("C-x g" . magit-status))
   :hook (after-save . magit-after-save-refresh-status))
 (use-package forge
-  :config
-  (defun my/set-github-forge-token ()
-    "For generating tokens see: https://github.com/settings/tokens"
-    (interactive)
-    (find-file "~/.authinfo")
-    (insert (concat "machine api.github.com login andersmurphy^forge password "
-                    (read-string "Enter token:")
-                    "\n"))
-    (save-buffer))
   :after magit)
 (use-package code-review
   :config
