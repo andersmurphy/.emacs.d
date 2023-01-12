@@ -4,6 +4,7 @@ defaults write com.apple.dock autohide -bool true
 
 xcode-select --install
 wait
+sudo xcode-select --reset
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 wait

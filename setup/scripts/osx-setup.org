@@ -12,10 +12,18 @@ defaults write com.apple.dock autohide -bool true
 
 Install command line tools.
 
-#+BEGIN_SRC sh
+We reset the path to prevent:
+
+xcrun: error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not existo
+
+Which seems to happen if you are installing a new version of xcode.
+
+#+BEGIN_SRC sho
 xcode-select --install
 wait
+sudo xcode-select --reset 
 #+END_SRC
+
 * Homebrew
 
 To make homebrew work properly you need to fix ruby script permissions.
