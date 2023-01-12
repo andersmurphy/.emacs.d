@@ -14,6 +14,14 @@
 (deftheme my
   "Created 2020-07-20.")
 
+(defun my/rgb->hex (r g b)
+  "Convert R G B to hex."
+  (concat "#" (substring ;; drop first character
+               (format "%x" ;; formats as hex
+                       ;; ash is arithmetic shift
+                     (+ (ash 1 24) (ash r 16) (ash g 8) b))
+             1)))
+
 (defun my/hsl->hex (H S L)
   "Convert H S L to hex."
   (apply 'color-rgb-to-hex
