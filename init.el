@@ -622,12 +622,18 @@ This can be used to make the window layout change based on frame size."
   "For generating tokens see: https://github.com/settings/tokens"
   
   (defun my/add-osx-keychain-creds ()
-    "Add credentials to osx keychain."
+    "Add credentials to osx keychain.
+
+     - Forge example -
+     Host: api.github.com
+     Account: username^forge
+     Password: token"
     (interactive)
     (let ((host (read-string "Host: "))
           (account (read-string "Account: "))
           (password (read-passwd "Password: ")))
-      (shell-command (format "security add-internet-password -a %s -s %s -w %s -U"
+      (shell-command
+       (format "security add-internet-password -a %s -s %s -w %s -U"
                              account
                              host
                              password)))))
