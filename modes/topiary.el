@@ -492,7 +492,7 @@ Delete rather then kill when in mini buffer."
                       (point)))
          (progn
            (call-interactively 'next-line)
-           (when (topiary/in-empty-line-p)
+           (while (topiary/in-empty-line-p)
              (call-interactively 'next-line))
            (beginning-of-visual-line)
            (skip-chars-forward " ")))
@@ -502,7 +502,7 @@ Delete rather then kill when in mini buffer."
                       (point)))
          (progn
            (call-interactively 'next-line)
-           (when (topiary/in-empty-line-p)
+           (while (topiary/in-empty-line-p)
              (call-interactively 'next-line))
            (end-of-visual-line)
            (skip-chars-backward " ")))
@@ -517,7 +517,7 @@ Delete rather then kill when in mini buffer."
                       (point)))
          (progn
            (call-interactively 'previous-line)
-           (when (topiary/in-empty-line-p)
+           (while (topiary/in-empty-line-p)
              (call-interactively 'previous-line))
            (beginning-of-visual-line)
            (skip-chars-forward " ")))
@@ -526,7 +526,7 @@ Delete rather then kill when in mini buffer."
                       (skip-chars-backward " ") (point)))
          (progn
            (call-interactively 'previous-line)
-           (when (topiary/in-empty-line-p)
+           (while (topiary/in-empty-line-p)
              (call-interactively 'previous-line))
            (end-of-visual-line)
            (skip-chars-backward " ")))
