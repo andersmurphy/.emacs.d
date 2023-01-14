@@ -512,9 +512,15 @@ Delete rather then kill when in mini buffer."
                       (skip-chars-forward " ")
                       (point)))
          (progn
-           (call-interactively 'previous-line)
-           (beginning-of-visual-line)
-           (skip-chars-forward " ")))
+           (let ((point-before (point)))
+             (call-interactively 'previous-line)
+             (beginning-of-visual-line)
+             (skip-chars-forward " ")
+             ;; Handle visual lines where preceding indentation is
+             ;; on a separate visual line
+             (when (= point-before (point))
+               (call-interactively 'previous-line)
+               (skip-chars-backward " ")))))
         ((= (point) (save-excursion
                       (end-of-visual-line)
                       (skip-chars-backward " ") (point)))
