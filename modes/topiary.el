@@ -132,6 +132,7 @@
                                         (insert "{")
                                         (topiary/wrap-with-braces)))
             (define-key map (kbd "SPC")  'topiary/space)
+            (define-key map (kbd "RET")  'topiary/newline)
             (define-key map (kbd ")")  (topiary/if-in-string (insert ")")))
             (define-key map (kbd "]")  (topiary/if-in-string (insert "]")))
             (define-key map (kbd "}")  (topiary/if-in-string (insert "}")))
@@ -229,6 +230,19 @@ In the above example the n would be deleted. Handles comments."
            (kill-region initial-point (point)))
           (t (delete-region (point) initial-point)))))
 
+(defun topiary/newline ()
+  "If after point open line else newline."
+  (interactive)
+  (if (or (member (char-after) (string-to-list "\n "))
+          (topiary/end-of-buffer-p))
+      (newline-and-indent)
+    (progn
+      (save-excursion
+        (skip-chars-backward " ")
+        (skip-chars-backward "\n " (- (point) 1))
+        (newline-and-indent))
+      (skip-chars-backward " ")
+      (skip-chars-backward "\n " (- (point) 1)))))
 (defun topiary/bounds-of-space-before-opening-paren ()
   "Get bounds of space character after cursor if opening char is before cursor."
   (when (or (and (not (topiary/in-string-p))
