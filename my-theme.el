@@ -71,7 +71,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
 (defvar my/dark-theme)
 (setq my/dark-theme
       '((bg      . "#323437")
-        (fg      . "#d1d0c6")
+        (fg      . "#d1d0c5")
         (red     . "#ea6962")
         (green   . "#89b482")
         (yellow  . "#d8a657")
@@ -81,7 +81,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
 (defvar my/light-theme)
 (setq my/light-theme
       '((fg      . "#323437")
-        (bg      . "#d1d0c6")
+        (bg      . "#d1d0c5")
         (red     . "#ea6962")
         (green   . "#89b482")
         (yellow  . "#d8a657")
