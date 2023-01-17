@@ -109,7 +109,8 @@ If buffer doesn't have namespace defaults to current namespace."
   "Evaluate THUNK on first REPL prompt."
   (let ((sym  (gensym)))
     (defalias sym (lambda (output)
-                    (when (string-match "^[^=>]*[=>] *" output)
+                    (when (or (string-match "^[^=>]*[=>] *" output)
+                              (string-match "^JavaScript environment will not launch automatically when :open-url is false" output))
                       (and thunk (funcall thunk))
                       (remove-hook 'comint-output-filter-functions
                                    sym))))
@@ -161,7 +162,12 @@ Optionally CLJ-LISP-PROG can be specified"
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
 (defun my/configure-cljs-repl ()
-  "Configure global repl settings.")
+  "Configure global repl settings."
+  (when (get-buffer "*inferior-lisp*")
+    (unless (string= (buffer-name) "*inferior-lisp*")
+      (display-buffer "*inferior-lisp*" t))
+    (other-window 1)
+    (xwidget-webkit-browse-url "http://localhost:9500")))
 
 (defun my/clj-inferior-lisp (&optional mode)
   "Run REPL. If REPL is not running do first prompt behaviour after launch.
@@ -181,7 +187,7 @@ If there is only the current buffer split window right. Will try
 to find the project root and open the correct REPL type
 accordingly. Optionally CLJ-LISP-PROG can be specified."
   (interactive)
-  (let ((mode  major-mode))
+  (let ((mode major-mode))
     (when (one-window-p)
       (split-window-right))
     (display-buffer-use-some-window (current-buffer) nil)
@@ -200,11 +206,6 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
   "Kill *inferior-lisp* buffer if running."
   (when (get-buffer "*inferior-lisp*")
     (kill-buffer "*inferior-lisp*")))
-
-(defun my/start-repl (clj-lisp-prog)
-  "Kill any running REPL and start new REPL for CLJ-LISP-PROG."
-  (my/kill-inferior-lisp-buffer)
-  (my/clj-open-repl clj-lisp-prog))
 
 (defun my/try-to-find-git-root (dirname)
   "Will try and find the nearest root for project.
