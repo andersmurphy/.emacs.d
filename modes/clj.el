@@ -207,6 +207,11 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
   (when (get-buffer "*inferior-lisp*")
     (kill-buffer "*inferior-lisp*")))
 
+(defun my/start-repl (clj-lisp-prog)
+  "Kill any running REPL and start new REPL for CLJ-LISP-PROG."
+  (my/kill-inferior-lisp-buffer)
+  (my/clj-open-repl clj-lisp-prog))
+
 (defun my/try-to-find-git-root (dirname)
   "Will try and find the nearest root for project.
 Works up directories starting from the current files directory DIRNAME."
