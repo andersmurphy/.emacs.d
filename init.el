@@ -870,11 +870,11 @@ If this becomes a problem these common lines could be filtered."
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . hs-hide-all)))
-(load "~/.emacs.d/modes/topiary.el")
 (use-package subword
   :straight nil
   :init
   (global-subword-mode))
+(load "~/.emacs.d/modes/topiary.el")
 (use-package topiary
   :straight nil
   :init

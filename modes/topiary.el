@@ -132,7 +132,6 @@
                                         (insert "{")
                                         (topiary/wrap-with-braces)))
             (define-key map (kbd "SPC")  'topiary/space)
-            (define-key map (kbd "RET")  'topiary/newline)
             (define-key map (kbd ")")  (topiary/if-in-string (insert ")")))
             (define-key map (kbd "]")  (topiary/if-in-string (insert "]")))
             (define-key map (kbd "}")  (topiary/if-in-string (insert "}")))
@@ -229,20 +228,6 @@ In the above example the n would be deleted. Handles comments."
           ((eq last-command 'kill-region)
            (kill-region initial-point (point)))
           (t (delete-region (point) initial-point)))))
-
-(defun topiary/newline ()
-  "If ([{\n before point open line else newline."
-  (interactive)
-  (if (or (member (char-before) (string-to-list "([{\n "))
-          (topiary/beginning-of-buffer-p))
-      (progn
-        (save-excursion
-          (skip-chars-backward " ")
-          (skip-chars-backward "\n " (- (point) 1))
-          (newline-and-indent))
-        (skip-chars-backward " ")
-        (skip-chars-backward "\n " (- (point) 1)))
-    (newline-and-indent)))
 
 (defun topiary/bounds-of-space-before-opening-paren ()
   "Get bounds of space character after cursor if opening char is before cursor."
@@ -507,8 +492,6 @@ Delete rather then kill when in mini buffer."
                       (point)))
          (progn
            (call-interactively 'next-line)
-           (while (topiary/in-empty-line-p)
-             (call-interactively 'next-line))
            (beginning-of-visual-line)
            (skip-chars-forward " ")))
         ((= (point) (save-excursion
@@ -517,8 +500,6 @@ Delete rather then kill when in mini buffer."
                       (point)))
          (progn
            (call-interactively 'next-line)
-           (while (topiary/in-empty-line-p)
-             (call-interactively 'next-line))
            (end-of-visual-line)
            (skip-chars-backward " ")))
         (t (call-interactively 'next-line))))
@@ -532,8 +513,6 @@ Delete rather then kill when in mini buffer."
                       (point)))
          (progn
            (call-interactively 'previous-line)
-           (while (topiary/in-empty-line-p)
-             (call-interactively 'previous-line))
            (beginning-of-visual-line)
            (skip-chars-forward " ")))
         ((= (point) (save-excursion
@@ -541,8 +520,6 @@ Delete rather then kill when in mini buffer."
                       (skip-chars-backward " ") (point)))
          (progn
            (call-interactively 'previous-line)
-           (while (topiary/in-empty-line-p)
-             (call-interactively 'previous-line))
            (end-of-visual-line)
            (skip-chars-backward " ")))
         (t (call-interactively 'previous-line))))
