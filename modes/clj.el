@@ -66,9 +66,16 @@ If buffer doesn't have namespace defaults to current namespace."
 (defun my/clj-eval-last-sexp ()
   "Evaluate previous sexp."
   (interactive)
-  (my/when-repl-running
-   (my/clj-eval-with-ns (my/clj-get-last-sexp))
-   (my/show-repl)))
+  (cond
+   ((member major-mode '(clojure-mode clojurec-mode))
+    (my/when-repl-running
+     (my/clj-eval-with-ns (my/clj-get-last-sexp))
+     (my/show-repl)))
+   ((eq major-mode 'clojurescript-mode)
+    (my/when-repl-running
+     (my/clj-eval (my/clj-get-last-sexp))
+     (my/show-repl)))
+   (t (message "Mode not supported."))))
 
 (defun my/->boolean (value)
   "Convert turthy/falsy VALUE to boolean."
@@ -153,14 +160,19 @@ Optionally CLJ-LISP-PROG can be specified"
       (find-file-existing (nth 0 file-and-prog))
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
+(defun my/configure-cljs-repl ()
+  "Configure global repl settings.")
+
 (defun my/clj-inferior-lisp (&optional mode)
   "Run REPL. If REPL is not running do first prompt behaviour after launch.
-MODE determines dispatch on dialect eg: clojure."
+MODE determines dispatch on dialect eg: clojure/clojurescript."
   (interactive)
   (if (get-buffer "*inferior-lisp*")
       (inferior-lisp inferior-lisp-program)
     (progn (my/do-on-first-prompt
-            (lambda () (my/configure-clj-repl)))
+            (lambda () (cond ((eq mode 'clojurescript-mode)
+                              (my/configure-cljs-repl))
+                             (t (my/configure-clj-repl)))))
            (inferior-lisp inferior-lisp-program))))
 
 (defun my/clj-open-repl (&optional clj-lisp-prog)
@@ -209,37 +221,60 @@ Works up directories starting from the current files directory DIRNAME."
   "Print doc for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns
-    `(do
-      (newline)
-      (newline)
-      (clojure.repl/doc ,(my/clj-symbol-at-point))))
+   (cond ((eq major-mode 'clojure-mode)
+          (my/clj-eval-with-ns
+           `(do
+             (newline)
+             (newline)
+             (clojure.repl/doc ,(my/clj-symbol-at-point)))))
+         ((eq major-mode 'clojurescript-mode)
+          (my/clj-eval `(do
+                         (newline)
+                         (newline)
+                         (cljs.repl/doc ,(my/clj-symbol-at-point))))))
    (my/show-repl)))
 
 (defun my/clj-apropos ()
   "Given a regex return a list of defs in loaded namespaces that match."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns
+   (cond
+    ((eq major-mode 'clojure-mode)
+     (my/clj-eval-with-ns
     `(clojure.repl/apropos
-      (re-pattern ,(read-string "Apropos (regex):"))))
+      (re-pattern ,(read-string "Apropos (regex):")))))
+    ((eq major-mode 'clojurescript-mode)
+     (my/clj-eval
+      `(cljs.repl/apropos
+             (re-pattern ,(read-string "Apropos (regex):"))))))
    (my/show-repl)))
 
 (defun my/clj-find-doc ()
   "Given a regex print doc for any vars whose doc or name contain a match."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns
+   (cond
+    ((eq major-mode 'clojure-mode)
+     (my/clj-eval-with-ns
     `(clojure.repl/find-doc
-      (re-pattern ,(read-string "Find Doc (regex):"))))
+      (re-pattern ,(read-string "Find Doc (regex):")))))
+    ((eq major-mode 'clojurescript-mode)
+     (my/clj-eval
+      `(cljs.repl/find-doc
+             (re-pattern ,(read-string "Find Doc (regex):"))))))
    (my/show-repl)))
 
 (defun my/clj-source-for-symbol ()
   "Show source for symbol at point."
   (interactive)
   (my/when-repl-running
-   (my/clj-eval-with-ns
-    `(clojuse.repl/source ,(my/clj-symbol-at-point)))
+   (cond
+    ((eq major-mode 'clojure-mode)
+     (my/clj-eval-with-ns
+      `(clojuse.repl/source ,(my/clj-symbol-at-point))))
+    ((eq major-mode 'clojurescript-mode)
+     (my/clj-eval
+      `(cljs.repl/source ,(my/clj-symbol-at-point)))))
    (my/show-repl)))
 
 (defun my/clj-load-current-ns ()
@@ -250,14 +285,18 @@ Works up directories starting from the current files directory DIRNAME."
    (let ((sym (my/clj-get-current-namespace-symbol)))
      ;; temp user ns prevents namespaces getting dirty
      ;; might not be needed
-     (my/clj-eval `(do (in-ns 'user)
-                       (when-not (find-ns ',sym)
-                                 ;; require can take :reload
-                                 ;; to force a reload of the
-                                 ;; on disk file
-                                 (require ',sym)
-                                 nil)
-                       (in-ns ',sym))))
+     (my/clj-eval
+      (cond ((eq major-mode 'clojure-mode)
+             `(do (in-ns 'user)
+                  (when-not (find-ns ',sym)
+                            ;; require can take :reload
+                            ;; to force a reload of the
+                            ;; on disk file
+                            (require ',sym)
+                            nil)
+                  (in-ns ',sym)))
+            ((eq major-mode 'clojurescript-mode)
+             `(in-ns ',sym)))))
    (message "Namespace loaded.")))
 
 (defun my/clj-eval-buffer ()
