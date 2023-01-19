@@ -109,8 +109,7 @@ If buffer doesn't have namespace defaults to current namespace."
   "Evaluate THUNK on first REPL prompt."
   (let ((sym  (gensym)))
     (defalias sym (lambda (output)
-                    (when (or (string-match "^[^=>]*[=>] *" output)
-                              (string-match "^JavaScript environment will not launch automatically when :open-url is false" output))
+                    (when (string-match "^[^=>]*[=>] *" output)
                       (and thunk (funcall thunk))
                       (remove-hook 'comint-output-filter-functions
                                    sym))))
@@ -162,12 +161,7 @@ Optionally CLJ-LISP-PROG can be specified"
       (setq inferior-lisp-program (nth 1 file-and-prog)))))
 
 (defun my/configure-cljs-repl ()
-  "Configure global repl settings."
-  (when (get-buffer "*inferior-lisp*")
-    (unless (string= (buffer-name) "*inferior-lisp*")
-      (display-buffer "*inferior-lisp*" t))
-    (other-window 1)
-    (xwidget-webkit-browse-url "http://localhost:9500")))
+  "Configure global repl settings.")
 
 (defun my/clj-inferior-lisp (&optional mode)
   "Run REPL. If REPL is not running do first prompt behaviour after launch.
