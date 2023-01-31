@@ -6,7 +6,7 @@
  ("edn.el" . "21e120a6914ee9a694be0a051f9f2af34ef055e4")
  ("el-get" . "17db7640d3ba0c15954a18ff1ea612831436935e")
  ("emacsmirror-mirror" . "a2d65d0360ab541ff189dc7b8ba8a25ea7aeb6c2")
- ("emms" . "f008e996d41c8052fd23d34cc81bf6ddd26e76ff")
+ ("emms" . "6910be1656283d0d8325c97bb9f00e7b37930737")
  ("exec-path-from-shell" . "ddd24dc823de9a94435b4d8ea7569161657f31e2")
  ("forge" . "b41e4880aaaf13540c50231af18f44f1f69b79ea")
  ("gnu-elpa-mirror" . "eb1199591ec3cb8a4d1f1a20bd14ca0e52eafdd0")
