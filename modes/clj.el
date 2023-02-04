@@ -271,7 +271,7 @@ Works up directories starting from the current files directory DIRNAME."
    (cond
     ((eq major-mode 'clojure-mode)
      (my/clj-eval-with-ns
-      `(clojuse.repl/source ,(my/clj-symbol-at-point))))
+      `(clojure.repl/source ,(my/clj-symbol-at-point))))
     ((eq major-mode 'clojurescript-mode)
      (my/clj-eval
       `(cljs.repl/source ,(my/clj-symbol-at-point)))))
