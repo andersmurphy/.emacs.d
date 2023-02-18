@@ -132,6 +132,7 @@
 
   ;; Minibuffer binding
   (define-key minibuffer-local-map (kbd "C-v") 'topiary/yank)
+  (define-key minibuffer-local-map (kbd "C-y") 'topiary/yank)
   (define-key minibuffer-local-map (kbd "C-w") 'topiary/kill)
   (define-key minibuffer-local-map (kbd "C-o") 'my/other-window))
 (defun my/keyboard-firmware-tool ()
@@ -589,7 +590,8 @@ This can be used to make the window layout change based on frame size."
         ("C-p" . my/isearch-repeat-backward)
         ("C-s" . my/isearch-thing-at-point)
         ("C-r" . my/replace-in-buffer)
-        ("C-v" . isearch-yank-kill)))
+        ("C-v" . isearch-yank-kill)
+        ("C-y" . isearch-yank-kill)))
 (use-package selectrum
   :config
   (selectrum-mode t))
