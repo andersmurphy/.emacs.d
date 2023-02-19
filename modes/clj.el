@@ -196,6 +196,14 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
         (comint-show-maximum-output)))
     (other-window 1)))
 
+(defun my/clj-nrepl-connect ()
+  "Connect to running nrpel instance."
+  (interactive)
+  (my/clj-open-repl
+   (format
+    "clojure -Sdeps '{:deps {reply/reply {:mvn/version \"0.5.1\"}}}' -M -m reply.main --attach %s"
+    (read-string "nrepl port: " "9001"))))
+
 (defun my/kill-inferior-lisp-buffer ()
   "Kill *inferior-lisp* buffer if running."
   (when (get-buffer "*inferior-lisp*")
