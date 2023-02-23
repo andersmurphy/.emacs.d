@@ -229,7 +229,7 @@ Works up directories starting from the current files directory DIRNAME."
   "Print doc for symbol at point."
   (interactive)
   (my/when-repl-running
-   (cond ((eq major-mode 'clojure-mode)
+   (cond ((member major-mode '(clojure-mode clojurec-mode))
           (my/clj-eval-with-ns
            `(do
              (newline)
@@ -247,7 +247,7 @@ Works up directories starting from the current files directory DIRNAME."
   (interactive)
   (my/when-repl-running
    (cond
-    ((eq major-mode 'clojure-mode)
+    ((member major-mode '(clojure-mode clojurec-mode))
      (my/clj-eval-with-ns
     `(clojure.repl/apropos
       (re-pattern ,(read-string "Apropos (regex):")))))
@@ -262,7 +262,7 @@ Works up directories starting from the current files directory DIRNAME."
   (interactive)
   (my/when-repl-running
    (cond
-    ((eq major-mode 'clojure-mode)
+    ((member major-mode '(clojure-mode clojurec-mode))
      (my/clj-eval-with-ns
     `(clojure.repl/find-doc
       (re-pattern ,(read-string "Find Doc (regex):")))))
@@ -277,7 +277,7 @@ Works up directories starting from the current files directory DIRNAME."
   (interactive)
   (my/when-repl-running
    (cond
-    ((eq major-mode 'clojure-mode)
+    ((member major-mode '(clojure-mode clojurec-mode))
      (my/clj-eval-with-ns
       `(clojure.repl/source ,(my/clj-symbol-at-point))))
     ((eq major-mode 'clojurescript-mode)
@@ -294,7 +294,7 @@ Works up directories starting from the current files directory DIRNAME."
      ;; temp user ns prevents namespaces getting dirty
      ;; might not be needed
      (my/clj-eval
-      (cond ((eq major-mode 'clojure-mode)
+      (cond ((member major-mode '(clojure-mode clojurec-mode))
              `(do (in-ns 'user)
                   (when-not (find-ns ',sym)
                             ;; require can take :reload
