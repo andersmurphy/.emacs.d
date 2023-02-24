@@ -196,7 +196,7 @@ In the above example the n would be deleted. Handles comments."
   (let ((ppss (syntax-ppss)))
     (when (and (= 0 (car ppss))
                (not (nth 4 ppss))
-               (not (member (char-before) (string-to-list "{[(\"\n "))))
+               (not (member (char-before) (string-to-list "#?{[(\"\n "))))
       (delete-char -1))))
 
 (defun topiary/post-self-insert ()
