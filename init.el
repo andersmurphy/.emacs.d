@@ -1086,6 +1086,18 @@ keywords even if you don't type a : ."
   :hook ((markdown-mode . variable-pitch-mode)
          (markdown-mode . my/md-font-setup)))
 
+;;; MISC
+(defun my/unix-to-utc-time ()
+  "Output selected unix timestamp in UTC format."
+  (interactive)
+  (let ((bounds (topiary/compute-bounds)))
+    (message
+     (format-time-string
+      "%Y-%m-%d %a %H:%M:%S UTC"
+      (seconds-to-time
+       (string-to-number (buffer-substring-no-properties
+                          (car bounds) (cdr bounds))))))))
+
 ;;; MEDIA
 (use-package nov
   :defer t
