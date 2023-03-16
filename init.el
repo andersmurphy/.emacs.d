@@ -1087,7 +1087,7 @@ keywords even if you don't type a : ."
          (markdown-mode . my/md-font-setup)))
 
 ;;; MISC
-(defun my/unix-to-utc-time ()
+(defun my/unix-timestanp-to-utc-time ()
   "Output selected unix timestamp in UTC format."
   (interactive)
   (let ((bounds (topiary/compute-bounds)))
