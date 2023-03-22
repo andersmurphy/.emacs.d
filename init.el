@@ -1008,6 +1008,7 @@ keywords even if you don't type a : ."
 (use-package clojure-mode
   :config
   (setq clojure-align-forms-automatically t)
+  (setq clojure-indent-style 'always-indent)
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
               ("C-c C-z" . my/clj-open-repl)
