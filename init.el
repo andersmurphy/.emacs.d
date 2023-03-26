@@ -860,8 +860,9 @@ If this becomes a problem these common lines could be filtered."
   (defadvice flymake--handle-report (after refresh-folded-errors activate)
     (my/refresh-folded-code-errors))
 
-  :hook (((emacs-lisp-mode clojure-mode) . (lambda ()
-                                             (hs-minor-mode) (hs-hide-all))))
+  :hook (((emacs-lisp-mode clojure-mode fennel-mode)
+          . (lambda ()
+              (hs-minor-mode) (hs-hide-all))))
 
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
@@ -996,6 +997,10 @@ keywords even if you don't type a : ."
   :bind (:map sql-mode-map ("M-g t" . my/sql-toggle-up-down)))
 (use-package sql-indent
   :after sql)
+;; Fennel
+(use-package fennel-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode)))
 ;; Clojure
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)

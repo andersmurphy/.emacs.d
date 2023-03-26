@@ -103,6 +103,8 @@ rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 
+brew install fennel
+
 brew install node
 wait
 

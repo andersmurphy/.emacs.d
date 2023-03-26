@@ -240,6 +240,10 @@ mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 #+END_SRC
 
+* Fennel
+#+BEGIN_SRC sh
+brew install fennel
+#+END_SRC
 * Javascript
 
 Language.

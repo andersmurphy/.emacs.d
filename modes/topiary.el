@@ -156,12 +156,13 @@
     (remove-hook 'post-self-insert-hook 'topiary/post-self-insert)))
 
 (defun topiary/supported-mode-p ()
-  "Return t if current mode is supported topiary."
+  "Return t if current mode is fully supported by topiary."
   (member major-mode '(clojure-mode
                        clojurec-mode
                        clojurescript-mode
                        emacs-lisp-mode
-                       lisp-interaction-mode)))
+                       lisp-interaction-mode
+                       fennel-mode)))
 
 (defun topiary/back-to-indentation-or-beginning ()
   "Go to first character in line.
