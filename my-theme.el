@@ -80,13 +80,13 @@ Uses HSP: http://alienryderflex.com/hsp.html"
 
 (defvar my/light-theme)
 (setq my/light-theme
-      '((fg      . "#323437")
+      `((fg      . "#323437")
         (bg      . "#d1d0c5")
-        (red     . "#ea6962")
-        (green   . "#89b482")
-        (yellow  . "#d8a657")
-        (blue    . "#7daea3")
-        (purple  . "#d3869b")))
+        (red     . ,(my/darken-color "#ea6962" 0.2))
+        (green   . ,(my/darken-color "#89b482" 0.2))
+        (yellow  . ,(my/darken-color "#d8a657" 0.2))
+        (blue    . ,(my/darken-color "#7daea3" 0.2))
+        (purple  . ,(my/darken-color "#d3869b" 0.2))))
 
 (defun my/set-theme-faces (theme-colors)
   "Set theme faces to THEME-COLORS."
