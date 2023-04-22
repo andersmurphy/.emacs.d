@@ -269,9 +269,16 @@ This can be used to make the window layout change based on frame size."
 
   ;; Store bookmarks in emacs-sync
   (setq bookmark-default-file "~/.emacs.d/emacs-sync/bookmarks"))
+(use-package ls-lisp
+  :straight nil
+  :config
+  ;; Switch to use ls-lisp makes ls platform agnostic (need to test with TRAMP).
+  (setq ls-lisp-use-insert-directory-program nil))
 (use-package dired
   :straight nil
   :config
+  ;; Directories first
+  (setq dired-listing-switches "--group-directories-first -alh")
   ;; Ensures Dired file lists are refreshed when files are created/deleted/renamed.
   ;; Also hides auto revert message.
   (setq dired-auto-revert-buffer t)
