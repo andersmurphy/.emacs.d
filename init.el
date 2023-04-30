@@ -1007,7 +1007,20 @@ keywords even if you don't type a : ."
 ;; Fennel
 (use-package fennel-mode
   :config
-  (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode)))
+  (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
+  (defun my/fennel-redbean-repl ()
+    (interactive)
+    (let* ((root (project-root (project-current t)))
+           (fennel-program
+            (concat
+             "bash -c "
+             "'"
+             root
+             "/out/redbean.com -i "
+             root
+             ".lua/fennel_repl.lua"
+             "'")))
+      (call-interactively 'fennel-repl))))
 ;; Clojure
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
