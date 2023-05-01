@@ -1021,6 +1021,8 @@ keywords even if you don't type a : ."
              ".lua/fennel_repl.lua"
              "'")))
       (call-interactively 'fennel-repl))))
+;; Lua
+(use-package lua-mode)
 ;; Clojure
 (load "~/.emacs.d/modes/clj.el")
 (use-package clj :straight nil)
