@@ -402,8 +402,9 @@ Works from both namespace and test namespace"
 
 (add-hook 'inferior-lisp-mode-hook
           (lambda()
-            ;; Use clojure syntax table
-            (set-syntax-table clojure-mode-syntax-table)))
+            ;; Use clojure syntax table if available
+            (ignore-errors
+              (set-syntax-table clojure-mode-syntax-table))))
 
 (provide 'clj)
 ;;; clj.el ends here
