@@ -1019,7 +1019,14 @@ keywords even if you don't type a : ."
              root
              ".lua/fennel_repl.lua"
              "'")))
-      (call-interactively 'fennel-repl))))
+      (call-interactively 'fennel-repl)))p
+  (defun fennel-reload ()
+    (interactive)
+    (comint-check-source buffer-file-name)
+    (let ((module (file-name-base buffer-file-name)))
+      (comint-send-string (inferior-lisp-proc)
+                          (concat ",reload " module "\n"))
+      (message (concat module " loaded.")))))
 ;; Lua
 (use-package lua-mode)
 ;; Clojure
