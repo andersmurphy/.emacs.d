@@ -1019,7 +1019,7 @@ keywords even if you don't type a : ."
              root
              ".lua/fennel_repl.lua"
              "'")))
-      (call-interactively 'fennel-repl)))p
+      (call-interactively 'fennel-repl)))
   (defun fennel-reload ()
     (interactive)
     (comint-check-source buffer-file-name)
