@@ -59,3 +59,5 @@ coroutine
 benchmark
 benchmarking
 templating
+vendored
+vendoring
