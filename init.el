@@ -613,6 +613,8 @@ This can be used to make the window layout change based on frame size."
   :straight nil
   :after eglot
   :config
+  ;; Don't include submodule files in searches etc
+  (setq project-vc-merge-submodules nil)
   ;; Monkey patch project--read-regexp to use sexp rather than symbol
   (defun project--read-regexp ()
     (let ((sym (thing-at-point 'sexp t)))
