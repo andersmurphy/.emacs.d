@@ -1009,6 +1009,7 @@ keywords even if you don't type a : ."
 (use-package fennel-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
+
   (defun my/fennel-redbean-repl ()
     (interactive)
     (let* ((root (project-root (project-current t)))
@@ -1022,13 +1023,23 @@ keywords even if you don't type a : ."
              ".lua/fennel_repl.lua"
              "'")))
       (call-interactively 'fennel-repl)))
+  
   (defun fennel-reload ()
     (interactive)
     (comint-check-source buffer-file-name)
     (let ((module (file-name-base buffer-file-name)))
       (comint-send-string (inferior-lisp-proc)
                           (concat ",reload " module "\n"))
-      (message (concat module " loaded.")))))
+      (message (concat module " loaded."))))
+  
+  (defun my/run-make ()
+    "Run make if Makefile exists in root."
+    (when (eq major-mode 'fennel-mode)
+      (let ((default-directory (project-root (project-current t))))
+        (when (file-exists-p "Makefile")
+          (shell-command "make")))))
+  
+  :hook (after-save . my/run-make))
 ;; Lua
 (use-package lua-mode)
 ;; Clojure
