@@ -4,7 +4,7 @@
 
 ;;To turn on debugger on error: M-x toggle-debug-on-error
 
-(require 'edn)
+(require 'parseedn)
 (require 'dash)
 (require 'inf-lisp)
 
@@ -24,7 +24,7 @@
   "Evaluate elisp representation of COMMAND or string."
   (-> (if (stringp command)
           command
-        (edn-print-string command))
+        (parseedn-print-str command))
       lisp-eval-string))
 
 (defun my/clj-get-current-namespace-symbol ()
@@ -48,7 +48,7 @@ Handles both string and edn commands."
   (let ((ns (my/clj-get-current-namespace-symbol))
         (string (if (stringp command)
                     command
-                  (edn-print-string command))))
+                  (parseedn-print-str command))))
     (if ns
         (format "(do
                (when-not (find-ns '%s) (require '%s))

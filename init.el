@@ -66,7 +66,7 @@
   "Ignore BODY, yields nil."
   nil)
 (use-package dash) ;; functional helpers
-(use-package edn)  ;; edn parsing
+(use-package parseedn)  ;; edn parsing
 (use-package elisp-mode
   :straight nil
   :config
