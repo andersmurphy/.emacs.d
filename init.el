@@ -725,12 +725,6 @@ If this becomes a problem these common lines could be filtered."
   :hook (after-save . magit-after-save-refresh-status))
 (use-package forge
   :after magit)
-(use-package code-review
-  :config
-  (setq code-review-auth-login-marker 'forge)
-  :bind
-  (:map magit-status-mode-map
-        ("C-c r" . code-review-forge-pr-at-point)))
 (use-package magit-todos
   :after magit
   :config
