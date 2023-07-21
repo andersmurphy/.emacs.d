@@ -592,6 +592,15 @@ This can be used to make the window layout change based on frame size."
     (goto-char (point-min))
     (call-interactively 'isearch-query-replace))
 
+  ;; Make isearch wrap automatically if it doesn't find anything
+  (defadvice isearch-search (after isearch-no-fail activate)
+    (unless isearch-success
+      (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+      (ad-activate 'isearch-search)
+      (isearch-repeat (if isearch-forward 'forward))
+      (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+      (ad-activate 'isearch-search)))
+
   :hook (('isearch-mode-end . my/goto-match-end))
   :bind
   (:map isearch-mode-map
