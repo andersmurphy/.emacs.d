@@ -1158,7 +1158,7 @@ keywords even if you don't type a : ."
 (use-package emms
   :defer t
   :config
-  (emms-standard)
+  (emms-all)
   (emms-default-players)
   (emms-mode-line-disable)
   (emms-playing-time-disable-display)
