@@ -857,13 +857,20 @@ If this becomes a problem these common lines could be filtered."
              (level (and most-sever-error
                          (overlay-get most-sever-error 'category)))
              (marker-string (concat "*" (format "%s" level) "*")))
+
         (if most-sever-error
-            (overlay-put ov 'before-string
-                         (propertize marker-string
-                                     'display
-                                     (list 'left-fringe
-                                           'my/flymake-fringe-indicator
-                                           (overlay-get most-sever-error 'face))))
+            (let* ((error-face (overlay-get most-sever-error 'face))
+                   (error-face (if (listp error-face)
+                                   ;; handle eglot diagnostic sometimes
+                                   ;; being returned as list
+                                   (car error-face)
+                                 error-face)))
+              (overlay-put ov 'before-string
+                           (propertize marker-string
+                                       'display
+                                       (list 'left-fringe
+                                             'my/flymake-fringe-indicator
+                                             error-face))))
           (overlay-put ov 'before-string nil)))))
 
   (setq hs-set-up-overlay 'my/display-most-sever-flymake-error)
