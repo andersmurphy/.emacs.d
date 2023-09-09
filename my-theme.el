@@ -69,24 +69,30 @@ Uses HSP: http://alienryderflex.com/hsp.html"
     (< 127.5)))
 
 (defvar my/dark-theme)
-(setq my/dark-theme
-      '((bg      . "#323437")
-        (fg      . "#d1d0c5")
-        (red     . "#ea6962")
-        (green   . "#89b482")
-        (yellow  . "#d8a657")
-        (blue    . "#7daea3")
-        (purple  . "#d3869b")))
-
 (defvar my/light-theme)
-(setq my/light-theme
-      `((fg      . "#323437")
-        (bg      . "#d1d0c5")
-        (red     . ,(my/darken-color "#ea6962" 0.2))
-        (green   . ,(my/darken-color "#89b482" 0.2))
-        (yellow  . ,(my/darken-color "#d8a657" 0.2))
-        (blue    . ,(my/darken-color "#7daea3" 0.2))
-        (purple  . ,(my/darken-color "#d3869b" 0.2))))
+(let ((bg       "#323437")
+      (fg       "#d1d0c5")
+      (red      "#ea6962")
+      (green    "#89b482")
+      (yellow   "#d8a657")
+      (blue     "#7daea3")
+      (purple   "#d3869b"))
+  (setq my/dark-theme
+        `((bg      . ,bg)
+          (fg      . ,fg)
+          (red     . ,red)
+          (green   . ,green)
+          (yellow  . ,yellow)
+          (blue    . ,blue)
+          (purple  . ,purple)))
+  (setq my/light-theme
+        `((fg      . ,bg)
+          (bg      . ,fg)
+          (red     . ,(my/darken-color red 0.2))
+          (green   . ,(my/darken-color green 0.2))
+          (yellow  . ,(my/darken-color yellow 0.2))
+          (blue    . ,(my/darken-color blue 0.2))
+          (purple  . ,(my/darken-color purple 0.2)))))
 
 (defun my/set-theme-faces (theme-colors)
   "Set theme faces to THEME-COLORS."
