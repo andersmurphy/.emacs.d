@@ -1156,7 +1156,6 @@ keywords even if you don't type a : ."
   (setq nov-text-width 80)
   :hook (nov-mode . my/nov-font-setup))
 (use-package emms
-  :defer t
   :config
   (emms-all)
   (emms-default-players)
