@@ -487,6 +487,7 @@ This can be used to make the window layout change based on frame size."
 
   ;; Display battery
   (display-battery-mode 1))
+(fringe-mode 16)
 
 ;;; META NAVIGATION
 (defun my/osx-open-in-finder ()
