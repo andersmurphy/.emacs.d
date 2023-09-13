@@ -130,7 +130,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
          (h2-height  (lambda (_) (+ (face-attribute 'default :height) 10))))
     (custom-theme-set-faces
      'my
-     `(highlight ((t (:foreground ,fg-highlight :background ,bg-highlight))))
+     `(highlight ((t (:foreground ,fg-highlight :background ,bg-highlight :distant-foreground ,fg-highlight))))
      `(default ((t (:foreground ,fg :background ,bg))))
      `(region ((t (:background ,bg-region :distant-foreground ,fg))))
      `(show-paren-match ((t (:foreground ,fg :background ,bg-region :weight bold))))
@@ -165,7 +165,6 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(flyspell-incorrect          ((t (:underline (:style line :color ,fg-error)))))
      `(flyspell-duplicate          ((t (:underline (:style line :color ,fg-warning)))))
      `(vertical-border             ((t (:foreground ,bg-inactive))))
-     `(selectrum-primary-highlight ((t (:foreground ,bg-highlight :weight bold :distant-foreground ,fg-highlight))))
      `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
      `(custom-state ((t (:foreground ,green))))
 
@@ -228,15 +227,14 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(magit-log-author ((t (:foreground ,fg-comment))))
      `(magit-log-date ((t (:foreground ,fg-comment))))
 
-     ;; company
-     `(company-tooltip-selection
-       ((t (:background ,bg-highlight :foreground ,fg-highlight))))
-     `(company-tooltip           ((t (:background ,bg-region))))
-     `(company-tooltip-common    ((t (:foreground ,fg-match :weight bold  :distant-foreground ,fg-highlight))))
-     `(company-preview           ((t (:foreground ,fg-comment :background ,bg))))
-     `(company-preview-common    ((t (:foreground ,fg-comment :background ,bg))))
-     `(company-tooltip-annotation           ((t (:foreground ,fg))))
-     `(company-tooltip-annotation-selection ((t (:foreground ,bg))))
+     ;; corfu
+     `(corfu-default           ((t (:background ,bg-region))))
+     `(corfu-current ((t (:foreground ,fg-highlight :background ,bg-highlight :distant-foreground ,fg-highlight))))
+     `(corfu-bar ((t (:background ,bg-region))))
+     `(corfu-deprecated ((t (:foreground ,fg-comment :strike-through t))))
+
+     ;; prescient
+     `(prescient-primary-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
 
      ;; org
      `(org-level-1 ((t (:foreground ,fg :background ,bg :height 1.5 :weight bold))))

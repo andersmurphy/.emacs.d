@@ -600,16 +600,17 @@ This can be used to make the window layout change based on frame size."
         ("C-r" . my/replace-in-buffer)
         ("C-v" . isearch-yank-kill)
         ("C-y" . isearch-yank-kill)))
-(use-package selectrum
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+(use-package vertico-prescient
   :config
-  (selectrum-mode t))
-(use-package selectrum-prescient
-  :config
-  (selectrum-prescient-mode t)
+  (vertico-prescient-mode t)
   (prescient-persist-mode t))
-(use-package company-prescient
+(use-package corfu-prescient
   :config
-  (company-prescient-mode t))
+  (corfu-prescient-mode t))
 (use-package project
   :straight nil
   :after eglot
@@ -932,17 +933,25 @@ If this becomes a problem these common lines could be filtered."
   (emacs-lisp-mode . (lambda () (flymake-mode t))))
 
 ;;; COMPLETION
-(use-package company
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-preview-current nil)
+  (setq corfu-bar-width 0)
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
   :init
-  (setq company-idle-delay 0.2)
-  (setq company-tooltip-offset-display nil)
-  (setq company-format-margin-function nil)
-  (global-company-mode)
-  :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
-              ("TAB" . company-complete)
-              ([tab] . company-complete)
+  (global-corfu-mode)
+  :bind (:map corfu-map
+              ("C-n" . corfu-next)
+              ("C-p" . corfu-previous)
+              ("TAB" . corfu-complete)
+              ([tab] . corfu-complete)
               ("C-w" . topiary/kill)))
 
 ;;; PROGRAMMING
@@ -957,22 +966,6 @@ If this becomes a problem these common lines could be filtered."
         '(:documentHighlightProvider
           :hoverProvider
           :signatureHelpProvider))
-
-  (defun my/filter-keywords (candidate-fun input)
-    "Filters CANDIDATE-FUN results that start with : .
-Unless the INPUT starts with :.
-
-This is to get around behaviour in clojure-lsp that returns
-keywords even if you don't type a : ."
-    (let ((res (funcall candidate-fun input)))
-      (if (string-prefix-p ":" input)
-          res
-        (seq-filter
-         (lambda (candidate)
-           (not (string-prefix-p ":" candidate)))
-         res))))
-
-  (advice-add 'company-capf--candidates :around #'my/filter-keywords)
 
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
