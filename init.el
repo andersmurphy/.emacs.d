@@ -947,11 +947,31 @@ If this becomes a problem these common lines could be filtered."
 
   :init
   (global-corfu-mode)
+  
+  :config
+  ;; Monkey patch to remove annotation/extra info noise
+  (cl-defgeneric corfu--affixate (cands)
+    "Annotate CANDS with annotation function."
+    (setq cands (cl-loop for cand in cands collect (list cand "" "")))
+    (let* ((dep (plist-get corfu--extra :company-deprecated))
+           (completion-extra-properties corfu--extra)
+           (mf (run-hook-with-args-until-success 'corfu-margin-formatters corfu--metadata)))
+      (cl-loop for x in cands for (c . _) = x do
+               (when mf
+                 (setf (cadr x) (funcall mf c)))
+               (when (and dep (funcall dep c))
+                 (setcar x (setq c (substring c)))
+                 (add-face-text-property 0 (length c) 'corfu-deprecated 'append c)))
+      (cons mf cands)))
+
+  corfu-map
+  
   :bind (:map corfu-map
               ("C-n" . corfu-next)
               ("C-p" . corfu-previous)
               ("TAB" . corfu-complete)
               ([tab] . corfu-complete)
+              ("RET" . nil) ;; unbind return
               ("C-w" . topiary/kill)))
 
 ;;; PROGRAMMING
