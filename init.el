@@ -973,6 +973,15 @@ If this becomes a problem these common lines could be filtered."
               ([tab] . corfu-complete)
               ("RET" . nil) ;; unbind return
               ("C-w" . topiary/kill)))
+(use-package cape
+  :after eglot
+  :config
+  (defun my/eglot-capf ()
+    (setq-local completion-at-point-functions
+                (list (cape-super-capf
+                       #'eglot-completion-at-point
+                       #'cape-dabbrev))))
+  :hook (eglot-managed-mode . my/eglot-capf))
 
 ;;; PROGRAMMING
 ;; LSP - Language Server Protocol
