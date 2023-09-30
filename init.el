@@ -213,6 +213,10 @@
   "Open init file (this file)."
   (interactive)
   (find-file "~/.emacs.d/init.el"))
+(defun my/tasks ()
+  "Open tasks file."
+  (interactive)
+  (find-file "~/.emacs.d/emacs-sync/org/tasks.org.gpg"))
 (defun my/update-emacs-packages ()
   "Update Emacs packages using straight."
   (interactive)
@@ -525,8 +529,7 @@ This can be used to make the window layout change based on frame size."
   (recentf-mode t)
   (defun my/open-recent-files ()
     (thread-last
-        (append (seq-take recentf-list 10)
-                '("~/.emacs.d/init.el" "~/.emacs.d/emacs-sync/org/tasks.org"))
+      (seq-take recentf-list 10)
       (delete-dups)
       (seq-remove (apply-partially 'string-suffix-p ".emacs.d/emms/history"))
       (seq-reverse)
