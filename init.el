@@ -976,12 +976,26 @@ If this becomes a problem these common lines could be filtered."
 (use-package cape
   :after eglot
   :config
+  (defun my/ignore-keywords-unless-explicit (cand)
+    (or (not (keywordp cand))
+        (eq (char-after (car completion-in-region--data)) ?:)))
+
   (defun my/eglot-capf ()
     (setq-local completion-at-point-functions
                 (list (cape-super-capf
-                       #'eglot-completion-at-point
+                       (cape-capf-predicate
+                        #'eglot-completion-at-point
+                        #'my/ignore-keywords-unless-explicit)
                        #'cape-dabbrev))))
-  :hook (eglot-managed-mode . my/eglot-capf))
+  (defun my/setup-elisp ()
+    (setq-local completion-at-point-functions
+                (list (cape-super-capf
+                       (cape-capf-predicate
+                        #'elisp-completion-at-point
+                        #'my/ignore-keywords-unless-explicit)
+                       #'cape-dabbrev))))
+  :hook ((eglot-managed-mode . my/eglot-capf)
+         (emacs-lisp-mode . my/setup-elisp)))
 
 ;;; PROGRAMMING
 ;; LSP - Language Server Protocol
