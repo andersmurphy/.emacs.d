@@ -976,6 +976,7 @@ If this becomes a problem these common lines could be filtered."
 (use-package cape
   :after eglot
   :config
+  (setq cape-dabbrev-check-other-buffers "some")
   (defun my/ignore-keywords-unless-explicit (cand)
     (or (not (keywordp cand))
         (eq (char-after (car completion-in-region--data)) ?:)))
