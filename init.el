@@ -554,17 +554,6 @@ This can be used to make the window layout change based on frame size."
   (setq isearch-regexp-lax-whitespace nil)
   (setq isearch-lazy-highlight t)
 
-  (defun my/replace-in-buffer ()
-    (interactive)
-    (save-excursion
-      (replace-string
-       isearch-string
-       (read-string (concat "Replace " isearch-string " with: ")
-                    isearch-string)
-       nil
-       (point-min)
-       (point-max))))
-
   (defun my/isearch-thing-at-point ()
     (interactive)
     (if (string-empty-p isearch-string)
@@ -598,8 +587,12 @@ This can be used to make the window layout change based on frame size."
                  (= (point) previous-point))
         (my/isearch-repeat-backward))))
 
-  :hook
-  (('isearch-mode-end . my/goto-match-end))
+  (defun my/isearch-query-replace ()
+    (interactive)
+    (goto-char (point-min))
+    (call-interactively 'isearch-query-replace))
+
+  :hook (('isearch-mode-end . my/goto-match-end))
   :bind
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
@@ -609,7 +602,7 @@ This can be used to make the window layout change based on frame size."
         ("C-n" . isearch-repeat-forward)
         ("C-p" . my/isearch-repeat-backward)
         ("C-s" . my/isearch-thing-at-point)
-        ("C-r" . my/replace-in-buffer)
+        ("C-r" . my/isearch-query-replace)
         ("C-v" . isearch-yank-kill)
         ("C-y" . isearch-yank-kill)))
 (use-package vertico
