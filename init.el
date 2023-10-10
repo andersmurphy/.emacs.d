@@ -315,6 +315,14 @@ This can be used to make the window layout change based on frame size."
   (interactive)
   (eshell 'N))
 
+;;; PRIVACY
+;; force pin entry through emacs
+(setenv "GPG_AGENT_INFO" nil)
+(setq epa-pinentry-mode 'loopback)
+(setq epa-file-select-keys nil)
+;; further reading
+;;https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
+
 ;;; VISUAL
 (progn ;; Defaults
 
@@ -1167,14 +1175,6 @@ If this becomes a problem these common lines could be filtered."
     (set-face-attribute 'markdown-code-face nil :height 0.9))
   :hook ((markdown-mode . variable-pitch-mode)
          (markdown-mode . my/md-font-setup)))
-
-;;; PRIVACY
-;; force pin entry through emacs
-(setenv "GPG_AGENT_INFO" nil)
-(setq epa-pinentry-mode 'loopback)
-(setq epa-file-select-keys nil)
-;; further reading
-;;https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
 
 ;;; MISC
 (defun my/unix-timestanp-to-utc-time ()
