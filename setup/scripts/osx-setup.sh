@@ -83,6 +83,12 @@ brew install qrencode
 
 brew install inetutils
 
+curl https://raw.githubusercontent.com/Homebrew/homebrew-core/59edfe598541186430d49cc34f42671e849e2fc9/Formula/gnupg.rb > gnupg.rb
+wait
+brew install gnupg.rb
+wait
+rm gnupg.rb
+
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk17
 wait
