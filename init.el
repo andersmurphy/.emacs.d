@@ -540,6 +540,7 @@ This can be used to make the window layout change based on frame size."
       (seq-take recentf-list 10)
       (delete-dups)
       (seq-remove (apply-partially 'string-suffix-p ".emacs.d/emms/history"))
+      (seq-remove (apply-partially 'string-suffix-p ".gpg"))
       (seq-reverse)
       (mapcar #'find-file)))
   :hook
