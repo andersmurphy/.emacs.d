@@ -610,10 +610,12 @@ This can be used to make the window layout change based on frame size."
   :init
   (vertico-mode))
 (use-package vertico-prescient
+  :after vertico
   :config
   (vertico-prescient-mode t)
   (prescient-persist-mode t))
 (use-package corfu-prescient
+  :after corfu
   :config
   (corfu-prescient-mode t))
 (use-package project
@@ -976,7 +978,7 @@ If this becomes a problem these common lines could be filtered."
               ("C-p" . corfu-previous)
               ("TAB" . corfu-complete)
               ([tab] . corfu-complete)
-              ("RET" . nil) ;; unbind return
+              ("RET" . corfu-complete)
               ("C-w" . topiary/kill)))
 (use-package cape
   :after eglot
