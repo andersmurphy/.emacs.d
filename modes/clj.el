@@ -136,15 +136,22 @@ In the case of nested projects will find the nearest
 project.clj/deps.edn file. Works up directories starting from the
 current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
   (cond
+   ;; deps
    ((file-exists-p (concat dirname "deps.edn"))
     (list (concat dirname "deps.edn")
           (or clj-lisp-prog "clojure -M:dev")))
+   ;; lein
    ((file-exists-p (concat dirname "project.clj"))
     (list (concat dirname "project.clj")
           (or clj-lisp-prog "lein repl")))
+   ;; babashka
+   ((file-exists-p (concat dirname "bb.edn"))
+    (list (concat dirname "bb.edn")
+          (or clj-lisp-prog "bb repl")))
+   ;; Fall back to babashka if no project file
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
-    (list (buffer-file-name) "bb repl")) ;; babashka
+    (list (buffer-file-name) "bb repl"))
    (t (-> (directory-file-name dirname)
           file-name-directory
           (my/try-to-find-project-file clj-lisp-prog)))))
