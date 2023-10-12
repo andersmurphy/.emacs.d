@@ -208,7 +208,10 @@
   (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
   ;; Remove duplicates in history
-  (setq history-delete-duplicates t))
+  (setq history-delete-duplicates t)
+
+  ;; Limit size of echo messages area 
+  (setq max-mini-window-height 1))
 (defun my/init ()
   "Open init file (this file)."
   (interactive)
