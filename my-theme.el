@@ -203,6 +203,14 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(eshell-prompt ((t (:foreground ,fg :weight bold :height ,h2-height))))
      `(eshell-ls-directory ((t (:foreground ,blue :weight bold))))
 
+     ;; ansi 
+     `(ansi-color-yellow ((t (:foreground ,yellow :background ,yellow))))
+     `(ansi-color-green ((t (:foreground ,green :background ,green))))
+     `(ansi-color-blue ((t (:foreground ,blue :background ,blue))))
+     `(ansi-color-cyan ((t (:foreground ,blue :background ,blue))))
+     `(ansi-color-red ((t (:foreground ,red :background ,red))))
+     `(ansi-color-magenta ((t (:foreground ,purple :background ,purple))))
+     
      ;; emms
      `(emms-playlist-track-face    ((t (:foreground ,fg :background ,bg))))
      `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))
@@ -251,8 +259,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(eww-valid-certificate ((t (:foreground ,fg-success))))
      `(eww-invalid-certificate ((t (:foreground ,fg-error))))
      ;; eglot
-     `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-comment))))
-     )))
+     `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-comment)))))))
 
 (provide-theme 'my)
 ;;; my-theme.el ends here
