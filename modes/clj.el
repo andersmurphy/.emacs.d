@@ -144,7 +144,7 @@ current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
           (or clj-lisp-prog "lein repl")))
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
-    (list (buffer-file-name) "clojure"))
+    (list (buffer-file-name) "bb repl")) ;; babashka
    (t (-> (directory-file-name dirname)
           file-name-directory
           (my/try-to-find-project-file clj-lisp-prog)))))
