@@ -94,11 +94,30 @@ If buffer doesn't have namespace defaults to current namespace."
   "Configure global repl settings."
   (my/clj-eval
    `(do
-     (when-not ,(my/t->true-sym
-                 (my/inferior-lisp-program-heroku-p))
-               (require (quote [pjstadig.humane-test-output]))
-               (eval '(pjstadig.humane-test-output/activate!))
-               (set! *warn-on-reflection* true))
+     (require (quote [pjstadig.humane-test-output]))
+     (eval '(pjstadig.humane-test-output/activate!))
+     (set! *warn-on-reflection* true)
+     (set! *print-length* 30)
+     (clojure.main/repl :print (fn [x]
+                                   (newline)
+                                   (clojure.pprint/pprint x)
+                                   (newline))))))
+
+(defun my/configure-bb-repl ()
+  "Configure global repl settings."
+  (my/clj-eval
+   `(do
+     (set! *warn-on-reflection* true)
+     (set! *print-length* 30)
+     (clojure.main/repl :print (fn [x]
+                                   (newline)
+                                   (clojure.pprint/pprint x)
+                                   (newline))))))
+
+(defun my/configure-heroku-repl ()
+  "Configure global repl settings."
+  (my/clj-eval
+   `(do
      (set! *print-length* 30)
      (clojure.main/repl :print (fn [x]
                                    (newline)
@@ -179,6 +198,12 @@ MODE determines dispatch on dialect eg: clojure/clojurescript."
     (progn (my/do-on-first-prompt
             (lambda () (cond ((eq mode 'clojurescript-mode)
                               (my/configure-cljs-repl))
+                             ((string-match-p "bb"
+                                              inferior-lisp-program)
+                              (my/configure-bb-repl))
+                             ((string-match-p "heroku"
+                                              inferior-lisp-program)
+                              (my/configure-heroku-repl))
                              (t (my/configure-clj-repl)))))
            (inferior-lisp inferior-lisp-program))))
 
