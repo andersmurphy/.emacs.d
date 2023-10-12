@@ -250,10 +250,22 @@ mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 #+END_SRC
 
+* Babashka
+
+Language.
+
+#+BEGIN_SRC sh
+brew install borkdude/brew/babashka
+#+END_SRC
+
 * Fennel
+
+Language.
+
 #+BEGIN_SRC sh
 brew install fennel
 #+END_SRC
+
 * Javascript
 
 Language.
