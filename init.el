@@ -1248,7 +1248,7 @@ If this becomes a problem these common lines could be filtered."
   (setq shr-discard-aria-hidden t)
   (defun my/eww-font-setup ()
     (face-remap-add-relative 'variable-pitch
-                             :height 1.2))
+                             :height 1.1))
   :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
