@@ -9,6 +9,7 @@
 ;; C-x C-e to evaluate current expression.
 ;; M-x elisp-index-search to search elisp manual.
 ;; M-x emacs-index-search to search Emacs manual.
+;; M-x shortdoc-display-group to get elisp cheat sheet by category.
 
 ;;; Code:
 
