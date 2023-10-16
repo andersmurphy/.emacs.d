@@ -26,7 +26,7 @@ git config --global user.email "andersmurphy@gmail.com"
 
 git config --global credential.helper osxkeychain
 
-git config --global core.editor 'emacsclient'
+git config --global core.editor 'nano'
 
 git config --global pull.rebase true
 
