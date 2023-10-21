@@ -1000,6 +1000,19 @@ If this becomes a problem these common lines could be filtered."
               ([tab] . corfu-complete)
               ("RET" . corfu-complete)
               ("C-w" . topiary/kill)))
+(use-package dabbrev
+  :straight nil
+  :config
+  ;; Add repl buffers to dabbrev suggestions
+  (setq dabbrev-friend-buffer-function
+        (lambda (other-buffer)
+          (or (dabbrev--same-major-mode-p other-buffer)
+              (and (member major-mode '(clojure-mode
+                                        clojurec-mode
+                                        clojurescript-mode
+                                        inferior-lisp-mode))
+                   (with-current-buffer other-buffer
+                     (eq major-mode 'inferior-lisp-mode)))))))
 (use-package cape
   :after eglot
   :config
