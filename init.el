@@ -882,6 +882,11 @@ If this becomes a problem these common lines could be filtered."
     "Toggle folded code at top level without losing cursor position."
     (interactive)
     (save-excursion
+      ;; handle being at the end of a defun
+      (when (and (char-before ?\))
+                 (member (char-after) (string-to-list "\n ")))
+        (backward-char 1))
+      ;; Handles being inside a defun
       (unless (<= (nth 0 (syntax-ppss)) 0)
         (goto-char (car (nth 9 (syntax-ppss)))))
       (hs-toggle-hiding)))
