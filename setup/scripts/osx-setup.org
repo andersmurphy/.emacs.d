@@ -206,6 +206,14 @@ brew install gnupg.rb
 wait
 rm gnupg.rb 
 #+END_SRC
+* Lima (Linux VM)
+
+Installs Lima (https://lima-vm.io):
+
+#+BEGIN_SRC sh
+brew install lima
+#+END_SRC
+
 * Open jdk
 
 Installs open jdk.

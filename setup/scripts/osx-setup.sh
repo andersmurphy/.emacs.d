@@ -89,6 +89,8 @@ brew install gnupg.rb
 wait
 rm gnupg.rb
 
+brew install lima
+
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk17
 wait
