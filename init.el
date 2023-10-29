@@ -211,7 +211,7 @@
   ;; Remove duplicates in history
   (setq history-delete-duplicates t)
 
-  ;; Limit size of echo messages area 
+  ;; Limit size of echo messages area
   (setq max-mini-window-height 1))
 (defun my/init ()
   "Open init file (this file)."
@@ -653,7 +653,7 @@ This can be used to make the window layout change based on frame size."
                              macos-keychain-generic)))
 
   "For generating tokens see: https://github.com/settings/tokens"
-  
+
   (defun my/add-osx-keychain-creds ()
     "Add credentials to osx keychain.
 
@@ -667,9 +667,9 @@ This can be used to make the window layout change based on frame size."
           (password (read-passwd "Password: ")))
       (shell-command
        (format "security add-internet-password -a %s -s %s -w %s -U"
-                             account
-                             host
-                             password)))))
+               account
+               host
+               password)))))
 (use-package magit
   :config
   (magit-wip-mode)
@@ -841,7 +841,14 @@ If this becomes a problem these common lines could be filtered."
       (when (equal last string)
         (setq replace t))
       (list string replace)))
-  (advice-add 'kill-new :filter-args #'my/dedupe-kill))
+  (advice-add 'kill-new :filter-args #'my/dedupe-kill)
+
+  ;; Indent buffer before save
+  (defun my/indent-buffer ()
+    (progn
+      (whitespace-cleanup-region (point-min) (point-max))
+      (indent-region (point-min) (point-max) nil)))
+  (add-hook 'before-save-hook #'my/indent-buffer))
 (use-package hideshow
   :straight nil
   :config
@@ -937,23 +944,23 @@ If this becomes a problem these common lines could be filtered."
 (use-package flymake :straight nil
   :init
   (define-fringe-bitmap 'my/flymake-fringe-indicator
-     (vector #b00000000
-             #b00000000
-             #b00000000
-             #b00000000
-             #b11111111
-             #b11111111
-             #b11111111
-             #b11111111
-             #b11111111
-             #b11111111
-             #b11111111
-             #b11111111
-             #b00000000
-             #b00000000
-             #b00000000
-             #b00000000
-             #b00000000))
+    (vector #b00000000
+            #b00000000
+            #b00000000
+            #b00000000
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b11111111
+            #b00000000
+            #b00000000
+            #b00000000
+            #b00000000
+            #b00000000))
   (setq flymake-error-bitmap '(my/flymake-fringe-indicator flymake-error))
   (setq flymake-warning-bitmap '(my/flymake-fringe-indicator flymake-warning))
   (setq flymake-note-bitmap '(my/flymake-fringe-indicator flymake-note))
@@ -979,7 +986,7 @@ If this becomes a problem these common lines could be filtered."
 
   :init
   (global-corfu-mode)
-  
+
   :config
   ;; Monkey patch to remove annotation/extra info noise
   (cl-defgeneric corfu--affixate (cands)
@@ -997,7 +1004,7 @@ If this becomes a problem these common lines could be filtered."
       (cons mf cands)))
 
   corfu-map
-  
+
   :bind (:map corfu-map
               ("C-n" . corfu-next)
               ("C-p" . corfu-previous)
@@ -1106,7 +1113,7 @@ If this becomes a problem these common lines could be filtered."
              ".lua/fennel_repl.lua"
              "'")))
       (call-interactively 'fennel-repl)))
-  
+
   (defun fennel-reload ()
     (interactive)
     (comint-check-source buffer-file-name)
@@ -1114,14 +1121,14 @@ If this becomes a problem these common lines could be filtered."
       (comint-send-string (inferior-lisp-proc)
                           (concat ",reload " module "\n"))
       (message (concat module " loaded."))))
-  
+
   (defun my/run-make ()
     "Run make if Makefile exists in root."
     (when (eq major-mode 'fennel-mode)
       (let ((default-directory (project-root (project-current t))))
         (when (file-exists-p "Makefile")
           (shell-command "make")))))
-  
+
   :hook (after-save . my/run-make))
 ;; Lua
 (use-package lua-mode)
