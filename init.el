@@ -221,6 +221,10 @@
   "Open tasks file."
   (interactive)
   (find-file "~/.emacs.d/emacs-sync/org/tasks.org.gpg"))
+(defun my/scripts ()
+  "Open scripts directory."
+  (interactive)
+  (find-file "~/.emacs.d/emacs-sync/scripts/"))
 (defun my/update-emacs-packages ()
   "Update Emacs packages using straight."
   (interactive)
