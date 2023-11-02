@@ -845,14 +845,7 @@ If this becomes a problem these common lines could be filtered."
       (when (equal last string)
         (setq replace t))
       (list string replace)))
-  (advice-add 'kill-new :filter-args #'my/dedupe-kill)
-
-  ;; Indent buffer before save
-  (defun my/indent-buffer ()
-    (progn
-      (whitespace-cleanup-region (point-min) (point-max))
-      (indent-region (point-min) (point-max) nil)))
-  (add-hook 'before-save-hook #'my/indent-buffer))
+  (advice-add 'kill-new :filter-args #'my/dedupe-kill))
 (use-package hideshow
   :straight nil
   :config
