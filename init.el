@@ -597,8 +597,9 @@ This can be used to make the window layout change based on frame size."
 
   (defun my/isearch-query-replace ()
     (interactive)
-    (goto-char (point-min))
-    (call-interactively 'isearch-query-replace))
+    (save-excursion
+      (goto-char (point-min))
+      (call-interactively 'isearch-query-replace)))
 
   ;; Make isearch wrap automatically if it doesn't find anything
   (defadvice isearch-search (after isearch-no-fail activate)
