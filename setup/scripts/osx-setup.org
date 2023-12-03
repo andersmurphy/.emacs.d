@@ -206,6 +206,13 @@ brew install gnupg.rb
 wait
 rm gnupg.rb 
 #+END_SRC
+
+ripgrep needed for things that use ripgrep (eg: magit-todo) as OSX doesn't ship with grep.
+
+#+BEGIN_SRC sh
+brew install ripgrep
+#+END_SRC
+
 * Lima (Linux VM)
 
 Installs Lima (https://lima-vm.io):
