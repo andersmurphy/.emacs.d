@@ -1247,7 +1247,7 @@ If this becomes a problem these common lines could be filtered."
   ;; NOTE: emms tends to break now and then with byte compilation.
   ;; you can test different version by using the commit hash for
   ;; the commit you care about. Can be found here:
-  ;; 
+  ;;
   ;; https://github.com/emacsmirror/emms/commits/master/
   ;;
   ;; You'll then need to change the emms value in
@@ -1255,7 +1255,7 @@ If this becomes a problem these common lines could be filtered."
   ;; .emacs.d/straight/versions/default.el
   ;;
   ;; And delete:
-  ;; 
+  ;;
   ;; .emacs.d/straight/repos/emms.el
   ;;
   ;; Finally restart emacs to re-download the repo.
@@ -1263,8 +1263,8 @@ If this becomes a problem these common lines could be filtered."
   ;; Sometimes there can also be issues with the byte compilation caching
   ;; old files.
   :config
-  (emms-all)
-  (emms-default-players)
+  (emms-minimalistic)
+  (setq emms-player-list '(emms-player-mpv))
   (emms-mode-line-disable)
   (emms-playing-time-disable-display)
   (setq emms-repeat-playlist t)
