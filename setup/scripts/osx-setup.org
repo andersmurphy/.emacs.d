@@ -49,6 +49,22 @@ brew analytics off
 brew tap homebrew/cask
 #+END_SRC
 
+* Mullvad
+
+Install mullvad vpn.
+
+#+BEGIN_SRC sh
+brew install --cask mullvadvpn
+wait
+#+END_SRC
+
+Install mullvad browser.
+
+#+BEGIN_SRC sh
+brew install --cask mullvad-browser
+wait
+#+END_SRC
+
 * Keyboard
 
 #+BEGIN_SRC sh
