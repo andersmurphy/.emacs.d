@@ -1277,6 +1277,19 @@ If this becomes a problem these common lines could be filtered."
 (use-package eww
   :straight nil
   :config
+  ;; For kagi to work correctly with eww-readable
+  ;; Open kagi -> settings -> search -> turn everything off
+  ;; Grouped Results is the setting that breaks eww-readable
+  ;; Turning off the other settings just makes the results cleaner
+  (setq my/kagi-token
+        ;; This token is a kagi private session token see
+        ;; https://help.kagi.com/kagi/getting-started/setting-default.html#private_session
+        nil)
+  (setq eww-search-prefix
+        (concat
+         "https://kagi.com/html/search?token="
+         my/kagi-token
+         "&q="))
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
   ;; ignore html specified colours
   (setq shr-use-colors nil)
