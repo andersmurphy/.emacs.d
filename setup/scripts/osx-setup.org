@@ -213,7 +213,7 @@ ftp and other network utils (no longer installed on OSX by default).
 brew install inetutils
 #+END_SRC
 
-gnupg for encryption (pinned to version 2.40). As later versions currently break emacs (M-x view-emacs-problems).
+gnupg (gpg) for encryption (pinned to version 2.40). As later versions currently break emacs (M-x view-emacs-problems). 
 
 #+BEGIN_SRC sh
 curl https://raw.githubusercontent.com/Homebrew/homebrew-core/59edfe598541186430d49cc34f42671e849e2fc9/Formula/gnupg.rb > gnupg.rb
