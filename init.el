@@ -655,7 +655,8 @@ This can be used to make the window layout change based on frame size."
   :straight nil
   :config
   (setq auth-sources (quote (macos-keychain-internet
-                             macos-keychain-generic)))
+                             macos-keychain-generic
+                             "~/.emacs.d/emacs-sync/.authinfo.gpg")))
 
   "For generating tokens see: https://github.com/settings/tokens"
 
@@ -1281,14 +1282,17 @@ If this becomes a problem these common lines could be filtered."
   ;; Open kagi -> settings -> search -> turn everything off
   ;; Grouped Results is the setting that breaks eww-readable
   ;; Turning off the other settings just makes the results cleaner
-  (setq my/kagi-token
-        ;; This token is a kagi private session token see
-        ;; https://help.kagi.com/kagi/getting-started/setting-default.html#private_session
-        nil)
+
+  (defun my/kagi-token ()
+    "Get kagi session token from auth-source see https://help.kagi.com/kagi/getting-started/setting-default.html#private_session"
+    (let* ((found (nth 0 (auth-source-search :user "kagi" :max 1))))
+      (when found
+        (auth-info-password found))))
+
   (setq eww-search-prefix
         (concat
          "https://kagi.com/html/search?token="
-         my/kagi-token
+         (my/kagi-token)
          "&q="))
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
   ;; ignore html specified colours
