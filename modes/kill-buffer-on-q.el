@@ -6,7 +6,7 @@
 ;;;###autoload
 (define-minor-mode kill-buffer-on-q
   "Toggle mode."
-  nil
+  :init-value nil
   :lighter " kbq"
   :keymap
   (let ((map (make-sparse-keymap)))
