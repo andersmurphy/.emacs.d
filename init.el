@@ -140,6 +140,13 @@
   "Open keyboard firmware configuration tool."
   (interactive)
   (shell-command "open -a chrysalis"))
+(use-package kmacro
+  :straight nil
+  :config
+  ;; Add alias for insert-kbd-macro and call-last-kbd-macro that
+  ;; matches kmacro naming of other commands.
+  (defalias 'kmacro-insert-macro 'insert-kbd-macro)
+  (defalias 'kmacro-call-last-macro 'call-last-kbd-macro))
 
 ;;; GENERAL
 (progn ;; Defaults
