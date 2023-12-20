@@ -1296,11 +1296,12 @@ If this becomes a problem these common lines could be filtered."
       (when found
         (auth-info-password found))))
 
-  (setq eww-search-prefix
-        (concat
-         "https://kagi.com/html/search?token="
-         (my/kagi-token)
-         "&q="))
+  (defun my/set-eww-search-prefix ()
+    (setq eww-search-prefix
+          (concat
+           "https://kagi.com/html/search?token="
+           (my/kagi-token)
+           "&q=")))
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
   ;; ignore html specified colours
   (setq shr-use-colors nil)
@@ -1314,7 +1315,8 @@ If this becomes a problem these common lines could be filtered."
   (defun my/eww-font-setup ()
     (face-remap-add-relative 'variable-pitch
                              :height 1.1))
-  :hook ((eww-mode . my/eww-font-setup)
+  :hook ((eww-mode . my/set-eww-search-prefix)
+         (eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
 ;; QR codes
