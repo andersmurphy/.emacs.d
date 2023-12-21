@@ -936,6 +936,14 @@ If this becomes a problem these common lines could be filtered."
   :bind (:map special-mode-map
               ("C-w" . topiary/kill)))
 
+;; WRITING
+(load "~/.emacs.d/modes/text-scratch.el")
+(use-package text-scratch
+  :straight nil
+  ;; open text buffer on init
+  :hook (after-init . text-scratch/buffer))
+
+
 ;;; LINTING
 (use-package flyspell
   :config
