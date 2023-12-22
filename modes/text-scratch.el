@@ -20,7 +20,7 @@
 
 ;; In pure elisp it would be (kill-region (point-min) (point-max))
 (defalias 'text-scratch/kill-buffer-content-and-add-to-kill-ring
-  (kmacro "M-< C-SPC M-> C-w"))
+  (kmacro "C-x h C-w"))
 
 ;;;###autoload
 (define-minor-mode text-scratch-mode
