@@ -370,7 +370,7 @@ edge of word. eg: foo|d would return the bounds of \\'food\\'. But food| would
 
 (defun topiary/bounds-of-comment ()
   "Return bounds of comment."
-  (when (topiary/beginning-of-comment-p)
+  (when (and (topiary/supported-mode-p) (topiary/beginning-of-comment-p))
     (cons (point)
           (save-excursion
             (end-of-line)
