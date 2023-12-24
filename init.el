@@ -942,7 +942,26 @@ If this becomes a problem these common lines could be filtered."
   :straight nil
   ;; open text buffer on init
   :hook (after-init . text-scratch/buffer))
-
+(use-package abbrev
+  :straight nil
+  :config
+  (setq-default abbrev-mode t))
+(defun my/wiki-style-misspellings->abbrev-table ()
+  "Convert wiki style misspellings to abbrev table entries."
+  (interactive)
+  ;; remove entries with more than one option
+  (call-interactively 'mark-whole-buffer)
+  (flush-lines ",")
+  ;; convert entries to abbrev entries
+  (while (not (eobp))
+    (insert "(\"")
+    (skip-chars-forward "^-")
+    (insert "\" ")
+    (delete-char 2)
+    (insert "\"")
+    (end-of-line)
+    (insert "\" nil :count 1)")
+    (forward-line 1)))
 
 ;;; LINTING
 (use-package flyspell
