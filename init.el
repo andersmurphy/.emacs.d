@@ -947,7 +947,8 @@ If this becomes a problem these common lines could be filtered."
   :config
   (setq-default abbrev-mode t))
 (defun my/wiki-style-misspellings->abbrev-table ()
-  "Convert wiki style misspellings to abbrev table entries."
+  "Convert wiki style misspellings to abbrev table entries.
+https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines"
   (interactive)
   ;; remove entries with more than one option
   (call-interactively 'mark-whole-buffer)
