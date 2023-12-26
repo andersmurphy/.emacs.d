@@ -131,7 +131,6 @@
             (define-key map (kbd "{")  (topiary/if-in-string
                                         (insert "{")
                                         (topiary/wrap-with-braces)))
-            (define-key map (kbd "SPC")  'topiary/space)
             (define-key map (kbd ")")  (topiary/if-in-string (insert ")")))
             (define-key map (kbd "]")  (topiary/if-in-string (insert "]")))
             (define-key map (kbd "}")  (topiary/if-in-string (insert "}")))
@@ -695,26 +694,6 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
   (if (topiary/supported-mode-p)
       (kill-sexp)
     (kill-sentence)))
-
-(defun topiary/space ()
-  "If previous char is space and next char is closing delimiter.
-Hungry delete space and skip the delimiter (forward char).
-Insert space automatically if following char is a closing
-delimiter (after forward char)."
-  (interactive)
-  (if (not (and
-            (topiary/supported-mode-p)
-            (or (and (member (char-before)  (string-to-list " {[("))
-                     (member (char-after) (string-to-list "]})")))
-                (and (topiary/in-string-p)
-                     (member (char-before) (string-to-list " "))
-                     (member (char-after) (string-to-list "\""))))))
-      (insert " ")
-    (when (member (char-before) (string-to-list " "))
-      (topiary/hungry-delete-backward))
-    (forward-char)
-    (when (member (char-after) (string-to-list "]})"))
-      (insert " "))))
 
 (defun topiary/forward-slurp ()
   "Slurp sexp forward. Return t if successful nil otherwise."
