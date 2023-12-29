@@ -1306,10 +1306,27 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (setq emms-repeat-playlist t)
   (defvar emms-source-file-default-directory)
   (setq emms-source-file-default-directory "~/Dropbox/music/")
+  
   (defun my/emms-kill-mpv ()
     "Reset mpv when it's misbehaving."
     (interactive)
-    (shell-command "killall mpv")))
+    (shell-command "killall mpv"))
+
+  (defun my/radio3 ()
+    "Radio 3. These links might break now and then. For latest links see:
+
+https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
+    (interactive)
+    (emms-play-streamlist
+     "http://lstn.lv/bbc.m3u8?station=bbc_radio_three&bitrate=96000"))
+  
+  (defun my/radio4 ()
+    "Radio 4. These links might break now and then. For latest links see:
+
+https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
+    (interactive)
+    (emms-play-streamlist
+     "http://lstn.lv/bbc.m3u8?station=bbc_radio_fourfm&bitrate=96000")))
 (use-package eww
   :straight nil
   :config
