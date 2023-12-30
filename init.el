@@ -4,9 +4,9 @@
 
 ;; Emacs Startup File --- initialisation for Emacs
 
+;; C-x C-e to evaluate current expression.
 ;; M-. to navigate to function source.
 ;; C-c C-d to navigate to function docs.
-;; C-x C-e to evaluate current expression.
 ;; M-x elisp-index-search to search elisp manual.
 ;; M-x emacs-index-search to search Emacs manual.
 ;; M-x shortdoc-display-group to get elisp cheat sheet by category.
@@ -198,7 +198,13 @@
   (setq echo-keystrokes 0.1)
 
   ;; Initial scratch message.
-  (setq initial-scratch-message "")
+  (setq initial-scratch-message
+        ";; C-x C-e to evaluate current expression.
+;; M-. to navigate to function source.
+;; C-c C-d to navigate to function docs.
+;; M-x elisp-index-search to search elisp manual.
+;; M-x emacs-index-search to search Emacs manual.
+;; M-x shortdoc-display-group to get elisp cheat sheet by category.\n\n()")
 
   ;; Makes recenter go to top first.
   (setq recenter-positions '(top middle bottom))
