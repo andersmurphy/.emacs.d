@@ -342,7 +342,11 @@ This can be used to make the window layout change based on frame size."
 (setq epa-pinentry-mode 'loopback)
 (setq epa-file-select-keys nil)
 ;; further reading
-;;https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
+;; https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
+(load "~/.emacs.d/modes/base32.el")
+(load "~/.emacs.d/modes/totp.el")
+;; further reading
+;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
 
 ;;; VISUAL
 (progn ;; Defaults
