@@ -99,6 +99,12 @@ git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
 #+END_SRC
 
+Set encrypted diffs.
+
+#+BEGIN_SRC sh
+git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
+#+END_SRC
+
 Set [[https://help.github.com/en/articles/caching-your-github-password-in-git][credential store]].
 
 #+BEGIN_SRC sh

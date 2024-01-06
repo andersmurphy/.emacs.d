@@ -30,6 +30,8 @@ wait
 git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
 
+git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
+
 git config --global credential.helper osxkeychain
 
 git config --global core.editor 'nano'
