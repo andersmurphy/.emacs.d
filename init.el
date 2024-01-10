@@ -659,9 +659,10 @@ This can be used to make the window layout change based on frame size."
   :config
   ;; Don't include submodule files in searches etc
   (setq project-vc-merge-submodules nil)
-  ;; Monkey patch project--read-regexp to use sexp rather than symbol
+  ;; Monkey patch project--read-regexp to use topiary bounds
   (defun project--read-regexp ()
-    (let ((sym (thing-at-point 'sexp t)))
+    (let* ((bounds (topiary/bounds))
+           (sym (buffer-substring (car bounds) (cdr bounds))))
       (read-regexp "Find regexp"
                    (and sym (regexp-quote (car (split-string sym "\n"))))
                    project-regexp-history-variable)))
