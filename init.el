@@ -304,20 +304,22 @@ This can be used to make the window layout change based on frame size."
   :config
   ;; Directories first
   (setq dired-listing-switches "--group-directories-first -alh")
-  ;; Ensures Dired file lists are refreshed when files are created/deleted/renamed.
+  ;; Ensures Dired file lists are refreshed when files are
+  ;; created/deleted/renamed.
   ;; Also hides auto revert message.
   (setq dired-auto-revert-buffer t)
   ;; Dired hide details by default
   (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   ;; Bind return to alternate file, so that dired reuses same buffer.
   (put 'dired-find-alternate-file 'disabled nil)
-  ;; WDired (writable dired) can be accessed by making the dired buffer writable
-  ;; with the binding C-x C-q. Any change you make to the buffer will remain
-  ;; unchanged until you commit them by typing C-c C-c. To cancel the changes
-  ;; and revert to the original state you can type C-c k.
+  ;; WDired (writable dired) can be accessed by making the dired
+  ;; buffer writable  with the binding C-x C-q. Any change you make to
+  ;; the buffer will remain  unchanged until you commit them by typing
+  ;; C-c C-c. To cancel the changes and revert to the original state
+  ;; you can type C-c k.
 
-  ;; The feature bellow force confirmation in the case of potential overwrites
-  ;; :caused by rename.
+  ;; The feature bellow force confirmation in the case of potential
+  ;; overwrites :caused by rename.
   (setq wdired-confirm-overwrite t)
   :bind (:map dired-mode-map
               ("RET" . dired-find-alternate-file)
