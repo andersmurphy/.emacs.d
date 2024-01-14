@@ -84,3 +84,5 @@ bitflag
 bitflags
 updatable
 cardinality
+destructure
+destructuring
