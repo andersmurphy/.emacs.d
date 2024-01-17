@@ -108,7 +108,9 @@ wait
 brew install clojure
 wait
 rm ~/.clojure/deps.edn
+rm ~/.clojure/user.cljc
 ln -s ~/.emacs.d/setup/dotfiles/.clojure/deps.edn ~/.clojure/
+ln -s ~/.emacs.d/setup/dotfiles/.clojure/user.cljc ~/.clojure/
 
 brew install leiningen
 wait

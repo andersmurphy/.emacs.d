@@ -1,3 +1,19 @@
 {:deps
+ ;; Should these be under user :extra-deps?
  {org.clojure/tools.namespace {:mvn/version "1.4.5"}
-  pjstadig/humane-test-output {:mvn/version "0.11.0"}}}
+  pjstadig/humane-test-output {:mvn/version "0.11.0"}}
+ :aliases
+ {:user
+  {:extra-deps
+         {com.clojure-goes-fast/clj-async-profiler   {:mvn/version "1.2.0"}
+          com.clojure-goes-fast/clj-java-decompiler  {:mvn/version "0.3.4"}
+          com.clojure-goes-fast/clj-memory-meter     {:mvn/version "0.3.0"}
+          criterium/criterium                        {:mvn/version "0.4.5"}}
+
+   :jvm-opts ["-Djdk.attach.allowAttachSelf"
+              "-XX:+UseG1GC"
+              "-XX:-OmitStackTraceInFastThrow"
+              "-XX:+UnlockDiagnosticVMOptions"
+              "-XX:+DebugNonSafepoints"]
+
+   :main-opts ["-e" "(load-file (str (System/getProperty \"user.home\") \"/.clojure/user.cljc\"))"]}}}

@@ -158,7 +158,7 @@ current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
    ;; deps
    ((file-exists-p (concat dirname "deps.edn"))
     (list (concat dirname "deps.edn")
-          (or clj-lisp-prog "clojure -M:dev")))
+          (or clj-lisp-prog "clojure -M:user:dev -r")))
    ;; lein
    ((file-exists-p (concat dirname "project.clj"))
     (list (concat dirname "project.clj")
