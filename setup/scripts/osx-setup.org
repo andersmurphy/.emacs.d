@@ -105,12 +105,6 @@ Set encrypted diffs.
 git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
 #+END_SRC
 
-Set [[https://help.github.com/en/articles/caching-your-github-password-in-git][credential store]].
-
-#+BEGIN_SRC sh
-git config --global credential.helper osxkeychain
-#+END_SRC
-
 Set editor. I always use magit so nano is only in case
 of emergencies (emacs down).
 

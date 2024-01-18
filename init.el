@@ -687,6 +687,8 @@ This can be used to make the window layout change based on frame size."
   (setq magit-diff-refine-hunk 'all)
   (setq magit-diff-refine-ignore-whitespace t)
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+  (setq magit-process-find-password-functions
+        '(magit-process-password-auth-source))
   ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
 
@@ -1299,7 +1301,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (setq emms-repeat-playlist t)
   (defvar emms-source-file-default-directory)
   (setq emms-source-file-default-directory "~/Dropbox/music/")
-  
+
   (defun my/emms-kill-mpv ()
     "Reset mpv when it's misbehaving."
     (interactive)
@@ -1312,7 +1314,7 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
     (interactive)
     (emms-play-streamlist
      "http://lstn.lv/bbc.m3u8?station=bbc_radio_three&bitrate=96000"))
-  
+
   (defun my/radio4 ()
     "Radio 4. These links might break now and then. For latest links see:
 
