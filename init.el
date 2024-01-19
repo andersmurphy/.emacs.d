@@ -409,8 +409,7 @@ This can be used to make the window layout change based on frame size."
   (defun my/dim-parens ()
     "Make parenthesis less prominent by matching comment face."
     (font-lock-add-keywords nil
-                            '(("(\\|)" . 'font-lock-comment-face)
-                              )))
+                            '(("(\\|)" . 'font-lock-comment-face))))
 
   (defun my/color-important-words ()
     "Make important words more prominent."
