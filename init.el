@@ -763,10 +763,18 @@ If this becomes a problem these common lines could be filtered."
 (use-package forge
   ;; For generating tokens see: https://github.com/settings/tokens
   :after magit)
+(use-package hl-todo
+  :config
+  (global-hl-todo-mode)
+  (setq hl-todo-keyword-faces
+        '(("TODO" . bold)
+          ("EXPLORE" . bold))))
 (use-package magit-todos
   :after magit
   :config
-  (magit-todos-mode))
+  (magit-todos-mode)
+  (setq magit-todos-auto-group-items 15)
+  (setq magit-todos-group-by '(magit-todos-item-keyword)))
 (use-package browse-at-remote
   :config
   (defun my/git-url-for-region ()
