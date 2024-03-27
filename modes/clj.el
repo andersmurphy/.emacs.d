@@ -426,7 +426,12 @@ Works from both namespace and test namespace"
  :aliases {}}")
     (save-buffer)
     (make-directory (concat project-name-path "/src"))
-    (make-directory (concat project-name-path "/src/" namespace-name))
+    (make-directory (concat project-name-path "/src/"
+                            ;; Program development is easier when everything
+                            ;; uses the same project namespace. Means
+                            ;; project renames etc are less of a pain.
+                            ;; (not true for library development).
+                            "server"))
     (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
     (clojure-insert-ns-form)
     (save-buffer)
