@@ -289,6 +289,16 @@ Works up directories starting from the current files directory DIRNAME."
              (re-pattern ,(read-string "Apropos (regex):"))))))
    (my/show-repl)))
 
+(defun my/clj-sync-deps ()
+  "Sync deps file. Not currently supported in clj."
+  (interactive)
+  (my/when-repl-running
+   (cond
+    ((member major-mode '(clojure-mode clojurec-mode))
+     (my/clj-eval-with-ns
+      `(clojure.repl.deps/sync-deps))))
+   (my/show-repl)))
+
 (defun my/clj-find-doc ()
   "Given a regex print doc for any vars whose doc or name contain a match."
   (interactive)
