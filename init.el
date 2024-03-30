@@ -167,9 +167,11 @@
 
   ;; Disable all backups.
   (setq-default  auto-save-default nil
+                 auto-save-list-file-prefix nil
                  create-lockfiles nil
                  history-length 500
-                 make-backup-files nil)
+                 make-backup-files nil
+                 backup-inhibited t)
 
   ;; Don't ask for confirmation when opening symlinked file.
   (setq vc-follow-symlinks t)
