@@ -18,9 +18,6 @@ brew tap homebrew/cask
 brew install --cask mullvadvpn
 wait
 
-brew install --cask mullvad-browser
-wait
-
 brew install --cask chrysalis
 wait
 

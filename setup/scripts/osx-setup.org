@@ -58,25 +58,6 @@ brew install --cask mullvadvpn
 wait
 #+END_SRC
 
-Install mullvad browser.
-
-#+BEGIN_SRC sh
-brew install --cask mullvad-browser
-wait
-#+END_SRC
-
-To enable Kagi as default search in Mullvad.
-
-1. Go to:
-   https://kagi.com/settings?p=user_details
-2. Copy the session link   
-3. Go to that URL in Mullvad Browser
-4. Right click on the search bar
-5. In the drop down menu select Add "Kagi search"
-6. Go to:
-   about:preferences#search
-7. Under default search engine select "Kagi"
-
 * Keyboard
 
 #+BEGIN_SRC sh
