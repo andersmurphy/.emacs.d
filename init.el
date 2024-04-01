@@ -1334,23 +1334,7 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
 (use-package eww
   :straight nil
   :config
-  ;; For kagi to work correctly with eww-readable
-  ;; Open kagi -> settings -> search -> turn everything off
-  ;; Grouped Results is the setting that breaks eww-readable
-  ;; Turning off the other settings just makes the results cleaner
 
-  (defun my/kagi-token ()
-    "Get kagi session token from auth-source see https://help.kagi.com/kagi/getting-started/setting-default.html#private_session"
-    (let* ((found (nth 0 (auth-source-search :user "kagi" :max 1))))
-      (when found
-        (auth-info-password found))))
-
-  (defun my/set-eww-search-prefix ()
-    (setq eww-search-prefix
-          (concat
-           "https://kagi.com/html/search?token="
-           (my/kagi-token)
-           "&q=")))
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
   ;; ignore html specified colours
   (setq shr-use-colors nil)
@@ -1364,8 +1348,7 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
   (defun my/eww-font-setup ()
     (face-remap-add-relative 'variable-pitch
                              :height 1.1))
-  :hook ((eww-mode . my/set-eww-search-prefix)
-         (eww-mode . my/eww-font-setup)
+  :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
 ;; QR codes
