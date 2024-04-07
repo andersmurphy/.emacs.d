@@ -15,12 +15,6 @@ wait
 brew analytics off
 brew tap homebrew/cask
 
-brew install --cask mullvadvpn
-wait
-
-brew install --cask chrysalis
-wait
-
 brew install git
 wait
 
@@ -44,26 +38,8 @@ git config --global core.excludesfile '~/.gitignore'
 
 git config --global diff.algorithm histogram
 
-brew install libxml2 gcc libgccjit
+brew install emacs
 wait
-
-# We clone a single branch for a slightly smaller download
-git clone https://git.savannah.gnu.org/git/emacs.git --branch emacs-29 --single-branch
-wait
-
-cd emacs
-git checkout emacs-29
-./autogen.sh
-./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
-
-make -j$(nproc)
-wait
-
-make clean install
-wait
-
-mv nextStep/Emacs.app /Applications
-cd
 
 brew install aspell
 wait
@@ -73,18 +49,8 @@ wait
 rm ~/.config/mpv/mpv.conf
 ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 
-brew install multimarkdown
-wait
-
-brew install pandoc
-wait
-
 brew install borkdude/brew/jet
 wait
-
-brew install qrencode
-
-brew install inetutils
 
 curl https://raw.githubusercontent.com/Homebrew/homebrew-core/59edfe598541186430d49cc34f42671e849e2fc9/Formula/gnupg.rb > gnupg.rb
 wait
@@ -93,8 +59,6 @@ wait
 rm gnupg.rb
 
 brew install ripgrep
-
-brew install lima
 
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk17
@@ -121,20 +85,3 @@ ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 brew install borkdude/brew/babashka
 
 brew install fennel
-
-brew install node
-wait
-
-npm install -g yarn
-wait
-
-npm i -g typescript-language-server; npm i -g typescript
-
-npm install -g vscode-html-languageserver-bin
-wait
-
-brew install --cask dropbox
-wait
-
-brew install --cask calibre
-wait

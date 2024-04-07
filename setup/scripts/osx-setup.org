@@ -49,21 +49,6 @@ brew analytics off
 brew tap homebrew/cask
 #+END_SRC
 
-* Mullvad
-
-Install mullvad vpn.
-
-#+BEGIN_SRC sh
-brew install --cask mullvadvpn
-wait
-#+END_SRC
-
-* Keyboard
-
-#+BEGIN_SRC sh
-brew install --cask chrysalis
-wait
-#+END_SRC
 * Git
 
 Install latest version of git.
@@ -130,29 +115,11 @@ git config --global diff.algorithm histogram
 
 * Emacs
 
-Build emacs from source:
+Install emacs.
 
 #+BEGIN_SRC sh
-brew install libxml2 gcc libgccjit
+brew install emacs
 wait
-
-# We clone a single branch for a slightly smaller download
-git clone https://git.savannah.gnu.org/git/emacs.git --branch emacs-29 --single-branch
-wait
-
-cd emacs
-git checkout emacs-29
-./autogen.sh
-./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
-
-make -j$(nproc)
-wait
-
-make clean install
-wait
-
-mv nextStep/Emacs.app /Applications
-cd
 #+END_SRC
 
 ** Emacs External Dependencies
@@ -173,37 +140,11 @@ rm ~/.config/mpv/mpv.conf
 ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 #+END_SRC
 
-Markdown mode depends on multimarkdown to preview markdown.
-
-#+BEGIN_SRC sh
-brew install multimarkdown
-wait
-#+END_SRC
-
-Pandoc useful for converting between different file formats.
-
-#+BEGIN_SRC sh
-brew install pandoc
-wait
-#+END_SRC
-
 Jet conversion between json and edn.
 
 #+BEGIN_SRC sh
 brew install borkdude/brew/jet
 wait
-#+END_SRC
-
-qrencode for generating QR codes.
-
-#+BEGIN_SRC sh
-brew install qrencode
-#+END_SRC
-
-ftp and other network utils (no longer installed on OSX by default).
-
-#+BEGIN_SRC sh
-brew install inetutils
 #+END_SRC
 
 gnupg (gpg) for encryption (pinned to version 2.40). As later versions currently break emacs (M-x view-emacs-problems). 
@@ -220,14 +161,6 @@ ripgrep needed for things that use ripgrep (eg: magit-todo) as OSX doesn't ship 
 
 #+BEGIN_SRC sh
 brew install ripgrep
-#+END_SRC
-
-* Lima (Linux VM)
-
-Installs Lima (https://lima-vm.io):
-
-#+BEGIN_SRC sh
-brew install lima
 #+END_SRC
 
 * Open jdk
@@ -290,54 +223,6 @@ Language.
 
 #+BEGIN_SRC sh
 brew install fennel
-#+END_SRC
-
-* Javascript
-
-Language.
-
-#+BEGIN_SRC sh
-brew install node
-wait
-#+END_SRC
-
-Yarn.
-
-#+BEGIN_SRC sh
-npm install -g yarn
-wait
-#+END_SRC
-
-LSP.
-
-#+BEGIN_SRC sh
-npm i -g typescript-language-server; npm i -g typescript
-#+END_SRC
-
-* Html
-
-LSP.
-
-#+BEGIN_SRC sh
-npm install -g vscode-html-languageserver-bin
-wait
-#+END_SRC
-
-* Other apps
-** Dropbox
-
-#+BEGIN_SRC sh
-brew install --cask dropbox
-wait
-#+END_SRC
-
-** Calibre
-
-Useful for converting pdf to epub with `ebook-convert input_file output_file`.
-
-#+BEGIN_SRC sh
-brew install --cask calibre
-wait
 #+END_SRC
 
 * OSX misc

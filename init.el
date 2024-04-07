@@ -802,13 +802,6 @@ If this becomes a problem these common lines could be filtered."
 
   (add-hook 'after-save-hook #'my/tangle-scripts)
 
-  (defun markdown-convert-buffer-to-org ()
-    "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
-    (interactive)
-    (shell-command-on-region (point-min) (point-max)
-                             (format "pandoc -f markdown -t org -o %s"
-                                     (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
-
   (defun my/org-todo-sort ()
     "Sort sections by TODO."
     (interactive)
@@ -816,15 +809,6 @@ If this becomes a problem these common lines could be filtered."
     (org-sort-entries nil ?o)
     (org-cycle)
     (org-cycle))
-
-  (defun my/markdown-convert-buffer-to-org ()
-    "Convert the current buffer's content from .md to .org format.
- Save with the current file name but with .org extension."
-    (interactive)
-    (shell-command-on-region
-     (point-min) (point-max)
-     (format "pandoc -f markdown -t org -o %s"
-             (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
 
   ;; Capture templates.
   (setq org-capture-templates
@@ -1246,6 +1230,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (setq css-indent-offset 2))
 ;; Markdown
 (use-package markdown-mode
+  ;; requires multimarkdown if you want to use preview.
   :straight nil
   :init
   (defun my/md-font-setup ()
@@ -1351,29 +1336,6 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
   :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
-;; QR codes
-(defun my/qr-encode (str &optional buf)
-  "Encode STR as a QR code. Return a new buffer or BUF with the code in it."
-  (interactive "MString to encode: ")
-  (let ((buffer (get-buffer-create (or buf "*QR Code*")))
-        (inhibit-read-only t))
-    (with-current-buffer buffer
-      (delete-region (point-min) (point-max)))
-    (make-process
-     :name "qrencode" :buffer buffer
-     ;; "-o -" sends output to stdout
-     :command `("qrencode" ,str "-t" "PNG" "-o" "-")
-     ;; Don't encode stdout as string
-     :coding 'no-conversion
-     :sentinel (lambda (process change)
-                 (when (string= change "finished\n")
-                   (with-current-buffer
-                       (process-buffer process)
-                     (image-mode)
-                     (image-transform-fit-to-window)))))
-    (when (called-interactively-p 'interactive)
-      (display-buffer buffer))
-    buffer))
 ;; Text to speech
 (progn
   (let ((buffer-name "*Speak Region*"))
