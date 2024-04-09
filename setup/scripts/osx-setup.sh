@@ -38,7 +38,7 @@ git config --global core.excludesfile '~/.gitignore'
 
 git config --global diff.algorithm histogram
 
-brew install emacs
+brew install emacs --cask
 wait
 
 brew install aspell

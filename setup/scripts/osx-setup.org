@@ -118,7 +118,7 @@ git config --global diff.algorithm histogram
 Install emacs.
 
 #+BEGIN_SRC sh
-brew install emacs
+brew install emacs --cask
 wait
 #+END_SRC
 
