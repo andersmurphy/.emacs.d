@@ -681,7 +681,6 @@ This can be used to make the window layout change based on frame size."
   (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 (use-package magit
   :config
-  (setq git-username "andersmurphy")
   (magit-wip-mode)
   (setq magit-diff-highlight-indentation nil)
   (setq magit-diff-highlight-trailing nil)
@@ -696,13 +695,14 @@ This can be used to make the window layout change based on frame size."
         '(magit-process-password-auth-source))
   ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
-
+  
+  (defvar my/git-username "andersmurphy")
   ;; Monkey patch magit to not ask for username
   (defun magit-process-username-prompt (process string)
     "Return git-username to git username prompts."
     (when-let ((prompt (magit-process-match-prompt
                         magit-process-username-prompt-regexps string)))
-      (process-send-string process (concat git-username "\n"))))
+      (process-send-string process (concat my/git-username "\n"))))
 
   (defun my/forge-create-pullreq (source target)
     "Create a new pull-request for the current repository."
