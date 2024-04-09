@@ -1,11 +1,19 @@
+### OSX settings ###
 defaults write com.apple.finder AppleShowAllFiles -boolean true ; killall Finder
 defaults write -g ApplePressAndHoldEnabled -bool true
 defaults write com.apple.dock autohide -bool true
 
+### XCODE ###
+# We reset the path to prevent:
+# 
+# xcrun: error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not exist
+# 
+# Which seems to happen if you are installing a new version of xcode.
 xcode-select --install
 wait
 sudo xcode-select --reset
 
+# To make homebrew work properly you need to fix ruby script permissions.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew analytics off
 wait
@@ -13,6 +21,7 @@ brew update
 wait
 brew tap homebrew/cask
 
+### GIT ###
 brew install git
 wait
 
@@ -36,29 +45,37 @@ rm ~/.gitignore
 ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
 git config --global core.excludesfile '~/.gitignore'
 
+### EMACS ###
 brew install emacs --cask
 wait
 
+# spelling
 brew install aspell
 wait
 
+# Music
 brew install mpv
 wait
 rm ~/.config/mpv/mpv.conf
 ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 
+# Conversion between json and edn.
 brew install borkdude/brew/jet
 wait
 
+# Encryption
 brew install gnupg
 wait
 
+# Fast grep
 brew install ripgrep
 
+### JAVA ###
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk17
 wait
 
+### Clojure ###
 brew install clojure
 wait
 rm ~/.clojure/deps.edn
@@ -77,6 +94,8 @@ rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 
+### BABASHKA ###
 brew install borkdude/brew/babashka
 
+### FENNEL ###
 brew install fennel

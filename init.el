@@ -794,14 +794,6 @@ If this becomes a problem these common lines could be filtered."
         org-src-tab-acts-natively t
         org-adapt-indentation nil)
 
-  ;; Auto tangle .org files in script folder
-  (defun my/tangle-scripts ()
-    (when-let ((file-name (buffer-file-name)))
-      (when (string-match "^.*?/\.emacs\.d/setup/scripts/.*\.org$" file-name)
-        (org-babel-tangle-file file-name))))
-
-  (add-hook 'after-save-hook #'my/tangle-scripts)
-
   (defun my/org-todo-sort ()
     "Sort sections by TODO."
     (interactive)
