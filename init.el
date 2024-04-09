@@ -431,6 +431,7 @@ This can be used to make the window layout change based on frame size."
   (with-current-buffer "*Messages*"
     (my/color-important-words))
   ;; hooks
+  (add-hook 'messages-buffer-mode-hook 'my/color-important-words)
   (add-hook 'clojure-mode-hook 'my/dim-parens)
   (add-hook 'emacs-lisp-mode-hook 'my/dim-parens)
   (add-hook 'eshell-mode-hook 'my/color-important-words)
@@ -1021,7 +1022,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (cl-defgeneric corfu--affixate (cands)
     "Annotate CANDS with annotation function."
     (setq cands (cl-loop for cand in cands collect (list cand "" "")))
-    (let* ((dep (plist-get corfu--extra :company-deprecated))
+    (let* ((dep (plist-get completion-extra-properties :company-deprecated))
            (completion-extra-properties corfu--extra)
            (mf (run-hook-with-args-until-success 'corfu-margin-formatters corfu--metadata)))
       (cl-loop for x in cands for (c . _) = x do
