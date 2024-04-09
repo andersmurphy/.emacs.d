@@ -335,6 +335,9 @@ This can be used to make the window layout change based on frame size."
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
   :straight nil)
+(use-package which-key
+  :config
+  (which-key-mode))
 (defun my/eshell-new ()
   "Open a new instance of eshell."
   (interactive)
