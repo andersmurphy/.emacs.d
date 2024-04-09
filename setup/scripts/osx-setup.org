@@ -147,14 +147,11 @@ brew install borkdude/brew/jet
 wait
 #+END_SRC
 
-gnupg (gpg) for encryption (pinned to version 2.40). As later versions currently break emacs (M-x view-emacs-problems). 
+gnupg (gpg) for encryption. 
 
 #+BEGIN_SRC sh
-curl https://raw.githubusercontent.com/Homebrew/homebrew-core/59edfe598541186430d49cc34f42671e849e2fc9/Formula/gnupg.rb > gnupg.rb
+brew install gnupg
 wait
-brew install gnupg.rb
-wait
-rm gnupg.rb 
 #+END_SRC
 
 ripgrep needed for things that use ripgrep (eg: magit-todo) as OSX doesn't ship with grep.

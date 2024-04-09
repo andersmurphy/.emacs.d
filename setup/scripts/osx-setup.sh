@@ -52,11 +52,8 @@ ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 brew install borkdude/brew/jet
 wait
 
-curl https://raw.githubusercontent.com/Homebrew/homebrew-core/59edfe598541186430d49cc34f42671e849e2fc9/Formula/gnupg.rb > gnupg.rb
+brew install gnupg
 wait
-brew install gnupg.rb
-wait
-rm gnupg.rb
 
 brew install ripgrep
 
