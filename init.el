@@ -331,7 +331,7 @@ This can be used to make the window layout change based on frame size."
   :straight nil
   :config
   (global-so-long-mode t))
-(load "~/.emacs.d/modes/kill-buffer-on-q.el")
+(load "~/.emacs.d/elisp/kill-buffer-on-q.el")
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
   :straight nil)
@@ -347,8 +347,8 @@ This can be used to make the window layout change based on frame size."
 (setq epa-file-select-keys nil)
 ;; further reading
 ;; https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
-(load "~/.emacs.d/modes/base32.el")
-(load "~/.emacs.d/modes/totp.el")
+(load "~/.emacs.d/elisp/base32.el")
+(load "~/.emacs.d/elisp/totp.el")
 ;; further reading
 ;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
 
@@ -907,7 +907,7 @@ If this becomes a problem these common lines could be filtered."
   :straight nil
   :init
   (global-subword-mode))
-(load "~/.emacs.d/modes/topiary.el")
+(load "~/.emacs.d/elisp/topiary.el")
 (use-package topiary
   :straight nil
   :hook ((text-mode prog-mode comint-mode outline-mode Info-mode eshell-mode magit-blob-mode) . topiary-mode))
@@ -917,7 +917,7 @@ If this becomes a problem these common lines could be filtered."
               ("C-w" . topiary/kill)))
 
 ;; WRITING
-(load "~/.emacs.d/modes/text-scratch.el")
+(load "~/.emacs.d/elisp/text-scratch.el")
 (use-package text-scratch
   :straight nil
   ;; open text buffer on init
@@ -1049,14 +1049,14 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 
   (defun my/eglot-capf ()
     (setq-local completion-at-point-functions
-                (list (cape-super-capf
+                (list (cape-capf-super
                        (cape-capf-predicate
                         #'eglot-completion-at-point
                         #'my/ignore-keywords-unless-explicit)
                        #'cape-dabbrev))))
   (defun my/setup-elisp ()
     (setq-local completion-at-point-functions
-                (list (cape-super-capf
+                (list (cape-capf-super
                        (cape-capf-predicate
                         #'elisp-completion-at-point
                         #'my/ignore-keywords-unless-explicit)
@@ -1147,7 +1147,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 ;; Lua
 (use-package lua-mode)
 ;; Clojure
-(load "~/.emacs.d/modes/clj.el")
+(load "~/.emacs.d/elisp/clj.el")
 (use-package clj :straight nil)
 (use-package clojure-mode
   :config
