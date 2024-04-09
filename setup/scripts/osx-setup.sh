@@ -72,7 +72,7 @@ brew install ripgrep
 
 ### JAVA ###
 brew tap AdoptOpenJDK/openjdk
-brew install adoptopenjdk17
+brew install adoptopenjdk21
 wait
 
 ### Clojure ###
