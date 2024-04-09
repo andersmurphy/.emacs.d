@@ -144,22 +144,22 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(cursor                       ((t (:foreground ,bg :background ,bg-highlight))))
      `(isearch      ((t (:foreground ,fg-highlight :background ,bg-highlight))))
      `(isearch-fail ((t (:foreground ,fg :background ,red))))
-     `(lazy-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
-     `(match ((t (:foreground ,fg-match :background nil :weight bold))))
+     `(lazy-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))
+     `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
-     `(font-lock-constant-face      ((t (:foreground ,nil))))
-     `(font-lock-builtin-face       ((t (:foreground ,nil))))
-     `(font-lock-string-face        ((t (:foreground ,nil))))
+     `(font-lock-constant-face      ((t (:foreground unspecified))))
+     `(font-lock-builtin-face       ((t (:foreground unspecified))))
+     `(font-lock-string-face        ((t (:foreground unspecified))))
      `(font-lock-comment-face       ((t (:foreground ,fg-comment))))
      `(font-lock-doc-face           ((t (:foreground ,fg-comment))))
-     `(font-lock-keyword-face       ((t (:foreground nil))))
+     `(font-lock-keyword-face       ((t (:foreground unspecified))))
      `(font-lock-variable-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-type-face          ((t (:foreground ,fg :weight bold))))
      `(error ((t (:foreground ,fg-error :weight bold))))
      `(warning ((t (:foreground ,fg-warning :weight bold))))
      `(success ((t (:foreground ,fg-success :weight bold))))
-     `(fringe                       ((t (:background nil))))
+     `(fringe                       ((t (:background unspecified))))
      `(link                         ((t (:foreground ,blue))))
      `(mode-line ((t (:foreground ,fg :background ,bg-region :weight bold :box (:line-width 4 :color ,bg-region) :overline nil :underline nil))))
      `(mode-line-inactive ((t (:foreground ,fg-comment :background ,bg-inactive :weight bold :box (:line-width 4 :color ,bg-inactive) :overline nil :underline nil))))
@@ -194,7 +194,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
 
      ;; xref
      `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
-     `(xref-match ((t (:foreground ,fg-match :background nil :weight bold))))
+     `(xref-match ((t (:foreground ,fg-match :background unspecified :weight bold))))
 
      ;; comint buffer
      `(comint-highlight-prompt ((t (:foreground ,fg :weight bold :height ,h2-height))))
@@ -231,7 +231,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(magit-diff-context                   ((t (:background ,bg :foreground ,fg))))
      `(magit-diff-section-heading-highlight ((t (:background ,bg :foreground ,fg))))
      `(magit-diff-section-heading           ((t (:background ,bg :foreground ,fg))))
-     `(magit-section-highlight              ((t (:background ,bg :foreground nil))))
+     `(magit-section-highlight              ((t (:background ,bg :foreground unspecified))))
      `(magit-section-heading                ((t (:background ,bg :foreground ,fg :weight bold :height ,h2-height))))
      `(magit-diff-hunk-heading-highlight    ((t (:background ,bg-region :foreground ,fg))))
      `(magit-diff-hunk-heading              ((t (:background ,bg-region :foreground ,fg))))
@@ -248,7 +248,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(corfu-deprecated ((t (:foreground ,fg-comment :strike-through t))))
 
      ;; prescient
-     `(prescient-primary-highlight ((t (:foreground ,fg-match :background nil :weight bold))))
+     `(prescient-primary-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))
 
      ;; org
      `(org-level-1 ((t (:foreground ,fg :background ,bg :height 1.5 :weight bold))))
