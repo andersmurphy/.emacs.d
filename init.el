@@ -1023,7 +1023,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
     "Annotate CANDS with annotation function."
     (setq cands (cl-loop for cand in cands collect (list cand "" "")))
     (let* ((dep (plist-get completion-extra-properties :company-deprecated))
-           (completion-extra-properties corfu--extra)
            (mf (run-hook-with-args-until-success 'corfu-margin-formatters corfu--metadata)))
       (cl-loop for x in cands for (c . _) = x do
                (when mf
