@@ -427,6 +427,10 @@ This can be used to make the window layout change based on frame size."
        ("\\b[Ss]uccesse?s?\\b\\|\\b[Pp]ass\\b\\|\\bSUCCESSE?S?\\b\\|\\bPASS\\b"
         . 'success))))
 
+  ;; Messages buffer is started before init is run so we can't use a hook
+  (with-current-buffer "*Messages*"
+    (my/color-important-words))
+  ;; hooks
   (add-hook 'clojure-mode-hook 'my/dim-parens)
   (add-hook 'emacs-lisp-mode-hook 'my/dim-parens)
   (add-hook 'eshell-mode-hook 'my/color-important-words)
