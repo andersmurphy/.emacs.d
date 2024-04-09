@@ -32,20 +32,10 @@ Install.
 
 #+BEGIN_SRC sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew analytics off
 wait
-#+END_SRC
-
-Update.
-
-#+BEGIN_SRC sh
 brew update
 wait
-#+END_SRC
-
-Disable analytics.
-
-#+BEGIN_SRC sh
-brew analytics off
 brew tap homebrew/cask
 #+END_SRC
 
@@ -58,59 +48,28 @@ brew install git
 wait
 #+END_SRC
 
-Set identity.
+Configure git.
 
 #+BEGIN_SRC sh
+# User
 git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
-#+END_SRC
-
-Set encrypted diffs.
-
-#+BEGIN_SRC sh
-git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
-#+END_SRC
-
-Set editor. I always use magit so nano is only in case
-of emergencies (emacs down).
-
-#+BEGIN_SRC  sh
 git config --global core.editor 'nano'
-#+END_SRC
-
-Set pull with rebase to be default.
-#+BEGIN_SRC sh
 git config --global pull.rebase true
-#+END_SRC
-
-Prune local branches when fetching changes from remote.
-#+BEGIN_SRC sh
 git config --global fetch.prune true
-#+END_SRC
-
-Set colour ui.
-
-#+BEGIN_SRC sh
 git config --global color.ui true
-#+END_SRC
-
-Create global git ignore file.
-
-#+BEGIN_SRC sh
+# Better dif alogorithm
+git config --global diff.algorithm histogram
+# Transparent encrypted diffs
+git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
+# Unset cretdential helpers
+git config --local --unset credential.helper
+git config --global --unset credential.helper
+git config --system --unset credential.helper
+# Set up gitignore
 rm ~/.gitignore
 ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
-#+END_SRC
-
-Set as global ignore file.
-
-#+BEGIN_SRC sh
 git config --global core.excludesfile '~/.gitignore'
-#+END_SRC
-
-Set external git diff algorithm.
-
-#+BEGIN_SRC sh
-git config --global diff.algorithm histogram
 #+END_SRC
 
 * Emacs

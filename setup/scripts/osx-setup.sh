@@ -7,36 +7,34 @@ wait
 sudo xcode-select --reset
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew analytics off
 wait
-
 brew update
 wait
-
-brew analytics off
 brew tap homebrew/cask
 
 brew install git
 wait
 
+# User
 git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
-
-git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
-
 git config --global core.editor 'nano'
-
 git config --global pull.rebase true
-
 git config --global fetch.prune true
-
 git config --global color.ui true
-
+# Better dif alogorithm
+git config --global diff.algorithm histogram
+# Transparent encrypted diffs
+git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
+# Unset cretdential helpers
+git config --local --unset credential.helper
+git config --global --unset credential.helper
+git config --system --unset credential.helper
+# Set up gitignore
 rm ~/.gitignore
 ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
-
 git config --global core.excludesfile '~/.gitignore'
-
-git config --global diff.algorithm histogram
 
 brew install emacs --cask
 wait
