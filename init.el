@@ -697,6 +697,7 @@ This can be used to make the window layout change based on frame size."
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (setq magit-process-find-password-functions
         '(magit-process-password-auth-source))
+  (setq magit-process-finish-apply-ansi-colors t)
   ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
 
