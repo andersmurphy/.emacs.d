@@ -700,6 +700,11 @@ This can be used to make the window layout change based on frame size."
   ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
 
+  (defun my/get-github-token ()
+    (funcall
+     (plist-get
+      (car (auth-source-search :max 1 :host "github.com"))
+      :secret)))
 
   (defun my/magit-spin-off-pull-request ()
     "Spin off last commit as a pull request."
@@ -715,10 +720,14 @@ This can be used to make the window layout change based on frame size."
              (master-name (car (seq-filter (lambda (n) (or (equal n "master") (equal n "main")))
                                            (magit-list-branch-names)))))
         (magit--branch-spinoff branch-name from t)
-        (run-hooks 'magit-credential-hook)
-        (magit-run-git "push" "-u" "origin" branch-name)
-        (magit-branch-checkout master-name)
-        (forge-create-pullreq (concat "origin/" branch-name) (concat "origin/" master-name)))))
+        (with-environment-variables
+            (("GITHUB_TOKEN" (my/get-github-token)))
+          (magit-shell-command-topdir
+           (concat
+            "git push -u origin " branch-name
+            ";gh pr create --fill-first"
+            ";git checkout " master-name))))))
+
 
   (defun my/magit-search-git-log-for-change ()
     "Search git log for current symbol or topiary region.

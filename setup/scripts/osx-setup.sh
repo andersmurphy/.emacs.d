@@ -74,6 +74,9 @@ wait
 # Fast grep
 brew install ripgrep
 
+# github cli (pull requests, approve etc)
+brew install gh
+
 ### JAVA ###
 brew tap AdoptOpenJDK/openjdk
 brew install adoptopenjdk21
@@ -93,7 +96,6 @@ rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 
 brew install clojure-lsp/brew/clojure-lsp-native
-
 rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
