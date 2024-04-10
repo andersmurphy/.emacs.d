@@ -241,6 +241,11 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(magit-log-author ((t (:foreground ,fg-comment))))
      `(magit-log-date ((t (:foreground ,fg-comment))))
 
+     ;; forge
+     `(forge-pullreq-merged  ((t (:foreground ,fg-comment))))
+     `(forge-pullreq-open  ((t (:foreground ,fg-success))))
+     `(forge-notification-unread ((t (:weight bold))))
+
      ;; corfu
      `(corfu-default           ((t (:background ,bg-region))))
      `(corfu-current ((t (:foreground ,fg-highlight :background ,bg-highlight :distant-foreground ,fg-highlight))))
