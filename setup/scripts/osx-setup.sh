@@ -49,9 +49,22 @@ rm ~/.gitignore
 ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
 git config --global core.excludesfile '~/.gitignore'
 
-### EMACS ###
-brew install emacs --cask
+### EMACS (build from source) ###
+brew install libxml2 gcc libgccjit
 wait
+# We clone just the tag for a smaller download
+git clone --depth 1 --branch emacs-29.3 https://git.savannah.gnu.org/git/emacs.git
+wait
+cd emacs
+git checkout emacs-29.3
+./autogen.sh
+./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
+make -j$(nproc)
+wait
+make clean install
+wait
+mv nextStep/Emacs.app /Applications
+cd
 
 # spelling
 brew install aspell
