@@ -36,10 +36,14 @@ git config --global color.ui true
 git config --global diff.algorithm histogram
 # Transparent encrypted diffs
 git config --global diff.gpg.textconv "gpg --no-tty --decrypt"
-# Unset cretdential helpers
+# Credentials - we want to handle these ourselves
 git config --local --unset credential.helper
 git config --global --unset credential.helper
 git config --system --unset credential.helper
+# Specify username on all repositories
+git config --global \
+    url.https://andersmurphy@github.com.insteadOf \
+    https://github.com
 # Set up gitignore
 rm ~/.gitignore
 ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
