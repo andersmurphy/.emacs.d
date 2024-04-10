@@ -895,7 +895,7 @@ If this becomes a problem these common lines could be filtered."
   (defadvice flymake--handle-report (after refresh-folded-errors activate)
     (my/refresh-folded-code-errors))
 
-  :hook (((emacs-lisp-mode clojure-mode fennel-mode)
+  :hook (((emacs-lisp-mode clojure-mode)
           . (lambda ()
               (hs-minor-mode) (hs-hide-all))))
 
@@ -1107,43 +1107,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :bind (:map sql-mode-map ("M-g t" . my/sql-toggle-up-down)))
 (use-package sql-indent
   :after sql)
-;; Fennel
-(use-package fennel-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
-
-  (defun my/fennel-redbean-repl ()
-    (interactive)
-    (let* ((root (project-root (project-current t)))
-           (fennel-program
-            (concat
-             "bash -c "
-             "'"
-             root
-             "/out/redbean.com -i "
-             root
-             ".lua/fennel_repl.lua"
-             "'")))
-      (call-interactively 'fennel-repl)))
-
-  (defun fennel-reload ()
-    (interactive)
-    (comint-check-source buffer-file-name)
-    (let ((module (file-name-base buffer-file-name)))
-      (comint-send-string (inferior-lisp-proc)
-                          (concat ",reload " module "\n"))
-      (message (concat module " loaded."))))
-
-  (defun my/run-make ()
-    "Run make if Makefile exists in root."
-    (when (eq major-mode 'fennel-mode)
-      (let ((default-directory (project-root (project-current t))))
-        (when (file-exists-p "Makefile")
-          (shell-command "make")))))
-
-  :hook (after-save . my/run-make))
-;; Lua
-(use-package lua-mode)
 ;; Clojure
 (load "~/.emacs.d/elisp/clj.el")
 (use-package clj :straight nil)

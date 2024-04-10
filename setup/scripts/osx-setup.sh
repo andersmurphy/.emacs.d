@@ -100,6 +100,3 @@ ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 
 ### BABASHKA ###
 brew install borkdude/brew/babashka
-
-### FENNEL ###
-brew install fennel
