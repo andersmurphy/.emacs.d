@@ -728,6 +728,17 @@ This can be used to make the window layout change based on frame size."
             ";gh pr create --fill-first"
             ";git checkout " master-name))))))
 
+  (defun my/current-pr-number ()
+    (number-to-string (oref (forge-current-pullreq) number)))
+
+  (defun my/forge-approve-pull-request ()
+    "Approve current pull request."
+    (interactive)
+    (when-let ((pr-number (my/current-pr-number)))
+      (with-environment-variables
+          (("GITHUB_TOKEN" (my/get-github-token)))
+        (magit-shell-command-topdir
+         (concat "gh pr review " pr-number " --approve --body '🧞'")))))
 
   (defun my/magit-search-git-log-for-change ()
     "Search git log for current symbol or topiary region.
