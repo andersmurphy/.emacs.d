@@ -238,9 +238,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(magit-log-author ((t (:foreground ,fg-comment))))
      `(magit-log-date ((t (:foreground ,fg-comment))))
      `(magit-section-heading-selection ((t (:foreground ,fg-match))))
-     `(transient-key-exit   ((t (:foreground ,fg-error :inherit transient-key))))
-     `(transient-key-stay   ((t (:foreground ,fg-success :inherit transient-key))))
-     `(transient-key-return ((t (:foreground ,fg-warning :inherit transient-key))))
+     `(transient-key-exit   ((t (:inherit transient-key))))
+     `(transient-key-stay   ((t (:inherit transient-key))))
+     `(transient-key-return ((t (:inherit transient-key))))
 
      ;; forge
      `(forge-pullreq-merged  ((t (:foreground ,fg-comment))))
