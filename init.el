@@ -391,6 +391,7 @@ This can be used to make the window layout change based on frame size."
 
   ;; Cursor only appears in current buffer.
   (setq-default cursor-in-non-selected-windows nil)
+  (setq-default cursor-type 'bar)
 
   ;; Unbind suspend-frame.
   ;; This would cause the cursor to disappear if you pressed C-x C-z by mistake.
@@ -414,7 +415,7 @@ This can be used to make the window layout change based on frame size."
   (defun my/dim-parens ()
     "Make parenthesis less prominent by matching comment face."
     (font-lock-add-keywords nil
-                            '(("(\\|)" . 'font-lock-comment-face))))
+                            '(("(\\|)" . 'font-lock-dim-face))))
 
   (defun my/color-important-words ()
     "Make important words more prominent."
@@ -749,7 +750,7 @@ This effectively returns all changes to that set of lines. Or anything
 in the file that matches one of those lines.
 
 Lines containing common patterns that appear throughout the file can
-lead to unrelated results. For example '(interactive)' in this file
+lead to unrelated results. For example (interactive) in this file
 would lead to a large number of unrelated results as it's a very
 common occurrence.
 
