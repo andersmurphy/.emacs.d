@@ -623,12 +623,6 @@ This can be used to make the window layout change based on frame size."
                  (= (point) previous-point))
         (my/isearch-repeat-backward))))
 
-  (defun my/isearch-query-replace ()
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (call-interactively 'isearch-query-replace)))
-
   ;; Make isearch wrap automatically if it doesn't find anything
   (defadvice isearch-search (after isearch-no-fail activate)
     (unless isearch-success
@@ -648,7 +642,7 @@ This can be used to make the window layout change based on frame size."
         ("C-n" . isearch-repeat-forward)
         ("C-p" . my/isearch-repeat-backward)
         ("C-s" . my/isearch-thing-at-point)
-        ("C-r" . my/isearch-query-replace)
+        ("C-r" . isearch-query-replace)
         ("C-v" . isearch-yank-kill)
         ("C-y" . isearch-yank-kill)))
 (use-package vertico
