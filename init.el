@@ -391,7 +391,6 @@ This can be used to make the window layout change based on frame size."
 
   ;; Cursor only appears in current buffer.
   (setq-default cursor-in-non-selected-windows nil)
-  (setq-default cursor-type 'bar)
 
   ;; Unbind suspend-frame.
   ;; This would cause the cursor to disappear if you pressed C-x C-z by mistake.
