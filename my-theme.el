@@ -102,19 +102,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
   (let* ((fg         (assoc-default  'fg  theme-colors))
          (bg         (assoc-default  'bg  theme-colors))
          (red        (assoc-default  'red theme-colors))
-         (red2    (if (my/is-light-color-p bg)
-                      (my/lighten-color red 0.3)
-                    (my/darken-color red 0.3)))
-         (red3    (if (my/is-light-color-p bg)
-                      (my/lighten-color red 0.6)
-                    (my/darken-color red 0.6)))
          (green   (assoc-default  'green  theme-colors))
-         (green2 (if (my/is-light-color-p bg)
-                     (my/lighten-color green 0.3)
-                   (my/darken-color green 0.3)))
-         (green3 (if (my/is-light-color-p bg)
-                     (my/lighten-color green 0.6)
-                   (my/darken-color green 0.6)))
          (yellow  (assoc-default  'yellow theme-colors))
          (blue    (assoc-default  'blue   theme-colors))
          (purple  (assoc-default  'purple   theme-colors))
@@ -185,11 +173,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      
      ;; key
      `(help-key-binding ((t (:weight bold))))
-     `(which-key-key-face ((t (:weight bold))))
      `(transient-key ((t (:weight bold))))
-
-     ;; which-key
-     `(which-key-command-description-face ((t (:weight unspecified))))
 
      ;; xref
      `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
@@ -215,14 +199,16 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(emms-playlist-selected-face ((t (:foreground ,fg :background ,bg :weight bold))))
 
      ;; diff/magit
-     `(diff-added                           ((t (:background ,green3))))
-     `(diff-removed                         ((t (:background ,red3))))
-     `(diff-refine-added                    ((t (:background ,green2))))
-     `(diff-refine-removed                  ((t (:background ,red2))))
-     `(magit-diff-added-highlight           ((t (:background ,green3))))
-     `(magit-diff-added                     ((t (:background ,green3))))
-     `(magit-diff-removed-highlight         ((t (:background ,red3))))
-     `(magit-diff-removed                   ((t (:background ,red3))))
+     `(diff-added                           ((t (:foreground ,green))))
+     `(diff-removed                         ((t (:foreground ,red))))
+     `(diff-refine-added
+       ((t (:foreground ,green :weight bold :underline (:style line :color ,green)))))
+     `(diff-refine-removed
+       ((t (:foreground ,red :weight bold :underline (:style line :color ,red)))))
+     `(magit-diff-added-highlight           ((t (:foreground ,green))))
+     `(magit-diff-added                     ((t (:foreground ,green))))
+     `(magit-diff-removed-highlight         ((t (:foreground ,red))))
+     `(magit-diff-removed                   ((t (:foreground ,red))))
      `(magit-diffstat-added                 ((t (:foreground ,green))))
      `(magit-diffstat-removed               ((t (:foreground ,red))))
      `(font-lock-warning-face               ((t (:foreground ,red :weight bold))))
@@ -231,23 +217,38 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(magit-diff-section-heading-highlight ((t (:background ,bg :foreground ,fg))))
      `(magit-diff-section-heading           ((t (:background ,bg :foreground ,fg))))
      `(magit-section-highlight              ((t (:background ,bg :foreground unspecified))))
-     `(magit-section-heading                ((t (:background ,bg :foreground ,fg :weight bold :height ,h2-height))))
+     `(magit-section-heading
+       ((t (:background ,bg :foreground ,fg :weight bold :height ,h2-height))))
      `(magit-diff-hunk-heading-highlight    ((t (:background ,bg-region :foreground ,fg))))
      `(magit-diff-hunk-heading              ((t (:background ,bg-region :foreground ,fg))))
-     `(magit-branch-local  ((t (:foreground ,blue))))
-     `(magit-branch-remote ((t (:foreground ,green))))
+     `(magit-branch-remote ((t (:foreground ,fg :weight bold))))
+     `(magit-branch-local ((t (:foreground ,fg :weight bold))))
      `(magit-hash ((t (:foreground ,fg-comment))))
+     `(magit-tag ((t (:foreground ,fg-warning))))
      `(magit-log-author ((t (:foreground ,fg-comment))))
      `(magit-log-date ((t (:foreground ,fg-comment))))
      `(magit-section-heading-selection ((t (:foreground ,fg-match))))
+     `(magit-process-ng ((t (:foreground ,red :weight bold))))
+     `(magit-process-ok ((t (:foreground ,green :weight bold))))     
+
+     ;; transient
      `(transient-key-exit   ((t (:inherit transient-key))))
      `(transient-key-stay   ((t (:inherit transient-key))))
      `(transient-key-return ((t (:inherit transient-key))))
+     `(transient-key-noop   ((t (:inherit transient-key
+                                          :foreground ,fg-comment))))
+     `(transient-delimiter         ((t (:foreground ,fg-comment))))
+     `(transient-inapt-suffix      ((t (:foreground ,fg-comment))))
+     `(transient-unreachable       ((t (:foreground ,fg-comment))))
+     `(transient-inactive-value    ((t (:foreground ,fg-comment))))
+     `(transient-inactive-argument ((t (:foreground ,fg-comment))))
 
      ;; forge
      `(forge-pullreq-merged  ((t (:foreground ,fg-comment))))
-     `(forge-pullreq-open  ((t (:foreground ,fg-success))))
+     `(forge-pullreq-open  ((t (:foreground ,fg))))
      `(forge-notification-unread ((t (:weight bold))))
+     `(forge-dimmed ((t (:foreground ,fg-comment))))
+     `(forge-issue-completed ((t (:foreground ,fg-comment))))
 
      ;; vertico
      `(vertico-current ((t (:background ,bg-region))))
