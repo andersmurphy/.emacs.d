@@ -132,7 +132,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(isearch      ((t (:background ,bg-region))))
      `(isearch-fail ((t (:foreground ,fg :background ,red))))
      `(lazy-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))
-     `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))     
+     `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(completions-common-part
        ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
@@ -170,7 +170,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(widget-field ((t (:background ,bg-region  :box (:line-width 2 :style pressed-button)))))
      `(eww-form-submit ((t ,bg-button)))
      `(eww-form-text ((t (:background ,bg-region :box (:line-width 2 :style pressed-button)))))
-     
+
      ;; key
      `(help-key-binding ((t (:weight bold))))
      `(transient-key ((t (:weight bold))))
@@ -229,7 +229,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(magit-log-date ((t (:foreground ,fg-comment))))
      `(magit-section-heading-selection ((t (:foreground ,fg-match))))
      `(magit-process-ng ((t (:foreground ,red :weight bold))))
-     `(magit-process-ok ((t (:foreground ,green :weight bold))))     
+     `(magit-process-ok ((t (:foreground ,green :weight bold))))
 
      ;; transient
      `(transient-key-exit   ((t (:inherit transient-key))))
