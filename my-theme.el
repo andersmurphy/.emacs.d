@@ -144,7 +144,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(isearch      ((t (:background ,bg-region))))
      `(isearch-fail ((t (:foreground ,fg :background ,red))))
      `(lazy-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))
-     `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))
+     `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))     
+     `(completions-common-part
+       ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-constant-face      ((t (:foreground unspecified))))
