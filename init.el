@@ -419,7 +419,7 @@ This can be used to make the window layout change based on frame size."
   (defun my/fade-characters ()
     "Make some characters less prominent."
     (font-lock-add-keywords
-     nil `((,(rx (any "[]{}:_&#%~@")) . 'font-lock-comment-face))))
+     nil `((,(rx (any "[]{}_&#%~@.,")) . 'font-lock-comment-face))))
 
   (defun my/color-important-words ()
     "Make important words more prominent."
