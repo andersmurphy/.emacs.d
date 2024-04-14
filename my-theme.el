@@ -72,7 +72,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
   '()
   "Basic face for highlighting.")
 
-(defvar my/hue (random 360))
+(defvar my/hue 220)
 
 (defun my/gen-dark-theme ()
   "Generate a dark theme."
@@ -94,12 +94,12 @@ Uses HSP: http://alienryderflex.com/hsp.html"
 (defun my/gen-light-theme ()
   "Generate a light theme."
   (let ((hue my/hue))
-    `((bg          . ,(my/hsl->hex hue   0  98))
-      (bg-inactive . ,(my/hsl->hex hue   0  96))
-      (bg-region   . ,(my/hsl->hex hue   0  90))
-      (fg          . ,(my/hsl->hex hue   8  24))
-      (fg-comment  . ,(my/hsl->hex hue   6  44))
-      (fg-dim      . ,(my/hsl->hex hue   4  64))
+    `((bg          . ,(my/hsl->hex hue  11  (- 110 18)))
+      (bg-inactive . ,(my/hsl->hex hue  13  (- 110 20)))
+      (bg-region   . ,(my/hsl->hex hue  12  (- 110 28)))
+      (fg          . ,(my/hsl->hex hue  14  (- 100 71)))
+      (fg-comment  . ,(my/hsl->hex hue   9  (- 100 55)))
+      (fg-dim      . ,(my/hsl->hex hue  10  (- 100 40)))
       (blue        . ,(my/hsl->hex 230 100  66))
       (cyan        . ,(my/hsl->hex 221  87  60))
       (green       . ,(my/hsl->hex 119  34  47))
