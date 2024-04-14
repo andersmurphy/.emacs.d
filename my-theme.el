@@ -37,37 +37,6 @@
            for x in (tty-color-standard-values (downcase color))
            collect (* (/ x div) 255)))
 
-(defun my/blend-color (color1 color2 alpha)
-  "Blend COLOR1 and COLOR2 together by a coefficient ALPHA."
-  (if (and (string-prefix-p "#" color1) (string-prefix-p "#" color2))
-      (apply (lambda (r g b) (format "#%02x%02x%02x" r g b))
-             (cl-loop for it    in (my/hex->rgb color1)
-                      for other in (my/hex->rgb color2)
-                      collect (+ (* alpha it) (* other (- 1 alpha)))))
-    color1))
-
-(defun my/darken-color (color alpha)
-  "Darken a hex COLOR by a coefficient ALPHA between 0 and 1."
-  (if (listp color)
-      (cl-loop for c in color collect (my/darken-color c alpha))
-    (my/blend-color color "#000000" (- 1 alpha))))
-(defun my/lighten-color (color alpha)
-  "Lighten a hex COLOR by a coefficient ALPHA between 0 and 1."
-  (if (listp color)
-      (cl-loop for c in color collect (my/lighten-color c alpha))
-    (my/blend-color color "#FFFFFF" (- 1 alpha))))
-
-(defun my/is-light-color-p (color)
-  "Return t if COLOR is light.
-Uses HSP: http://alienryderflex.com/hsp.html"
-  (thread-last
-    (cl-mapcar (lambda (a b) (* a a b))
-               (my/hex->rgb color)
-               '(0.299 0.587 0.114))
-    (apply  #'+)
-    sqrt
-    (< 127.5)))
-
 (defface font-lock-dim-face
   '()
   "Basic face for highlighting.")
