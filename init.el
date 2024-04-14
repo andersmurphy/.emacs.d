@@ -413,8 +413,13 @@ This can be used to make the window layout change based on frame size."
 
   (defun my/dim-parens ()
     "Make parenthesis less prominent by matching comment face."
-    (font-lock-add-keywords nil
-                            '(("(\\|)" . 'font-lock-dim-face))))
+    (font-lock-add-keywords
+     nil `((,(rx (any "()")) . 'font-lock-dim-face))))
+
+  (defun my/fade-characters ()
+    "Make some characters less prominent."
+    (font-lock-add-keywords
+     nil `((,(rx (any "[]{}:_&#%~@")) . 'font-lock-comment-face))))
 
   (defun my/color-important-words ()
     "Make important words more prominent."
@@ -434,6 +439,8 @@ This can be used to make the window layout change based on frame size."
   (add-hook 'messages-buffer-mode-hook 'my/color-important-words)
   (add-hook 'clojure-mode-hook 'my/dim-parens)
   (add-hook 'emacs-lisp-mode-hook 'my/dim-parens)
+  (add-hook 'clojure-mode-hook 'my/fade-characters)
+  (add-hook 'emacs-lisp-mode-hook 'my/fade-characters)
   (add-hook 'eshell-mode-hook 'my/color-important-words)
   (add-hook 'inferior-lisp-mode-hook 'my/color-important-words)
   (add-hook 'inferior-lisp-mode-hook 'ansi-color-for-comint-mode-filter)

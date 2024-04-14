@@ -139,7 +139,8 @@ Uses HSP: http://alienryderflex.com/hsp.html"
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-constant-face      ((t (:foreground unspecified))))
      `(font-lock-builtin-face       ((t (:foreground unspecified))))
-     `(font-lock-string-face        ((t (:foreground unspecified))))
+     `(font-lock-string-face
+       ((t (:foreground unspecified :italic t))))
      `(font-lock-comment-face       ((t (:foreground ,fg-comment))))
      `(font-lock-doc-face           ((t (:foreground ,fg-comment))))
      `(font-lock-dim-face ;; this is a custom face for dimming parens
