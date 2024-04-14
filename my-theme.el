@@ -73,7 +73,9 @@ Uses HSP: http://alienryderflex.com/hsp.html"
   "Basic face for highlighting.")
 
 (defvar my/hue (random 360))
-(defvar my/dark-theme
+
+(defun my/gen-dark-theme ()
+  "Generate a dark theme."
   (let ((hue my/hue))
     `((bg          . ,(my/hsl->hex hue  11  18))
       (bg-inactive . ,(my/hsl->hex hue  13  20))
@@ -87,7 +89,10 @@ Uses HSP: http://alienryderflex.com/hsp.html"
       (red         . ,(my/hsl->hex 355  65  65))
       (yellow      . ,(my/hsl->hex  39  67  69))
       (purple      . ,(my/hsl->hex 286  60  67)))))
-(defvar my/light-theme
+(defvar my/dark-theme (my/gen-dark-theme))
+
+(defun my/gen-light-theme ()
+  "Generate a light theme."
   (let ((hue my/hue))
     `((bg          . ,(my/hsl->hex hue   0  98))
       (bg-inactive . ,(my/hsl->hex hue   0  96))
@@ -101,6 +106,7 @@ Uses HSP: http://alienryderflex.com/hsp.html"
       (red         . ,(my/hsl->hex   5  74  59))
       (yellow      . ,(my/hsl->hex  41  99  38))
       (purple      . ,(my/hsl->hex 301  63  40)))))
+(defvar my/light-theme (my/gen-light-theme))
 
 (defun my/set-theme-faces (theme-colors)
   "Set theme faces to THEME-COLORS."
