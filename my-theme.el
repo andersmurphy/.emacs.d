@@ -193,7 +193,7 @@
      `(magit-diff-hunk-heading-highlight    ((t (:background ,bg-region :foreground ,fg))))
      `(magit-diff-hunk-heading              ((t (:background ,bg-region :foreground ,fg))))
      `(magit-branch-remote ((t (:foreground ,fg :weight bold))))
-     `(magit-branch-local ((t (:foreground ,fg :weight bold))))
+     `(magit-branch-local ((t (:foreground ,fg-match :weight bold))))
      `(magit-hash ((t (:foreground ,fg-comment))))
      `(magit-tag ((t (:foreground ,fg-warning))))
      `(magit-log-author ((t (:foreground ,fg-comment))))
