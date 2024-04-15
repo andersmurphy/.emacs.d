@@ -606,6 +606,7 @@ This can be used to make the window layout change based on frame size."
   (setq isearch-lax-whitespace t)
   (setq isearch-regexp-lax-whitespace nil)
   (setq isearch-lazy-highlight t)
+  (setq search-invisible nil)
 
   (defun my/isearch-thing-at-point ()
     (interactive)
@@ -654,6 +655,8 @@ This can be used to make the window layout change based on frame size."
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
         ("TAB" . isearch-exit)
+        ("C-i" . isearch-toggle-invisible)
+        ("M-i" . isearch-toggle-invisible)
         ("C-w" . isearch-del-char)
         ("C-g" . isearch-cancel)
         ("C-n" . isearch-repeat-forward)
@@ -792,7 +795,7 @@ If this becomes a problem these common lines could be filtered."
         (user-error "Buffer isn't visiting a file"))))
 
   :bind (("C-x g" . magit-status))
-  :hook (after-save . magit-after-save-refresh-status))
+  :hook ((after-save . magit-after-save-refresh-status)))
 (use-package forge
   ;; For generating tokens see: https://github.com/settings/tokens
   :after magit)
