@@ -27,7 +27,7 @@
   '()
   "Basic face for highlighting.")
 
-;; 350 180 220 are fun.
+;; 350 180 160 220 are fun.
 (defun my/random-hue ()
   "Select a random hue between 0 and 360 with step of 10."
   (let ((step 10))
