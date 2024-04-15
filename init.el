@@ -500,7 +500,7 @@ This can be used to make the window layout change based on frame size."
   (defun my/gen-theme ()
     "Generate a new theme."
     (interactive)
-    (let ((seed (* (random 36) 10)))
+    (let ((seed (my/random-hue)))
       (setq my/hue seed)
       (setq my/dark-theme (my/gen-dark-theme))
       (setq my/light-theme (my/gen-light-theme))

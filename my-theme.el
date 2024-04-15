@@ -27,8 +27,13 @@
   '()
   "Basic face for highlighting.")
 
-(defvar my/hue 220)
+;; 350 180 220 are fun.
+(defun my/random-hue ()
+  "Select a random hue between 0 and 360 with step of 10."
+  (let ((step 10))
+    (* (random (/ 360 step)) step)))
 
+(defvar my/hue (my/random-hue))
 (defun my/gen-dark-theme ()
   "Generate a dark theme."
   (let ((hue my/hue))
