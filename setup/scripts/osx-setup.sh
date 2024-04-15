@@ -5,9 +5,9 @@ defaults write com.apple.dock autohide -bool true
 
 ### XCODE ###
 # We reset the path to prevent:
-# 
+#
 # xcrun: error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not exist
-# 
+#
 # Which seems to happen if you are installing a new version of xcode.
 xcode-select --install
 wait
@@ -50,7 +50,7 @@ ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
 git config --global core.excludesfile '~/.gitignore'
 
 ### EMACS (build from source) ###
-brew install libxml2 gcc libgccjit
+brew install libxml2 gcc libgccjit tree-sitter jansson pkg-config gnutls
 wait
 # We clone just the tag for a smaller download
 git clone --depth 1 --branch emacs-29.3 https://git.savannah.gnu.org/git/emacs.git
@@ -58,7 +58,7 @@ wait
 cd emacs
 git checkout emacs-29.3
 ./autogen.sh
-./configure --with-cairo --with-imagemagick --with-xwidgets --with-native-compilation
+./configure --with-cairo --with-native-compilation
 make -j$(nproc)
 wait
 make clean install
@@ -90,13 +90,15 @@ brew install ripgrep
 # github cli (pull requests, approve etc)
 brew install gh
 
+### BABASHKA ###
+brew install borkdude/brew/babashka
+
 ### JAVA ###
-brew tap AdoptOpenJDK/openjdk
-brew install adoptopenjdk21
+brew install openjdk
 wait
 
 ### Clojure ###
-brew install clojure
+brew install clojure/tools/clojure
 wait
 rm ~/.clojure/deps.edn
 rm ~/.clojure/user.cljc
@@ -112,6 +114,3 @@ brew install clojure-lsp/brew/clojure-lsp-native
 rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
-
-### BABASHKA ###
-brew install borkdude/brew/babashka
