@@ -737,7 +737,7 @@ This can be used to make the window layout change based on frame size."
           (magit-shell-command-topdir
            (concat
             "git push -u origin " branch-name
-            ";gh pr create --fill-first"
+            ";gh pr create --head --fill-first"
             ";git checkout " master-name))))))
 
   (defun my/current-pr-number ()
