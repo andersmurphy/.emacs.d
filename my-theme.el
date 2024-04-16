@@ -135,6 +135,7 @@
      `(vertical-border             ((t (:foreground ,bg-inactive))))
      `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
      `(custom-state ((t (:foreground ,green))))
+     `(bookmark-face ((t (:foreground ,fg-match))))
 
      ;; buttons and fields
      `(custom-button ((t ,bg-button)))
