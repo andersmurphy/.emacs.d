@@ -232,10 +232,6 @@
   "Open init file (this file)."
   (interactive)
   (find-file "~/.emacs.d/init.el"))
-(defun my/tasks ()
-  "Open tasks file."
-  (interactive)
-  (find-file "~/.emacs.d/emacs-sync/org/tasks.org.gpg"))
 (defun my/scripts ()
   "Open scripts directory."
   (interactive)
