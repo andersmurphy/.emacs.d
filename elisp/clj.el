@@ -425,10 +425,11 @@ Works from both namespace and test namespace"
   "Create a new deps.edn project."
   (interactive)
   (let* ((project-name-path (read-directory-name "Directory:"))
-         (namespace-name (->> (split-string project-name-path "/")
-                              reverse
-                              car
-                              (replace-regexp-in-string "-" "_"))))
+         ;; Program development is easier when everything
+         ;; uses the same project namespace. Means
+         ;; project renames etc are less of a pain.
+         ;; (not true for library development).
+         (namespace-name "server"))
     (make-directory project-name-path)
     (find-file (concat project-name-path "/deps.edn"))
     (insert "{:paths [\"src\"]
@@ -436,13 +437,9 @@ Works from both namespace and test namespace"
  :aliases {}}")
     (save-buffer)
     (make-directory (concat project-name-path "/src"))
-    (make-directory (concat project-name-path "/src/"
-                            ;; Program development is easier when everything
-                            ;; uses the same project namespace. Means
-                            ;; project renames etc are less of a pain.
-                            ;; (not true for library development).
-                            "server"))
-    (find-file (concat project-name-path "/src/" namespace-name "/core.clj"))
+    (make-directory (concat project-name-path "/src/" namespace-name))
+    (find-file (concat project-name-path "/src/" namespace-name
+                       "/core.clj"))
     (clojure-insert-ns-form)
     (save-buffer)
     (find-file (concat project-name-path "/deps.edn"))))
