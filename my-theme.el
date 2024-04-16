@@ -146,6 +146,7 @@
      ;; key
      `(help-key-binding ((t (:weight bold))))
      `(transient-key ((t (:weight bold))))
+     `(embark-keybinding ((t (:weight bold))))
 
      ;; xref
      `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))

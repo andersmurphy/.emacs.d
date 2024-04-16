@@ -331,9 +331,6 @@ This can be used to make the window layout change based on frame size."
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
   :straight nil)
-(use-package which-key
-  :config
-  (which-key-mode))
 (defun my/eshell-new ()
   "Open a new instance of eshell."
   (interactive)
@@ -555,23 +552,6 @@ This can be used to make the window layout change based on frame size."
   "Open current file in finder."
   (interactive)
   (shell-command "open ."))
-(defun my/jump-to-file-in-project-at-point ()
-  "Try to find file at point in project and go to line."
-  (interactive)
-  (let* ((path (thing-at-point 'filename))
-         (path-without-line-number (replace-regexp-in-string
-                                    ":.*" "" path))
-         (line-num (nth 1 (split-string path ":"))))
-    (defun my/insert-current-thing ()
-      (insert path-without-line-number)
-      (remove-hook 'minibuffer-setup-hook 'my/insert-current-thing))
-    (add-hook 'minibuffer-setup-hook 'my/insert-current-thing)
-    (my/other-window)
-    (xref-push-marker-stack)
-    (project-find-file)
-    (when line-num
-      (goto-char (point-min))
-      (forward-line (1- (string-to-number line-num))))))
 (progn ;; Mark
   (defun my/exchange-point-and-mark-no-region ()
     "Identical to \\[exchange-point-and-mark] but will not activate the region."
@@ -837,7 +817,22 @@ If this becomes a problem these common lines could be filtered."
         '(("t" "Todo" entry
            (file+headline "~/.emacs.d/emacs-sync/org/tasks.org" "Tasks")
            "* TODO %?"))))
-
+(use-package embark
+  :ensure t
+  :bind
+  (("C-." . embark-act)
+   ("M-." . embark-dwim)
+   ;; alternative for `describe-bindings'
+   ("C-h b" . embark-bindings))
+  :init
+  ;; Replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
 ;;; TEXT FORMATTING
 (progn ;; Defaults
 
@@ -1111,11 +1106,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 (use-package jarchive
   :init
   (jarchive-setup))
-;; Lisp
-(use-package inf-lisp
-  :bind (:map inferior-lisp-mode-map
-              ("M-." . my/jump-to-file-in-project-at-point)
-              ("M-," . xref-pop-marker-stack)))
 ;; SQL
 (defun my/start-postgresql ()
   "Start local postgresql database."
