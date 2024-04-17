@@ -697,6 +697,11 @@ This can be used to make the window layout change based on frame size."
       (car (auth-source-search :max 1 :host "github.com"))
       :secret)))
 
+  (defun my/get-github-username ()
+    (plist-get
+     (car (auth-source-search :max 1 :host "github.com"))
+     :user))
+
   (defun my/magit-spin-off-pull-request ()
     "Spin off last commit as a pull request."
     (interactive)
@@ -718,6 +723,19 @@ This can be used to make the window layout change based on frame size."
             "git push -u origin " branch-name
             ";gh pr create --head --fill-first"
             ";git checkout " master-name))))))
+
+  (defun my/magit-create-private-github-remote ()
+    "Create a private repo on github, add remote as origin
+     and push local commits."
+    (interactive)
+    (with-environment-variables
+        (("GITHUB_TOKEN" (my/get-github-token)))
+      (magit-shell-command-topdir
+       (concat
+        "gh repo create " (my/get-github-username) "/"
+        (file-name-nondirectory
+         (directory-file-name default-directory))
+        " --private --source=. --remote=origin --push"))))
 
   (defun my/current-pr-number ()
     (number-to-string (oref (forge-current-pullreq) number)))
