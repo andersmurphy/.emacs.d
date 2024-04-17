@@ -1260,7 +1260,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :config
   (setq nov-text-width 80)
   :hook (nov-mode . my/nov-font-setup))
-(use-package emms
+(use-package emms ;; M-x emms-play-directory
   ;; NOTE: emms tends to break now and then with byte compilation.
   ;; you can test different version by using the commit hash for
   ;; the commit you care about. Can be found here:
