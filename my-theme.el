@@ -44,7 +44,7 @@
       (fg-comment  . ,(my/hsl->hex hue   9  55))
       (fg-dim      . ,(my/hsl->hex hue  10  40))
       (blue        . ,(my/hsl->hex hue 100  66))
-      (cya n        . ,(my/hsl->hex 207  82  65))
+      (cyan        . ,(my/hsl->hex 207  82  65))
       (green       . ,(my/hsl->hex  95  38  62))
       (red         . ,(my/hsl->hex 355  65  65))
       (yellow      . ,(my/hsl->hex  39  67  69))

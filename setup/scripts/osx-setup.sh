@@ -86,12 +86,20 @@ wait
 
 # Fast grep
 brew install ripgrep
+wait
+
+# Font
+brew tap homebrew/cask-fonts
+brew install --cask font-fira-code
+wait
 
 # github cli (pull requests, approve etc)
 brew install gh
+wait
 
 ### BABASHKA ###
 brew install borkdude/brew/babashka
+wait
 
 ### JAVA ###
 brew install openjdk

@@ -348,6 +348,25 @@ This can be used to make the window layout change based on frame size."
 ;; further reading
 ;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
 
+;; FONT
+(set-frame-font "Fira Code")
+(use-package ligature
+  :config
+  (ligature-set-ligatures
+   t
+   '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+     ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+     "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+     "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+     "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+     "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+     "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
+     "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
+     "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+     "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
+
+  (global-ligature-mode 't))
+
 ;;; VISUAL
 (progn ;; Defaults
 
@@ -616,7 +635,7 @@ This can be used to make the window layout change based on frame size."
                  isearch-success
                  (= (point) previous-point))
         (my/isearch-repeat-backward))))
-
+  
   ;; Make isearch wrap automatically if it doesn't find anything
   (defadvice isearch-search (after isearch-no-fail activate)
     (unless isearch-success
