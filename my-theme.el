@@ -100,7 +100,8 @@
      `(show-paren-mismatch ((t (:foreground ,fg-error :background ,bg-region :weight bold))))
      `(cursor                       ((t (:foreground ,bg :background ,fg-match))))
      `(isearch      ((t (:background ,bg-region))))
-     `(isearch-fail ((t (:foreground ,fg :background ,red))))
+     `(isearch-fail
+       ((t (:foreground ,fg :background ,red :distant-foreground ,bg))))
      `(lazy-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(completions-common-part
