@@ -354,11 +354,14 @@ This can be used to make the window layout change based on frame size."
   :config
   (ligature-set-ligatures
    t
-   '(;; "www" "**" "***" "**/" ;; <- these make org look weird
-     ;; ";;" <- makes triple comment look weird
+   '(;;; Disabled ligatures because they make things look weird
+     ;; "www" "**" "***" "**/" ;; <- org headings
+     ;; ";;"                   ;; <- triple comments ;;;
+     ;;  "##" "###" "####"     ;; <- loading bars
+     ;;; Enabled ligatures
      "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
      ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
-     "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+     "-<" "-<<" "-~" "#{" "#[" "#(" "#?" "#_"
      "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" "/*" "/**"
      "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
      "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
