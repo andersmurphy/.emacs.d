@@ -101,9 +101,10 @@
      `(cursor                       ((t (:foreground ,bg :background ,fg-match))))
      `(isearch      ((t (:background ,bg-region))))
      `(isearch-fail
-       ((t (:foreground ,fg :background ,red :distant-foreground ,bg))))
+       ((t (:foreground ,red :weight bold))))
      `(lazy-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))
+     `(completions-annotations ((t (:foreground ,fg-comment))))
      `(completions-common-part
        ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
@@ -152,6 +153,9 @@
      ;; xref
      `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
      `(xref-match ((t (:foreground ,fg-match :background unspecified :weight bold))))
+
+     ;; info
+     `(info-xref-visited ((t (:foreground ,fg-comment))))
 
      ;; comint buffer
      `(comint-highlight-prompt ((t (:foreground ,fg :weight bold :height ,h2-height))))

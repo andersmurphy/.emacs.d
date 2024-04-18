@@ -862,7 +862,8 @@ If this becomes a problem these common lines could be filtered."
   (("C-." . embark-act)
    ("M-." . embark-dwim)
    ;; alternative for `describe-bindings'
-   ("C-h b" . embark-bindings))
+   ("C-h b" . embark-bindings)
+   ("C-h C-h" . embark-prefix-help-command))
   :init
   ;; Replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
