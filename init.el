@@ -355,10 +355,11 @@ This can be used to make the window layout change based on frame size."
   (ligature-set-ligatures
    t
    '(;; "www" "**" "***" "**/" ;; <- these make org look weird
+     ;; ";;" <- makes triple comment look weird
      "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
      ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
      "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
-     "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+     "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" "/*" "/**"
      "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
      "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
      "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
@@ -368,7 +369,7 @@ This can be used to make the window layout change based on frame size."
 
   (global-ligature-mode 't))
 
-;;; VISUAL
+;;; VISUAL 
 (progn ;; Defaults
 
   ;; Hide menu bar.
