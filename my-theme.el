@@ -131,7 +131,7 @@
      `(flymake-error ((t (:underline (:style line :color ,fg-error) :foreground ,fg-error :weight bold))) )
      `(flymake-warning ((t (:underline (:style line :color ,fg-warning) :foreground ,fg-warning :weight bold))) )
      `(flymake-note
-       ((t (:underline (:style line :color ,fg-comment) :foreground ,fg-comment :weight bold))))
+       ((t (:underline (:style line :color ,fg-dim) :foreground ,fg-dim :weight bold))))
      `(flyspell-incorrect          ((t (:underline (:style line :color ,fg-error)))))
      `(flyspell-duplicate          ((t (:underline (:style line :color ,fg-warning)))))
      `(vertical-border             ((t (:foreground ,bg-inactive))))
@@ -250,7 +250,7 @@
      `(eww-valid-certificate ((t (:foreground ,fg-success))))
      `(eww-invalid-certificate ((t (:foreground ,fg-error))))
      ;; eglot
-     `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-comment)))))))
+     `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-dim)))))))
 
 (provide-theme 'my)
 ;;; my-theme.el ends here
