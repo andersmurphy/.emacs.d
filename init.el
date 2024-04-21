@@ -1318,6 +1318,26 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
     (interactive)
     (shell-command "killall mpv"))
 
+  (defun my/emms-track-description (track)
+    "Return a description of TRACK, that just includes the file name."
+    (let ((artist (emms-track-get track 'info-artist))
+          (title (emms-track-get track 'info-title)))
+      (cond ((and artist title)
+             (concat (format "%s" artist) " - " (format "%s" title)))
+            (title title)
+            ((eq (emms-track-type track) 'file)
+             (with-temp-buffer
+               (save-excursion
+                 (insert (file-name-nondirectory
+                          (directory-file-name (emms-track-name track)))))
+               (ignore-error 'search-failed
+                 (search-forward-regexp (rx "." (+ alnum) eol))
+                 (delete-region (match-beginning 0) (match-end 0)))
+               (buffer-string)))
+            (t (emms-track-simple-description track)))))
+
+  (setq emms-track-description-function 'my/emms-track-description)
+
   (defun my/radio3 ()
     "Radio 3. These links might break now and then. For latest links see:
 
