@@ -320,9 +320,7 @@ This can be used to make the window layout change based on frame size."
   ;; overwrites :caused by rename.
   (setq wdired-confirm-overwrite t)
   :bind (:map dired-mode-map
-              ("RET" . dired-find-alternate-file)
-              ("h" . dired-previous-line)
-              ("p" . describe-mode)))
+              ("RET" . dired-find-alternate-file)))
 (use-package so-long
   :straight nil
   :config
