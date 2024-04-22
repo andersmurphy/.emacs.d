@@ -574,6 +574,21 @@ This can be used to make the window layout change based on frame size."
   "Open current file in finder."
   (interactive)
   (shell-command "open ."))
+(defun my/count-lines ()
+  "Count lines in project. Filters by current buffer file extension.
+i.e if the current buffer is a .clj file then it will count lines of .clj
+files in the project. Respects gitignore."
+  (interactive)
+  (let ((default-directory (vc-root-dir))
+        (extension (file-name-extension (buffer-name (current-buffer)))))
+    (cond ((not default-directory)
+           (message "Project does not have a git root."))
+          ((not extension)
+           (message "File does not have extension."))
+          (t (async-shell-command
+              (format "git ls-files '*.%s' | xargs wc -l | sort -n"
+                      extension)
+              (generate-new-buffer "*line-count*"))))))
 (progn ;; Mark
   (defun my/exchange-point-and-mark-no-region ()
     "Identical to \\[exchange-point-and-mark] but will not activate the region."
