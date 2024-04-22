@@ -726,6 +726,8 @@ Doesn't delete delimiter unless empty, in which case it deletes both."
             ((topiary/on-comment-line-p) (skip-chars-forward "^\n"))
             (t (progn (while (and
                               (ignore-errors (forward-sexp) t)
+                              ;; handles white space at end of line
+                              (skip-chars-forward "\s")
                               (> (line-end-position) (point))))
                       (skip-chars-forward "\s"))))
       (kill-region initial-point (point))))
