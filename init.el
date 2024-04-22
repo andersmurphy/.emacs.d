@@ -1156,7 +1156,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   "Start local postgresql database."
   (interactive)
   (async-shell-command
-   "brew services start postgresql@14" (generate-new-buffer "*postgresql*")))
+   "brew services start postgresql" (generate-new-buffer "*postgresql*")))
 (use-package sql
   :config
   (defun my/sql-find-up-or-down (file-name)
