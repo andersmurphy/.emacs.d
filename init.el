@@ -616,6 +616,10 @@ This can be used to make the window layout change based on frame size."
            (bounds
             (when (< (car bounds) (point))
               (goto-char (car bounds)))
+            ;; We don't want the region to be active when navigating
+            ;; between matches. 
+            (when (region-active-p) 
+              (deactivate-mark t))
             (isearch-yank-string
              (buffer-substring-no-properties (car bounds) (cdr bounds))))
            (t
