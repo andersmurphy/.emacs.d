@@ -888,11 +888,9 @@ If this becomes a problem these common lines could be filtered."
   ;; Replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+  ;; Configure embark-dwim actions
+  ;; Don't want flymake at point as a target (would rather go to source)
+  (delete 'embark-target-flymake-at-point embark-target-finders))
 ;;; TEXT FORMATTING
 (progn ;; Defaults
 
