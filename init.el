@@ -865,6 +865,37 @@ If this becomes a problem these common lines could be filtered."
         '(("t" "Todo" entry
            (file+headline "~/.emacs.d/emacs-sync/org/tasks.org" "Tasks")
            "* TODO %?"))))
+(use-package consult
+  :bind
+  (("C-x b"   . consult-buffer)
+   ("C-x r b" . consult-bookmark)
+   ("C-M-s"   . my/consult-ripgrep)
+   ("M-y"     . consult-yank-pop)
+   ("M-g g"   . consult-goto-line)
+   ("M-g M-g" . consult-goto-line)
+   ("C-h i"   . consult-info))
+  :init
+  (defun consult-info-emacs ()
+    "Search through Emacs info pages."
+    (interactive)
+    (consult-info "emacs" "efaq" "elisp" "cl" ))
+
+  (defun my/consult-ripgrep (&optional dir)
+    "Search with `rg' for files in DIR with INITIAL input.
+See `consult-grep' for details."
+    (interactive "P")
+    (let* ((bounds (topiary/bounds))
+           (sym (buffer-substring (car bounds) (cdr bounds))))
+      (consult--grep "Ripgrep" #'consult--ripgrep-make-builder dir
+                     (and sym (regexp-quote (car (split-string sym "\n")))))))
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :config
+  ;; Disable preview, to enable set to 'any
+  (setq consult-preview-key nil))
+(use-package consult-project-extra
+  :after consult
+  :bind
+  (("C-x p" . consult-project-extra-find)))
 (use-package embark
   :ensure t
   :bind
@@ -880,38 +911,8 @@ If this becomes a problem these common lines could be filtered."
   ;; Configure embark-dwim actions
   ;; Don't want flymake at point as a target (would rather go to source)
   (delete 'embark-target-flymake-at-point embark-target-finders))
-(use-package consult
-  :bind
-  (("C-x b"   . consult-buffer)
-   ("C-x r b" . consult-bookmark)
-   ("C-M-s"   . my/consult-ripgrep)
-   ("M-y"     . consult-yank-pop)
-   ("M-g g"   . consult-goto-line)
-   ("M-g M-g" . consult-goto-line))
-  :init
-  (defun consult-info-emacs ()
-    "Search through Emacs info pages."
-    (interactive)
-    (consult-info "emacs" "efaq" "elisp" "cl" ))
-
-  (defun my/consult-ripgrep (&optional dir)
-    "Search with `rg' for files in DIR with INITIAL input.
-See `consult-grep' for details."
-    (interactive "P")
-    (let* ((bounds (topiary/bounds))
-           (sym (buffer-substring (car bounds) (cdr bounds))))
-      (consult--grep "Ripgrep" #'consult--ripgrep-make-builder dir
-                     (and sym (regexp-quote (car (split-string sym "\n")))))))
-  ;; Enable when using previews
-  ;; :hook (completion-list-mode . consult-preview-at-point-mode)
-  :config
-  ;; Disable preview, to enable set to 'any
-  (setq consult-preview-key nil))
-(use-package consult-project-extra
-  :bind
-  (("C-x p" . consult-project-extra-find)))
 (use-package embark-consult
-  :after consult
+  :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
