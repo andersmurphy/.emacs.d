@@ -370,7 +370,7 @@ This can be used to make the window layout change based on frame size."
 
   (global-ligature-mode 't))
 
-;;; VISUAL 
+;;; VISUAL
 (progn ;; Defaults
 
   ;; Hide menu bar.
@@ -630,8 +630,8 @@ files in the project. Respects gitignore."
             (when (< (car bounds) (point))
               (goto-char (car bounds)))
             ;; We don't want the region to be active when navigating
-            ;; between matches. 
-            (when (region-active-p) 
+            ;; between matches.
+            (when (region-active-p)
               (deactivate-mark t))
             (isearch-yank-string
              (buffer-substring-no-properties (car bounds) (cdr bounds))))
@@ -657,7 +657,7 @@ files in the project. Respects gitignore."
                  isearch-success
                  (= (point) previous-point))
         (my/isearch-repeat-backward))))
-  
+
   ;; Make isearch wrap automatically if it doesn't find anything
   (defadvice isearch-search (after isearch-no-fail activate)
     (unless isearch-success
