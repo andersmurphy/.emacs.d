@@ -33,7 +33,8 @@
   (let ((step 10))
     (* (random (/ 360 step)) step)))
 
-(defvar my/hue (my/random-hue))
+(defvar my/hue 350  ;; (my/random-hue)
+  )
 (defun my/gen-dark-theme ()
   "Generate a dark theme."
   (let ((hue my/hue))
@@ -99,6 +100,7 @@
      `(show-paren-match ((t (:foreground ,fg-match :weight bold))))
      `(show-paren-mismatch ((t (:foreground ,fg-error :background ,bg-region :weight bold))))
      `(cursor                       ((t (:foreground ,bg :background ,fg-match))))
+     `(shadow ((t (:foreground ,fg-comment))))
      `(isearch      ((t (:background ,bg-region))))
      `(isearch-fail
        ((t (:foreground ,red :weight bold))))
