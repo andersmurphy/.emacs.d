@@ -140,6 +140,7 @@
      `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
      `(custom-state ((t (:foreground ,green))))
      `(bookmark-face ((t (:foreground ,fg-match))))
+     `(compilation-info ((t (:foreground ,fg :weight bold))))
 
      ;; buttons and fields
      `(custom-button ((t ,bg-button)))

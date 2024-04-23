@@ -909,6 +909,10 @@ See `consult-grep' for details."
 (use-package consult-project-extra
   :bind
   (("C-x p" . consult-project-extra-find)))
+(use-package embark-consult
+  :after consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;;; TEXT FORMATTING
 (progn ;; Defaults
