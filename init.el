@@ -7,9 +7,7 @@
 ;; C-x C-e to evaluate current expression.
 ;; M-. to navigate to function source.
 ;; C-c C-d to navigate to function docs.
-;; M-x elisp-index-search to search elisp manual.
-;; M-x emacs-index-search to search Emacs manual.
-;; M-x shortdoc-display-group to get elisp cheat sheet by category.
+;; M-x consult-info-emacs
 
 ;;; Code:
 
@@ -700,17 +698,7 @@ files in the project. Respects gitignore."
   :after eglot
   :config
   ;; Don't include submodule files in searches etc
-  (setq project-vc-merge-submodules nil)
-  ;; Monkey patch project--read-regexp to use topiary bounds
-  (defun project--read-regexp ()
-    (let* ((bounds (topiary/bounds))
-           (sym (buffer-substring (car bounds) (cdr bounds))))
-      (read-regexp "Find regexp"
-                   (and sym (regexp-quote (car (split-string sym "\n"))))
-                   project-regexp-history-variable)))
-  :bind
-  ("C-x p" . project-find-file)
-  ("C-M-s" . project-find-regexp))
+  (setq project-vc-merge-submodules nil))
 (use-package auth-source
   :straight nil
   :config
@@ -891,6 +879,37 @@ If this becomes a problem these common lines could be filtered."
   ;; Configure embark-dwim actions
   ;; Don't want flymake at point as a target (would rather go to source)
   (delete 'embark-target-flymake-at-point embark-target-finders))
+(use-package consult
+  :bind
+  (("C-x b"   . consult-buffer)
+   ("C-x r b" . consult-bookmark)
+   ("C-M-s"   . my/consult-ripgrep)
+   ("M-y"     . consult-yank-pop)
+   ("M-g g"   . consult-goto-line)
+   ("M-g M-g" . consult-goto-line))
+  :init
+  (defun consult-info-emacs ()
+    "Search through Emacs info pages."
+    (interactive)
+    (consult-info "emacs" "efaq" "elisp" "cl" ))
+
+  (defun my/consult-ripgrep (&optional dir)
+    "Search with `rg' for files in DIR with INITIAL input.
+See `consult-grep' for details."
+    (interactive "P")
+    (let* ((bounds (topiary/bounds))
+           (sym (buffer-substring (car bounds) (cdr bounds))))
+      (consult--grep "Ripgrep" #'consult--ripgrep-make-builder dir
+                     (and sym (regexp-quote (car (split-string sym "\n")))))))
+  ;; Enable when using previews
+  ;; :hook (completion-list-mode . consult-preview-at-point-mode)
+  :config
+  ;; Disable preview, to enable set to 'any
+  (setq consult-preview-key nil))
+(use-package consult-project-extra
+  :bind
+  (("C-x p" . consult-project-extra-find)))
+
 ;;; TEXT FORMATTING
 (progn ;; Defaults
 
