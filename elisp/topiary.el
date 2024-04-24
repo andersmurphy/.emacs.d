@@ -346,8 +346,14 @@ In the above example the n would be deleted. Handles comments."
 
 (defun topiary/bounds-of-sexp-at-point ()
   "Like (bounds-of-thing-at-point \\'sexp) but return nil in strings."
-  (when (not (topiary/in-string-p))
-    (bounds-of-thing-at-point 'sexp)))
+    (when (not (or (topiary/in-string-p)
+                   ;; Thing at point 'sexp has an edge case where it
+                   ;; treats a comment block as a sexp when at bottom
+                   ;; of file.
+                   (save-excursion
+                     (and (skip-chars-backward "\n ")
+                        (topiary/on-comment-line-p)))))
+      (bounds-of-thing-at-point 'sexp)))
 
 (defun topiary/bounds-of-word-at-point ()
   "Like (bounds-of-thing-at-point \\'word) when in string or comment.
