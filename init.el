@@ -47,17 +47,19 @@
   (defvar straight-use-package-by-default)
   (setq straight-use-package-by-default t)
   (require 'use-package)
+  (setq use-package-always-defer t)
+
+  ;; Profilling - M-x use-package-report
+  ;; (setq use-package-compute-statistics t)
 
   ;; Forces Custom to save all customizations in a separate file
-  (setq custom-file "~/.emacs.d/custom.el")
-
-  ;; Prevents error if the custom.el file doesn't exist
-  (load custom-file 'noerror))
+  (setq custom-file "~/.emacs.d/custom.el"))
 
 ;; Needs to be called as soon as possible for native compilation
 (use-package exec-path-from-shell
+  :demand t
   :if (memq window-system '(mac ns x))
-  :config
+  :init
   (exec-path-from-shell-initialize))
 
 ;;; EMACS LISP EXTENSION
@@ -255,11 +257,12 @@
     (when (one-window-p)
       (split-window-sensibly))
     (other-window 1))
-
+  
   (defun my/reset-window-layout (_)
     "Reset window layout on width change. Triggers width threshold.
 This can be used to make the window layout change based on frame size."
-    (unless (= (window-old-pixel-width) (window-pixel-width))
+    (unless (or (= (window-old-pixel-width) (window-pixel-width))
+                (= (count-windows) 1))
       (let* ((_ (other-window 1))
              (other-buff (buffer-name)))
         (delete-window)
@@ -287,13 +290,14 @@ This can be used to make the window layout change based on frame size."
   :config
   ;; Save Bookmarks on any change
   (setq bookmark-save-flag 1)
-
   ;; Store bookmarks in emacs-sync
   (setq bookmark-default-file "~/.emacs.d/emacs-sync/bookmarks"))
 (use-package ls-lisp
+  :demand t
   :straight nil
   :config
-  ;; Switch to use ls-lisp makes ls platform agnostic (need to test with TRAMP).
+  ;; Switch to use ls-lisp makes ls platform agnostic
+  ;; (need to test with TRAMP).
   (setq ls-lisp-use-insert-directory-program nil))
 (use-package dired
   :straight nil
@@ -304,8 +308,6 @@ This can be used to make the window layout change based on frame size."
   ;; created/deleted/renamed.
   ;; Also hides auto revert message.
   (setq dired-auto-revert-buffer t)
-  ;; Dired hide details by default
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   ;; Bind return to alternate file, so that dired reuses same buffer.
   (put 'dired-find-alternate-file 'disabled nil)
   ;; WDired (writable dired) can be accessed by making the dired
@@ -318,10 +320,12 @@ This can be used to make the window layout change based on frame size."
   ;; overwrites :caused by rename.
   (setq wdired-confirm-overwrite t)
   :bind (:map dired-mode-map
-              ("RET" . dired-find-alternate-file)))
+              ("RET" . dired-find-alternate-file))
+  ;; Dired hide details by default
+  :hook ((dired-mode . dired-hide-details-mode)))
 (use-package so-long
   :straight nil
-  :config
+  :init
   (global-so-long-mode t))
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
@@ -329,7 +333,7 @@ This can be used to make the window layout change based on frame size."
   :load-path "~/.emacs.d/elisp")
 (use-package eshell
   :straight nil
-  :config
+  :init
   (defun my/eshell ()
     "Open eshell in project root, if open switch to existing eshell."
     (interactive)
@@ -364,7 +368,7 @@ This can be used to make the window layout change based on frame size."
 
 ;; FONT
 (use-package ligature
-  :config
+  :init
   (ligature-set-ligatures
    t
    '(;;; Disabled ligatures because they make things look weird
@@ -466,7 +470,6 @@ This can be used to make the window layout change based on frame size."
   (let ((face (or (get-char-property (point) 'read-face-name)
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
-
 (progn ;; Mode Line
   ;; Functions for determining if mode line is active.
   (defvar my/mode-line-selected-window (frame-selected-window))
@@ -509,7 +512,6 @@ This can be used to make the window layout change based on frame size."
 
   ;; Display battery
   (display-battery-mode 1))
-(fringe-mode 16)
 
 ;;; META NAVIGATION
 (defun my/osx-open-in-finder ()
@@ -541,18 +543,14 @@ files in the project. Respects gitignore."
   (define-key global-map [remap exchange-point-and-mark] 'my/exchange-point-and-mark-no-region))
 (use-package recentf
   :straight nil
-  :config
-  (recentf-mode t)
-  (defun my/open-recent-files ()
-    (thread-last
-      (seq-take recentf-list 10)
-      (delete-dups)
-      (seq-remove (apply-partially 'string-suffix-p ".emacs.d/emms/history"))
-      (seq-remove (apply-partially 'string-suffix-p ".gpg"))
-      (seq-reverse)
-      (mapcar #'find-file)))
-  :hook
-  (after-init . my/open-recent-files))
+  :init
+  (setq recentf-exclude
+        '(".*\.gpg"
+          ".*\.gz)"
+          ".emacs.d/emms/history"
+          ".emacs.d/emacs-sync/.*"))
+  (setq recentf-max-saved-items 10)
+  (recentf-mode t))
 (use-package isearch
   :straight nil
   :config
@@ -630,17 +628,16 @@ files in the project. Respects gitignore."
   (vertico-mode))
 (use-package vertico-prescient
   :after vertico
-  :config
+  :init
   (vertico-prescient-mode t)
   (prescient-persist-mode t))
 (use-package corfu-prescient
   :after corfu
-  :config
+  :init
   (corfu-prescient-mode t))
 (use-package project
   :straight nil
-  :after eglot
-  :config
+  :init
   ;; Don't include submodule files in searches etc
   (setq project-vc-merge-submodules nil))
 (use-package magit
@@ -764,10 +761,10 @@ If this becomes a problem these common lines could be filtered."
   :after magit)
 (use-package hl-todo
   :config
-  (global-hl-todo-mode)
   (setq hl-todo-keyword-faces
         '(("TODO" . bold)
-          ("EXPLORE" . bold))))
+          ("EXPLORE" . bold)))
+  :hook (prog-mode . hl-todo-mode))
 (use-package magit-todos
   :after magit
   :config
@@ -775,7 +772,7 @@ If this becomes a problem these common lines could be filtered."
   (setq magit-todos-auto-group-items 15)
   (setq magit-todos-group-by '(magit-todos-item-keyword)))
 (use-package browse-at-remote
-  :config
+  :init
   (defun my/git-url-for-region ()
     (interactive)
     (browse-at-remote-kill)
@@ -832,7 +829,6 @@ See `consult-grep' for details."
   ;; Disable preview, to enable set to 'any
   (setq consult-preview-key nil))
 (use-package consult-project-extra
-  :after consult
   :bind
   (("C-x p" . consult-project-extra-find)))
 (use-package embark
@@ -971,25 +967,26 @@ See `consult-grep' for details."
   :hook (after-init . text-scratch/buffer))
 (use-package abbrev
   :straight nil
+  :init
+  (setq-default abbrev-mode t)
   :config
-  (setq-default abbrev-mode t))
-(defun my/wiki-style-misspellings->abbrev-table ()
-  "Convert wiki style misspellings to abbrev table entries.
+  (defun my/wiki-style-misspellings->abbrev-table ()
+    "Convert wiki style misspellings to abbrev table entries.
 https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines"
-  (interactive)
-  ;; remove entries with more than one option
-  (call-interactively 'mark-whole-buffer)
-  (flush-lines ",")
-  ;; convert entries to abbrev entries
-  (while (not (eobp))
-    (insert "(\"")
-    (skip-chars-forward "^-")
-    (insert "\" ")
-    (delete-char 2)
-    (insert "\"")
-    (end-of-line)
-    (insert "\" nil :count 1)")
-    (forward-line 1)))
+    (interactive)
+    ;; remove entries with more than one option
+    (call-interactively 'mark-whole-buffer)
+    (flush-lines ",")
+    ;; convert entries to abbrev entries
+    (while (not (eobp))
+      (insert "(\"")
+      (skip-chars-forward "^-")
+      (insert "\" ")
+      (delete-char 2)
+      (insert "\"")
+      (end-of-line)
+      (insert "\" nil :count 1)")
+      (forward-line 1))))
 
 ;;; LINTING
 (use-package flyspell
@@ -1000,9 +997,11 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (setq flyspell-prog-text-faces (delq 'font-lock-string-face
                                        flyspell-prog-text-faces))
   (setq ispell-personal-dictionary "~/.emacs.d/setup/dotfiles/.aspell.en.pws")
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
-(use-package flymake :straight nil
+  :hook
+  ((text-mode . flyspell-mode)
+   (prog-mode . flyspell-prog-mode)))
+(use-package flymake
+  :straight nil
   :init
   (define-fringe-bitmap 'my/flymake-fringe-indicator
     (vector #b00000000
@@ -1072,21 +1071,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ([tab] . corfu-complete)
               ("RET" . corfu-complete)
               ("C-w" . topiary/kill)))
-(use-package dabbrev
-  :straight nil
-  :config
-  ;; Add repl buffers to dabbrev suggestions
-  (setq dabbrev-friend-buffer-function
-        (lambda (other-buffer)
-          (or (dabbrev--same-major-mode-p other-buffer)
-              (and (member major-mode '(clojure-mode
-                                        clojurec-mode
-                                        clojurescript-mode
-                                        inferior-lisp-mode))
-                   (with-current-buffer other-buffer
-                     (eq major-mode 'inferior-lisp-mode)))))))
 (use-package cape
-  :after eglot
   :config
   (setq cape-dabbrev-check-other-buffers "some")
   (defun my/ignore-keywords-unless-explicit (cand)
@@ -1108,13 +1093,26 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                         #'my/ignore-keywords-unless-explicit)
                        #'cape-dabbrev))))
   :hook ((eglot-managed-mode . my/eglot-capf)
-         (emacs-lisp-mode . my/setup-elisp)))
+         (emacs-lisp-mode    . my/setup-elisp)))
+(use-package dabbrev
+  :after cape
+  :straight nil
+  :init
+  ;; Add repl buffers to dabbrev suggestions
+  (setq dabbrev-friend-buffer-function
+        (lambda (other-buffer)
+          (or (dabbrev--same-major-mode-p other-buffer)
+              (and (member major-mode '(clojure-mode
+                                        clojurec-mode
+                                        clojurescript-mode
+                                        inferior-lisp-mode))
+                   (with-current-buffer other-buffer
+                     (eq major-mode 'inferior-lisp-mode)))))))
 
 ;;; PROGRAMMING
 ;; LSP - Language Server Protocol
 (use-package eglot
   :straight nil
-  :demand t
   :config
   (setq eglot-confirm-server-initiated-edits nil)
   (setq eglot-sync-connect 0)
@@ -1126,6 +1124,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
 (use-package jarchive
+  :after eglot
   :init
   (jarchive-mode))
 ;; SQL
@@ -1135,18 +1134,18 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (async-shell-command
    "brew services start postgresql" (generate-new-buffer "*postgresql*")))
 (use-package sql
-  :straight nil
-  :config)
+  :straight nil)
 (use-package sql-indent
   :after sql)
 ;; Clojure
-(use-package clj
-  :straight nil
-  :load-path "~/.emacs.d/elisp")
 (use-package clojure-mode
   :config
   (setq clojure-align-forms-automatically t)
-  (setq clojure-indent-style 'always-indent)
+  (setq clojure-indent-style 'always-indent))
+(use-package clj
+  :straight nil
+  :after clojure-mode
+  :load-path "~/.emacs.d/elisp"
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
               ("C-c C-z" . my/clj-open-repl)
@@ -1156,7 +1155,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("C-c C-l" . my/clj-load-current-ns)
               ("C-c C-b" . my/clj-eval-buffer)
               ("C-x C-e" . my/clj-eval-last-sexp)
-              ("M-;"     . clojure-toggle-ignore)
               ("M-g t"   . my/clj-toggle-between-implementation-and-test)
               ("C-c C-t n"   . my/clj-run-ns-tests)
               ("C-c C-t p"   . my/clj-run-project-tests)
@@ -1200,11 +1198,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
              (cdr bounds)
              jet (current-buffer) t)))
       (user-error "Could not find jet installed"))))
-;; HTTP
-(defun my/current-ip ()
-  "Return current IP address."
-  (interactive)
-  (message (format-network-address (car (network-interface-info "en0")))))
+
 ;; JavaScript
 (use-package js
   :straight nil
@@ -1228,6 +1222,10 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
          (markdown-mode . my/md-font-setup)))
 
 ;;; MISC
+(defun my/current-ip ()
+  "Return current IP address."
+  (interactive)
+  (message (format-network-address (car (network-interface-info "en0")))))
 (defun my/unix-timestanp-to-utc-time ()
   "Output selected unix timestamp in UTC format."
   (interactive)
@@ -1343,8 +1341,7 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
   :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
-;; Text to speech
-(progn
+(progn ;; Text to speech
   (let ((buffer-name "*Speak Region*"))
 
     (defun my/speak-region ()

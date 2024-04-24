@@ -255,5 +255,29 @@
      ;; eglot
      `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-dim)))))))
 
+(defvar my/active-theme)
+(setq my/active-theme my/dark-theme)
+
+(defun my/toggle-dark-light-theme ()
+  "Toggle theme between dark and light."
+  (interactive)
+  (setq my/active-theme
+        (if (eq my/active-theme my/dark-theme)
+            my/light-theme
+          my/dark-theme))
+  (my/set-theme-faces my/active-theme)
+  (enable-theme 'my))
+
+(defun my/gen-theme ()
+  "Generate a new theme."
+  (interactive)
+  (let ((seed (my/random-hue)))
+    (setq my/hue seed)
+    (setq my/dark-theme (my/gen-dark-theme))
+    (setq my/light-theme (my/gen-light-theme))
+    (call-interactively 'my/toggle-dark-light-theme)
+    (message "%s" seed)))
+
+(my/set-theme-faces my/active-theme)
 (provide-theme 'my)
 ;;; my-theme.el ends here
