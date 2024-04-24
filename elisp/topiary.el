@@ -351,8 +351,10 @@ In the above example the n would be deleted. Handles comments."
                    ;; treats a comment block as a sexp when at bottom
                    ;; of file.
                    (save-excursion
-                     (and (skip-chars-backward "\n ")
-                        (topiary/on-comment-line-p)))))
+                     (and (skip-chars-forward "\n ")
+                          (topiary/end-of-buffer-p)
+                          (skip-chars-backward "\n ")
+                          (topiary/on-comment-line-p)))))
       (bounds-of-thing-at-point 'sexp)))
 
 (defun topiary/bounds-of-word-at-point ()
