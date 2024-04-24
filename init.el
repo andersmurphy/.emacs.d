@@ -1202,7 +1202,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (((clojure-mode js-mode) . eglot-ensure)))
 (use-package jarchive
   :init
-  (jarchive-setup))
+  (jarchive-mode))
 ;; SQL
 (defun my/start-postgresql ()
   "Start local postgresql database."
@@ -1245,14 +1245,15 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (let* ((bounds (topiary/compute-bounds))
          (node (when (executable-find "node")
                  (format "node -e 'console.log(JSON.stringify(%s, null, 2))'"
-                         (->> (buffer-substring-no-properties
-                               (car bounds)
-                               (cdr bounds))
-                              (replace-regexp-in-string
-                               "'" "\"")
-                              (replace-regexp-in-string
-                               (pcre-to-elisp ",([\n\r\s]*)}")
-                               "\\1}"))))))
+                         (thread-last
+                           (buffer-substring-no-properties
+                            (car bounds)
+                            (cdr bounds))
+                           (replace-regexp-in-string
+                            "'" "\"")
+                           (replace-regexp-in-string
+                            (pcre-to-elisp ",([\n\r\s]*)}")
+                            "\\1}"))))))
     (if node
         (shell-command-on-region
          (car bounds)
