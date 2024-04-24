@@ -327,10 +327,23 @@ This can be used to make the window layout change based on frame size."
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
   :straight nil)
-(defun my/eshell-new ()
-  "Open a new instance of eshell."
-  (interactive)
-  (eshell 'N))
+(use-package eshell
+  :straight nil
+  :config
+  (defun my/eshell ()
+    "Open eshell in project root, if open switch to existing eshell."
+    (interactive)
+    (if-let ((root-dir (or (vc-root-dir) (magit-toplevel))))
+        (let* ((project-name (file-name-nondirectory
+                              (directory-file-name root-dir)))
+               (eshell-buffer-name (concat "*eshell*<" project-name ">")))
+          (eshell))
+      (eshell)))
+
+  (defun my/eshell-new ()
+    "Open a new instance of eshell."
+    (interactive)
+    (eshell 'N)))
 
 ;;; PRIVACY
 ;; force pin entry through emacs
