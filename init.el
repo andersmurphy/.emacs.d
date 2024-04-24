@@ -323,10 +323,10 @@ This can be used to make the window layout change based on frame size."
   :straight nil
   :config
   (global-so-long-mode t))
-(load "~/.emacs.d/elisp/kill-buffer-on-q.el")
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
-  :straight nil)
+  :straight nil
+  :load-path "~/.emacs.d/elisp")
 (use-package eshell
   :straight nil
   :config
@@ -505,11 +505,11 @@ This can be used to make the window layout change based on frame size."
   (let ((face (or (get-char-property (point) 'read-face-name)
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
-(load "~/.emacs.d/my-theme.el")
 (use-package my-theme
   ;; Theme changes are made to these packages
   ;; so they need to be loaded before the theme.
   :straight nil
+  :load-path "~/.emacs.d/elisp"
   :config
   (defun my/disable-all-themes ()
     "Disable all active themes."
@@ -1029,9 +1029,9 @@ See `consult-grep' for details."
   :straight nil
   :init
   (global-subword-mode))
-(load "~/.emacs.d/elisp/topiary.el")
 (use-package topiary
   :straight nil
+  :load-path "~/.emacs.d/elisp"
   :hook ((text-mode prog-mode comint-mode outline-mode Info-mode eshell-mode magit-blob-mode) . topiary-mode))
 (use-package special-mode
   :straight nil
@@ -1039,9 +1039,9 @@ See `consult-grep' for details."
               ("C-w" . topiary/kill)))
 
 ;; WRITING
-(load "~/.emacs.d/elisp/text-scratch.el")
 (use-package text-scratch
   :straight nil
+  :load-path "~/.emacs.d/elisp"
   ;; open text buffer on init
   :hook (after-init . text-scratch/buffer))
 (use-package abbrev
@@ -1215,8 +1215,9 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 (use-package sql-indent
   :after sql)
 ;; Clojure
-(load "~/.emacs.d/elisp/clj.el")
-(use-package clj :straight nil)
+(use-package clj
+  :straight nil
+  :load-path "~/.emacs.d/elisp")
 (use-package clojure-mode
   :config
   (setq clojure-align-forms-automatically t)
