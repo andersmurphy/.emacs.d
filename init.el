@@ -1210,19 +1210,8 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (async-shell-command
    "brew services start postgresql" (generate-new-buffer "*postgresql*")))
 (use-package sql
-  :config
-  (defun my/sql-find-up-or-down (file-name)
-    (unless file-name (error "The current buffer is not visiting a file"))
-    (if (string-suffix-p ".up" (file-name-sans-extension (file-name-nondirectory file-name)))
-        (replace-regexp-in-string "\\.up\\." ".down." file-name)
-      (replace-regexp-in-string "\\.down\\." ".up." file-name)))
-
-  (defun my/sql-toggle-up-down ()
-    (interactive)
-    (-> (buffer-file-name)
-        my/sql-find-up-or-down
-        find-file))
-  :bind (:map sql-mode-map ("M-g t" . my/sql-toggle-up-down)))
+  :straight nil
+  :config)
 (use-package sql-indent
   :after sql)
 ;; Clojure
