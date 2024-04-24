@@ -1442,7 +1442,7 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
 (when (file-directory-p "~/.emacs.d/emacs-sync")
   (load "~/.emacs.d/emacs-sync/project-specific-commands.el"))
 
-;;; Set Flymake load path for elisp
+;;; SET FLYMAKE LOAD PATH FOR ELISP
 ;; Needs to be done at the end of this file after
 ;; all elisp dependencies have been loaded.
 ;;
@@ -1450,5 +1450,10 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
 ;; on separate Emacs lisp projects.
 (setq elisp-flymake-byte-compile-load-path
       (append (list "./") load-path))
+
+;;; DISABLE SOME LINT WARNINGS IN THIS FILE
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved)
+;; End:
 
 ;;; init.el ends here
