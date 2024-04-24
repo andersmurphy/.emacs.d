@@ -91,3 +91,6 @@ EXPLORE
 gitignore
 emacs
 frontend
+json
+elisp
+eshell
