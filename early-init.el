@@ -47,9 +47,8 @@
   (tool-bar-mode -1))
 
 ;; Disables splash screen.
-(setq inhibit-startup-screen t
-      inhibit-startup-message t
-      inhibit-startup-echo-area-message t)
+(setq inhibit-startup-screen t)
+(setq inhibit-startup-message t)
 
 ;; Title bar matches theme.
 (add-to-list 'default-frame-alist

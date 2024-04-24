@@ -150,6 +150,9 @@
 
 ;;; GENERAL
 (progn ;; Defaults
+  (defun display-startup-echo-area-message ()
+    "Redefine startup echo area message."
+    (message (concat "Emacs initialized in: " (emacs-init-time))))
 
   ;; Start emacs server
   ;; Open file in existing emacs window (rather than a new session)
@@ -257,7 +260,7 @@
     (when (one-window-p)
       (split-window-sensibly))
     (other-window 1))
-  
+
   (defun my/reset-window-layout (_)
     "Reset window layout on width change. Triggers width threshold.
 This can be used to make the window layout change based on frame size."
@@ -355,12 +358,13 @@ This can be used to make the window layout change based on frame size."
   (setenv "GPG_AGENT_INFO" nil)
   (setq epa-pinentry-mode 'loopback)
   (setq epa-file-select-keys nil))
-(progn ;; TOTP
+(use-package totp
+  :straight nil
   ;; further reading
   ;; https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
   ;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
-  (load "~/.emacs.d/elisp/base32.el")
-  (load "~/.emacs.d/elisp/totp.el"))
+  :demand t
+  :load-path "~/.emacs.d/elisp")
 (use-package auth-source
   :straight nil
   :config
