@@ -346,16 +346,21 @@ This can be used to make the window layout change based on frame size."
     (eshell 'N)))
 
 ;;; PRIVACY
-;; force pin entry through emacs
-(setenv "GPG_AGENT_INFO" nil)
-(setq epa-pinentry-mode 'loopback)
-(setq epa-file-select-keys nil)
-;; further reading
-;; https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
-(load "~/.emacs.d/elisp/base32.el")
-(load "~/.emacs.d/elisp/totp.el")
-;; further reading
-;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
+(progn ;; GPG
+  ;; force pin entry through emacs
+  (setenv "GPG_AGENT_INFO" nil)
+  (setq epa-pinentry-mode 'loopback)
+  (setq epa-file-select-keys nil))
+(progn ;; TOTP
+  ;; further reading
+  ;; https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
+  ;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
+  (load "~/.emacs.d/elisp/base32.el")
+  (load "~/.emacs.d/elisp/totp.el"))
+(use-package auth-source
+  :straight nil
+  :config
+  (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 
 ;; FONT
 (set-frame-font "Fira Code")
@@ -713,10 +718,6 @@ files in the project. Respects gitignore."
   :config
   ;; Don't include submodule files in searches etc
   (setq project-vc-merge-submodules nil))
-(use-package auth-source
-  :straight nil
-  :config
-  (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 (use-package magit
   :config
   (setq magit-diff-highlight-indentation nil)
