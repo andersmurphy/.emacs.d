@@ -183,9 +183,9 @@
      `(diff-added                           ((t (:foreground ,green))))
      `(diff-removed                         ((t (:foreground ,red))))
      `(diff-refine-added
-       ((t (:foreground ,green :weight bold :underline (:style line :color ,green)))))
+       ((t (:foreground ,green :weight bold))))
      `(diff-refine-removed
-       ((t (:foreground ,red :weight bold :underline (:style line :color ,red)))))
+       ((t (:foreground ,red :weight bold))))
      `(magit-diff-added-highlight           ((t (:foreground ,green))))
      `(magit-diff-added                     ((t (:foreground ,green))))
      `(magit-diff-removed-highlight         ((t (:foreground ,red))))
