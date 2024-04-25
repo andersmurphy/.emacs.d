@@ -49,9 +49,6 @@
 ;; Disables splash screen.
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-message t)
-(defun display-startup-echo-area-message ()
-  "Redefine startup echo area message."
-  (message (concat "Emacs initialized in: " (emacs-init-time))))
 
 ;; Title bar matches theme.
 (add-to-list 'default-frame-alist
@@ -80,6 +77,11 @@
 ;; Theme
 (load "~/.emacs.d/elisp/my-theme.el")
 (enable-theme 'my)
+
+(defun display-startup-echo-area-message ()
+  "Redefine startup echo area message."
+  (message "Emacs initialized in: %s" (emacs-init-time))
+  (message "Theme hue seed is: %s"  my/hue))
 
 ;; Sets font.
 (set-face-attribute 'default nil :height 150 :family "Fira Code")

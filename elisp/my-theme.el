@@ -33,8 +33,7 @@
   (let ((step 10))
     (* (random (/ 360 step)) step)))
 
-(defvar my/hue 350  ;; (my/random-hue)
-  )
+(defvar my/hue (my/random-hue))
 (defun my/gen-dark-theme ()
   "Generate a dark theme."
   (let ((hue my/hue))

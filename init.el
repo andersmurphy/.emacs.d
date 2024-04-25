@@ -47,6 +47,8 @@
   (defvar straight-use-package-by-default)
   (setq straight-use-package-by-default t)
   (require 'use-package)
+  
+  ;; Lazy
   (setq use-package-always-defer t)
 
   ;; Profilling - M-x use-package-report
