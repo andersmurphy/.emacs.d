@@ -50,7 +50,7 @@
   (setq use-package-always-defer t)
 
   ;; Profilling - M-x use-package-report
-  ;; (setq use-package-compute-statistics t)
+  (setq use-package-compute-statistics t)
 
   ;; Forces Custom to save all customizations in a separate file
   (setq custom-file "~/.emacs.d/custom.el"))
@@ -150,10 +150,6 @@
 
 ;;; GENERAL
 (progn ;; Defaults
-  (defun display-startup-echo-area-message ()
-    "Redefine startup echo area message."
-    (message (concat "Emacs initialized in: " (emacs-init-time))))
-
   ;; Start emacs server
   ;; Open file in existing emacs window (rather than a new session)
   ;; when clicking on a file in finder.
@@ -328,7 +324,8 @@ This can be used to make the window layout change based on frame size."
   :hook ((dired-mode . dired-hide-details-mode)))
 (use-package so-long
   :straight nil
-  :init
+  :defer 1
+  :config
   (global-so-long-mode t))
 (use-package kill-buffer-on-q
   ;; Convenience mode for killing buffer on q
@@ -363,7 +360,7 @@ This can be used to make the window layout change based on frame size."
   ;; further reading
   ;; https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
   ;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
-  :demand t
+  :defer 1
   :load-path "~/.emacs.d/elisp")
 (use-package auth-source
   :straight nil
@@ -546,8 +543,9 @@ files in the project. Respects gitignore."
 
   (define-key global-map [remap exchange-point-and-mark] 'my/exchange-point-and-mark-no-region))
 (use-package recentf
+  :defer 1
   :straight nil
-  :init
+  :config
   (setq recentf-exclude
         '(".*\.gpg"
           ".*\.gz)"
@@ -994,6 +992,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 
 ;;; LINTING
 (use-package flyspell
+  :defer 1
   :config
   (setq ispell-program-name "aspell"
         ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))

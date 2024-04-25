@@ -49,6 +49,9 @@
 ;; Disables splash screen.
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-message t)
+(defun display-startup-echo-area-message ()
+  "Redefine startup echo area message."
+  (message (concat "Emacs initialized in: " (emacs-init-time))))
 
 ;; Title bar matches theme.
 (add-to-list 'default-frame-alist
