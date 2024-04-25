@@ -85,6 +85,8 @@
 
 ;; Sets font.
 (set-face-attribute 'default nil :height 150 :family "Fira Code")
+;; Enable emoji.
+(set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
 ;; Temporarily disable modeline
 (setq mode-line-format nil)

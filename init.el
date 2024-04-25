@@ -46,13 +46,12 @@
   (straight-use-package 'use-package)
   (defvar straight-use-package-by-default)
   (setq straight-use-package-by-default t)
-  (require 'use-package)
   
   ;; Lazy
   (setq use-package-always-defer t)
 
   ;; Profilling - M-x use-package-report
-  (setq use-package-compute-statistics t)
+  ;; (setq use-package-compute-statistics t)
 
   ;; Forces Custom to save all customizations in a separate file
   (setq custom-file "~/.emacs.d/custom.el"))
@@ -200,9 +199,8 @@
         ";; C-x C-e to evaluate current expression.
 ;; M-. to navigate to function source.
 ;; C-c C-d to navigate to function docs.
-;; M-x elisp-index-search to search elisp manual.
-;; M-x emacs-index-search to search Emacs manual.
-;; M-x shortdoc-display-group to get elisp cheat sheet by category.\n\n()")
+;; M-x consult-info-emacs to search Emacs/Elisp manuals.
+;; M-x shortdoc-display-group to get elisp cheat sheet by category.\n\n")
 
   ;; Makes recenter go to top first.
   (setq recenter-positions '(top middle bottom))
@@ -216,9 +214,6 @@
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
 
-  ;; Enable emoji
-  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-
   ;; Remove duplicates in history
   (setq history-delete-duplicates t)
 
@@ -228,10 +223,6 @@
   "Open init file (this file)."
   (interactive)
   (find-file "~/.emacs.d/init.el"))
-(defun my/scripts ()
-  "Open scripts directory."
-  (interactive)
-  (find-file "~/.emacs.d/emacs-sync/scripts/"))
 (defun my/update-emacs-packages ()
   "Update Emacs packages using straight."
   (interactive)
@@ -278,9 +269,10 @@ This can be used to make the window layout change based on frame size."
   :hook ((Info-mode . variable-pitch-mode)
          (Info-mode . my/info-font-setup)))
 (use-package super-save
-  :config
-  (super-save-mode t)
-  (setq save-silently t))
+  :defer 1
+  :init
+  (setq save-silently t)
+  (super-save-mode t))
 (use-package bookmark
   :straight nil
   :config
@@ -333,7 +325,7 @@ This can be used to make the window layout change based on frame size."
 (progn ;; GPG
   ;; force pin entry through emacs
   (setenv "GPG_AGENT_INFO" nil)
-  (setq epa-pinentry-mode 'loopback)
+  (setq epg-pinentry-mode 'loopback)
   (setq epa-file-select-keys nil))
 (use-package totp
   :straight nil
@@ -740,6 +732,7 @@ If this becomes a problem these common lines could be filtered."
   :hook ((after-save . magit-after-save-refresh-status)))
 (use-package forge
   ;; For generating tokens see: https://github.com/settings/tokens
+  :defer 1
   :after magit)
 (use-package hl-todo
   :config
@@ -749,6 +742,7 @@ If this becomes a problem these common lines could be filtered."
   :hook (prog-mode . hl-todo-mode))
 (use-package magit-todos
   :after magit
+  :defer 1
   :config
   (magit-todos-mode)
   (setq magit-todos-auto-group-items 15)
