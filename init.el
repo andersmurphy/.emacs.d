@@ -150,11 +150,6 @@
 
 ;;; GENERAL
 (progn ;; Defaults
-  ;; Start emacs server
-  ;; Open file in existing emacs window (rather than a new session)
-  ;; when clicking on a file in finder.
-  (server-start)
-
   ;; Turn off alarms completely.
   (setq ring-bell-function 'ignore)
 
