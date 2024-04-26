@@ -789,7 +789,8 @@ If this becomes a problem these common lines could be filtered."
            "* TODO %?"))))
 (use-package consult
   :bind
-  (("C-x b"   . consult-buffer)
+  (("C-x b"   . my/consult-omni)
+   ("C-x p"   . my/consult-omni)
    ("C-x r b" . consult-bookmark)
    ("C-M-s"   . my/consult-ripgrep)
    ("M-y"     . consult-yank-pop)
@@ -797,6 +798,67 @@ If this becomes a problem these common lines could be filtered."
    ("M-g M-g" . consult-goto-line)
    ("C-h i"   . consult-info))
   :init
+  (defun my/consult-project-with-root (root)
+    "Return the project for a given project ROOT."
+    (project--find-in-directory root))
+
+  (defun my/consult-project-files (root)
+    "Compute the project files given the ROOT."
+    (let* ((project (my/consult-project-with-root root))
+           (files (project-files project)))
+      (mapcar (lambda (f) (file-relative-name f root)) files)))
+
+  (defun my/consult-file (selected-root)
+    "Create a view for selecting project files for the project at SELECTED-ROOT."
+    (let ((candidate (consult--read
+                      (my/consult-project-files selected-root)
+                      :prompt "Project File: "
+                      :sort t
+                      :require-match t
+                      :category 'file
+                      :state (consult--file-preview)
+                      :history 'file-name-history)))
+      (consult--file-action (concat selected-root candidate))))
+
+  (defun my/consult-find-with-concat-root (candidate)
+    "Find-file concatenating root with CANDIDATE."
+    (consult--file-action (concat (project-root (project-current)) candidate)))
+
+  (defvar my/consult-source-file
+    `(:name "Project File"
+            :narrow    (?f . "File")
+            :category  file
+            :face      consult-file
+            :history   file-name-history
+            :enabled   ,#'project-current
+            :action    ,#'my/consult-find-with-concat-root
+            :items
+            ,(lambda ()
+               (my/consult-project-files (project-root (project-current))))))
+
+  (defvar my/consult-source-project
+    `(:name "Known Project"
+            :narrow    (?p . "Project")
+            :category  file
+            :face      consult-file
+            :history   file-name-history
+            :annotate  ,(lambda (dir)
+                          (format "Project: %s"
+                                  (file-name-nondirectory (directory-file-name dir))))
+            :action    ,#'my/consult-file
+            :items     ,#'project-known-project-roots))
+
+  (setq my/consult-omni-sources
+        '(consult--source-buffer
+          consult--source-recent-file
+          consult--source-bookmark
+          my/consult-source-file
+          my/consult-source-project))
+
+  (defun my/consult-omni ()
+    (interactive)
+    (consult-buffer my/consult-omni-sources))
+
   (defun consult-info-emacs ()
     "Search through Emacs info pages."
     (interactive)
@@ -814,9 +876,6 @@ See `consult-grep' for details."
   :config
   ;; Disable preview, to enable set to 'any
   (setq consult-preview-key nil))
-(use-package consult-project-extra
-  :bind
-  (("C-x p" . consult-project-extra-find)))
 (use-package embark
   :ensure t
   :bind
