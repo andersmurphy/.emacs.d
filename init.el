@@ -615,12 +615,14 @@ files in the project. Respects gitignore."
   (vertico-mode))
 (use-package vertico-prescient
   :after vertico
-  :init
+  :demand t
+  :config
   (vertico-prescient-mode t)
   (prescient-persist-mode t))
 (use-package corfu-prescient
   :after corfu
-  :init
+  :demand t
+  :config
   (corfu-prescient-mode t))
 (use-package project
   :straight nil
@@ -1143,9 +1145,10 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :hook ((eglot-managed-mode . my/eglot-capf)
          (emacs-lisp-mode    . my/setup-elisp)))
 (use-package dabbrev
-  :after cape
   :straight nil
-  :init
+  :after cape
+  :demand t
+  :config
   ;; Add repl buffers to dabbrev suggestions
   (setq dabbrev-friend-buffer-function
         (lambda (other-buffer)
@@ -1173,7 +1176,8 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (((clojure-mode js-mode) . eglot-ensure)))
 (use-package jarchive
   :after eglot
-  :init
+  :demand
+  :config
   (jarchive-mode))
 ;; SQL
 (defun my/start-postgresql ()
@@ -1184,6 +1188,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 (use-package sql
   :straight nil)
 (use-package sql-indent
+  :demand t
   :after sql)
 ;; Clojure
 (use-package clojure-mode
