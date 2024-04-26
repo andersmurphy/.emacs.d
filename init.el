@@ -151,8 +151,6 @@
 
 ;;; GENERAL
 (progn ;; Defaults
-  ;; Sets the initial frame to fill the screen.
-  (add-hook 'after-init-hook 'toggle-frame-fullscreen)
 
   ;; Turn off alarms completely.
   (setq ring-bell-function 'ignore)
@@ -245,6 +243,11 @@
   (save-buffer)
   (load  "~/.emacs.d/init.el"))
 (progn ;; Window behaviour
+  ;; Sets the initial frame to fill the screen.
+  (add-hook 'after-init-hook
+            (lambda ()
+              (toggle-frame-fullscreen)
+              (switch-to-buffer "*Messages*")))
 
   (setq split-width-threshold 100)
 
