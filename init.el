@@ -46,7 +46,7 @@
   (straight-use-package 'use-package)
   (defvar straight-use-package-by-default)
   (setq straight-use-package-by-default t)
-  
+
   ;; Lazy
   (setq use-package-always-defer t)
 
