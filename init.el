@@ -745,8 +745,8 @@ If this becomes a problem these common lines could be filtered."
   :hook ((after-save . magit-after-save-refresh-status)))
 (use-package forge
   ;; For generating tokens see: https://github.com/settings/tokens
-  :defer 1
-  :after magit)
+  :after magit
+  :demand t)
 (use-package hl-todo
   :config
   (setq hl-todo-keyword-faces
@@ -755,7 +755,7 @@ If this becomes a problem these common lines could be filtered."
   :hook (prog-mode . hl-todo-mode))
 (use-package magit-todos
   :after magit
-  :defer 1
+  :demand t
   :config
   (magit-todos-mode)
   (setq magit-todos-auto-group-items 15)
