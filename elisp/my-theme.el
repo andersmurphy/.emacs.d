@@ -158,6 +158,7 @@
 
      ;; info
      `(info-xref-visited ((t (:foreground ,fg-comment))))
+     `(info-node ((t (:foreground ,fg :weight bold :italic t))))
 
      ;; comint buffer
      `(comint-highlight-prompt ((t (:foreground ,fg :weight bold :height ,h2-height))))
