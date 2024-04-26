@@ -61,9 +61,6 @@
 (setq ns-use-proxy-icon nil)
 (setq frame-title-format nil)
 
-;; Sets the initial frame to fill the screen.
-(add-hook 'after-init-hook 'toggle-frame-fullscreen)
-
 ;; Sets the initial frame to be flush with the top left corner of the screen.
 (add-to-list 'initial-frame-alist '(left . 0))
 (add-to-list 'initial-frame-alist '(top . 0))

@@ -151,6 +151,9 @@
 
 ;;; GENERAL
 (progn ;; Defaults
+  ;; Sets the initial frame to fill the screen.
+  (add-hook 'after-init-hook 'toggle-frame-fullscreen)
+
   ;; Turn off alarms completely.
   (setq ring-bell-function 'ignore)
 
@@ -202,6 +205,13 @@
 ;; M-x consult-info-emacs to search Emacs/Elisp manuals.
 ;; M-x shortdoc-display-group to get elisp cheat sheet by category.\n\n")
 
+  ;; This delays flymake until after initialisation
+  (setq initial-major-mode nil)
+  (add-hook 'after-init-hook
+            (lambda () (with-current-buffer "*scratch*"
+                         (lisp-interaction-mode))))
+
+
   ;; Makes recenter go to top first.
   (setq recenter-positions '(top middle bottom))
 
@@ -236,7 +246,7 @@
   (load  "~/.emacs.d/init.el"))
 (progn ;; Window behaviour
 
-  (setq split-width-threshold 80)
+  (setq split-width-threshold 100)
 
   (defun my/other-window ()
     "Switch to another window. If no other window exists create one."
