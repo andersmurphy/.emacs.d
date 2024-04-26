@@ -78,7 +78,7 @@
 (defun display-startup-echo-area-message ()
   "Redefine startup echo area message."
   (message "Emacs initialized in: %s" (emacs-init-time))
-  (message "Theme hue seed is: %s"  my/hue))
+  (message "Theme hue is: %s"  my/hue))
 
 ;; Sets font.
 (set-face-attribute 'default nil :height 150 :family "Fira Code")
