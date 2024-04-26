@@ -34,7 +34,7 @@
                   (text-scratch/kill-buffer-content-and-add-to-kill-ring)))
     map))
 
-(defun text-scratch/get-buffer-create ()
+(defun text-scratch-get-buffer-create ()
   "Return the *text* buffer, creating a new one if needed."
   (or (get-buffer "*text*")
       (let ((scratch (get-buffer-create "*text*")))
@@ -45,11 +45,11 @@
           (text-scratch-mode))
         scratch)))
 
-(defun text-scratch/buffer ()
+(defun text-scratch-buffer ()
   "Switch to the *text* buffer.
 If the buffer doesn't exist, create it first."
   (interactive)
-  (pop-to-buffer-same-window (text-scratch/get-buffer-create)))
+  (pop-to-buffer-same-window (text-scratch-get-buffer-create)))
 
 (provide 'text-scratch)
 ;;; text-scratch.el ends here

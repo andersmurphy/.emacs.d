@@ -1008,8 +1008,7 @@ See `consult-grep' for details."
 (use-package text-scratch
   :straight nil
   :load-path "~/.emacs.d/elisp"
-  ;; open text buffer on init
-  :hook (after-init . text-scratch/buffer))
+  :demand t)
 (use-package abbrev
   :straight nil
   :init
