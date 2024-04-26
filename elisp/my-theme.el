@@ -105,7 +105,7 @@
        ((t (:foreground ,red :weight bold))))
      `(lazy-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(match ((t (:foreground ,fg-match :background unspecified :weight bold))))
-     `(completions-annotations ((t (:foreground ,fg-comment))))
+     `(completions-annotations ((t (:foreground ,fg-dim))))
      `(completions-common-part
        ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
@@ -233,6 +233,8 @@
 
      ;; vertico
      `(vertico-current ((t (:background ,bg-region))))
+     `(vertico-group-separator
+       ((t (:foreground ,fg-dim :strike-through t))))
 
      ;; corfu
      `(corfu-default           ((t (:background ,bg))))
