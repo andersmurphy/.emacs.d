@@ -25,7 +25,11 @@
 
 (defface font-lock-dim-face
   '()
-  "Basic face for highlighting.")
+  "Face for dimming.")
+
+(defface ephemeral-buffer-face
+  '()
+  "Face for ephemeral buffers such as the minibuffer.")
 
 ;; 350 180 160 220 are fun.
 (defun my/random-hue ()
@@ -109,6 +113,7 @@
      `(completions-common-part
        ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
+     `(ephemeral-buffer-face  ((t (:background ,bg-inactive))))
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-constant-face      ((t (:foreground unspecified))))
      `(font-lock-builtin-face       ((t (:foreground unspecified))))
@@ -136,7 +141,7 @@
      `(flyspell-incorrect          ((t (:underline (:style line :color ,fg-error)))))
      `(flyspell-duplicate          ((t (:underline (:style line :color ,fg-warning)))))
      `(vertical-border             ((t (:foreground ,bg-inactive))))
-     `(header-line ((t (:background ,bg-region :foreground ,fg :weight bold))))
+     `(header-line ((t (:background ,bg-inactive :foreground ,fg :weight bold))))
      `(custom-state ((t (:foreground ,green))))
      `(bookmark-face ((t (:foreground ,fg-match))))
      `(compilation-info ((t (:foreground ,fg :weight bold))))
@@ -153,7 +158,7 @@
      `(embark-keybinding ((t (:weight bold))))
 
      ;; xref
-     `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-region :extend t))))
+     `(xref-file-header ((t (:foreground ,fg :weight bold :background ,bg-inactive :extend t))))
      `(xref-match ((t (:foreground ,fg-match :background unspecified :weight bold))))
 
      ;; info
@@ -200,8 +205,8 @@
      `(magit-section-highlight              ((t (:background ,bg :foreground unspecified))))
      `(magit-section-heading
        ((t (:background ,bg :foreground ,fg :weight bold :height ,h2-height))))
-     `(magit-diff-hunk-heading-highlight    ((t (:background ,bg-region :foreground ,fg))))
-     `(magit-diff-hunk-heading              ((t (:background ,bg-region :foreground ,fg))))
+     `(magit-diff-hunk-heading-highlight    ((t (:background ,bg-inactive :foreground ,fg))))
+     `(magit-diff-hunk-heading              ((t (:background ,bg-inactive :foreground ,fg))))
      `(magit-branch-remote ((t (:foreground ,fg-match :weight bold))))
      `(magit-branch-local ((t (:foreground ,fg-match :weight bold))))
      `(magit-hash ((t (:foreground ,fg-comment))))
@@ -234,14 +239,17 @@
      ;; vertico
      `(vertico-current ((t (:background ,bg-region))))
      `(vertico-group-separator
-       ((t (:foreground ,fg-dim :strike-through t))))
+       ((t (:foreground ,bg-inactive :strike-through t))))
+
+     ;; consult
+     `(consult-file ((t (:foreground ,fg))))
 
      ;; corfu
-     `(corfu-default           ((t (:background ,bg))))
+     `(corfu-default           ((t (:background ,bg-inactive))))
      `(corfu-current ((t (:background ,bg-region))))
-     `(corfu-bar ((t (:background ,bg))))
-     `(corfu-border ((t (:background ,bg))))
-     `(corfu-deprecated ((t (:foreground ,fg-comment :strike-through t))))
+     `(corfu-bar ((t (:background ,bg-inactive))))
+     `(corfu-border ((t (:background ,bg-inactive))))
+     `(corfu-deprecated ((t (:foreground ,fg-dim :strike-through t))))
 
      ;; prescient
      `(prescient-primary-highlight ((t (:foreground ,fg-match :background unspecified :weight bold))))

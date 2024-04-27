@@ -192,8 +192,8 @@
   ;; Ask for confirmation when closing emacs.
   (setq confirm-kill-emacs 'y-or-n-p)
 
-  ;; Show keystrokes ASAP
-  (setq echo-keystrokes 0.1)
+  ;; Don't show keystrokes
+  (setq echo-keystrokes nil)
 
   ;; Initial scratch message.
   (setq initial-scratch-message
@@ -243,6 +243,7 @@
   (save-buffer)
   (load  "~/.emacs.d/init.el"))
 (progn ;; Window behaviour
+  
   ;; Sets the initial frame to fill the screen.
   (add-hook 'after-init-hook
             (lambda ()
@@ -252,11 +253,16 @@
   (setq split-width-threshold 100)
 
   (defun my/other-window ()
-    "Switch to another window. If no other window exists create one."
+    "Switch to another window. If no other window exists create one.
+     If in minibuffer close."
     (interactive)
-    (when (one-window-p)
-      (split-window-sensibly))
-    (other-window 1))
+    (if (window-minibuffer-p)
+        (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
+          (abort-recursive-edit))
+      (progn
+        (when (one-window-p)
+          (split-window-sensibly))
+        (other-window 1))))
 
   (defun my/reset-window-layout (_)
     "Reset window layout on width change. Triggers width threshold.
