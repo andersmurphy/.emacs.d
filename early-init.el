@@ -75,14 +75,6 @@
 (load "~/.emacs.d/elisp/my-theme.el")
 (enable-theme 'my)
 
-;; Minibuffer Theme
-(add-hook 'minibuffer-setup-hook
-            (lambda ()
-              (let ((bg (face-background 'ephemeral-buffer-face)))
-                (setq-local face-remapping-alist
-                            `((default (:background ,bg))
-                              (fringe  (:background ,bg)))))))
-
 (defun display-startup-echo-area-message ()
   "Redefine startup echo area message."
   (message "Emacs initialized in: %s" (emacs-init-time))
@@ -94,7 +86,7 @@
 (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
 ;; Temporarily disable modeline
-(setq mode-line-format nil)
+(setq-default mode-line-format nil)
 
 ;;; DISABLE SOME LINT WARNINGS IN THIS FILE
 ;; Local Variables:

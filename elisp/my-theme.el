@@ -27,10 +27,6 @@
   '()
   "Face for dimming.")
 
-(defface ephemeral-buffer-face
-  '()
-  "Face for ephemeral buffers such as the minibuffer.")
-
 ;; 350 180 160 220 are fun.
 (defun my/random-hue ()
   "Select a random hue between 0 and 360 with step of 10."
@@ -113,7 +109,6 @@
      `(completions-common-part
        ((t (:foreground ,fg-match :background unspecified :weight bold))))
      `(minibuffer-prompt            ((t (:foreground ,fg :weight bold))))
-     `(ephemeral-buffer-face  ((t (:background ,bg-inactive))))
      `(font-lock-function-name-face ((t (:foreground ,fg :weight bold))))
      `(font-lock-constant-face      ((t (:foreground unspecified))))
      `(font-lock-builtin-face       ((t (:foreground unspecified))))
