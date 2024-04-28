@@ -136,7 +136,8 @@
      `(flyspell-incorrect          ((t (:underline (:style line :color ,fg-error)))))
      `(flyspell-duplicate          ((t (:underline (:style line :color ,fg-warning)))))
      `(vertical-border             ((t (:foreground ,bg-inactive))))
-     `(header-line ((t (:background ,bg-inactive :foreground ,fg :weight bold))))
+     `(header-line
+       ((t (:foreground ,fg-comment :background ,bg-inactive :weight bold :box (:line-width 4 :color ,bg-inactive) :overline nil :underline nil))))
      `(custom-state ((t (:foreground ,green))))
      `(bookmark-face ((t (:foreground ,fg-match))))
      `(compilation-info ((t (:foreground ,fg :weight bold))))
@@ -199,7 +200,7 @@
      `(magit-diff-section-heading           ((t (:background ,bg :foreground ,fg))))
      `(magit-section-highlight              ((t (:background ,bg :foreground unspecified))))
      `(magit-section-heading
-       ((t (:background ,bg :foreground ,fg :weight bold :height ,h2-height))))
+       ((t (:foreground ,fg :weight bold :height ,h2-height))))
      `(magit-diff-hunk-heading-highlight    ((t (:background ,bg-inactive :foreground ,fg))))
      `(magit-diff-hunk-heading              ((t (:background ,bg-inactive :foreground ,fg))))
      `(magit-branch-remote ((t (:foreground ,fg-match :weight bold))))

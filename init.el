@@ -139,10 +139,137 @@
   (define-key minibuffer-local-map (kbd "C-y") 'topiary/yank)
   (define-key minibuffer-local-map (kbd "C-w") 'topiary/kill)
   (define-key minibuffer-local-map (kbd "C-o") 'my/other-window))
-(defun my/keyboard-firmware-tool ()
-  "Open keyboard firmware configuration tool."
-  (interactive)
-  (shell-command "open -a chrysalis"))
+(use-package emacs
+  :straight nil
+  :config
+
+  ;;; DEFAULTS
+  
+  ;; Answering 'y' or 'n'.
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  ;; General settings
+  (setq-default
+   ;; Prevent accidental exit of emacs
+   confirm-kill-emacs 'y-or-n-p
+   ;; Disable all backups as we are using git.
+   auto-save-default nil
+   auto-save-list-file-prefix nil
+   create-lockfiles nil
+   history-length 500
+   make-backup-files nil
+   backup-inhibited t
+   ;; Nesting minibuffers
+   enable-recursive-minibuffers t
+   ;; Remove duplicates in history
+   max-mini-window-height 1
+   ;; Turn off alarms completely.
+   ring-bell-function 'ignore
+   ;; Disable dialog boxes.
+   use-dialog-box nil
+   ;; Don't ask for confirmation when opening symlinked file.
+   vc-follow-symlinks t
+   ;; Warn when opening large files (bigger than 100MB).
+   large-file-warning-threshold 100000000
+   ;; Makes recenter go to top first.
+   recenter-positions '(top middle bottom)
+   ;; Repeat C-Space after C-u C-Space to keep popping marks.
+   set-mark-command-repeat-pop 't
+   ;; Limit size of echo messages area
+   history-delete-duplicates t
+   ;; Less chatty echo
+   inhibit-message-regexps '(".*recentf.*")
+   echo-keystrokes nil)
+
+  ;; Use Utf-8 encoding.
+  (when (fboundp 'set-charset-priority)
+    (set-charset-priority 'unicode))
+  (prefer-coding-system        'utf-8)
+  (set-terminal-coding-system  'utf-8)
+  (set-keyboard-coding-system  'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (setq-default locale-coding-system      'utf-8
+                buffer-file-coding-system 'utf-8)
+
+  ;; Display help in same window
+  (add-to-list 'display-buffer-alist
+               '("*Help*" display-buffer-same-window))
+
+  (defun my/init ()
+    "Open init file (this file)."
+    (interactive)
+    (find-file "~/.emacs.d/init.el"))
+
+  (defun my/update-emacs-packages ()
+    "Update Emacs packages using straight."
+    (interactive)
+    (straight-check-all)
+    (straight-pull-all)
+    (straight-freeze-versions))
+
+  (defun my/reload-init ()
+    "Reload init."
+    (interactive)
+    (save-buffer)
+    (load  "~/.emacs.d/init.el"))
+
+  (defun my/zoom-in ()
+    "Zoom in all buffers."
+    (interactive)
+    (set-face-attribute
+     'default nil
+     :height (+ (face-attribute 'default :height) 10))
+    (when (eq major-mode 'nov-mode)
+      (my/nov-rerender-without-losing-point))
+    (when (eq major-mode 'eww-mode)
+      (eww-reload t)))
+
+  (defun my/zoom-out ()
+    "Zoom out all buffers."
+    (interactive)
+    (set-face-attribute
+     'default nil
+     :height (- (face-attribute 'default :height) 10))
+    (when (eq major-mode 'nov-mode)
+      (my/nov-rerender-without-losing-point))
+    (when (eq major-mode 'eww-mode)
+      (eww-reload t)))
+
+  (defun my/what-face (pos)
+    "Get face under at POS."
+    (interactive "d")
+    (let ((face (or (get-char-property (point) 'read-face-name)
+                    (get-char-property (point) 'face))))
+      (if face (message "Face: %s" face) (message "No face at %d" pos)))))
+(use-package autorevert
+  :defer 1
+  :straight nil
+  :config
+  ;; Auto update buffer when it is changed by an external source
+  (global-auto-revert-mode))
+(use-package startup
+  :straight nil
+  :init
+  ;; Initial scratch message.
+  (setq initial-scratch-message
+        ";; C-x C-e to evaluate current expression.
+;; M-. to navigate to function source.
+;; C-c C-d to navigate to function docs.
+;; M-x consult-info-emacs to search Emacs/Elisp manuals.
+;; M-x shortdoc-display-group to get elisp cheat sheet by category.\n\n")
+  ;; This delays flymake until after initialisation
+  (setq initial-major-mode nil)
+  :hook (after-init . (lambda () (with-current-buffer "*scratch*"
+                                   (lisp-interaction-mode)))))
+(use-package simple
+  :straight nil
+  :config
+  (defun my/exchange-point-and-mark-no-region ()
+    "Identical to \\[exchange-point-and-mark] but will not activate the region."
+    (interactive)
+    (exchange-point-and-mark)
+    (deactivate-mark nil))
+
+  (define-key global-map [remap exchange-point-and-mark] 'my/exchange-point-and-mark-no-region))
 (use-package kmacro
   :straight nil
   :config
@@ -152,100 +279,9 @@
   (defalias 'kmacro-call-last-macro 'call-last-kbd-macro))
 
 ;;; GENERAL
-(progn ;; Defaults
-
-  ;; Turn off alarms completely.
-  (setq ring-bell-function 'ignore)
-
-  ;; Answering 'y' or 'n'.
-  (defalias 'yes-or-no-p 'y-or-n-p)
-
-  ;; Disable dialog boxes.
-  (setq use-dialog-box nil)
-
-  ;; Disable all backups.
-  (setq-default  auto-save-default nil
-                 auto-save-list-file-prefix nil
-                 create-lockfiles nil
-                 history-length 500
-                 make-backup-files nil
-                 backup-inhibited t)
-
-  ;; Don't ask for confirmation when opening symlinked file.
-  (setq vc-follow-symlinks t)
-
-  ;; Warn when opening large files (bigger than 100MB).
-  (setq large-file-warning-threshold 100000000)
-
-  ;; Use Utf-8 encoding.
-  (when (fboundp 'set-charset-priority)
-    (set-charset-priority 'unicode))
-  (prefer-coding-system        'utf-8)
-  (set-terminal-coding-system  'utf-8)
-  (set-keyboard-coding-system  'utf-8)
-  (set-selection-coding-system 'utf-8)
-  (setq locale-coding-system   'utf-8)
-  (setq-default buffer-file-coding-system 'utf-8)
-
-  ;; Display help in same window
-  (add-to-list 'display-buffer-alist
-               '("*Help*" display-buffer-same-window))
-
-  ;; Ask for confirmation when closing emacs.
-  (setq confirm-kill-emacs 'y-or-n-p)
-
-  ;; Don't show keystrokes
-  (setq echo-keystrokes nil)
-
-  ;; Initial scratch message.
-  (setq initial-scratch-message
-        ";; C-x C-e to evaluate current expression.
-;; M-. to navigate to function source.
-;; C-c C-d to navigate to function docs.
-;; M-x consult-info-emacs to search Emacs/Elisp manuals.
-;; M-x shortdoc-display-group to get elisp cheat sheet by category.\n\n")
-
-  ;; This delays flymake until after initialisation
-  (setq initial-major-mode nil)
-  (add-hook 'after-init-hook
-            (lambda () (with-current-buffer "*scratch*"
-                         (lisp-interaction-mode))))
-
-
-  ;; Makes recenter go to top first.
-  (setq recenter-positions '(top middle bottom))
-
-  ;; Keep hitting C-Space after initial C-u C-Space to pop marks.
-  (setq set-mark-command-repeat-pop 't)
-
-  ;; Auto update buffer when it is changed by an external source
-  (global-auto-revert-mode)
-
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t)
-
-  ;; Remove duplicates in history
-  (setq history-delete-duplicates t)
-
-  ;; Limit size of echo messages area
-  (setq max-mini-window-height 1))
-(defun my/init ()
-  "Open init file (this file)."
-  (interactive)
-  (find-file "~/.emacs.d/init.el"))
-(defun my/update-emacs-packages ()
-  "Update Emacs packages using straight."
-  (interactive)
-  (straight-check-all)
-  (straight-pull-all)
-  (straight-freeze-versions))
-(defun my/reload-init ()
-  "Reload init."
-  (interactive)
-  (save-buffer)
-  (load  "~/.emacs.d/init.el"))
-(progn ;; Window behaviour
-
+(use-package window
+  :straight nil
+  :config
   ;; Sets the initial frame to fill the screen.
   (add-hook 'after-init-hook
             (lambda ()
@@ -360,7 +396,7 @@ This can be used to make the window layout change based on frame size."
   :config
   (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 
-;; FONT
+;; VISUAL
 (use-package ligature
   :init
   (ligature-set-ligatures
@@ -383,17 +419,17 @@ This can be used to make the window layout change based on frame size."
      "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
 
   (global-ligature-mode 't))
-
-;;; VISUAL
-(progn ;; Dynamic theme changes
-
-  ;; To find out the name of the face you want to customise:
-  ;; M-x cutomize-face and then search through the list of faces.
+(use-package my-theme
+  ;; Note: the theme itself is actually loaded in early init
+  :straight nil
+  :config
+  ;;; DYNAMIC THEME
 
   ;; Hook for after theme load.
   ;; Update the theme of these components on theme change.
   (defvar after-load-theme-hook nil
     "Hook run after a colour theme is loaded using `load-theme'.")
+
   (defadvice load-theme (after run-after-load-theme-hook activate)
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
@@ -422,6 +458,7 @@ This can be used to make the window layout change based on frame size."
   ;; Messages buffer is started before init is run so we can't use a hook
   (with-current-buffer "*Messages*"
     (my/color-important-words))
+
   ;; hooks
   (add-hook 'messages-buffer-mode-hook 'my/color-important-words)
   (add-hook 'clojure-mode-hook 'my/dim-parens)
@@ -434,84 +471,12 @@ This can be used to make the window layout change based on frame size."
   (add-hook 'shell-mode-hook 'my/color-important-words)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-filter)
   (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
-(defun my/zoom-in ()
-  "Zoom in all buffers."
-  (interactive)
-  (set-face-attribute
-   'default nil
-   :height (+ (face-attribute 'default :height) 10))
-  (when (eq major-mode 'nov-mode)
-    (my/nov-rerender-without-losing-point))
-  (when (eq major-mode 'eww-mode)
-    (eww-reload t)))
-(defun my/zoom-out ()
-  "Zoom out all buffers."
-  (interactive)
-  (set-face-attribute
-   'default nil
-   :height (- (face-attribute 'default :height) 10))
-  (when (eq major-mode 'nov-mode)
-    (my/nov-rerender-without-losing-point))
-  (when (eq major-mode 'eww-mode)
-    (eww-reload t)))
-(defun my/what-face (pos)
-  "Get face under at POS."
-  (interactive "d")
-  (let ((face (or (get-char-property (point) 'read-face-name)
-                  (get-char-property (point) 'face))))
-    (if face (message "Face: %s" face) (message "No face at %d" pos))))
-(progn ;; Mode Line
-  ;; Functions for determining if mode line is active.
-  (defvar my/mode-line-selected-window (frame-selected-window))
-
-  (defun my/mode-line-set-selected-window (&rest _args)
-    (when (not (minibuffer-window-active-p (frame-selected-window)))
-      (setq my/mode-line-selected-window (frame-selected-window))
-      (force-mode-line-update)))
-
-  (defun my/mode-line-selected-active-p ()
-    (eq my/mode-line-selected-window (selected-window)))
-
-  (add-hook 'window-configuration-change-hook #'my/mode-line-set-selected-window)
-  (advice-add 'handle-switch-frame :after #'my/mode-line-set-selected-window)
-  (advice-add 'select-window :after #'my/mode-line-set-selected-window)
-
-  ;; Custom minimalist mode line with right aligned time and battery
-  (setq-default mode-line-format
-                '("%e" mode-line-front-space
-                  mode-line-buffer-identification
-                  (:eval
-                   (when (my/mode-line-selected-active-p)
-                     (list (propertize
-                            " " 'display
-                            `(space
-                              :align-to
-                              (- right
-                                 ,(+ (length battery-mode-line-string)
-                                     (length display-time-string)))))
-                           'battery-mode-line-string
-                           'display-time-string)))))
-
-  ;; Display time in mode line.
-  (defvar display-time-default-load-average)
-  (setq display-time-default-load-average nil)
-  (defvar display-time-string-forms)
-  (setq display-time-string-forms
-        '((propertize (format-time-string "%F %H:%M" now) 'face 'bold)))
-  (display-time-mode t)
-
-  ;; Display battery
-  (display-battery-mode 1))
+(use-package my-mode-line
+  :straight nil
+  :load-path "~/.emacs.d/elisp"
+  :hook (after-init . my/mode-line-init))
 
 ;;; META NAVIGATION
-(progn ;; Mark
-  (defun my/exchange-point-and-mark-no-region ()
-    "Identical to \\[exchange-point-and-mark] but will not activate the region."
-    (interactive)
-    (exchange-point-and-mark)
-    (deactivate-mark nil))
-
-  (define-key global-map [remap exchange-point-and-mark] 'my/exchange-point-and-mark-no-region))
 (use-package recentf
   :defer 1
   :straight nil
@@ -866,6 +831,10 @@ See `consult-grep' for details."
   :config
   ;; Disable preview, to enable set to 'any
   (setq consult-preview-key nil))
+(use-package embark-consult
+  :ensure t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 (use-package embark
   :ensure t
   :bind
@@ -881,10 +850,6 @@ See `consult-grep' for details."
   ;; Configure embark-dwim actions
   ;; Don't want flymake at point as a target (would rather go to source)
   (delete 'embark-target-flymake-at-point embark-target-finders))
-(use-package embark-consult
-  :ensure t
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;;; TEXT FORMATTING
 (progn ;; Defaults
@@ -1165,11 +1130,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :config
   (jarchive-mode))
 ;; SQL
-(defun my/start-postgresql ()
-  "Start local postgresql database."
-  (interactive)
-  (async-shell-command
-   "brew services start postgresql" (generate-new-buffer "*postgresql*")))
 (use-package sql
   :straight nil)
 (use-package sql-indent
@@ -1179,7 +1139,47 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 (use-package clojure-mode
   :config
   (setq clojure-align-forms-automatically t)
-  (setq clojure-indent-style 'always-indent))
+  (setq clojure-indent-style 'always-indent)
+
+  ;;; FUNCTIONS
+
+  (defun my/js-to-json ()
+    "Convert topiary region js to json."
+    (interactive)
+    (let* ((bounds (topiary/compute-bounds))
+           (node (when (executable-find "node")
+                   (format "node -e 'console.log(JSON.stringify(%s, null, 2))'"
+                           (thread-last
+                             (buffer-substring-no-properties
+                              (car bounds)
+                              (cdr bounds))
+                             (replace-regexp-in-string
+                              "'" "\"")
+                             (replace-regexp-in-string
+                              (pcre-to-elisp ",([\n\r\s]*)}")
+                              "\\1}"))))))
+      (if node
+          (shell-command-on-region
+           (car bounds)
+           (cdr bounds)
+           node
+           (current-buffer) t)
+        (user-error "Could not find node install"))))
+
+  (defun my/json-to-edn ()
+    "Convert topiary region js/json to edn."
+    (interactive)
+    (let ((jet (when (executable-find "jet")
+                 "jet --pretty --keywordize keyword --from json --to edn")))
+      (if jet
+          (progn
+            (my/js-to-json)
+            (let* ((bounds (topiary/compute-bounds)))
+              (shell-command-on-region
+               (car bounds)
+               (cdr bounds)
+               jet (current-buffer) t)))
+        (user-error "Could not find jet installed")))))
 (use-package clj
   :straight nil
   :after clojure-mode
@@ -1200,43 +1200,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("C-c C-t C-p" . my/clj-run-project-tests)))
 (use-package html-to-hiccup
   :ensure t)
-(defun my/js-to-json ()
-  "Convert topiary region js to json."
-  (interactive)
-  (let* ((bounds (topiary/compute-bounds))
-         (node (when (executable-find "node")
-                 (format "node -e 'console.log(JSON.stringify(%s, null, 2))'"
-                         (thread-last
-                           (buffer-substring-no-properties
-                            (car bounds)
-                            (cdr bounds))
-                           (replace-regexp-in-string
-                            "'" "\"")
-                           (replace-regexp-in-string
-                            (pcre-to-elisp ",([\n\r\s]*)}")
-                            "\\1}"))))))
-    (if node
-        (shell-command-on-region
-         (car bounds)
-         (cdr bounds)
-         node
-         (current-buffer) t)
-      (user-error "Could not find node install"))))
-(defun my/json-to-edn ()
-  "Convert topiary region js/json to edn."
-  (interactive)
-  (let ((jet (when (executable-find "jet")
-               "jet --pretty --keywordize keyword --from json --to edn")))
-    (if jet
-        (progn
-          (my/js-to-json)
-          (let* ((bounds (topiary/compute-bounds)))
-            (shell-command-on-region
-             (car bounds)
-             (cdr bounds)
-             jet (current-buffer) t)))
-      (user-error "Could not find jet installed"))))
-
 ;; JavaScript
 (use-package js
   :straight nil
@@ -1293,6 +1256,15 @@ files in the project. Respects gitignore."
   "Open current file in finder."
   (interactive)
   (shell-command "open ."))
+(defun my/keyboard-firmware-tool ()
+  "Open keyboard firmware configuration tool."
+  (interactive)
+  (shell-command "open -a chrysalis"))
+(defun my/start-postgresql ()
+  "Start local postgresql database."
+  (interactive)
+  (async-shell-command
+   "brew services start postgresql" (generate-new-buffer "*postgresql*")))
 
 ;;; MEDIA
 (use-package nov
@@ -1398,25 +1370,11 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
   :hook ((eww-mode . my/eww-font-setup)
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
-(progn ;; Text to speech
-  (let ((buffer-name "*Speak Region*"))
-
-    (defun my/speak-region ()
-      "Convert text in region to audio."
-      (interactive)
-      (let ((text (buffer-substring-no-properties (region-beginning)
-                                                  (region-end))))
-        (when (get-buffer buffer-name)
-          (kill-buffer buffer-name))
-        (start-process
-         "say"
-         (generate-new-buffer buffer-name)
-         "say"
-         (shell-quote-argument text))))
-
-    (add-to-list
-     'display-buffer-alist
-     `(,buffer-name display-buffer-no-window (nil)))))
+(use-package speak-region
+  :straight nil
+  :load-path "~/.emacs.d/elisp"
+  ;; Need to set this, not sure why auto load not working?
+  :commands speak-region)
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
 (when (file-directory-p "~/.emacs.d/emacs-sync")
