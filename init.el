@@ -41,9 +41,7 @@
   (setq load-prefer-newer t)
 
   ;; Bootstrap use-package
-  ;; Install use-package if it's not already installed.
   ;; use-package is used to configure the rest of the packages.
-  (straight-use-package 'use-package)
   (defvar straight-use-package-by-default)
   (setq straight-use-package-by-default t)
 
