@@ -5,7 +5,6 @@
 ;;To turn on debugger on error: M-x toggle-debug-on-error
 
 (require 'parseedn)
-(require 'dash)
 (require 'inf-lisp)
 
 (defmacro my/when-repl-running (&rest forms)
@@ -22,10 +21,11 @@
 
 (defun my/clj-eval (command)
   "Evaluate elisp representation of COMMAND or string."
-  (-> (if (stringp command)
-          command
-        (parseedn-print-str command))
-      lisp-eval-string))
+  (thread-first
+    (if (stringp command)
+        command
+      (parseedn-print-str command))
+    lisp-eval-string))
 
 (defun my/clj-get-current-namespace-symbol ()
   "Get symbol for current buffer namespace."
@@ -60,8 +60,9 @@ Handles both string and edn commands."
 (defun my/clj-eval-with-ns (command)
   "Evaluate COMMAND in the context of the current buffer namespace.
 If buffer doesn't have namespace defaults to current namespace."
-  (-> (my/clj-format-with-ns command)
-      lisp-eval-string))
+  (thread-first
+    (my/clj-format-with-ns command)
+    lisp-eval-string))
 
 (defun my/clj-eval-last-sexp ()
   "Evaluate previous sexp."
@@ -171,9 +172,10 @@ current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
     (list (buffer-file-name) "bb repl"))
-   (t (-> (directory-file-name dirname)
-          file-name-directory
-          (my/try-to-find-project-file clj-lisp-prog)))))
+   (t (thread-first
+        (directory-file-name dirname)
+        file-name-directory
+        (my/try-to-find-project-file clj-lisp-prog)))))
 
 (defun my/try-to-open-clj-project-file (&optional clj-lisp-prog)
   "Will try to open the correct project root project.clj/deps.edn file.
@@ -253,9 +255,10 @@ Works up directories starting from the current files directory DIRNAME."
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
     (directory-file-name dirname))
-   (t (-> (directory-file-name dirname)
-          file-name-directory
-          my/try-to-find-git-root))))
+   (t (thread-first
+        (directory-file-name dirname)
+        file-name-directory
+        my/try-to-find-git-root))))
 
 (defun my/clj-doc-for-symbol ()
   "Print doc for symbol at point."
@@ -417,7 +420,7 @@ Works from both namespace and test namespace"
 (defun my/clj-toggle-between-implementation-and-test ()
   "Toggle between implementation and test files. Reuses current window."
   (interactive)
-  (-> (buffer-file-name)
+  (thread-first (buffer-file-name)
       my/clj-find-implementation-or-test
       find-file))
 

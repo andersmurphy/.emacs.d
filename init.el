@@ -65,7 +65,6 @@
 (defmacro comment (&rest _)
   "Ignore BODY, yields nil."
   nil)
-(use-package dash) ;; functional helpers
 (use-package parseedn)  ;; edn parsing
 (use-package pcre2el) ;; regex conversion
 (use-package elisp-mode
