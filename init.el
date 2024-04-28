@@ -69,6 +69,7 @@
   nil)
 (use-package dash) ;; functional helpers
 (use-package parseedn)  ;; edn parsing
+(use-package pcre2el) ;; regex conversion
 (use-package elisp-mode
   :straight nil
   :config
@@ -87,13 +88,17 @@
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
               :map lisp-interaction-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
-(use-package pcre2el) ;; regex conversion
 
 ;;; CONTROLS
 (progn ;; Defaults
 
   ;; Bind cmd (super) key to control
   (setq mac-command-modifier 'control)
+
+  ;; Unbind suspend-frame.
+  ;; This would cause the cursor to disappear if you pressed C-x C-z
+  ;; by mistake.
+  (global-unset-key (kbd "C-x C-z"))
 
   ;; Swap ; and :
   (define-key key-translation-map (kbd ";") (kbd ":"))
@@ -243,7 +248,7 @@
   (save-buffer)
   (load  "~/.emacs.d/init.el"))
 (progn ;; Window behaviour
-  
+
   ;; Sets the initial frame to fill the screen.
   (add-hook 'after-init-hook
             (lambda ()
@@ -383,10 +388,6 @@ This can be used to make the window layout change based on frame size."
   (global-ligature-mode 't))
 
 ;;; VISUAL
-(progn ;; Defaults
-  ;; Unbind suspend-frame.
-  ;; This would cause the cursor to disappear if you pressed C-x C-z by mistake.
-  (global-unset-key (kbd "C-x C-z")))
 (progn ;; Dynamic theme changes
 
   ;; To find out the name of the face you want to customise:
@@ -506,25 +507,6 @@ This can be used to make the window layout change based on frame size."
   (display-battery-mode 1))
 
 ;;; META NAVIGATION
-(defun my/osx-open-in-finder ()
-  "Open current file in finder."
-  (interactive)
-  (shell-command "open ."))
-(defun my/count-lines ()
-  "Count lines in project. Filters by current buffer file extension.
-i.e if the current buffer is a .clj file then it will count lines of .clj
-files in the project. Respects gitignore."
-  (interactive)
-  (let ((default-directory (vc-root-dir))
-        (extension (file-name-extension (buffer-name (current-buffer)))))
-    (cond ((not default-directory)
-           (message "Project does not have a git root."))
-          ((not extension)
-           (message "File does not have extension."))
-          (t (async-shell-command
-              (format "git ls-files '*.%s' | xargs wc -l | sort -n"
-                      extension)
-              (generate-new-buffer "*line-count*"))))))
 (progn ;; Mark
   (defun my/exchange-point-and-mark-no-region ()
     "Identical to \\[exchange-point-and-mark] but will not activate the region."
@@ -1295,6 +1277,25 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
       (seconds-to-time
        (string-to-number (buffer-substring-no-properties
                           (car bounds) (cdr bounds))))))))
+(defun my/count-lines ()
+  "Count lines in project. Filters by current buffer file extension.
+i.e if the current buffer is a .clj file then it will count lines of .clj
+files in the project. Respects gitignore."
+  (interactive)
+  (let ((default-directory (vc-root-dir))
+        (extension (file-name-extension (buffer-name (current-buffer)))))
+    (cond ((not default-directory)
+           (message "Project does not have a git root."))
+          ((not extension)
+           (message "File does not have extension."))
+          (t (async-shell-command
+              (format "git ls-files '*.%s' | xargs wc -l | sort -n"
+                      extension)
+              (generate-new-buffer "*line-count*"))))))
+(defun my/osx-open-in-finder ()
+  "Open current file in finder."
+  (interactive)
+  (shell-command "open ."))
 
 ;;; MEDIA
 (use-package nov
