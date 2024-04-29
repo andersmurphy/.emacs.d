@@ -16,7 +16,8 @@
 
   ;; To not increase Emacs startup time, check package modifications when
   ;; packages edited (with Emacs), instead of checking modifications at startup.
-  (setq straight-check-for-modifications '(check-on-save find-when-checking))
+  (setq straight-check-for-modifications
+        '(check-on-save find-when-checking))
   ;; Use default depth of 1 when cloning files with git to get
   ;; saves network bandwidth and disk space.
   (setq straight-vc-git-default-clone-depth 1)
@@ -48,137 +49,62 @@
   ;; Lazy
   (setq use-package-always-defer t)
 
-  ;; Profilling - M-x use-package-report
+  ;; Profiling - M-x use-package-report
   ;; (setq use-package-compute-statistics t)
 
   ;; Forces Custom to save all customizations in a separate file
   (setq custom-file "~/.emacs.d/custom.el"))
 
-;; Needs to be called as soon as possible for native compilation
+;;; PATH - (needs to be called as the first use-package)
 (use-package exec-path-from-shell
   :demand t
   :if (memq window-system '(mac ns x))
   :init
   (exec-path-from-shell-initialize))
 
-;;; EMACS LISP EXTENSION
+;;; EMACS LISP LIBRARIES
 (defmacro comment (&rest _)
   "Ignore BODY, yields nil."
   nil)
 (use-package parseedn)  ;; edn parsing
 (use-package pcre2el) ;; regex conversion
-(use-package elisp-mode
-  :straight nil
-  :config
-  (defun my/docs-for-elisp-symbol-at-point ()
-    "Show docs for elisp symbol at point."
-    (interactive)
-    (describe-function (symbol-at-point)))
 
-  ;; Use function name face on use package declarations
-  (font-lock-add-keywords
-   'emacs-lisp-mode
-   '(("(\\(use-package\\)\\_>[   ']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
-      (2 font-lock-function-name-face nil t))))
-
-  :bind (:map emacs-lisp-mode-map
-              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
-              :map lisp-interaction-mode-map
-              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
-
-;;; CONTROLS
-(progn ;; Defaults
-
-  ;; Bind cmd (super) key to control
-  (setq mac-command-modifier 'control)
-
-  ;; Unbind suspend-frame.
-  ;; This would cause the cursor to disappear if you pressed C-x C-z
-  ;; by mistake.
-  (global-unset-key (kbd "C-x C-z"))
-
-  ;; Swap ; and :
-  (define-key key-translation-map (kbd ";") (kbd ":"))
-  (define-key key-translation-map (kbd ":") (kbd ";"))
-
-  ;; Make return/enter key behave like C-m
-  (define-key key-translation-map (kbd "RET") (kbd "C-m"))
-
-  ;; Global key bindings
-  (global-set-key (kbd "C-x f") 'find-file)
-  (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
-  (global-set-key (kbd "C-z") 'undo)
-  (global-set-key (kbd "C-x C-d") 'dired)
-  (global-set-key (kbd "M-c") 'org-capture)
-  (global-set-key (kbd "C-x o") 'my/other-window)
-  (global-set-key (kbd "C-o") 'my/other-window)
-  (global-set-key (kbd "C-x k") 'kill-this-buffer)
-  (global-set-key (kbd "C-x 2")
-                  (lambda () (interactive)
-                    (split-window-below)
-                    (other-window 1)))
-  (global-set-key (kbd "C-x 3")
-                  (lambda () (interactive)
-                    (split-window-right)
-                    (other-window 1)))
-  (global-set-key (kbd "C-x -") 'my/zoom-out)
-  (global-set-key (kbd "C-x C--") 'my/zoom-out)
-  (global-set-key (kbd "C-x +") 'my/zoom-in)
-  (global-set-key (kbd "C-x C-+") 'my/zoom-in)
-  ;; C-M-\ is a bit awkward and C-\ (toggle input method)
-  ;; is not something I use.
-  (global-set-key (kbd "C-\\") 'indent-region)
-  ;; Unbind tmm-menubar as I never use it.
-  (global-unset-key (kbd "M-`"))
-  ;; Unbind scroll down as I never use it.
-  ;; Scroll up is also unbound (C-v is bound to something else).
-  (global-unset-key (kbd "M-v"))
-
-  ;; Minibuffer binding
-  (define-key minibuffer-local-map (kbd "C-v") 'topiary/yank)
-  (define-key minibuffer-local-map (kbd "C-y") 'topiary/yank)
-  (define-key minibuffer-local-map (kbd "C-w") 'topiary/kill)
-  (define-key minibuffer-local-map (kbd "C-o") 'my/other-window))
+;;; GENERAL
 (use-package emacs
   :straight nil
+  :init
   :config
-
-  ;;; DEFAULTS
-  
-  ;; Answering 'y' or 'n'.
-  (defalias 'yes-or-no-p 'y-or-n-p)
   ;; General settings
   (setq-default
-   ;; Prevent accidental exit of emacs
    confirm-kill-emacs 'y-or-n-p
-   ;; Disable all backups as we are using git.
    auto-save-default nil
    auto-save-list-file-prefix nil
    create-lockfiles nil
    history-length 500
    make-backup-files nil
    backup-inhibited t
-   ;; Nesting minibuffers
    enable-recursive-minibuffers t
-   ;; Remove duplicates in history
    max-mini-window-height 1
-   ;; Turn off alarms completely.
    ring-bell-function 'ignore
-   ;; Disable dialog boxes.
    use-dialog-box nil
-   ;; Don't ask for confirmation when opening symlinked file.
    vc-follow-symlinks t
-   ;; Warn when opening large files (bigger than 100MB).
    large-file-warning-threshold 100000000
-   ;; Makes recenter go to top first.
    recenter-positions '(top middle bottom)
-   ;; Repeat C-Space after C-u C-Space to keep popping marks.
    set-mark-command-repeat-pop 't
-   ;; Limit size of echo messages area
    history-delete-duplicates t
-   ;; Less chatty echo
+   echo-keystrokes nil
+   set-message-functions '(inhibit-message set-minibuffer-message)
    inhibit-message-regexps '(".*recentf.*")
-   echo-keystrokes nil)
+   mac-command-modifier 'control
+   indent-tabs-mode nil
+   tab-width 2
+   tab-always-indent 'complete
+   sentence-end-double-space nil)
+
+  ;; force pin entry through emacs
+  (setenv "GPG_AGENT_INFO" nil)
+  (setq epg-pinentry-mode 'loopback
+        epa-file-select-keys nil)
 
   ;; Use Utf-8 encoding.
   (when (fboundp 'set-charset-priority)
@@ -193,6 +119,11 @@
   ;; Display help in same window
   (add-to-list 'display-buffer-alist
                '("*Help*" display-buffer-same-window))
+
+  ;; Add alias for insert-kbd-macro and call-last-kbd-macro that
+  ;; matches kmacro naming of other commands.
+  (defalias 'kmacro-insert-macro 'insert-kbd-macro)
+  (defalias 'kmacro-call-last-macro 'call-last-kbd-macro)
 
   (defun my/init ()
     "Open init file (this file)."
@@ -234,18 +165,88 @@
     (when (eq major-mode 'eww-mode)
       (eww-reload t)))
 
-  (defun my/what-face (pos)
-    "Get face under at POS."
-    (interactive "d")
-    (let ((face (or (get-char-property (point) 'read-face-name)
-                    (get-char-property (point) 'face))))
-      (if face (message "Face: %s" face) (message "No face at %d" pos)))))
-(use-package autorevert
-  :defer 1
+  (defun my/dedupe-kill (args)
+    "Prevent sequential duplicate items in kill ring."
+    (let ((string (car args))
+          (replace (cdr args))
+          (last (car-safe kill-ring)))
+      (when (equal last string)
+        (setq replace t))
+      (list string replace)))
+  (advice-add 'kill-new :filter-args #'my/dedupe-kill)
+
+  (defun my/exchange-point-and-mark-no-region ()
+    "Identical to \\[exchange-point-and-mark] but will not activate the region."
+    (interactive)
+    (exchange-point-and-mark)
+    (deactivate-mark nil))
+
+  ;; Unbind suspend-frame.
+  ;; This would cause the cursor to disappear if you pressed C-x C-z
+  ;; by mistake.
+  (global-unset-key (kbd "C-x C-z"))
+  ;; Unbind tmm-menubar as I never use it.
+  (global-unset-key (kbd "M-`"))
+  ;; Unbind scroll down as I never use it.
+  ;; Scroll up is also unbound (C-v is bound to something else).
+  (global-unset-key (kbd "M-v"))
+  ;; Translations
+  (define-key key-translation-map ":" ";")
+  (define-key key-translation-map ";" ":")
+  (define-key key-translation-map (kbd "RET") (kbd "C-m"))
+  :bind ((:map global-map
+               ("C-x f"   . find-file)
+               ("C-x C-f" . find-file)
+               ("C-z"     . undo)
+               ("C-x d"   . dired)
+               ("C-x C-d" . dired)
+               ("M-c"     . org-capture)
+               ("C-o"     . my/other-window)
+               ("C-x o"   . my/other-window)
+               ("C-x k"   . kill-this-buffer)
+               ("C-x 2"   . (lambda () (interactive)
+                              (split-window-sensibly)
+                              (other-window 1)))
+               ("C-x 3"   . (lambda () (interactive)
+                              (split-window-sensibly)
+                              (other-window 1)))
+               ("C-x -"   . my/zoom-out)
+               ("C-x C--" . my/zoom-out)
+               ("C-x +"   . my/zoom-in)
+               ("C-x C-+" . my/zoom-in)
+               ;; C-M-\ is a bit awkward and C-\ (toggle input method)
+               ;; is not something I use.
+               ("C-\\"    . indent-region)
+               ([remap exchange-point-and-mark] .
+                my/exchange-point-and-mark-no-region))
+         (:map minibuffer-local-map
+               ("C-v" . topiary/yank)
+               ("C-y" . topiary/yank)
+               ("C-w" . topiary/kill)
+               ("C-o" . my/other-window)))
+  :hook (after-init . (lambda ()
+                        ;; Enable visual line mode
+                        (global-visual-line-mode)
+                        ;; Enable auto revert
+                        (global-auto-revert-mode))))
+(use-package elisp-mode
   :straight nil
   :config
-  ;; Auto update buffer when it is changed by an external source
-  (global-auto-revert-mode))
+  (defun my/docs-for-elisp-symbol-at-point ()
+    "Show docs for elisp symbol at point."
+    (interactive)
+    (describe-function (symbol-at-point)))
+
+  ;; Use function name face on use package declarations
+  (font-lock-add-keywords
+   'emacs-lisp-mode
+   '(("(\\(use-package\\)\\_>[   ']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
+      (2 font-lock-function-name-face nil t))))
+
+  :bind (:map emacs-lisp-mode-map
+              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
+              :map lisp-interaction-mode-map
+              ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
 (use-package startup
   :straight nil
   :init
@@ -259,35 +260,12 @@
   ;; This delays flymake until after initialisation
   (setq initial-major-mode nil)
   :hook (after-init . (lambda () (with-current-buffer "*scratch*"
+                                   (setq initial-major-mode
+                                         'lisp-interaction-mode)
                                    (lisp-interaction-mode)))))
-(use-package simple
-  :straight nil
-  :config
-  (defun my/exchange-point-and-mark-no-region ()
-    "Identical to \\[exchange-point-and-mark] but will not activate the region."
-    (interactive)
-    (exchange-point-and-mark)
-    (deactivate-mark nil))
-
-  (define-key global-map [remap exchange-point-and-mark] 'my/exchange-point-and-mark-no-region))
-(use-package kmacro
-  :straight nil
-  :config
-  ;; Add alias for insert-kbd-macro and call-last-kbd-macro that
-  ;; matches kmacro naming of other commands.
-  (defalias 'kmacro-insert-macro 'insert-kbd-macro)
-  (defalias 'kmacro-call-last-macro 'call-last-kbd-macro))
-
-;;; GENERAL
 (use-package window
   :straight nil
   :config
-  ;; Sets the initial frame to fill the screen.
-  (add-hook 'after-init-hook
-            (lambda ()
-              (toggle-frame-fullscreen)
-              (switch-to-buffer "*Messages*")))
-
   (setq split-width-threshold 100)
 
   (defun my/other-window ()
@@ -316,7 +294,11 @@ This can be used to make the window layout change based on frame size."
         (other-window 1))))
 
   ;;  Automatically change window layout on frame resize.
-  (setq window-size-change-functions '(my/reset-window-layout)))
+  (setq window-size-change-functions '(my/reset-window-layout))
+  :hook (after-init . (lambda ()
+                        ;; Sets the initial frame to fill the screen.
+                        (toggle-frame-fullscreen)
+                        (switch-to-buffer "*Messages*"))))
 (use-package Info-mode
   :straight nil
   :init
@@ -379,11 +361,6 @@ This can be used to make the window layout change based on frame size."
   :load-path "~/.emacs.d/elisp")
 
 ;;; PRIVACY
-(progn ;; GPG
-  ;; force pin entry through emacs
-  (setenv "GPG_AGENT_INFO" nil)
-  (setq epg-pinentry-mode 'loopback)
-  (setq epa-file-select-keys nil))
 (use-package totp
   :straight nil
   ;; further reading
@@ -396,7 +373,7 @@ This can be used to make the window layout change based on frame size."
   :config
   (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 
-;; VISUAL
+;;; VISUAL
 (use-package ligature
   :init
   (ligature-set-ligatures
@@ -745,6 +722,7 @@ If this becomes a problem these common lines could be filtered."
 (use-package consult
   :bind
   (("C-x b"   . my/consult-omni)
+   ("C-x C-b" . my/consult-omni)
    ("C-x p"   . my/consult-omni)
    ("C-x r b" . consult-bookmark)
    ("C-M-s"   . my/consult-ripgrep)
@@ -852,32 +830,6 @@ See `consult-grep' for details."
   (delete 'embark-target-flymake-at-point embark-target-finders))
 
 ;;; TEXT FORMATTING
-(progn ;; Defaults
-
-  ;; Enable visual line mode
-  (global-visual-line-mode)
-
-  ;; Only use spaces
-  (setq-default indent-tabs-mode nil)
-
-  ;; Set tab width.
-  (setq-default tab-width 2)
-
-  ;; Tab will contextually indent or complete.
-  (setq tab-always-indent 'complete)
-
-  ;; Sentence should end with only a full stop
-  (setq sentence-end-double-space nil)
-
-  (defun my/dedupe-kill (args)
-    "Prevent sequential duplicate items in kill ring."
-    (let ((string (car args))
-          (replace (cdr args))
-          (last (car-safe kill-ring)))
-      (when (equal last string)
-        (setq replace t))
-      (list string replace)))
-  (advice-add 'kill-new :filter-args #'my/dedupe-kill))
 (use-package hideshow
   :straight nil
   :config
@@ -959,7 +911,7 @@ See `consult-grep' for details."
   :bind (:map special-mode-map
               ("C-w" . topiary/kill)))
 
-;; WRITING
+;;; WRITING
 (use-package text-scratch
   :straight nil
   :load-path "~/.emacs.d/elisp"
@@ -1265,6 +1217,12 @@ files in the project. Respects gitignore."
   (interactive)
   (async-shell-command
    "brew services start postgresql" (generate-new-buffer "*postgresql*")))
+(defun my/what-face (pos)
+  "Get face under at POS."
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
 ;;; MEDIA
 (use-package nov
