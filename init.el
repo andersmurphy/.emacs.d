@@ -1237,11 +1237,11 @@ files in the project. Respects gitignore."
       (goto-char point)))
   (defun my/nov-font-setup ()
     (face-remap-add-relative 'variable-pitch
-                             :height 1.3)
+                             :height 1.2)
     (my/nov-rerender-without-losing-point))
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   :config
-  (setq nov-text-width 80)
+  (setq nov-text-width 65)
   :hook (nov-mode . my/nov-font-setup))
 (use-package emms ;; M-x emms-play-directory
   ;; NOTE: emms tends to break now and then with byte compilation.
