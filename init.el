@@ -76,6 +76,7 @@
   :config
   ;; General settings
   (setq-default
+   use-short-answers t
    confirm-kill-emacs 'y-or-n-p
    auto-save-default nil
    auto-save-list-file-prefix nil
