@@ -38,6 +38,10 @@
 ;;;###autoload
 (defun my/mode-line-init ()
   "Custom minimalist mode line with right aligned time and battery."
+  (add-hook 'window-configuration-change-hook #'my/mode-line-set-selected-window)
+  (advice-add 'handle-switch-frame :after #'my/mode-line-set-selected-window)
+  (advice-add 'select-window :after #'my/mode-line-set-selected-window)
+
   (setq-default mode-line-format my/mode-line-format)
   ;; Display time in mode line.
   (setq display-time-default-load-average nil)

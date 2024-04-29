@@ -299,8 +299,6 @@ This can be used to make the window layout change based on frame size."
   :hook (after-init . (lambda ()
                         ;; Sets the initial frame to fill the screen.
                         (toggle-frame-fullscreen)
-                        ;; Open second window
-                        (my/other-window)
                         (switch-to-buffer "*Messages*"))))
 (use-package Info-mode
   :straight nil
