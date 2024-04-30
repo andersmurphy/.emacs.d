@@ -604,7 +604,7 @@ This can be used to make the window layout change based on frame size."
           (magit-shell-command-topdir
            (concat
             "git push -u origin " branch-name
-            ";gh pr create --head --fill-first"
+            ";gh pr create --fill --head " branch-name
             ";git checkout " master-name))))))
 
   (defun my/magit-create-private-github-remote ()
