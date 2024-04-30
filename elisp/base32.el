@@ -29,7 +29,7 @@ required for HMAC-TOTP."
   (if (= (mod (length string) 8) 0)
       (format
        "%X"
-       (seq-reduce ;; TODO: what is the name of this step??
+       (seq-reduce
         (lambda (acc char) (+ (ash acc 5) (aref base32-alphabet char)))
         (thread-first
           (upcase string)
