@@ -285,7 +285,8 @@
     "Reset window layout on width change. Triggers width threshold.
 This can be used to make the window layout change based on frame size."
     (unless (or (= (window-old-pixel-width) (window-pixel-width))
-                (one-window-p))
+                (one-window-p)
+                (not (frame-size-changed-p)))
       (let* ((_ (other-window 1))
              (other-buff (buffer-name)))
         (delete-window)
