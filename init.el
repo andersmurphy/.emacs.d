@@ -93,7 +93,7 @@
    recenter-positions '(top middle bottom)
    set-mark-command-repeat-pop 't
    history-delete-duplicates t
-   echo-keystrokes nil
+   echo-keystrokes 0.1
    set-message-functions '(inhibit-message set-minibuffer-message)
    inhibit-message-regexps '(".*recentf.*")
    mac-command-modifier 'control
