@@ -826,6 +826,12 @@ See `consult-grep' for details."
   :init
   ;; Replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
+  ;; More minimalist embark (using completion)
+  (setq embark-prompter 'embark-completing-read-prompter)
+  (setq embark-indicators
+      '(embark-minimal-indicator  ; default is embark-mixed-indicator
+        embark-highlight-indicator
+        embark-isearch-highlight-indicator))
   :config
   ;; Configure embark-dwim actions
   ;; Don't want flymake at point as a target (would rather go to source)
