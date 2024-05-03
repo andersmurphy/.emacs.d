@@ -475,7 +475,7 @@ This can be used to make the window layout change based on frame size."
   (setq isearch-lax-whitespace t)
   (setq isearch-regexp-lax-whitespace nil)
   (setq isearch-lazy-highlight t)
-  (setq search-invisible nil)
+  (setq search-invisible 'open)
 
   (defun my/isearch-thing-at-point ()
     (interactive)
