@@ -1075,10 +1075,16 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :config
   (setq eglot-confirm-server-initiated-edits nil)
   (setq eglot-sync-connect 0)
+  (eglot-autoshutdown t)
   (setq eglot-ignored-server-capabilities
-        '(:documentHighlightProvider
+        '(:signatureHelpProvider
           :hoverProvider
-          :signatureHelpProvider))
+          :documentHighlightProvider
+          :documentFormattingProvider
+          :documentRangeFormattingProvider
+          :documentOnTypeFormattingProvider
+          :colorProvider
+          :foldingRangeProvider))
 
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
