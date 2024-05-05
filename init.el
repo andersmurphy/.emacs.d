@@ -812,11 +812,9 @@ See `consult-grep' for details."
   ;; Disable preview, to enable set to 'any
   (setq consult-preview-key nil))
 (use-package embark-consult
-  :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 (use-package embark
-  :ensure t
   :bind
   (("C-." . embark-act)
    ("M-." . embark-dwim)
@@ -1086,7 +1084,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (((clojure-mode js-mode) . eglot-ensure)))
 (use-package jarchive
   :after eglot
-  :demand
+  :demand t
   :config
   (jarchive-mode))
 ;; SQL
@@ -1158,8 +1156,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("C-c C-t p"   . my/clj-run-project-tests)
               ("C-c C-t C-n" . my/clj-run-ns-tests)
               ("C-c C-t C-p" . my/clj-run-project-tests)))
-(use-package html-to-hiccup
-  :ensure t)
+(use-package html-to-hiccup)
 ;; JavaScript
 (use-package js
   :straight nil
