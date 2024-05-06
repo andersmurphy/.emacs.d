@@ -92,7 +92,6 @@
    large-file-warning-threshold 100000000
    recenter-positions '(top middle bottom)
    set-mark-command-repeat-pop 't
-   history-delete-duplicates t
    echo-keystrokes 0.1
    set-message-functions '(inhibit-message set-minibuffer-message)
    inhibit-message-regexps '(".*recentf.*")
@@ -100,7 +99,11 @@
    indent-tabs-mode nil
    tab-width 2
    tab-always-indent 'complete
-   sentence-end-double-space nil)
+   sentence-end-double-space nil
+   history-delete-duplicates t
+   ;; You might have to set eshell-hist-ignoredups to nil if for whatever
+   ;; reason the history file gets deleted.
+   eshell-hist-ignoredups 'erase)
 
   ;; force pin entry through emacs
   (setenv "GPG_AGENT_INFO" nil)
@@ -1072,10 +1075,11 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 ;; LSP - Language Server Protocol
 (use-package eglot
   :straight nil
+  :custom
+  (eglot-autoshutdown t)
   :config
   (setq eglot-confirm-server-initiated-edits nil)
   (setq eglot-sync-connect 0)
-  (eglot-autoshutdown t)
   (setq eglot-ignored-server-capabilities
         '(:signatureHelpProvider
           :hoverProvider
