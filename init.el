@@ -802,14 +802,13 @@ If this becomes a problem these common lines could be filtered."
     (interactive)
     (consult-info "emacs" "efaq" "elisp" "cl" ))
 
-  (defun my/consult-ripgrep (&optional dir)
+  (defun my/consult-ripgrep ()
     "Search with `rg' for files in DIR with INITIAL input.
 See `consult-grep' for details."
-    (interactive "P")
-    (let* ((bounds (topiary/bounds))
-           (sym (buffer-substring (car bounds) (cdr bounds))))
-      (consult--grep "Ripgrep" #'consult--ripgrep-make-builder dir
-                     (and sym (regexp-quote (car (split-string sym "\n")))))))
+    (interactive)
+    (let* ((bounds (topiary/bounds)))
+      (copy-region-as-kill (car bounds) (cdr bounds))
+      (call-interactively 'consult-ripgrep)))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   ;; Disable preview, to enable set to 'any
