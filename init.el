@@ -788,9 +788,9 @@ If this becomes a problem these common lines could be filtered."
 
   (setq my/consult-omni-sources
         '(consult--source-buffer
+          my/consult-source-file
           consult--source-recent-file
           consult--source-bookmark
-          my/consult-source-file
           my/consult-source-project))
 
   (defun my/consult-omni ()
