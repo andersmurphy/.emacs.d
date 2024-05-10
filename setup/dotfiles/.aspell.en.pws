@@ -96,3 +96,5 @@ elisp
 eshell
 init
 dedupe
+subtask
+subtasks
