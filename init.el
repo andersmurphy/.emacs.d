@@ -1150,6 +1150,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 (use-package clj
   :straight nil
   :after clojure-mode
+  :demand t
   :load-path "~/.emacs.d/elisp"
   :bind (:map clojure-mode-map
               ("C-c C-a" . my/clj-apropos)
