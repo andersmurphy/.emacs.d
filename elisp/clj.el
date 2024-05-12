@@ -424,6 +424,13 @@ Works from both namespace and test namespace"
       my/clj-find-implementation-or-test
       find-file))
 
+(defun my/spit-file (file-name contents)
+  "Create file with FILE-NAME and CONTENTS. Indent buffer."
+  (find-file file-name)
+  (insert contents)
+  (indent-region (point-min) (point-max))
+  (save-buffer))
+
 (defun my/clj-create-new-deps-project ()
   "Create a new deps.edn project."
   (interactive)
@@ -432,13 +439,25 @@ Works from both namespace and test namespace"
          ;; uses the same project namespace. Means
          ;; project renames etc are less of a pain.
          ;; (not true for library development).
-         (namespace-name "server"))
+         (namespace-name "app"))
     (make-directory project-name-path)
-    (find-file (concat project-name-path "/deps.edn"))
-    (insert "{:paths [\"src\"]
- :deps {org.clojure/clojure {:mvn/version \"1.12.0-alpha11\"}}
- :aliases {}}")
-    (save-buffer)
+    (my/spit-file ;; deps
+     (concat project-name-path "/deps.edn")
+     "{:paths [\"src\"]
+       :deps {org.clojure/clojure {:mvn/version \"1.12.0-alpha11\"}}
+       :aliases {}}")
+    (my/spit-file ;; gitignore
+     (concat project-name-path "/.gitignore")
+     (format
+      "/db/
+      .*
+      !.github
+      !.gitignore
+      .clj-kondo
+      !.clj-kondo/config.edn
+      !.clj-kondo/%s/*
+      !.env.edn"
+      namespace-name))
     (make-directory (concat project-name-path "/src"))
     (make-directory (concat project-name-path "/src/" namespace-name))
     (find-file (concat project-name-path "/src/" namespace-name
