@@ -217,7 +217,7 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
   (interactive)
   (let ((mode major-mode))
     (when (one-window-p)
-      (split-window-right))
+      (split-window-sensibly))
     (display-buffer-use-some-window (current-buffer) nil)
     (other-window 1)
     (previous-buffer)
