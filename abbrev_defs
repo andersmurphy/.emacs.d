@@ -3251,6 +3251,7 @@
 ("rococco" "rococo" nil :count 1)
 ("rocord" "record" nil :count 1)
 ("roomate" "roommate" nil :count 1)
+("ronud" "round" nil :count 1)
 ("rougly" "roughly" nil :count 1)
 ("rucuperate" "recuperate" nil :count 1)
 ("rudimentatry" "rudimentary" nil :count 1)
