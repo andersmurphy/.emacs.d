@@ -103,7 +103,8 @@
    history-delete-duplicates t
    ;; You might have to set eshell-hist-ignoredups to nil if for whatever
    ;; reason the history file gets deleted.
-   eshell-hist-ignoredups 'erase)
+   ;; eshell-hist-ignoredups 'erase
+   )
 
   ;; force pin entry through emacs
   (setenv "GPG_AGENT_INFO" nil)
@@ -1240,6 +1241,20 @@ files in the project. Respects gitignore."
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
 ;;; MEDIA
+(use-package image-mode
+  :defer t
+  :straight nil
+  :init
+  (defun my/resize-image-export ()
+    "Resize image and export."
+    (interactive)
+    (let* ((image (image--get-image))
+           (og-file-name (plist-get (cdr image) :file))
+           (scale (read-string
+                   "Scale (eg: 50%, 100, 100x50): "))
+           (file-name (read-file-name "Write image to file: ")))
+      (shell-command
+       (format "convert -resize %s %s %s" scale og-file-name file-name)))))
 (use-package nov
   :defer t
   :init
