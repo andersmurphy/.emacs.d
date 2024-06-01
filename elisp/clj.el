@@ -50,11 +50,14 @@ Handles both string and edn commands."
                     command
                   (parseedn-print-str command))))
     (if ns
-        (format "(do
-               (when-not (find-ns '%s) (require '%s))
-               (binding [*ns* (or (find-ns '%s) *ns*)]
-                 (eval '%s)))"
-                ns ns ns string)
+        (format
+         "(do
+            (when-not (find-ns '%s) (require '%s))
+            (in-ns '%s) :repl-do-not-print)
+          (let [result (eval '%s)]
+            (in-ns 'user)
+            result)"
+         ns ns ns string)
       (format "(eval '%s)" string))))
 
 (defun my/clj-eval-with-ns (command)
@@ -99,10 +102,12 @@ If buffer doesn't have namespace defaults to current namespace."
      (eval '(pjstadig.humane-test-output/activate!))
      (set! *warn-on-reflection* true)
      (set! *print-length* 30)
-     (clojure.main/repl :print (fn [x]
-                                   (newline)
-                                   (clojure.pprint/pprint x)
-                                   (newline))))))
+     (clojure.main/repl :print
+                        (fn [x]
+                            (newline)
+                            (when-not (= x :repl-do-not-print)
+                                      (clojure.pprint/pprint x))
+                            (newline))))))
 
 (defun my/configure-bb-repl ()
   "Configure global repl settings."
