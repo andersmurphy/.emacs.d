@@ -17,6 +17,12 @@
        (require '[criterium.core :as crit])
        `(crit/quick-bench ~expr ~@opts))
 
+     (defmacro measure
+       "Wraps clj-memory-meter/measure."
+       [expr & opts]
+       (require '[clj-memory-meter.core :as mm])
+       `(mm/measure ~expr ~@opts))
+
      (defmacro add-libs
        "Wraps clojure.repl.deps/add-libs.
 
