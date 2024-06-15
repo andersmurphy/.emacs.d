@@ -122,3 +122,10 @@ brew install clojure-lsp/brew/clojure-lsp-native
 rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
+
+### Node ###
+brew install node
+wait
+
+### NBB (node babashka) ###
+npm install nbb -g
