@@ -243,6 +243,14 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
     "clojure -Sdeps '{:deps {reply/reply {:mvn/version \"0.5.1\"}}}' -M -m reply.main --attach %s"
     (read-string "nrepl port: " "9001"))))
 
+(defun my/clj-socket-repl-connect ()
+  "Connect to running socket repl instance."
+  (interactive)
+  (my/clj-open-repl
+   (format
+    "nc localhost %s"
+    (read-string "repl port: " "9001"))))
+
 (defun my/kill-inferior-lisp-buffer ()
   "Kill *inferior-lisp* buffer if running."
   (when (get-buffer "*inferior-lisp*")
