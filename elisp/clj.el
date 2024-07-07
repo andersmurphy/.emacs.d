@@ -173,6 +173,10 @@ current files directory DIRNAME. Optionally CLJ-LISP-PROG can be specified."
    ((file-exists-p (concat dirname "bb.edn"))
     (list (concat dirname "bb.edn")
           (or clj-lisp-prog "bb repl")))
+   ;; nbb - babashka node
+   ((file-exists-p (concat dirname "package.json"))
+    (list (concat dirname "package.json")
+          (or clj-lisp-prog "nbb")))
    ;; Fall back to babashka if no project file
    ((or (my/dir-contains-git-root-p dirname)
         (string= "/" dirname))
