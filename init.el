@@ -13,38 +13,17 @@
 
 ;;; PACKAGE MANAGER
 (progn ;;; Setup
+  (require 'package)
+  (add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (package-initialize)
 
-  ;; To not increase Emacs startup time, check package modifications when
-  ;; packages edited (with Emacs), instead of checking modifications at startup.
-  (setq straight-check-for-modifications
-        '(check-on-save find-when-checking))
-  ;; Use default depth of 1 when cloning files with git to get
-  ;; saves network bandwidth and disk space.
-  (setq straight-vc-git-default-clone-depth 1)
-
-  ;; Bootstrap straight.el package manager
-  ;; https://github.com/raxod502/straight.el
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el"
-                           user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-
+  ;; Ensure package is installed
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+  
   ;; Always load newest byte code
   (setq load-prefer-newer t)
-
-  ;; Bootstrap use-package
-  ;; use-package is used to configure the rest of the packages.
-  (defvar straight-use-package-by-default)
-  (setq straight-use-package-by-default t)
 
   ;; Lazy
   (setq use-package-always-defer t)
@@ -71,7 +50,6 @@
 
 ;;; GENERAL
 (use-package emacs
-  :straight nil
   :init
   :config
   ;; General settings
@@ -134,13 +112,6 @@
     "Open init file (this file)."
     (interactive)
     (find-file "~/.emacs.d/init.el"))
-
-  (defun my/update-emacs-packages ()
-    "Update Emacs packages using straight."
-    (interactive)
-    (straight-check-all)
-    (straight-pull-all)
-    (straight-freeze-versions))
 
   (defun my/reload-init ()
     "Reload init."
@@ -235,7 +206,6 @@
                         ;; Enable auto revert
                         (global-auto-revert-mode))))
 (use-package elisp-mode
-  :straight nil
   :config
   (defun my/docs-for-elisp-symbol-at-point ()
     "Show docs for elisp symbol at point."
@@ -253,7 +223,6 @@
               :map lisp-interaction-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)))
 (use-package startup
-  :straight nil
   :init
   ;; Initial scratch message.
   (setq initial-scratch-message
@@ -268,8 +237,7 @@
                                    (setq initial-major-mode
                                          'lisp-interaction-mode)
                                    (lisp-interaction-mode)))))
-(use-package window
-  :straight nil
+(use-package window  
   :config
   (setq split-width-threshold 100)
 
@@ -305,8 +273,7 @@ This can be used to make the window layout change based on frame size."
                         ;; Sets the initial frame to fill the screen.
                         (toggle-frame-fullscreen)
                         (switch-to-buffer "*Messages*"))))
-(use-package Info-mode
-  :straight nil
+(use-package Info-mode  
   :init
   (defun my/info-font-setup ()
     (face-remap-add-relative 'variable-pitch
@@ -318,22 +285,19 @@ This can be used to make the window layout change based on frame size."
   :init
   (setq save-silently t)
   (super-save-mode t))
-(use-package bookmark
-  :straight nil
+(use-package bookmark  
   :config
   ;; Save Bookmarks on any change
   (setq bookmark-save-flag 1)
   ;; Store bookmarks in emacs-sync
   (setq bookmark-default-file "~/.emacs.d/emacs-sync/bookmarks"))
 (use-package ls-lisp
-  :demand t
-  :straight nil
+  :demand t  
   :config
   ;; Switch to use ls-lisp makes ls platform agnostic
   ;; (need to test with TRAMP).
   (setq ls-lisp-use-insert-directory-program nil))
 (use-package dired
-  :straight nil
   :config
   ;; Directories first
   (setq dired-listing-switches "--group-directories-first -alh")
@@ -356,26 +320,22 @@ This can be used to make the window layout change based on frame size."
               ("RET" . dired-find-alternate-file))
   ;; Dired hide details by default
   :hook ((dired-mode . dired-hide-details-mode)))
-(use-package so-long
-  :straight nil
+(use-package so-long  
   :defer 1
   :config
   (global-so-long-mode t))
 (use-package kill-buffer-on-q
-  ;; Convenience mode for killing buffer on q
-  :straight nil
+  ;; Convenience mode for killing buffer on q  
   :load-path "~/.emacs.d/elisp")
 
 ;;; PRIVACY
 (use-package totp
-  :straight nil
   ;; further reading
   ;; https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
   ;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
   :defer 1
   :load-path "~/.emacs.d/elisp")
-(use-package auth-source
-  :straight nil
+(use-package auth-source  
   :config
   (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 
@@ -404,7 +364,6 @@ This can be used to make the window layout change based on frame size."
   (global-ligature-mode 't))
 (use-package my-theme
   ;; Note: the theme itself is actually loaded in early init
-  :straight nil
   :config
   ;;; DYNAMIC THEME
 
@@ -454,15 +413,13 @@ This can be used to make the window layout change based on frame size."
   (add-hook 'shell-mode-hook 'my/color-important-words)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-filter)
   (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
-(use-package my-mode-line
-  :straight nil
+(use-package my-mode-line  
   :load-path "~/.emacs.d/elisp"
   :hook (after-init . my/mode-line-init))
 
 ;;; META NAVIGATION
 (use-package recentf
   :defer 1
-  :straight nil
   :config
   (setq recentf-exclude
         '(".*\.gpg"
@@ -471,8 +428,7 @@ This can be used to make the window layout change based on frame size."
           ".emacs.d/emacs-sync/.*"))
   (setq recentf-max-saved-items 10)
   (recentf-mode t))
-(use-package isearch
-  :straight nil
+(use-package isearch  
   :config
   (setq search-highlight t)
   (setq search-whitespace-regexp ".*?")
@@ -558,7 +514,6 @@ This can be used to make the window layout change based on frame size."
   :config
   (corfu-prescient-mode t))
 (use-package project
-  :straight nil
   :init
   ;; Don't include submodule files in searches etc
   (setq project-vc-merge-submodules nil))
@@ -701,8 +656,7 @@ If this becomes a problem these common lines could be filtered."
     (interactive)
     (browse-at-remote-kill)
     (message "git url for region yanked!")))
-(use-package org
-  :straight nil
+(use-package org  
   :config
   ;; Org babel/source blocks
   (setq org-src-fontify-natively t
@@ -840,7 +794,6 @@ See `consult-grep' for details."
 
 ;;; TEXT FORMATTING
 (use-package hideshow
-  :straight nil
   :config
   (setq hs-hide-comments-when-hiding-all nil)
 
@@ -907,26 +860,21 @@ See `consult-grep' for details."
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . hs-hide-all)))
-(use-package subword
-  :straight nil
+(use-package subword  
   :init
   (global-subword-mode))
 (use-package topiary
-  :straight nil
   :load-path "~/.emacs.d/elisp"
   :hook ((text-mode prog-mode comint-mode outline-mode Info-mode eshell-mode magit-blob-mode) . topiary-mode))
-(use-package special-mode
-  :straight nil
+(use-package special-mode  
   :bind (:map special-mode-map
               ("C-w" . topiary/kill)))
 
 ;;; WRITING
 (use-package text-scratch
-  :straight nil
   :load-path "~/.emacs.d/elisp"
   :demand t)
 (use-package abbrev
-  :straight nil
   :init
   (setq-default abbrev-mode t)
   :config
@@ -962,7 +910,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   ((text-mode . flyspell-mode)
    (prog-mode . flyspell-prog-mode)))
 (use-package flymake
-  :straight nil
   :init
   (define-fringe-bitmap 'my/flymake-fringe-indicator
     (vector #b00000000
@@ -1055,8 +1002,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                        #'cape-dabbrev))))
   :hook ((eglot-managed-mode . my/eglot-capf)
          (emacs-lisp-mode    . my/setup-elisp)))
-(use-package dabbrev
-  :straight nil
+(use-package dabbrev  
   :after cape
   :demand t
   :config
@@ -1074,7 +1020,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 ;;; PROGRAMMING
 ;; LSP - Language Server Protocol
 (use-package eglot
-  :straight nil
   :custom
   (eglot-autoshutdown t)
   :config
@@ -1098,8 +1043,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :config
   (jarchive-mode))
 ;; SQL
-(use-package sql
-  :straight nil)
+(use-package sql)
 (use-package sql-indent
   :demand t
   :after sql)
@@ -1148,8 +1092,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                (cdr bounds)
                jet (current-buffer) t)))
         (user-error "Could not find jet installed")))))
-(use-package clj
-  :straight nil
+(use-package clj  
   :after clojure-mode
   :demand t
   :load-path "~/.emacs.d/elisp"
@@ -1169,19 +1112,16 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("C-c C-t C-p" . my/clj-run-project-tests)))
 (use-package html-to-hiccup)
 ;; JavaScript
-(use-package js
-  :straight nil
+(use-package js  
   :config
   (setq js-indent-level 2))
 ;; Css
-(use-package css-mode
-  :straight nil
+(use-package css-mode  
   :config
   (setq css-indent-offset 2))
 ;; Markdown
 (use-package markdown-mode
-  ;; requires multimarkdown if you want to use preview.
-  :straight nil
+  ;; requires multimarkdown if you want to use preview.  
   :init
   (defun my/md-font-setup ()
     (face-remap-add-relative 'variable-pitch
@@ -1243,7 +1183,6 @@ files in the project. Respects gitignore."
 ;;; MEDIA
 (use-package image-mode
   :defer t
-  :straight nil
   :init
   (defun my/resize-image-export ()
     "Resize image and export."
@@ -1271,24 +1210,6 @@ files in the project. Respects gitignore."
   (setq nov-text-width 65)
   :hook (nov-mode . my/nov-font-setup))
 (use-package emms ;; M-x emms-play-directory
-  ;; NOTE: emms tends to break now and then with byte compilation.
-  ;; you can test different version by using the commit hash for
-  ;; the commit you care about. Can be found here:
-  ;;
-  ;; https://github.com/emacsmirror/emms/commits/master/
-  ;;
-  ;; You'll then need to change the emms value in
-  ;;
-  ;; .emacs.d/straight/versions/default.el
-  ;;
-  ;; And delete:
-  ;;
-  ;; .emacs.d/straight/repos/emms.el
-  ;;
-  ;; Finally restart emacs to re-download the repo.
-  ;;
-  ;; Sometimes there can also be issues with the byte compilation caching
-  ;; old files.
   :config
   (emms-minimalistic)
   (setq emms-player-list '(emms-player-mpv))
@@ -1338,8 +1259,7 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
     (interactive)
     (emms-play-streamlist
      "http://lstn.lv/bbc.m3u8?station=bbc_radio_fourfm&bitrate=96000")))
-(use-package eww
-  :straight nil
+(use-package eww  
   :config
 
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
@@ -1359,7 +1279,6 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
          (eww-mode . variable-pitch-mode)
          (eww-after-render . eww-readable)))
 (use-package speak-region
-  :straight nil
   :load-path "~/.emacs.d/elisp"
   ;; Need to set this, not sure why auto load not working?
   :commands speak-region)

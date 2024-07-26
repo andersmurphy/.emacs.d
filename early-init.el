@@ -17,12 +17,6 @@
             (setq gc-cons-threshold 16777216 ; 16MB
                   gc-cons-percentage 0.1)))
 
-;; In Emacs 27+, package initialization occurs before `user-init-file' is
-;; loaded, but after `early-init-file'. We handle our own initialization with
-;; straight/use-package so we can disable these.
-(setq package-enable-at-startup nil)
-(advice-add #'package--ensure-init-file :override #'ignore)
-
 ;; Disabling these UI elements early.
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
