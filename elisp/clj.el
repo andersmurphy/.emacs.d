@@ -240,7 +240,7 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
     (other-window 1)))
 
 (defun my/clj-nrepl-connect ()
-  "Connect to running nrpel instance."
+  "Connect to running nrepl instance."
   (interactive)
   (my/clj-open-repl
    (format
