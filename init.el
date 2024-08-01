@@ -13,15 +13,62 @@
 
 ;;; PACKAGE MANAGER
 (progn ;;; Setup
-  (require 'package)
-  (add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-  (package-initialize)
 
-  ;; Ensure package is installed
-  (require 'use-package-ensure)
-  (setq use-package-always-ensure t)
-  
+  (defvar elpaca-installer-version 0.7)
+  (defvar elpaca-directory
+    (expand-file-name "elpaca/" user-emacs-directory))
+  (defvar elpaca-builds-directory
+    (expand-file-name "builds/" elpaca-directory))
+  (defvar elpaca-repos-directory
+    (expand-file-name "repos/" elpaca-directory))
+  (defvar elpaca-order
+    '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+             :ref nil :depth 1
+             :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+             :build (:not elpaca--activate-package)))
+  (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+         (build (expand-file-name "elpaca/" elpaca-builds-directory))
+         (order (cdr elpaca-order))
+         (default-directory repo))
+    (add-to-list 'load-path (if (file-exists-p build) build repo))
+    (unless (file-exists-p repo)
+      (make-directory repo t)
+      (when (< emacs-major-version 28) (require 'subr-x))
+      (condition-case-unless-debug err
+          (if-let
+              ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+               ((zerop (apply
+                        #'call-process
+                        `("git" nil ,buffer t "clone"
+                          ,@(when-let ((depth (plist-get order :depth)))
+                              (list (format "--depth=%d" depth)
+                                    "--no-single-branch"))
+                          ,(plist-get order :repo) ,repo))))
+               ((zerop (call-process "git" nil buffer t "checkout"
+                                     (or (plist-get order :ref) "--"))))
+               (emacs (concat invocation-directory invocation-name))
+               ((zerop (call-process
+                        emacs nil buffer nil
+                        "-Q" "-L" "." "--batch"
+                        "--eval"
+                        "(byte-recompile-directory \".\" 0 'force)")))
+               ((require 'elpaca))
+               ((elpaca-generate-autoloads "elpaca" repo)))
+              (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+            (error "%s" (with-current-buffer buffer (buffer-string))))
+        ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+    (unless (require 'elpaca-autoloads nil t)
+      (require 'elpaca)
+      (elpaca-generate-autoloads "elpaca" repo)
+      (load "./elpaca-autoloads")))
+  (add-hook 'after-init-hook #'elpaca-process-queues)
+  (elpaca `(,@elpaca-order))
+
+  ;; Install use-package support
+  (elpaca elpaca-use-package
+          ;; Enable use-package :ensure support for Elpaca.
+          (elpaca-use-package-mode))
+
   ;; Always load newest byte code
   (setq load-prefer-newer t)
 
@@ -36,6 +83,7 @@
 
 ;;; PATH - (needs to be called as the first use-package)
 (use-package exec-path-from-shell
+  :ensure t
   :demand t
   :if (memq window-system '(mac ns x))
   :init
@@ -45,8 +93,10 @@
 (defmacro comment (&rest _)
   "Ignore BODY, yields nil."
   nil)
-(use-package parseedn)  ;; edn parsing
-(use-package pcre2el) ;; regex conversion
+(use-package parseedn
+  :ensure t)  ;; edn parsing
+(use-package pcre2el
+  :ensure t) ;; regex conversion
 
 ;;; GENERAL
 (use-package emacs
@@ -237,7 +287,7 @@
                                    (setq initial-major-mode
                                          'lisp-interaction-mode)
                                    (lisp-interaction-mode)))))
-(use-package window  
+(use-package window
   :config
   (setq split-width-threshold 100)
 
@@ -273,7 +323,7 @@ This can be used to make the window layout change based on frame size."
                         ;; Sets the initial frame to fill the screen.
                         (toggle-frame-fullscreen)
                         (switch-to-buffer "*Messages*"))))
-(use-package Info-mode  
+(use-package Info-mode
   :init
   (defun my/info-font-setup ()
     (face-remap-add-relative 'variable-pitch
@@ -281,18 +331,19 @@ This can be used to make the window layout change based on frame size."
   :hook ((Info-mode . variable-pitch-mode)
          (Info-mode . my/info-font-setup)))
 (use-package super-save
+  :ensure t
   :defer 1
   :init
   (setq save-silently t)
   (super-save-mode t))
-(use-package bookmark  
+(use-package bookmark
   :config
   ;; Save Bookmarks on any change
   (setq bookmark-save-flag 1)
   ;; Store bookmarks in emacs-sync
   (setq bookmark-default-file "~/.emacs.d/emacs-sync/bookmarks"))
 (use-package ls-lisp
-  :demand t  
+  :demand t
   :config
   ;; Switch to use ls-lisp makes ls platform agnostic
   ;; (need to test with TRAMP).
@@ -320,12 +371,12 @@ This can be used to make the window layout change based on frame size."
               ("RET" . dired-find-alternate-file))
   ;; Dired hide details by default
   :hook ((dired-mode . dired-hide-details-mode)))
-(use-package so-long  
+(use-package so-long
   :defer 1
   :config
   (global-so-long-mode t))
 (use-package kill-buffer-on-q
-  ;; Convenience mode for killing buffer on q  
+  ;; Convenience mode for killing buffer on q
   :load-path "~/.emacs.d/elisp")
 
 ;;; PRIVACY
@@ -335,12 +386,13 @@ This can be used to make the window layout change based on frame size."
   ;; https://www.masteringemacs.org/article/securely-generating-totp-tokens-emacs
   :defer 1
   :load-path "~/.emacs.d/elisp")
-(use-package auth-source  
+(use-package auth-source
   :config
   (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 
 ;;; VISUAL
 (use-package ligature
+  :ensure t
   :init
   (ligature-set-ligatures
    t
@@ -413,7 +465,7 @@ This can be used to make the window layout change based on frame size."
   (add-hook 'shell-mode-hook 'my/color-important-words)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-filter)
   (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
-(use-package my-mode-line  
+(use-package my-mode-line
   :load-path "~/.emacs.d/elisp"
   :hook (after-init . my/mode-line-init))
 
@@ -428,7 +480,7 @@ This can be used to make the window layout change based on frame size."
           ".emacs.d/emacs-sync/.*"))
   (setq recentf-max-saved-items 10)
   (recentf-mode t))
-(use-package isearch  
+(use-package isearch
   :config
   (setq search-highlight t)
   (setq search-whitespace-regexp ".*?")
@@ -503,12 +555,14 @@ This can be used to make the window layout change based on frame size."
   :init
   (vertico-mode))
 (use-package vertico-prescient
+  :ensure t
   :after vertico
   :demand t
   :config
   (vertico-prescient-mode t)
   (prescient-persist-mode t))
 (use-package corfu-prescient
+  :ensure t
   :after corfu
   :demand t
   :config
@@ -517,7 +571,10 @@ This can be used to make the window layout change based on frame size."
   :init
   ;; Don't include submodule files in searches etc
   (setq project-vc-merge-submodules nil))
+(use-package transient
+  :ensure t)
 (use-package magit
+  :ensure t
   :config
   (setq magit-diff-highlight-indentation nil)
   (setq magit-diff-highlight-trailing nil)
@@ -634,16 +691,19 @@ If this becomes a problem these common lines could be filtered."
   :bind (("C-x g" . magit-status))
   :hook ((after-save . magit-after-save-refresh-status)))
 (use-package forge
+  :ensure t
   ;; For generating tokens see: https://github.com/settings/tokens
   :after magit
   :demand t)
 (use-package hl-todo
+  :ensure t
   :config
   (setq hl-todo-keyword-faces
         '(("TODO" . bold)
           ("EXPLORE" . bold)))
   :hook (prog-mode . hl-todo-mode))
 (use-package magit-todos
+  :ensure t
   :after magit
   :demand t
   :config
@@ -651,12 +711,13 @@ If this becomes a problem these common lines could be filtered."
   (setq magit-todos-auto-group-items 15)
   (setq magit-todos-group-by '(magit-todos-item-keyword)))
 (use-package browse-at-remote
+  :ensure t
   :init
   (defun my/git-url-for-region ()
     (interactive)
     (browse-at-remote-kill)
     (message "git url for region yanked!")))
-(use-package org  
+(use-package org
   :config
   ;; Org babel/source blocks
   (setq org-src-fontify-natively t
@@ -680,6 +741,7 @@ If this becomes a problem these common lines could be filtered."
            (file+headline "~/.emacs.d/emacs-sync/org/tasks.org" "Tasks")
            "* TODO %?"))))
 (use-package consult
+  :ensure t
   :bind
   (("C-x b"   . my/consult-omni)
    ("C-x C-b" . my/consult-omni)
@@ -769,9 +831,11 @@ See `consult-grep' for details."
   ;; Disable preview, to enable set to 'any
   (setq consult-preview-key nil))
 (use-package embark-consult
+  :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 (use-package embark
+  :ensure t
   :bind
   (("C-." . embark-act)
    ("M-." . embark-dwim)
@@ -860,13 +924,13 @@ See `consult-grep' for details."
   :bind (:map hs-minor-mode-map
               ("TAB" . my/toggle-defun-level-hiding)
               ("<backtab>" . hs-hide-all)))
-(use-package subword  
+(use-package subword
   :init
   (global-subword-mode))
 (use-package topiary
   :load-path "~/.emacs.d/elisp"
   :hook ((text-mode prog-mode comint-mode outline-mode Info-mode eshell-mode magit-blob-mode) . topiary-mode))
-(use-package special-mode  
+(use-package special-mode
   :bind (:map special-mode-map
               ("C-w" . topiary/kill)))
 
@@ -941,6 +1005,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 
 ;;; COMPLETION
 (use-package corfu
+  :ensure t
   :custom
   (corfu-auto t)
   (corfu-preview-current nil)
@@ -980,6 +1045,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("RET" . corfu-complete)
               ("C-w" . topiary/kill)))
 (use-package cape
+  :ensure t
   :config
   (setq cape-dabbrev-check-other-buffers "some")
   (defun my/ignore-keywords-unless-explicit (cand)
@@ -1002,7 +1068,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                        #'cape-dabbrev))))
   :hook ((eglot-managed-mode . my/eglot-capf)
          (emacs-lisp-mode    . my/setup-elisp)))
-(use-package dabbrev  
+(use-package dabbrev
   :after cape
   :demand t
   :config
@@ -1038,6 +1104,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
 (use-package jarchive
+  :ensure t
   :after eglot
   :demand t
   :config
@@ -1045,10 +1112,12 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 ;; SQL
 (use-package sql)
 (use-package sql-indent
+  :ensure t
   :demand t
   :after sql)
 ;; Clojure
 (use-package clojure-mode
+  :ensure t
   :config
   (setq clojure-align-forms-automatically t)
   (setq clojure-indent-style 'always-indent)
@@ -1092,7 +1161,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                (cdr bounds)
                jet (current-buffer) t)))
         (user-error "Could not find jet installed")))))
-(use-package clj  
+(use-package clj
   :after clojure-mode
   :demand t
   :load-path "~/.emacs.d/elisp"
@@ -1110,18 +1179,19 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("C-c C-t p"   . my/clj-run-project-tests)
               ("C-c C-t C-n" . my/clj-run-ns-tests)
               ("C-c C-t C-p" . my/clj-run-project-tests)))
-(use-package html-to-hiccup)
+(use-package html-to-hiccup
+  :ensure t)
 ;; JavaScript
-(use-package js  
+(use-package js
   :config
   (setq js-indent-level 2))
 ;; Css
-(use-package css-mode  
+(use-package css-mode
   :config
   (setq css-indent-offset 2))
 ;; Markdown
 (use-package markdown-mode
-  ;; requires multimarkdown if you want to use preview.  
+  ;; requires multimarkdown if you want to use preview.
   :init
   (defun my/md-font-setup ()
     (face-remap-add-relative 'variable-pitch
@@ -1195,6 +1265,7 @@ files in the project. Respects gitignore."
       (shell-command
        (format "convert -resize %s %s %s" scale og-file-name file-name)))))
 (use-package nov
+  :ensure t
   :defer t
   :init
   (defun my/nov-rerender-without-losing-point ()
@@ -1210,6 +1281,7 @@ files in the project. Respects gitignore."
   (setq nov-text-width 65)
   :hook (nov-mode . my/nov-font-setup))
 (use-package emms ;; M-x emms-play-directory
+  :ensure t
   :config
   (emms-minimalistic)
   (setq emms-player-list '(emms-player-mpv))
@@ -1259,9 +1331,8 @@ https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
     (interactive)
     (emms-play-streamlist
      "http://lstn.lv/bbc.m3u8?station=bbc_radio_fourfm&bitrate=96000")))
-(use-package eww  
+(use-package eww
   :config
-
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")
   ;; ignore html specified colours
   (setq shr-use-colors nil)

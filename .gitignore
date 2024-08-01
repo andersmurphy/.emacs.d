@@ -18,10 +18,7 @@ url/
 emms
 /transient/history.el
 .DS_Store
-/straight/build/*
-/straight/build-cache.el
-/straight/repos/*
-/straight/modified/*
+/elpaca
 /scratch.org
 /emacs-sync/*
 /forge-database.sqlite
