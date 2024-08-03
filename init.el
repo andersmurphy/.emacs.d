@@ -855,6 +855,8 @@ See `consult-grep' for details."
   ;; Configure embark-dwim actions
   ;; Don't want flymake at point as a target (would rather go to source)
   (delete 'embark-target-flymake-at-point embark-target-finders))
+(use-package wgrep
+  :ensure t)
 
 ;;; TEXT FORMATTING
 (use-package hideshow
