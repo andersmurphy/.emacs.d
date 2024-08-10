@@ -129,3 +129,7 @@ wait
 
 ### NBB (node babashka) ###
 npm install nbb -g
+
+### solana ###
+brew install solana
+wait
