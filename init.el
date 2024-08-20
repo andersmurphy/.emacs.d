@@ -391,29 +391,6 @@ This can be used to make the window layout change based on frame size."
   (setq auth-sources (quote ("~/.emacs.d/emacs-sync/.authinfo.gpg"))))
 
 ;;; VISUAL
-(use-package ligature
-  :ensure t
-  :init
-  (ligature-set-ligatures
-   t
-   '(;;; Disabled ligatures because they make things look weird
-     ;; "www" "**" "***" "**/" ;; <- org headings
-     ;; ";;"                   ;; <- triple comments ;;;
-     ;;  "##" "###" "####"     ;; <- loading bars
-     ;;  "----" "++" "+++"     ;; <- diffs/magit
-     ;;; Enabled ligatures
-     "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
-     ":::" ":=" "!!" "!=" "!==" "-}" "-->" "->" "->>"
-     "-<" "-<<" "-~" "#{" "#[" "#(" "#?" "#_"
-     "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" "/*" "/**"
-     "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
-     "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
-     "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
-     "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
-     "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
-     "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
-
-  (global-ligature-mode 't))
 (use-package my-theme
   ;; Note: the theme itself is actually loaded in early init
   :config
