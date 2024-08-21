@@ -207,6 +207,11 @@
     (exchange-point-and-mark)
     (deactivate-mark nil))
 
+  (defun my/copy-buffer-file-name-as-kill ()
+    "Copy current buffer file name to kill ring."
+    (interactive)
+    (kill-new (buffer-file-name)))
+
   ;; Unbind suspend-frame.
   ;; This would cause the cursor to disappear if you pressed C-x C-z
   ;; by mistake.
