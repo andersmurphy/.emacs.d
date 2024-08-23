@@ -1214,10 +1214,6 @@ files in the project. Respects gitignore."
               (format "git ls-files '*.%s' | xargs wc -l | sort -n"
                       extension)
               (generate-new-buffer "*line-count*"))))))
-(defun my/osx-open-in-finder ()
-  "Open current file in finder."
-  (interactive)
-  (shell-command "open ."))
 (defun my/keyboard-firmware-tool ()
   "Open keyboard firmware configuration tool."
   (interactive)
