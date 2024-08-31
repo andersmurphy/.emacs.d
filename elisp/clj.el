@@ -98,8 +98,6 @@ If buffer doesn't have namespace defaults to current namespace."
   "Configure global repl settings."
   (my/clj-eval
    `(do
-     (require (quote [pjstadig.humane-test-output]))
-     (eval '(pjstadig.humane-test-output/activate!))
      (set! *warn-on-reflection* true)
      (set! *print-length* 30)
      (clojure.main/repl :print
@@ -252,8 +250,8 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
   (interactive)
   (my/clj-open-repl
    (format
-    "nc localhost %s"
-    (read-string "repl port: " "9001"))))
+    "nc %s"
+    (read-string "repl ip and port: " "localhost 5555"))))
 
 (defun my/kill-inferior-lisp-buffer ()
   "Kill *inferior-lisp* buffer if running."
