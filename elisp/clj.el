@@ -253,6 +253,14 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
     "nc %s"
     (read-string "repl ip and port: " "localhost 5555"))))
 
+(defun my/clj-ssh-socket-repl ()
+  "ssh into repl."
+  (interactive)
+  (my/clj-open-repl
+   (format
+    "ssh %s \"nc localhost 5555\""
+    (read-string "host: "))))
+
 (defun my/kill-inferior-lisp-buffer ()
   "Kill *inferior-lisp* buffer if running."
   (when (get-buffer "*inferior-lisp*")
@@ -459,7 +467,7 @@ Works from both namespace and test namespace"
     (my/spit-file ;; deps
      (concat project-name-path "/deps.edn")
      "{:paths [\"src\"]
-       :deps {org.clojure/clojure {:mvn/version \"1.12.0-alpha11\"}}
+       :deps {org.clojure/clojure {:mvn/version \"1.12.0\"}}
        :aliases {}}")
     (my/spit-file ;; gitignore
      (concat project-name-path "/.gitignore")
