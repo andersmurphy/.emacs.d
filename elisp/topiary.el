@@ -565,12 +565,12 @@ Cursor point stays on the same character despite potential point shift."
   (topiary/wrap-with "(" ")"))
 
 (defun topiary/wrap-with-brackets ()
-  "Wrap current symbol with parens."
+  "Wrap current symbol with brackets."
   (interactive)
   (topiary/wrap-with "[" "]"))
 
 (defun topiary/wrap-with-braces ()
-  "Wrap current symbol with parens."
+  "Wrap current symbol with braces."
   (interactive)
   (topiary/wrap-with "{" "}"))
 
