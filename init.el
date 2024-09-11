@@ -66,8 +66,8 @@
 
   ;; Install use-package support
   (elpaca elpaca-use-package
-          ;; Enable use-package :ensure support for Elpaca.
-          (elpaca-use-package-mode))
+    ;; Enable use-package :ensure support for Elpaca.
+    (elpaca-use-package-mode))
 
   ;; Always load newest byte code
   (setq load-prefer-newer t)
@@ -727,7 +727,7 @@ If this becomes a problem these common lines could be filtered."
   :bind
   (("C-x b"   . my/consult-omni)
    ("C-x C-b" . my/consult-omni)
-   ("C-x p"   . my/consult-omni)
+   ("C-x p"   . my/consult-omni-project-files-only)
    ("C-x r b" . consult-bookmark)
    ("C-M-s"   . my/consult-ripgrep)
    ("M-y"     . consult-yank-pop)
@@ -786,7 +786,7 @@ If this becomes a problem these common lines could be filtered."
             :items     ,#'project-known-project-roots))
 
   (setq my/consult-omni-sources
-        '(consult--source-buffer          
+        '(consult--source-buffer
           my/consult-source-project
           my/consult-source-file
           consult--source-recent-file
@@ -795,6 +795,10 @@ If this becomes a problem these common lines could be filtered."
   (defun my/consult-omni ()
     (interactive)
     (consult-buffer my/consult-omni-sources))
+
+  (defun my/consult-omni-project-files-only ()
+    (interactive)
+    (consult-buffer '(my/consult-source-file)))
 
   (defun consult-info-emacs ()
     "Search through Emacs info pages."
@@ -830,9 +834,9 @@ See `consult-grep' for details."
   ;; More minimalist embark (using completion)
   (setq embark-prompter 'embark-completing-read-prompter)
   (setq embark-indicators
-      '(embark-minimal-indicator  ; default is embark-mixed-indicator
-        embark-highlight-indicator
-        embark-isearch-highlight-indicator))
+        '(embark-minimal-indicator  ; default is embark-mixed-indicator
+          embark-highlight-indicator
+          embark-isearch-highlight-indicator))
   :config
   ;; Configure embark-dwim actions
   ;; Don't want flymake at point as a target (would rather go to source)
