@@ -256,10 +256,27 @@ accordingly. Optionally CLJ-LISP-PROG can be specified."
 (defun my/clj-ssh-socket-repl ()
   "ssh into repl."
   (interactive)
-  (my/clj-open-repl
+  (my/start-repl
    (format
     "ssh %s \"nc localhost 5555\""
     (read-string "host: "))))
+
+;; TODO: Allow one repl buffer per project
+;; multi repl world
+
+;; 1. would need to set the buffer before running to
+;;    the buffer mapped to that project before running the command.
+;; 2. Get the current project name, if a repl already exists for that
+;;    project show it. If a repl doesn't exist for that project
+;;    create a new one.
+;; 3. When creating a new relp change it from the default name to the
+;;    project name
+
+;; HATEOS - Hypermedia as the engine of application state.
+;; BATEOS - Buffer as the engine of application state.
+;; As long as the project always leads to the same repl buffer name
+;; this should all just work.
+
 
 (defun my/kill-inferior-lisp-buffer ()
   "Kill *inferior-lisp* buffer if running."
