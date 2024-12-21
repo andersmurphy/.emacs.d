@@ -50,7 +50,7 @@ ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
 git config --global core.excludesfile '~/.gitignore'
 
 ### EMACS (build from source) ###
-brew install libxml2 gcc libgccjit tree-sitter jansson pkg-config gnutls
+brew install libxml2 gcc libgccjit tree-sitter jansson pkg-config gnutls textinfo autoconf
 wait
 # We clone just the tag for a smaller download
 git clone --depth 1 --branch emacs-29.3 https://git.savannah.gnu.org/git/emacs.git
