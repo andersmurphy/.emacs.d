@@ -30,7 +30,6 @@ brew analytics off
 wait
 brew update
 wait
-brew tap homebrew/cask
 
 ### GIT ###
 brew install git
@@ -107,7 +106,6 @@ brew install ripgrep
 wait
 
 # Font
-brew tap homebrew/cask-fonts
 brew install --cask font-fira-code
 wait
 
