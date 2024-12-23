@@ -113,11 +113,11 @@ wait
 brew install gh
 wait
 
-### BABASHKA ###
+### Babashka ###
 brew install borkdude/brew/babashka
 wait
 
-### JAVA ###
+### Java ###
 brew install openjdk
 wait
 
