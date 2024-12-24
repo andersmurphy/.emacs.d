@@ -169,6 +169,10 @@
     (interactive)
     (kill-new (buffer-file-name)))
 
+  (defun my/kill-gpg-buffers ()
+    "Kills all open gpg buffers"
+    (kill-matching-buffers "\\.gpg$" nil t))
+
   ;; Unbind suspend-frame.
   ;; This would cause the cursor to disappear if you pressed C-x C-z
   ;; by mistake.
