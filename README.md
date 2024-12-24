@@ -151,4 +151,13 @@ npm install nbb -g
 sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
 echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.zshrc
 wait
+
+### Go ###
+brew install go
+wait
+echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.zshrc
+
+# passphrase2pgp
+go install nullprogram.com/x/passphrase2pgp@latest
+wait
 ```
