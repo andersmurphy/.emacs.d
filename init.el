@@ -580,18 +580,6 @@ This can be used to make the window layout change based on frame size."
          (directory-file-name default-directory))
         " --private --source=. --remote=origin --push"))))
 
-  (defun my/current-pr-number ()
-    (number-to-string (oref (forge-current-pullreq) number)))
-
-  (defun my/forge-approve-pull-request ()
-    "Approve current pull request."
-    (interactive)
-    (when-let ((pr-number (my/current-pr-number)))
-      (with-environment-variables
-          (("GITHUB_TOKEN" (my/get-github-token)))
-        (magit-shell-command-topdir
-         (concat "gh pr review " pr-number " --approve --body '🧞'")))))
-
   (defun my/magit-search-git-log-for-change ()
     "Search git log for current symbol or topiary region.
 
@@ -633,11 +621,6 @@ If this becomes a problem these common lines could be filtered."
 
   :bind (("C-x g" . magit-status))
   :hook ((after-save . magit-after-save-refresh-status)))
-(use-package forge
-  :ensure t
-  ;; For generating tokens see: https://github.com/settings/tokens
-  :after magit
-  :demand t)
 (use-package hl-todo
   :ensure t
   :config
