@@ -420,7 +420,6 @@ This can be used to make the window layout change based on frame size."
   (setq recentf-exclude
         '(".*\.gpg"
           ".*\.gz)"
-          ".emacs.d/emms/history"
           ".emacs.d/emacs-sync/.*"))
   (setq recentf-max-saved-items 10)
   (recentf-mode t))
@@ -1209,57 +1208,6 @@ files in the project. Respects gitignore."
   :config
   (setq nov-text-width 65)
   :hook (nov-mode . my/nov-font-setup))
-(use-package emms ;; M-x emms-play-directory
-  :ensure t
-  :config
-  (emms-minimalistic)
-  (setq emms-player-list '(emms-player-mpv))
-  (emms-mode-line-disable)
-  (emms-playing-time-disable-display)
-  (setq emms-repeat-playlist t)
-  (defvar emms-source-file-default-directory)
-  (setq emms-source-file-default-directory "~/Dropbox/music/")
-
-  (defun my/emms-kill-mpv ()
-    "Reset mpv when it's misbehaving."
-    (interactive)
-    (shell-command "killall mpv"))
-
-  (defun my/emms-track-description (track)
-    "Return a description of TRACK, that just includes the file name."
-    (let ((artist (emms-track-get track 'info-artist))
-          (title (emms-track-get track 'info-title)))
-      (cond ((and artist title)
-             (concat (format "%s" artist) " - " (format "%s" title)))
-            (title title)
-            ((eq (emms-track-type track) 'file)
-             (with-temp-buffer
-               (save-excursion
-                 (insert (file-name-nondirectory
-                          (directory-file-name (emms-track-name track)))))
-               (ignore-error 'search-failed
-                 (search-forward-regexp (rx "." (+ alnum) eol))
-                 (delete-region (match-beginning 0) (match-end 0)))
-               (buffer-string)))
-            (t (emms-track-simple-description track)))))
-
-  (setq emms-track-description-function 'my/emms-track-description)
-
-  (defun my/radio3 ()
-    "Radio 3. These links might break now and then. For latest links see:
-
-https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
-    (interactive)
-    (emms-play-streamlist
-     "http://lstn.lv/bbc.m3u8?station=bbc_radio_three&bitrate=96000"))
-
-  (defun my/radio4 ()
-    "Radio 4. These links might break now and then. For latest links see:
-
-https://gist.github.com/bpsib/67089b959e4fa898af69fea59ad74bc3"
-    (interactive)
-    (emms-play-streamlist
-     "http://lstn.lv/bbc.m3u8?station=bbc_radio_fourfm&bitrate=96000")))
 (use-package eww
   :config
   (setq eww-bookmarks-directory "~/.emacs.d/emacs-sync/")

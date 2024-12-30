@@ -1,8 +1,9 @@
 # passphrase2pgp
+cd
 go install nullprogram.com/x/passphrase2pgp@latest
 
 # set realname and email
-echo "\nGenerating ssh...\n"
+printf "\nGenerating ssh...\n"
 echo "Real Name: "
 read my_realname
 export REALNAME=$my_realname
@@ -11,6 +12,7 @@ read my_email
 export EMAIL=$my_email
 
 # github ssh
+rm -rf ~/.ssh
 mkdir ~/.ssh
 passphrase2pgp -f ssh > ~/.ssh/github
 chmod 400 ~/.ssh/github
@@ -31,13 +33,13 @@ git remote add origin git@github.com:andersmurphy/.emacs.d.git
 cd ..
 
 # emacs-sync
-echo "\nInsalling emacs-sync...\n"
+printf "\nInsalling emacs-sync...\n"
 cd .emacs.d
 git clone git@github.com:andersmurphy/emacs-sync.git
 cd ..
 
 # gpg
-echo "\nGenerating gpg...\n"
+printf "\nGenerating gpg...\n"
 passphrase2pgp -s -a -f pgp | gpg --import
-echo "\ntrust 5 quit...\n"
+printf "\ntrust 5 quit...\n"
 gpg --edit-key $REALNAME

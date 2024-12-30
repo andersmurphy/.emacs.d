@@ -1,5 +1,5 @@
 ### COMMAND LINE TOOLS ###
-echo "\n Installing command line tools...\n"
+printf "\n Installing command line tools...\n"
 xcode-select --install &> /dev/null
 until $(xcode-select --print-path &> /dev/null); do
   sleep 5;
@@ -7,7 +7,7 @@ done
 sudo xcode-select --reset
 
 ### OSX DEFAULTS ###
-echo "\n Setting OSX defaults...\n"
+printf "\n Setting OSX defaults...\n"
 defaults write com.apple.finder AppleShowAllFiles -boolean true
 killall Finder
 defaults write -g ApplePressAndHoldEnabled -bool true
@@ -20,7 +20,7 @@ defaults delete com.apple.dock recent-apps
 killall Dock
 
 ### BREW ###
-echo "\n Installing brew...\n"
+printf "\n Installing brew...\n"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 echo >> ~/.zprofile
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
@@ -53,6 +53,7 @@ ln -s ~/.emacs.d/setup/dotfiles/.gitignore ~/.gitignore
 git config --global core.excludesfile '~/.gitignore'
 
 ### EMACS (build from source) ###
+printf "\n Installing emacs...\n"
 brew install libxml2 gcc libgccjit tree-sitter jansson pkg-config gnutls texinfo autoconf
 wait
 # We clone just the tag for a smaller download
@@ -71,11 +72,6 @@ cd
 
 # spelling
 brew install aspell
-
-# Music
-brew install mpv
-rm ~/.config/mpv/mpv.conf
-ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 
 # Conversion between json and edn.
 brew install borkdude/brew/jet
