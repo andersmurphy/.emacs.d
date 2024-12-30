@@ -10,17 +10,28 @@ it is still a pretty good emacs, y'know. Pretty good."
 
 ```sh
 ### XCODE ###
+# Blocks script until xcode finishes installing
+check=$((xcode-\select --install) 2>&1)
+echo $check
+str="xcode-select: note: install requested for command line developer tools"
+while [[ "$check" == "$str" ]];
+do
+  sleep 1
+done
 # We reset the path to prevent:
 #
 # xcrun: error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not exist
 #
-# Which seems to happen if you are installing a new version of xcode.
-xcode-select --install
-wait
+# Which can happen if you are installing a new version of xcode.
 sudo xcode-select --reset
 
-# To make homebrew work properly you need to fix ruby script permissions.
+# To make homebrew work properly you might need to fix ruby script permissions.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+# Add Homebrew to PATH
+echo >> ~/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+# Say no to telemetry
 brew analytics off
 wait
 brew update
