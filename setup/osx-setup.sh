@@ -1,11 +1,26 @@
 ### COMMAND LINE TOOLS ###
+echo "\n Installing command line tools...\n"
 xcode-select --install &> /dev/null
 until $(xcode-select --print-path &> /dev/null); do
   sleep 5;
 done
 sudo xcode-select --reset
 
+### OSX DEFAULTS ###
+echo "\n Setting OSX defaults...\n"
+defaults write com.apple.finder AppleShowAllFiles -boolean true
+killall Finder
+defaults write -g ApplePressAndHoldEnabled -bool true
+# Minimal dock
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock orientation left
+defaults delete com.apple.dock persistent-apps
+defaults delete com.apple.dock persistent-others
+defaults delete com.apple.dock recent-apps
+killall Dock
+
 ### BREW ###
+echo "\n Installing brew...\n"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 echo >> ~/.zprofile
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
