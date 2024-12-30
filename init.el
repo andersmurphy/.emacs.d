@@ -15,7 +15,8 @@
 (progn ;;; Setup
 
   (require 'package)
-
+  (setq package-check-signature nil)
+  (setq use-package-verbose nil)
   (package-initialize)
 
   ;; Add MELPA to package sources

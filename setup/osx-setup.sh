@@ -1,9 +1,34 @@
-### OSX settings ###
-defaults write com.apple.finder AppleShowAllFiles -boolean true ; killall Finder
+### OSX DEFAULTS ###
+defaults write com.apple.finder AppleShowAllFiles -boolean true
+killall Finder
 defaults write -g ApplePressAndHoldEnabled -bool true
+# Minimal dock
 defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock orientation left
+defaults delete com.apple.dock persistent-apps
+defaults delete com.apple.dock persistent-others
+defaults delete com.apple.dock recent-apps
+killall Dock
+
+### COMMAND LINE TOOLS ###
+xcode-select --install &> /dev/null
+until $(xcode-select --print-path &> /dev/null); do
+  sleep 5;
+done
+sudo xcode-select --reset
+
+### BREW ###
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+echo >> ~/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+brew analytics off
+brew update
 
 ### GIT ###
+brew install git
+# Dot files
+git clone https://github.com/andersmurphy/.emacs.d.git
 # User
 git config --global user.name "andersmurphy"
 git config --global user.email "andersmurphy@gmail.com"
@@ -43,52 +68,41 @@ cd
 
 # spelling
 brew install aspell
-wait
 
 # Music
 brew install mpv
-wait
 rm ~/.config/mpv/mpv.conf
 ln -s ~/.emacs.d/setup/dotfiles/.mpv/mpv.conf ~/.config/mpv/
 
 # Conversion between json and edn.
 brew install borkdude/brew/jet
-wait
 
 # Encryption
 brew install gnupg
-wait
 
 # Fast grep
 brew install ripgrep
-wait
 
 # Font
 brew install --cask font-fira-code
-wait
 
 # github cli (pull requests, approve etc)
 brew install gh
-wait
 
 ### Babashka ###
 brew install borkdude/brew/babashka
-wait
 
 ### Java ###
 brew install openjdk
-wait
 
 ### Clojure ###
 brew install clojure/tools/clojure
-wait
 rm ~/.clojure/deps.edn
 rm ~/.clojure/user.cljc
 ln -s ~/.emacs.d/setup/dotfiles/.clojure/deps.edn ~/.clojure/
 ln -s ~/.emacs.d/setup/dotfiles/.clojure/user.cljc ~/.clojure/
 
 brew install leiningen
-wait
 rm ~/.lein/profiles.clj
 ln -s ~/.emacs.d/setup/dotfiles/.lein/profiles.clj ~/.lein/
 
@@ -97,20 +111,6 @@ rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 
-### Node ###
-brew install node
-wait
-
-### NBB (node babashka) ###
-npm install nbb -g
-
-### solana ###
-# homebrew version doesn't come with a test validator
-sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
-echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.zshrc
-wait
-
 ### Go ###
 brew install go
-wait
 echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.zshrc
