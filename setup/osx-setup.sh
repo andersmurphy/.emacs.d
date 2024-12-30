@@ -3,12 +3,12 @@ defaults write com.apple.finder AppleShowAllFiles -boolean true
 killall Finder
 defaults write -g ApplePressAndHoldEnabled -bool true
 # Minimal dock
-# defaults write com.apple.dock autohide -bool true
-# defaults write com.apple.dock orientation left
-# defaults delete com.apple.dock persistent-apps
-# defaults delete com.apple.dock persistent-others
-# defaults delete com.apple.dock recent-apps
-# killall Dock
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock orientation left
+defaults delete com.apple.dock persistent-apps
+defaults delete com.apple.dock persistent-others
+defaults delete com.apple.dock recent-apps
+killall Dock
 
 ### COMMAND LINE TOOLS ###
 xcode-select --install &> /dev/null
