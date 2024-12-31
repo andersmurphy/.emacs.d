@@ -93,6 +93,8 @@ brew install borkdude/brew/babashka
 
 ### Java ###
 brew install openjdk
+echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
+
 
 ### Clojure ###
 brew install clojure/tools/clojure
