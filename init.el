@@ -1123,6 +1123,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   (setq css-indent-offset 2))
 ;; Markdown
 (use-package markdown-mode
+  :ensure t
   ;; requires multimarkdown if you want to use preview.
   :init
   (defun my/md-font-setup ()
