@@ -534,18 +534,14 @@ This can be used to make the window layout change based on frame size."
   ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
 
-  (defun my/get-github-token ()
-    (funcall
-     (plist-get
-      (car (auth-source-search :max 1 :host "github.com"))
-      :secret)))
+  (defun my/magit-github-login ()
+    "Create a private repo on github, add remote as origin
+     and push local commits."
+    (interactive)
+    (async-shell-command
+     "gh auth login --git-protocol ssh --skip-ssh-key --hostname github.com --web"))
 
-  (defun my/get-github-username ()
-    (plist-get
-     (car (auth-source-search :max 1 :host "github.com"))
-     :user))
-
-  (defun my/magit-spin-off-pull-request ()
+  (defun my/magit-github-spin-off-pull-request ()
     "Spin off last commit as a pull request."
     (interactive)
     (when (y-or-n-p "Spin off pull request?")
@@ -559,23 +555,20 @@ This can be used to make the window layout change based on frame size."
              (master-name (car (seq-filter (lambda (n) (or (equal n "master") (equal n "main")))
                                            (magit-list-branch-names)))))
         (magit--branch-spinoff branch-name from t)
-        (with-environment-variables
-            (("GITHUB_TOKEN" (my/get-github-token)))
-          (magit-shell-command-topdir
-           (concat
-            "git push -u origin " branch-name
-            ";gh pr create --fill --head " branch-name
-            ";git checkout " master-name))))))
+        (magit-shell-command-topdir
+         (concat
+          "git push -u origin " branch-name
+          ";gh pr create --fill --head " branch-name
+          ";git checkout " master-name)))))
 
-  (defun my/magit-create-private-github-remote ()
+  (defun my/magit-github-create-private-remote ()
     "Create a private repo on github, add remote as origin
      and push local commits."
     (interactive)
-    (with-environment-variables
-        (("GITHUB_TOKEN" (my/get-github-token)))
+    (let ((user-name "andersmurphy"))
       (magit-shell-command-topdir
        (concat
-        "gh repo create " (my/get-github-username) "/"
+        "gh repo create " user-name "/"
         (file-name-nondirectory
          (directory-file-name default-directory))
         " --private --source=. --remote=origin --push"))))
