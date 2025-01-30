@@ -99,9 +99,9 @@ echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
 ### Clojure ###
 brew install clojure/tools/clojure
 rm ~/.clojure/deps.edn
-rm ~/.clojure/user.cljc
+rm ~/.clojure/user.clj
 ln -s ~/.emacs.d/setup/dotfiles/.clojure/deps.edn ~/.clojure/
-ln -s ~/.emacs.d/setup/dotfiles/.clojure/user.cljc ~/.clojure/
+ln -s ~/.emacs.d/setup/dotfiles/.clojure/user.clj ~/.clojure/
 
 brew install leiningen
 rm ~/.lein/profiles.clj
