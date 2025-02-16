@@ -33,7 +33,7 @@ git remote add origin git@github.com:andersmurphy/.emacs.d.git
 cd ..
 
 # emacs-sync
-printf "\nInsalling emacs-sync...\n"
+printf "\nInstalling emacs-sync...\n"
 cd .emacs.d
 git clone git@github.com:andersmurphy/emacs-sync.git
 cd ..
