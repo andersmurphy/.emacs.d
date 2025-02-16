@@ -95,7 +95,6 @@ brew install borkdude/brew/babashka
 brew install openjdk
 echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
 
-
 ### Clojure ###
 brew install clojure/tools/clojure
 rm ~/.clojure/deps.edn
@@ -115,3 +114,6 @@ ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
 ### Go ###
 brew install go
 echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.zshrc
+
+### Proxy ###
+brew install caddy
