@@ -1106,6 +1106,9 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("C-c C-t C-p" . my/clj-run-project-tests)))
 (use-package html-to-hiccup
   :ensure t)
+;; Go
+(use-package go-mode
+  :ensure t)
 ;; JavaScript
 (use-package js
   :config
