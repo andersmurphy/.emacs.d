@@ -747,8 +747,10 @@ If this becomes a problem these common lines could be filtered."
 See `consult-grep' for details."
     (interactive)
     (let* ((bounds (topiary/bounds)))
-      (copy-region-as-kill (car bounds) (cdr bounds))
-      (call-interactively 'consult-ripgrep)))
+      (consult-ripgrep
+       nil
+       (buffer-substring-no-properties
+        (car bounds) (cdr bounds)))))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   ;; Disable preview, to enable set to 'any
