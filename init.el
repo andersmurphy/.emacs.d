@@ -1087,7 +1087,21 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                (car bounds)
                (cdr bounds)
                jet (current-buffer) t)))
-        (user-error "Could not find jet installed")))))
+        (user-error "Could not find jet installed"))))
+
+  (font-lock-add-keywords
+   'clojure-mode
+   `((,(concat "(\\(?:clojure.core/\\)?\\("
+               "def[^\s]*"
+               "\\)"
+               ;; Function declarations
+               "\\>"
+               ;; Any whitespace
+               "[ \r\n\t]*"
+               ;; Possibly type or metadata
+               "\\(?:#?^\\(?:{[^}]*}\\|\\sw+\\)[ \r\n\t]*\\)*"
+               (concat "\\(" clojure--sym-regexp "\\)?"))
+      (2 font-lock-function-name-face nil t)))))
 (use-package clj
   :after clojure-mode
   :demand t
