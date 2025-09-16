@@ -197,12 +197,8 @@
                ("C-o"     . my/other-window)
                ("C-x o"   . my/other-window)
                ("C-x k"   . kill-this-buffer)
-               ("C-x 2"   . (lambda () (interactive)
-                              (split-window-sensibly)
-                              (other-window 1)))
-               ("C-x 3"   . (lambda () (interactive)
-                              (split-window-sensibly)
-                              (other-window 1)))
+               ("C-x 2"   . my/other-window)
+               ("C-x 3"   . my/other-window)
                ("C-x -"   . my/zoom-out)
                ("C-x C--" . my/zoom-out)
                ("C-x +"   . my/zoom-in)
@@ -256,7 +252,6 @@
                                    (lisp-interaction-mode)))))
 (use-package window
   :config
-  (setq split-width-threshold 100)
 
   (defun my/other-window ()
     "Switch to another window. If no other window exists create one.
@@ -267,7 +262,9 @@
           (abort-recursive-edit))
       (progn
         (when (one-window-p)
-          (split-window-sensibly))
+          (setq split-width-threshold 100)
+          (split-window-sensibly)
+          (setq split-width-threshold 600))
         (other-window 1))))
 
   (defun my/reset-window-layout (_)
@@ -279,8 +276,7 @@ This can be used to make the window layout change based on frame size."
       (let* ((_ (other-window 1))
              (other-buff (buffer-name)))
         (delete-window)
-        (split-window-sensibly)
-        (other-window 1)
+        (my/other-window)
         (switch-to-buffer other-buff)
         (other-window 1))))
 
