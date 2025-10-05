@@ -1007,6 +1007,19 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                      (eq major-mode 'inferior-lisp-mode)))))))
 
 ;;; PROGRAMMING
+;; LISP
+(use-package inf-lisp+
+  :demand t
+  ;; inf-lisp Convenience extensions
+  :load-path "~/.emacs.d/elisp")
+(use-package janet-mode
+  :ensure t
+  :hook (janet-mode . (lambda ()
+                        (setq-local inferior-lisp-program "janet")))
+  :bind (:map janet-mode-map
+              ("C-c C-z" . inf-lisp+/open-repl)
+              ("C-c C-b" . inf-lisp+/eval-buffer)
+              ("C-x C-e" . inf-lisp+/eval-last-sexp)))
 ;; LSP - Language Server Protocol
 (use-package eglot
   :custom

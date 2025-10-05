@@ -161,7 +161,9 @@
                        clojurescript-mode
                        emacs-lisp-mode
                        lisp-interaction-mode
-                       fennel-mode)))
+                       fennel-mode
+                       lisp-mode
+                       janet-mode)))
 
 (defun topiary/back-to-indentation-or-beginning ()
   "Go to first character in line.
