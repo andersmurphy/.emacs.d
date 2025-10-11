@@ -840,7 +840,7 @@ See `consult-grep' for details."
   (defadvice flymake--handle-report (after refresh-folded-errors activate)
     (my/refresh-folded-code-errors))
 
-  :hook (((emacs-lisp-mode clojure-mode)
+  :hook (((emacs-lisp-mode clojure-mode janet-mode)
           . (lambda ()
               (hs-minor-mode) (hs-hide-all))))
 
@@ -1014,8 +1014,10 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :load-path "~/.emacs.d/elisp")
 (use-package janet-mode
   :ensure t
-  :hook (janet-mode . (lambda ()
-                        (setq-local inferior-lisp-program "janet")))
+  :hook
+  (janet-mode .
+              (lambda ()
+                (setq-local inferior-lisp-program "nc localhost 7650")))
   :bind (:map janet-mode-map
               ("C-c C-z" . inf-lisp+/open-repl)
               ("C-c C-b" . inf-lisp+/eval-buffer)
