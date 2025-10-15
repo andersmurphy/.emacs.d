@@ -755,13 +755,13 @@ Otherwise wrap with double quotes."
 
 (defun topiary/insert-double-quote ()
   "Insert double quote if in supported mode or in comment.
-In string insert escaped double quote.
+In string insert two double quote (useful for string splitting).
 Otherwise insert single quote."
   (interactive)
   (cond ((or (not (topiary/supported-mode-p))
              (topiary/in-comment-p))
          (insert "\""))
-        ((topiary/in-string-p) (insert "\\\""))
+        ((topiary/in-string-p) (insert "\"\"") (backward-char))
         (t (insert "'"))))
 
 (defun topiary/upcase ()
