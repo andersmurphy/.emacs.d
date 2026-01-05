@@ -1139,6 +1139,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
 ;; JavaScript
 (use-package js
   :config
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
   (setq js-indent-level 2))
 ;; Css
 (use-package css-mode
