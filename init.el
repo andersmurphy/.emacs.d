@@ -654,7 +654,30 @@ If this becomes a problem these common lines could be filtered."
   (setq org-capture-templates
         '(("t" "Todo" entry
            (file+headline "~/.emacs.d/emacs-sync/org/tasks.org" "Tasks")
-           "* TODO %?"))))
+           "* TODO %?")))
+
+  ;; Focus timer
+  (let ((timer nil))
+    (defun my/focus-timer ()
+      (if timer
+          (org-timer-pause-or-continue)
+        (progn
+          (setq timer 't)
+          (org-timer)))))
+
+  (defun my/focus-timer-value ()
+    "Return current value of focus timer."
+    (interactive)
+    (message "Focus timer: %s" (org-timer nil 't)))
+
+  (defun my/focus-timer-restart ()
+    "Restart focus timer."
+    (interactive)
+    (org-timer-start "0:00:00")
+    (message "Focus timer restarted"))
+  
+  (add-function :after after-focus-change-function
+                #'my/focus-timer))
 (use-package consult
   :ensure t
   :bind
@@ -1202,6 +1225,7 @@ files in the project. Respects gitignore."
   (let ((face (or (get-char-property (point) 'read-face-name)
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
 
 ;;; MEDIA
 (use-package image-mode
