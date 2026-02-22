@@ -254,6 +254,8 @@
      `(org-level-2 ((t (:foreground ,fg :background ,bg :height 1.2 :weight normal))))
      `(org-level-3 ((t (:foreground ,fg :background ,bg :height 1.0 :weight bold))))
      `(org-level-4 ((t (:foreground ,fg :background ,bg :height 1.0 :weight normal))))
+     `(org-block  ((t nil)))
+     `(org-meta-line  ((t (:foreground ,fg-dim :italic t))))
      ;; eww
      `(eww-valid-certificate ((t (:foreground ,fg-success))))
      `(eww-invalid-certificate ((t (:foreground ,fg-error))))
