@@ -1036,6 +1036,19 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                      (eq major-mode 'inferior-lisp-mode)))))))
 
 ;;; PROGRAMMING
+;; ASM
+(use-package asm
+  :init
+  ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway
+  (local-unset-key (vector asm-comment-char))
+  (defun asm-calculate-indentation ()
+  (or
+   ;; Flush labels to the left margin.
+   (and (looking-at "\\(\\sw\\|\\s_\\)+:") 0)
+   ;; directives
+   (and (looking-at "\\..*"))
+   ;; The rest goes at the first tab stop.
+   (indent-next-tab-stop 0))))
 ;; LISP
 (use-package inf-lisp+
   :demand t
