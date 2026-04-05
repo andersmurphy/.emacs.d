@@ -1036,19 +1036,26 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                      (eq major-mode 'inferior-lisp-mode)))))))
 
 ;;; PROGRAMMING
+;; C
+(use-package cc-mode)
 ;; ASM
-(use-package asm
+(use-package asm-mode
   :init
-  ;; you can use `comment-dwim' (M-;) for this kind of behaviour anyway
-  (local-unset-key (vector asm-comment-char))
+  (add-to-list 'auto-mode-alist '("\\.inc\\'" . asm-mode))
+  :config
+  (setq asm-comment-char ?\/)
   (defun asm-calculate-indentation ()
-  (or
-   ;; Flush labels to the left margin.
-   (and (looking-at "\\(\\sw\\|\\s_\\)+:") 0)
-   ;; directives
-   (and (looking-at "\\..*"))
-   ;; The rest goes at the first tab stop.
-   (indent-next-tab-stop 0))))
+    (or
+     ;; Flush labels to the left margin.
+     (and (looking-at "\\(\\sw\\|\\s_\\)+:") 0)
+     ;; directives
+     (and (looking-at "\\..*"))
+     ;; C macros
+     (and (looking-at "\\#.*"))
+     ;; comment
+     (and (looking-at "//.*"))
+     ;; The rest goes at the first tab stop.
+     (indent-next-tab-stop 0))))
 ;; LISP
 (use-package inf-lisp+
   :demand t
@@ -1180,8 +1187,9 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :ensure t)
 ;; JavaScript
 (use-package js
-  :config
+  :init
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
+  :config
   (setq js-indent-level 2))
 ;; Css
 (use-package css-mode
