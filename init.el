@@ -165,14 +165,22 @@
     (exchange-point-and-mark)
     (deactivate-mark nil))
 
-  (defun my/copy-buffer-file-name-as-kill ()
-    "Copy current buffer file name to kill ring."
-    (interactive)
-    (kill-new (buffer-file-name)))
-
   (defun my/kill-gpg-buffers ()
     "Kills all open gpg buffers"
     (kill-matching-buffers "\\.gpg$" nil t))
+
+  (defun my/kill-buffer-file-path ()
+    "kill current buffer file name."
+    (interactive)
+    (kill-new (buffer-file-name)))
+
+  (defun my/kill-line-path ()
+    "Kill line path format \"file-name:line-number\"."
+    (interactive)
+    (kill-new
+     (format "%s:%d" (buffer-file-name)
+             (save-restriction
+               (widen) (line-number-at-pos)))))
 
   ;; Unbind suspend-frame.
   ;; This would cause the cursor to disappear if you pressed C-x C-z
@@ -655,7 +663,7 @@ If this becomes a problem these common lines could be filtered."
         '(("t" "Todo" entry
            (file+headline "~/.emacs.d/emacs-sync/org/tasks.org" "Tasks")
            "* TODO %?")))
-  
+
   ;; Focus timer
   (let ((my-timer nil))
     (defun my/focus-timer ()
@@ -681,7 +689,7 @@ If this becomes a problem these common lines could be filtered."
     (interactive)
     (org-timer-start "0:00:00")
     (message "Focus timer restarted"))
-  
+
   (add-function :after after-focus-change-function
                 #'my/focus-timer))
 (use-package consult
