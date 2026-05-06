@@ -1239,33 +1239,48 @@ files in the project. Respects gitignore."
 (use-package org-present
   :ensure t
   :config
-  (setq visual-fill-column-width 110
+  (setq visual-fill-column-width 80
         visual-fill-column-center-text t)
+
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+
   (defun my/org-present-start ()
-    (setq header-line-format " ")
-    (topiary-mode -1)
-    (visual-fill-column-mode 1)
     (setq-local face-remapping-alist
-                '((default (:height 1.5) variable-pitch)
+                '((default (:height 1.70) variable-pitch)
                   (header-line (:height 4.0) variable-pitch)
                   (org-document-title (:height 1.75) org-document-title)
-                  (org-code (:height 1.55) org-code)
+                  (org-code (:height 0.9) org-code)
                   (org-verbatim (:height 1.55) org-verbatim)
-                  (org-block (:height 1.25) org-block)
+                  (org-block (:height 0.9) org-block)
                   (org-block-begin-line (:height 0.7) org-block)))
     (variable-pitch-mode 1)
+    (setq header-line-format " ")
+    (flyspell-mode -1)
+    (topiary-mode -1)
+    (visual-fill-column-mode 1)
     (org-display-inline-images)
     (org-present-hide-cursor)
     (org-present-read-only))
+
   (defun my/org-present-end ()
     (setq header-line-format nil)
     (topiary-mode 1)
+    (flyspell-mode 1)
+    (flyspell-buffer)
     (visual-fill-column-mode 0)
     (setq-local face-remapping-alist '((default variable-pitch default)))
     (variable-pitch-mode 0)
     (org-remove-inline-images)
     (org-present-show-cursor)
     (org-present-read-write))
+
   :hook
   ((org-present-mode . my/org-present-start)
    (org-present-mode-quit . my/org-present-end)))
@@ -1343,3 +1358,4 @@ files in the project. Respects gitignore."
 ;; End:
 
 ;;; init.el ends here
+
