@@ -662,36 +662,7 @@ If this becomes a problem these common lines could be filtered."
   (setq org-capture-templates
         '(("t" "Todo" entry
            (file+headline "~/.emacs.d/emacs-sync/org/tasks.org" "Tasks")
-           "* TODO %?")))
-
-  ;; Focus timer
-  (let ((my-timer nil))
-    (defun my/focus-timer ()
-      (if my-timer
-          (if ;; important to check the frame is actually focused
-              ;; and that a timer is not already running.
-              (and (frame-focus-state) (not org-timer-start-time))
-              (org-timer-start my-timer)
-            (progn
-              (setq my-timer (org-timer-value-string))
-              (org-timer-stop)))
-        (progn
-          (setq my-timer "0:00:00")
-          (org-timer nil 't)))))
-
-  (defun my/focus-timer-value ()
-    "Return current value of focus timer."
-    (interactive)
-    (message "Focus timer: %s" (org-timer-value-string)))
-
-  (defun my/focus-timer-restart ()
-    "Restart focus timer."
-    (interactive)
-    (org-timer-start "0:00:00")
-    (message "Focus timer restarted"))
-
-  (add-function :after after-focus-change-function
-                #'my/focus-timer))
+           "* TODO %?"))))
 (use-package consult
   :ensure t
   :bind
