@@ -727,11 +727,11 @@ If this becomes a problem these common lines could be filtered."
             :items     ,#'project-known-project-roots))
 
   (setq my/consult-omni-sources
-        '(consult--source-buffer
+        '(consult-source-buffer
           my/consult-source-project
           my/consult-source-file
-          consult--source-recent-file
-          consult--source-bookmark))
+          consult-source-recent-file
+          consult-source-bookmark))
 
   (defun my/consult-omni ()
     (interactive)
