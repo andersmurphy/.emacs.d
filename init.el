@@ -642,6 +642,15 @@ If this becomes a problem these common lines could be filtered."
     (message "git url for region yanked!")))
 (use-package org
   :config
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+
   ;; Org babel/source blocks
   (setq org-src-fontify-natively t
         org-src-window-setup 'current-window
@@ -1242,44 +1251,41 @@ files in the project. Respects gitignore."
   (setq visual-fill-column-width 80
         visual-fill-column-center-text t)
 
-  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-
   (defun my/org-present-start ()
     (setq-local face-remapping-alist
-                '((default (:height 1.70) variable-pitch)
+                '((default (:height 1.90) variable-pitch)
                   (header-line (:height 4.0) variable-pitch)
                   (org-document-title (:height 1.75) org-document-title)
                   (org-code (:height 0.9) org-code)
                   (org-verbatim (:height 1.55) org-verbatim)
                   (org-block (:height 0.9) org-block)
                   (org-block-begin-line (:height 0.7) org-block)))
+    (set-face-attribute'org-level-1
+     nil :foreground
+     (face-attribute 'link :foreground nil t))
     (variable-pitch-mode 1)
     (setq header-line-format " ")
     (flyspell-mode -1)
-    (topiary-mode -1)
     (visual-fill-column-mode 1)
     (org-display-inline-images)
-    (org-present-hide-cursor)
-    (org-present-read-only))
+    (org-present-read-only)
+    (topiary-mode -1)
+    (org-present-hide-cursor))
 
   (defun my/org-present-end ()
     (setq header-line-format nil)
-    (topiary-mode 1)
     (flyspell-mode 1)
     (flyspell-buffer)
     (visual-fill-column-mode 0)
     (setq-local face-remapping-alist '((default variable-pitch default)))
+    (set-face-attribute'org-level-1
+     nil :foreground
+     (face-attribute 'default :foreground nil t))
     (variable-pitch-mode 0)
     (org-remove-inline-images)
-    (org-present-show-cursor)
-    (org-present-read-write))
+    (org-present-read-write)
+    (topiary-mode 1)
+    (org-present-show-cursor))
 
   :hook
   ((org-present-mode . my/org-present-start)

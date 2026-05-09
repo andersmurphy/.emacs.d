@@ -12,6 +12,24 @@
   (with-syntax-table clojure-mode-syntax-table
     (symbol-at-point)))
 
+(defconst clojure-namespace-name-regex
+  (rx line-start
+      "("
+      (zero-or-one (group (regexp "clojure.core/")))
+      (zero-or-one (submatch "in-"))
+      "ns"
+      (zero-or-one "+")
+      (one-or-more (any whitespace "\n"))
+      (zero-or-more (or (submatch (zero-or-one "#")
+                                  "^{"
+                                  (zero-or-more (not (any "}")))
+                                  "}")
+                        (zero-or-more "^:"
+                                      (one-or-more (not (any whitespace)))))
+                    (one-or-more (any whitespace "\n")))
+      (zero-or-one (any ":'")) ;; (in-ns 'foo) or (ns+ :user)
+      (group (one-or-more (not (any "()\"" whitespace))) symbol-end)))
+
 (defun my/clj-get-current-namespace-symbol ()
   "Get symbol for current buffer namespace."
   (save-excursion
