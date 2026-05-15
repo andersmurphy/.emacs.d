@@ -1291,7 +1291,6 @@ files in the project. Respects gitignore."
   ((org-present-mode . my/org-present-start)
    (org-present-mode-quit . my/org-present-end)))
 
-
 ;;; MEDIA
 (use-package image-mode
   :defer t
@@ -1346,7 +1345,7 @@ files in the project. Respects gitignore."
   :commands speak-region)
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
-(when (file-directory-p "~/.emacs.d/emacs-sync")
+(when (file-directory-p "~/.emacs.d/emacs-sync/elisp")
   (load "~/.emacs.d/emacs-sync/project-specific-commands.el"))
 
 ;;; SET FLYMAKE LOAD PATH FOR ELISP
