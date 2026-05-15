@@ -1345,8 +1345,8 @@ files in the project. Respects gitignore."
   :commands speak-region)
 
 ;;; LOAD PROJECT SPECIFIC COMMANDS
-(when (file-directory-p "~/.emacs.d/emacs-sync/elisp")
-  (load "~/.emacs.d/emacs-sync/project-specific-commands.el"))
+(when (file-directory-p "~/.emacs.d/emacs-sync")
+  (load "~/.emacs.d/emacs-sync/elisp/project-specific-commands.el"))
 
 ;;; SET FLYMAKE LOAD PATH FOR ELISP
 ;; Needs to be done at the end of this file after
