@@ -756,14 +756,16 @@ If this becomes a problem these common lines could be filtered."
     (consult-info "emacs" "efaq" "elisp" "cl" ))
 
   (defun my/consult-ripgrep ()
-    "Search with `rg' for files in DIR with INITIAL input.
-See `consult-grep' for details."
     (interactive)
-    (let* ((bounds (topiary/bounds)))
-      (consult-ripgrep
-       nil
-       (buffer-substring-no-properties
-        (car bounds) (cdr bounds)))))
+    (if (equal major-mode 'dired-mode)
+        ;; If in dired-mode search directory
+        (consult-ripgrep default-directory)
+      ;; if not search project using topiary bounds
+      (let* ((bounds (topiary/bounds)))
+        (consult-ripgrep
+         nil
+         (buffer-substring-no-properties
+          (car bounds) (cdr bounds))))))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   ;; Disable preview, to enable set to 'any
