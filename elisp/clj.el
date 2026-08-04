@@ -46,16 +46,25 @@ Handles both string and edn commands."
   (let ((ns (my/clj-get-current-namespace-symbol))
         (string (if (stringp command)
                     command
-                  (parseedn-print-str command))))
+                  (parseedn-print-str command)))
+        (file (file-relative-name
+               (buffer-file-name)
+               (project-root (project-current))))
+        (line (save-excursion
+                (beginning-of-defun)
+                (line-number-at-pos))))
     (if ns
         (format
          "(do
             (when-not (find-ns '%s) (require '%s))
             (in-ns '%s) :repl-do-not-print)
-          (let [result (eval '%s)]
-            (in-ns 'user)
-            result)"
-         ns ns ns string)
+            (clojure.lang.Compiler/load
+              (doto (clojure.lang.LineNumberingPushbackReader.
+                      (java.io.StringReader. (str '%s)))
+                (.setLineNumber %d))
+                (str '%s)
+                (str '%s))"
+         ns ns ns string line file file)
       (format "(eval '%s)" string))))
 
 (defun my/clj-eval-last-sexp ()
@@ -67,6 +76,30 @@ Handles both string and edn commands."
      (my/clj-format-with-ns (inf-lisp+/get-last-sexp))))
    ((eq major-mode 'clojurescript-mode)
     (inf-lisp+/eval (inf-lisp+/get-last-sexp)))
+   (t (message "Mode not supported."))))
+
+(defun my/clj-eval-buffer ()
+  "Evaluate buffer."
+  (interactive)
+  (cond
+   ((member major-mode '(clojure-mode clojurec-mode))
+    (let ((string (buffer-substring-no-properties (point-min) (point-max)))
+          (file (file-relative-name
+                 (buffer-file-name)
+                 (project-root (project-current)))))
+      (inf-lisp+/eval
+       (format
+        "(clojure.lang.Compiler/load
+         (doto (clojure.lang.LineNumberingPushbackReader.
+                 (java.io.StringReader. %s))
+           (.setLineNumber 1))
+         %s
+         %s)"
+        (prin1-to-string string)
+        (prin1-to-string file)
+        (prin1-to-string file)))))
+   ((eq major-mode 'clojurescript-mode)
+    (inf-lisp+/eval-buffer))
    (t (message "Mode not supported."))))
 
 (defun my/t->true-sym (value)
@@ -381,11 +414,6 @@ Works from both namespace and test namespace"
   (insert contents)
   (indent-region (point-min) (point-max))
   (save-buffer))
-
-(defun my/clj-eval-buffer ()
-  "Evaluate entire buffer in REPL."
-  (interactive)
-  (inf-lisp+/eval-buffer))
 
 (defun my/clj-create-new-deps-project ()
   "Create a new deps.edn project."
