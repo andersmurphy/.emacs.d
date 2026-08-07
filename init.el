@@ -1289,6 +1289,12 @@ files in the project. Respects gitignore."
     (topiary-mode 1)
     (org-present-show-cursor))
 
+  (defun html-to-org-region (beg end)
+    "Convert HTML region to Org via pandoc."
+    (interactive "r")
+    (shell-command-on-region
+     beg end "pandoc -f html -t org" nil t))
+
   :hook
   ((org-present-mode . my/org-present-start)
    (org-present-mode-quit . my/org-present-end)))
