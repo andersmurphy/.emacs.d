@@ -350,6 +350,13 @@ This can be used to make the window layout change based on frame size."
   ;; Convenience mode for killing buffer on q
   :load-path "~/.emacs.d/elisp")
 
+(use-package eat
+  :ensure t
+  :config
+  (setq eat-term-name "xterm-256color")
+  :hook ((eshell-mode . eat-eshell-mode)
+         (eshell-mode . eat-eshell-visual-command-mode)))
+
 ;;; PRIVACY
 (use-package totp
   ;; further reading
