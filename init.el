@@ -260,6 +260,7 @@
                                    (lisp-interaction-mode)))))
 (use-package window
   :config
+  (setq split-width-threshold 100)
 
   (defun my/other-window ()
     "Switch to another window. If no other window exists create one.
@@ -270,9 +271,7 @@
           (abort-recursive-edit))
       (progn
         (when (one-window-p)
-          (setq split-width-threshold 100)
-          (split-window-sensibly)
-          (setq split-width-threshold 600))
+          (split-window-sensibly))
         (other-window 1))))
 
   (defun my/reset-window-layout (_)
