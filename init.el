@@ -950,7 +950,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
             #b00000000
             #b00000000
             #b00000000))
-  (setq flymake-indicator-type 'fringe)
   (setq flymake-error-bitmap '(my/flymake-fringe-indicator flymake-error))
   (setq flymake-warning-bitmap '(my/flymake-fringe-indicator flymake-warning))
   (setq flymake-note-bitmap '(my/flymake-fringe-indicator flymake-note))
