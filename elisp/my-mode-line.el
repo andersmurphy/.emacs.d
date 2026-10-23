@@ -1,4 +1,4 @@
-;;; my-mode-line.el --- My mode line
+;;; my-mode-line.el --- My mode line -*- lexical-binding: t -*-
 
 ;;; Commentary:
 

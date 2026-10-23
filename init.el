@@ -378,9 +378,10 @@ This can be used to make the window layout change based on frame size."
   (defvar after-load-theme-hook nil
     "Hook run after a colour theme is loaded using `load-theme'.")
 
-  (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Run `after-load-theme-hook'."
+  (defun my/run-after-load-theme-hook (&rest _)
     (run-hooks 'after-load-theme-hook))
+
+  (add-hook 'enable-theme-functions #'my/run-after-load-theme-hook)
 
   (defun my/dim-parens ()
     "Make parenthesis less prominent by matching comment face."
@@ -480,13 +481,13 @@ This can be used to make the window layout change based on frame size."
         (my/isearch-repeat-backward))))
 
   ;; Make isearch wrap automatically if it doesn't find anything
-  (defadvice isearch-search (after isearch-no-fail activate)
+  (defun isearch-no-fail (&rest _)
     (unless isearch-success
-      (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)
+      (advice-remove 'isearch-search #'isearch-no-fail)
       (isearch-repeat (if isearch-forward 'forward))
-      (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
-      (ad-activate 'isearch-search)))
+      (advice-add 'isearch-search :after #'isearch-no-fail)))
+
+  (advice-add 'isearch-search :after #'isearch-no-fail)
 
   :hook (('isearch-mode-end . my/goto-match-end))
   :bind
@@ -540,7 +541,7 @@ This can be used to make the window layout change based on frame size."
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (setq magit-process-find-password-functions
         '(magit-process-password-auth-source))
-  (setq magit-process-finish-apply-ansi-colors t)
+  (setq magit-process-apply-ansi-colors t)
   ;; Allows q to be used to quit transient buffers
   (transient-bind-q-to-quit)
 
@@ -612,7 +613,7 @@ If this becomes a problem these common lines could be filtered."
                                 (regexp-quote region-str)) "\n")
                               "|")
                              ")"))))
-      (if-let ((file (magit-file-relative-name)))
+      (if-let* ((file (magit-file-relative-name)))
           (magit-log-setup-buffer
            (list (or magit-buffer-refname
                      (magit-get-current-branch)
@@ -808,13 +809,19 @@ If this becomes a problem these common lines could be filtered."
 (use-package hideshow
   :config
   (setq hs-hide-comments-when-hiding-all nil)
+  (setq truncate-string-ellipsis "...")
+
+  (defun my/flymake-overlays (beg end)
+    (cl-remove-if-not (lambda (o) (overlay-get o 'flymake-diagnostic))
+                      (overlays-in beg end)))
 
   (defun my/display-most-sever-flymake-error (ov)
     "Display most sever error in folded code block at top level."
     (when (eq 'code (overlay-get ov 'hs))
       (let* ((most-sever-error
-              (car (sort (flymake--overlays :beg (overlay-start ov)
-                                            :end (overlay-end ov))
+              (car (sort (my/flymake-overlays
+                          (overlay-start ov)
+                          (overlay-end ov))
                          (lambda (a b) (> (overlay-get a 'severity)
                                           (overlay-get b 'severity))))))
              (level (and most-sever-error
@@ -855,15 +862,17 @@ If this becomes a problem these common lines could be filtered."
 
   (defun my/refresh-folded-code-errors ()
     "Refresh folded code that contains errors to make them visible at the top level."
-    (let ((current-flymake-errors (flymake--overlays)))
+    (let ((current-flymake-errors (flymake--really-all-overlays)))
       (unless (equal current-flymake-errors my/previous-flymake-errors)
         (dolist (ov (overlays-in (point-min) (point-max)))
           (when (overlay-get ov 'hs)
             (my/display-most-sever-flymake-error ov)))
         (setq my/previous-flymake-errors current-flymake-errors))))
 
-  (defadvice flymake--handle-report (after refresh-folded-errors activate)
+  (defun refresh-folded-errors (&rest _)
     (my/refresh-folded-code-errors))
+
+  (advice-add 'flymake--handle-report :after #'refresh-folded-errors)
 
   :hook (((emacs-lisp-mode clojure-mode janet-mode)
           . (lambda ()
@@ -941,6 +950,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
             #b00000000
             #b00000000
             #b00000000))
+  (setq flymake-indicator-type 'fringe)
   (setq flymake-error-bitmap '(my/flymake-fringe-indicator flymake-error))
   (setq flymake-warning-bitmap '(my/flymake-fringe-indicator flymake-warning))
   (setq flymake-note-bitmap '(my/flymake-fringe-indicator flymake-note))
@@ -1072,7 +1082,8 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
   :custom
   (eglot-autoshutdown t)
   :config
-  (setq eglot-confirm-server-initiated-edits nil)
+  (setq eglot-code-action-indications nil)
+  (setq eglot-confirm-server-edits nil)
   (setq eglot-sync-connect 0)
   (setq eglot-ignored-server-capabilities
         '(:signatureHelpProvider
@@ -1178,9 +1189,6 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
               ("C-c C-t C-p" . my/clj-run-project-tests)))
 (use-package html-to-hiccup
   :ensure t)
-;; Go
-(use-package go-mode
-  :ensure t)
 ;; JavaScript
 (use-package js
   :init
@@ -1275,7 +1283,7 @@ files in the project. Respects gitignore."
     (setq header-line-format " ")
     (flyspell-mode -1)
     (visual-fill-column-mode 1)
-    (org-display-inline-images)
+    (org-link-preview-region)
     (org-present-read-only)
     (topiary-mode -1)
     (org-present-hide-cursor))
@@ -1290,7 +1298,7 @@ files in the project. Respects gitignore."
      nil :foreground
      (face-attribute 'default :foreground nil t))
     (variable-pitch-mode 0)
-    (org-remove-inline-images)
+    (org-link-preview-region)
     (org-present-read-write)
     (topiary-mode 1)
     (org-present-show-cursor))

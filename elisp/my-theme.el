@@ -1,4 +1,4 @@
-;;; my-theme.el --- My theme
+;;; my-theme.el --- My theme -*- lexical-binding: t -*-
 
 ;;; Commentary:
 
@@ -260,7 +260,9 @@
      `(eww-valid-certificate ((t (:foreground ,fg-success))))
      `(eww-invalid-certificate ((t (:foreground ,fg-error))))
      ;; eglot
-     `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-dim)))))))
+     `(eglot-diagnostic-tag-unnecessary-face ((t (:foreground ,fg-dim))))
+     ;; hideshow
+     `(hs-ellipsis ((t (:foreground ,fg-dim)))))))
 
 (defvar my/active-theme)
 (setq my/active-theme my/dark-theme)

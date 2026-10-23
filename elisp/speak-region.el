@@ -1,4 +1,4 @@
-;;; speak-region.el --- Text to speech
+;;; speak-region.el --- Text to speech -*- lexical-binding: t -*-
 
 ;;; Commentary:
 

@@ -57,10 +57,10 @@ printf "\n Installing emacs...\n"
 brew install libxml2 gcc libgccjit tree-sitter jansson pkg-config gnutls texinfo autoconf
 wait
 # We clone just the tag for a smaller download
-git clone --depth 1 --branch emacs-29.3 https://git.savannah.gnu.org/git/emacs.git
+git clone --depth 1 --branch emacs-31 https://git.savannah.gnu.org/git/emacs.git
 wait
 cd emacs
-git checkout emacs-29.3
+git checkout emacs-31
 ./autogen.sh
 ./configure --with-cairo --with-native-compilation
 make -j$(nproc)
@@ -110,10 +110,3 @@ brew install clojure-lsp/brew/clojure-lsp-native
 rm -r ~/.clj-kondo
 mkdir ~/.clj-kondo
 ln -s ~/.emacs.d/setup/dotfiles/.clj-kondo/config.edn ~/.clj-kondo/
-
-### Go ###
-brew install go
-echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.zshrc
-
-### Proxy ###
-brew install caddy
