@@ -204,7 +204,7 @@
                ("M-c"     . org-capture)
                ("C-o"     . my/other-window)
                ("C-x o"   . my/other-window)
-               ("C-x k"   . kill-this-buffer)
+               ("C-x k"   . kill-current-buffer)
                ("C-x 2"   . my/other-window)
                ("C-x 3"   . my/other-window)
                ("C-x -"   . my/zoom-out)
