@@ -237,7 +237,7 @@
   (font-lock-add-keywords
    'emacs-lisp-mode
    '(("(\\(use-package\\)\\_>[   ']*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
-      (2 font-lock-function-name-face nil t))))
+      (2 'font-lock-function-name-face nil t))))
 
   :bind (:map emacs-lisp-mode-map
               ("C-c C-d" . my/docs-for-elisp-symbol-at-point)
@@ -1167,7 +1167,7 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
                ;; Possibly type or metadata
                "\\(?:#?^\\(?:{[^}]*}\\|\\sw+\\)[ \r\n\t]*\\)*"
                (concat "\\(" clojure--sym-regexp "\\)?"))
-      (2 font-lock-function-name-face nil t)))))
+      (2 'font-lock-function-name-face nil t)))))
 (use-package clj
   :after clojure-mode
   :demand t
