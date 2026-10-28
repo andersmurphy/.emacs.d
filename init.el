@@ -1092,7 +1092,8 @@ https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machine
           :documentRangeFormattingProvider
           :documentOnTypeFormattingProvider
           :colorProvider
-          :foldingRangeProvider))
+          :foldingRangeProvider
+          :semanticTokensProvider))
 
   :hook
   (((clojure-mode js-mode) . eglot-ensure)))
