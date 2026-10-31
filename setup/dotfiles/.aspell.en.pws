@@ -114,3 +114,4 @@ SQLite
 FFI
 coffi
 untrusted
+nullable
